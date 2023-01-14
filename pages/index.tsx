@@ -1,23 +1,28 @@
 import { CosmosClient } from '@azure/cosmos';
 import ProductCard from '../components/ProductCard';
 
-interface Props {
-  products: Product[];
-}
-
 interface Product {
   name: string;
   id: string;
-  price: number;
+  currentPrice: number;
+  priceHistory: DatedPricing[];
   size: string;
-  lastUpdated: string;
   source: string;
+}
+
+interface DatedPricing {
+  date: string;
+  price: number;
+}
+
+interface Props {
+  products: Product[];
 }
 
 // Products will be populated at build time by getStaticProps()
 function Home({ products }: Props) {
   return (
-    <div className='flex flex-col px-16 bg-green-500'>
+    <div className='flex flex-col px-16 bg-gradient-to-tr from-lime-500 to-lime-200'>
       <h2 className='my-8 text-2xl'>Products Available</h2>
       <div className='grid grid-cols-3 md:grid-cols-5 lg:grid-cols:6'>
         {products.map((product) => (
@@ -39,9 +44,8 @@ export async function getStaticProps() {
   const cosmosClient = new CosmosClient(COSMOS_CONSTRING);
 
   // Connect to supermarket-prices database
-  // const { database } = await cosmosClient.database('supermarket-prices');
-  const { database } = await cosmosClient.databases.createIfNotExists({ id: 'supermarket-prices' });
-  const { container } = await database.containers.createIfNotExists({ id: 'products' });
+  const database = await cosmosClient.database('supermarket-prices');
+  const container = await database.container('products');
   const products = (await (await container.items.readAll().fetchAll()).resources) as Product[];
 
   return {

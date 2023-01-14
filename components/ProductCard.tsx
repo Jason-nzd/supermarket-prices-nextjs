@@ -8,12 +8,18 @@ interface Props {
 interface Product {
   name: string;
   id: string;
-  price: number;
+  currentPrice: number;
+  priceHistory: DatedPricing[];
   size: string;
-  lastUpdated: string;
   source: string;
 }
 
+interface DatedPricing {
+  date: string;
+  price: number;
+}
+
+// Image are hosted on azure storage - combine this url with ID and .jpg to form the image url
 const imageUrlBase = 'https://supermarketpricewatch.blob.core.windows.net/countdownimages/';
 
 function ProductCard({ product }: Props) {
@@ -32,9 +38,9 @@ function ProductCard({ product }: Props) {
       </div>
 
       <div className='flex'>
-        <div className='text-2xl text-center pl-4'>${product.price}</div>
+        <div className='text-2xl text-center pl-4'>${product.currentPrice}</div>
       </div>
-      <h5 className='text-sm font-light text-right'>{product.lastUpdated}</h5>
+      <h5 className='text-sm font-light text-right'>{product.priceHistory[0].date}</h5>
     </div>
   );
 }
