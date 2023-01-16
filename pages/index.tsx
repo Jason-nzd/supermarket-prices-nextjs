@@ -1,19 +1,6 @@
-import { CosmosClient } from '@azure/cosmos';
+import { CosmosClient, FeedOptions } from '@azure/cosmos';
 import ProductCard from '../components/ProductCard';
-
-interface Product {
-  name: string;
-  id: string;
-  currentPrice: number;
-  priceHistory: DatedPricing[];
-  size: string;
-  source: string;
-}
-
-interface DatedPricing {
-  date: string;
-  price: number;
-}
+import { Product } from '../typings';
 
 interface Props {
   products: Product[];
@@ -26,7 +13,7 @@ function Home({ products }: Props) {
       <h2 className='my-8 text-2xl'>Products Available</h2>
       <div className='grid grid-cols-3 md:grid-cols-5 lg:grid-cols:6'>
         {products.map((product) => (
-          <ProductCard product={product} />
+          <ProductCard key={product.id} product={product} />
         ))}
       </div>
     </div>
@@ -46,7 +33,15 @@ export async function getStaticProps() {
   // Connect to supermarket-prices database
   const database = await cosmosClient.database('supermarket-prices');
   const container = await database.container('products');
-  const products = (await (await container.items.readAll().fetchAll()).resources) as Product[];
+
+  // Set cosmos query options
+  const options: FeedOptions = {
+    maxItemCount: 20,
+  };
+
+  // Fetch products as Product objects
+  const products = (await container.items.readAll(options).fetchNext()).resources as Product[];
+  console.log(`--- Fetching ${products.length} products`);
 
   return {
     props: {

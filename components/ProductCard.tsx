@@ -1,22 +1,10 @@
 import Image from 'next/image';
 import React from 'react';
+import { Product } from '../typings';
+import PriceHistoryChart from './PriceHistoryChart';
 
 interface Props {
   product: Product;
-}
-
-interface Product {
-  name: string;
-  id: string;
-  currentPrice: number;
-  priceHistory: DatedPricing[];
-  size: string;
-  source: string;
-}
-
-interface DatedPricing {
-  date: string;
-  price: number;
 }
 
 // Image are hosted on azure storage - combine this url with ID and .jpg to form the image url
@@ -36,11 +24,10 @@ function ProductCard({ product }: Props) {
         <h3 className='flex items-center text-xl pl-4'>{product.name}</h3>
         <div className='pl-4'>{product.size}</div>
       </div>
-
       <div className='flex'>
         <div className='text-2xl text-center pl-4'>${product.currentPrice}</div>
       </div>
-      <h5 className='text-sm font-light text-right'>{product.priceHistory[0].date}</h5>
+      <PriceHistoryChart priceHistory={product.priceHistory} />
     </div>
   );
 }
