@@ -1,5 +1,6 @@
 import React from 'react';
 import { DatedPrice } from '../typings';
+import { printPrice } from '../utilities';
 
 interface Props {
   priceHistory: DatedPrice[];
@@ -16,7 +17,7 @@ function PriceHistoryChart({ priceHistory }: Props) {
   //   }
 
   for (let i = 0; i < priceHistory.length; i++) {
-    val += '$' + priceHistory[i].price;
+    val += printPrice(priceHistory[i].price);
     if (i < priceHistory.length - 1) {
       // If the older price is higher than the new price, print upwards symbol
       if (priceHistory[i].price > priceHistory[i + 1].price) val += ' decreased to ';

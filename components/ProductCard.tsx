@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import React from 'react';
 import { Product } from '../typings';
+import { printPrice } from '../utilities';
 import PriceHistoryChart from './PriceHistoryChart';
 
 interface Props {
@@ -12,7 +13,7 @@ const imageUrlBase = 'https://supermarketpricewatch.blob.core.windows.net/countd
 
 function ProductCard({ product }: Props) {
   return (
-    <div className='w-96 h-auto items-start shadow-lg p-4 m-4 rounded-xl bg-white'>
+    <div className='w-auto max-w-[20em] h-auto shadow-lg p-2 m-2 rounded-xl bg-white bg-opacity-30'>
       <div className=''>
         <Image
           src={imageUrlBase + product.id + '.jpg'}
@@ -25,7 +26,7 @@ function ProductCard({ product }: Props) {
         <div className='pl-4'>{product.size}</div>
       </div>
       <div className='flex'>
-        <div className='text-2xl text-center pl-4'>${product.currentPrice}</div>
+        <div className='text-2xl text-center pl-4'>{printPrice(product.currentPrice)}</div>
       </div>
       <PriceHistoryChart priceHistory={product.priceHistory} />
     </div>
