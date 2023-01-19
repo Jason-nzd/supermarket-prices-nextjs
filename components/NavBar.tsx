@@ -15,40 +15,6 @@ function NavBar() {
                 Food Price Check
               </a>
             </div>
-
-            {/* <!-- Mobile menu button --> */}
-            <div className='flex lg:hidden'>
-              <button
-                x-cloak
-                type='button'
-                className='text-gray-500 hover:text-gray-600 dark:hover:text-gray-400 focus:outline-none focus:text-gray-600 dark:focus:text-gray-400'
-                aria-label='toggle menu'
-              >
-                <svg
-                  x-show='!isOpen'
-                  xmlns='http://www.w3.org/2000/svg'
-                  className='w-6 h-6'
-                  fill='none'
-                  viewBox='0 0 24 24'
-                  stroke='currentColor'
-                  stroke-width='2'
-                >
-                  <path stroke-linecap='round' stroke-linejoin='round' d='M4 8h16M4 16h16' />
-                </svg>
-
-                <svg
-                  x-show='isOpen'
-                  xmlns='http://www.w3.org/2000/svg'
-                  className='w-6 h-6'
-                  fill='none'
-                  viewBox='0 0 24 24'
-                  stroke='currentColor'
-                  stroke-width='2'
-                >
-                  <path stroke-linecap='round' stroke-linejoin='round' d='M6 18L18 6M6 6l12 12' />
-                </svg>
-              </button>
-            </div>
           </div>
 
           {/* Top-right menu */}
@@ -78,41 +44,45 @@ function NavBar() {
 
         <div className='py-3 mt-3 -mx-3 overflow-y-auto whitespace-nowrap scroll-hidden'>
           <a
-            className='mx-4 text-sm leading-5 text-gray-700 transition-colors duration-300 transform hover:text-blue-600 hover:underline md:my-0'
+            className='mx-4 text-md text-white transition-colors duration-300 hover:text-green-300 md:my-0'
             href='#'
           >
             Milk
           </a>
           <a
-            className='mx-4 text-sm leading-5 text-gray-700 transition-colors duration-300 transform hover:text-blue-600 hover:underline md:my-0'
+            className='mx-4 text-md text-white transition-colors duration-300 hover:text-green-300 md:my-0'
             href='#'
           >
             Eggs
           </a>
           <a
-            className='mx-4 text-sm leading-5 text-gray-700 transition-colors duration-300 transform hover:text-blue-600 hover:underline md:my-0'
+            className='mx-4 text-md text-white transition-colors duration-300 hover:text-green-300 md:my-0'
             href='#'
           >
             Bread
           </a>
           <a
-            className='mx-4 text-sm leading-5 text-gray-700 transition-colors duration-300 transform hover:text-blue-600 hover:underline md:my-0'
+            className='mx-4 text-md text-white transition-colors duration-300 hover:text-green-300 md:my-0'
             href='#'
           >
             Meat
           </a>
           <a
-            className='mx-4 text-sm leading-5 text-gray-700 transition-colors duration-300 transform hover:text-blue-600 hover:underline md:my-0'
+            className='mx-4 text-md text-white transition-colors duration-300 hover:text-green-300 md:my-0'
             href='#'
           >
             Fruit
           </a>
           <a
-            className='mx-4 text-sm leading-5 text-gray-700 transition-colors duration-300 transform hover:text-blue-600 hover:underline md:my-0'
+            className='mx-4 text-md text-white transition-colors duration-300 hover:text-green-300 md:my-0'
             href='#'
           >
             Vegetables
           </a>
+          <form action=''>
+            <input type='text' name='' id='' placeholder='Search' />
+            <button type='submit'>Search</button>
+          </form>
         </div>
       </div>
     </nav>

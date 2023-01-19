@@ -1,4 +1,4 @@
-import { CosmosClient, FeedOptions } from '@azure/cosmos';
+import { CosmosClient, FeedOptions, SqlQuerySpec } from '@azure/cosmos';
 import { useEffect, useState } from 'react';
 import NavBar from '../components/NavBar';
 import ProductCard from '../components/ProductCard';
@@ -56,11 +56,16 @@ export async function getStaticProps() {
 
   // Set cosmos query options - limit to fetching 20 items at a time
   const options: FeedOptions = {
-    maxItemCount: 24,
+    maxItemCount: 30,
   };
 
   // Fetch products as Product objects
-  const products = (await container.items.readAll(options).fetchNext()).resources as Product[];
+  // const products = (await container.items.readAll(options).fetchNext()).resources as Product[];
+  const querySpec: SqlQuerySpec = {
+    query: 'SELECT * FROM products p WHERE CONTAINS(p.name, @name, true)',
+    parameters: [{ name: '@name', value: 'milk' }],
+  };
+  const products = (await container.items.query(querySpec).fetchAll()).resources as Product[];
   console.log(`--- Fetching ${products.length} products`);
 
   return {
