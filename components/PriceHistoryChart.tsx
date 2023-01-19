@@ -1,36 +1,55 @@
 import React from 'react';
 import { DatedPrice } from '../typings';
 import { printPrice } from '../utilities';
+import { CategoryScale, Chart, LinearScale, PointElement, LineElement } from 'chart.js';
+import { Line } from 'react-chartjs-2';
 
 interface Props {
   priceHistory: DatedPrice[];
 }
 
 function PriceHistoryChart({ priceHistory }: Props) {
-  let val: string = 'Price History ';
+  // Initialize chart.js line chart
+  Chart.register(CategoryScale, LinearScale, PointElement, LineElement);
 
-  //   if (priceHistory.length > 1) {
-  //     priceHistory.map((datedPrice) => {
-  //       val += '$' + datedPrice.price + ' > ';
-  //       // val += datedPrice.date + ' ';
-  //     });
-  //   }
+  // Separate data fields for x and y chart axis
+  let dateDataOnly: string[] = [];
+  let priceDataOnly: number[] = [];
+  priceHistory.forEach((datedPrice) => {
+    // Remove day and year from date label
+    dateDataOnly.push(datedPrice.date.slice(4, datedPrice.date.length - 5));
+    priceDataOnly.push(datedPrice.price);
+  });
 
-  for (let i = 0; i < priceHistory.length; i++) {
-    val += printPrice(priceHistory[i].price);
-    if (i < priceHistory.length - 1) {
-      // If the older price is higher than the new price, print upwards symbol
-      if (priceHistory[i].price > priceHistory[i + 1].price) val += ' decreased to ';
-      else val += ' increased to ';
-    }
+  // Add a new chart point highlighting today's price
+  dateDataOnly.push('Today');
+  priceDataOnly.push(priceDataOnly[priceDataOnly.length - 1]);
+
+  // Prepare chart data for chart.js line chart
+  const chartData = {
+    labels: dateDataOnly,
+    datasets: [
+      {
+        label: 'Price Dataset',
+        data: priceDataOnly,
+        fill: true,
+        borderColor: 'rgb(75, 192, 192)',
+        tension: 0.1,
+      },
+    ],
+  };
+
+  // Display chart only if 2 or more data points exist
+  if (priceHistory.length > 1) {
+    return (
+      <div className='bg-white rounded-b-2xl p-2'>
+        <Line data={chartData} />
+      </div>
+    );
+  } else {
+    // No Price History to display
+    return <div></div>;
   }
-
-  return (
-    <div className='bg-blue-100 rounded-xl p-2 mt-4'>
-      {val}
-      <h5 className='text-sm font-light text-right'>Last Updated: {priceHistory[0].date}</h5>
-    </div>
-  );
 }
 
 export default PriceHistoryChart;
