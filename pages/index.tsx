@@ -1,4 +1,5 @@
 import { CosmosClient, FeedOptions } from '@azure/cosmos';
+import { useEffect, useState } from 'react';
 import NavBar from '../components/NavBar';
 import ProductCard from '../components/ProductCard';
 import { Product } from '../typings';
@@ -9,12 +10,27 @@ interface Props {
 
 // Products will be populated at build time by getStaticProps()
 function Home({ products }: Props) {
+  const [scrollY, setScrollY] = useState(0);
+  function logit() {
+    setScrollY(window.pageYOffset);
+    console.log(new Date().getTime());
+  }
+  useEffect(() => {
+    function watchScroll() {
+      window.addEventListener('scroll', logit);
+    }
+    watchScroll();
+    return () => {
+      window.removeEventListener('scroll', logit);
+    };
+  });
+
   return (
     <div>
       <NavBar />
-
+      {/* <div className='fixed'>Scroll position: {scrollY}px</div> */}
       <div className='flex flex-col px-2 md:px-8 lg:px-16 bg-gradient-to-tr from-lime-500 to-lime-200'>
-        <div className='mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 max-w-[140em] m-auto'>
+        <div className='mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 max-w-[140em] m-auto'>
           {products.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
