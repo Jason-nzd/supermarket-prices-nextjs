@@ -13,18 +13,15 @@ const imageUrlBase = 'https://supermarketpricewatch.blob.core.windows.net/countd
 
 function ProductCard({ product }: Props) {
   return (
-    <div className='w-auto max-w-[20em] h-auto shadow-lg p-2 m-2 rounded-xl bg-white bg-opacity-30'>
-      <div className=''>
-        <Image
-          src={imageUrlBase + product.id + '.jpg'}
-          alt=''
-          width={200}
-          height={200}
-          //   placeholder='blur'
-        />
-        <h3 className='flex items-center text-xl pl-4'>{product.name}</h3>
-        <div className='pl-4'>{product.size}</div>
+    <div className='w-auto max-w-[18em] h-auto shadow-lg p-2 m-2 rounded-3xl bg-white bg-opacity-30 backdrop-blur-lg'>
+      <div className='bg-white px-4 rounded-2xl'>
+        <Image src={imageUrlBase + product.id + '.jpg'} alt='' width={240} height={240} />
       </div>
+      <div className='mt-2 p-2 min-h-[4em] bg-white bg-opacity-40 rounded-2xl flex items-center text-md font-semibold'>
+        {product.name}
+      </div>
+      <div className='mt-2 pl-4 text-md bg-blue-100 rounded-xl bg-opacity-50'>{product.size}</div>
+
       <div className='flex'>
         <div className='text-2xl text-center pl-4'>{printPrice(product.currentPrice)}</div>
       </div>

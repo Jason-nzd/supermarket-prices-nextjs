@@ -1,4 +1,5 @@
 import { CosmosClient, FeedOptions } from '@azure/cosmos';
+import NavBar from '../components/NavBar';
 import ProductCard from '../components/ProductCard';
 import { Product } from '../typings';
 
@@ -9,12 +10,15 @@ interface Props {
 // Products will be populated at build time by getStaticProps()
 function Home({ products }: Props) {
   return (
-    <div className='flex flex-col px-2 md:px-8 lg:px-16 bg-gradient-to-tr from-lime-500 to-lime-200'>
-      <h2 className='my-8 text-2xl'>Products Available</h2>
-      <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5'>
-        {products.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))}
+    <div>
+      <NavBar />
+
+      <div className='flex flex-col px-2 md:px-8 lg:px-16 bg-gradient-to-tr from-lime-500 to-lime-200'>
+        <div className='mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 max-w-[140em] m-auto'>
+          {products.map((product) => (
+            <ProductCard key={product.id} product={product} />
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -34,9 +38,9 @@ export async function getStaticProps() {
   const database = await cosmosClient.database('supermarket-prices');
   const container = await database.container('products');
 
-  // Set cosmos query options
+  // Set cosmos query options - limit to fetching 20 items at a time
   const options: FeedOptions = {
-    maxItemCount: 20,
+    maxItemCount: 24,
   };
 
   // Fetch products as Product objects
