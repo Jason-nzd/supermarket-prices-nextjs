@@ -9,13 +9,20 @@ interface Props {
 }
 
 // Image are hosted on azure storage - combine this url with ID and .jpg to form the image url
-const imageUrlBase = 'https://supermarketpricewatch.blob.core.windows.net/countdownimages/';
+//const imageUrlBase = 'https://supermarketpricewatch.blob.core.windows.net/countdownimages/';
+const transparentImageUrlBase =
+  'https://supermarketpricewatch.blob.core.windows.net/transparent-cd-images/';
 
 function ProductCard({ product }: Props) {
   return (
     <div className='w-auto max-w-[20em] shadow-lg p-2 m-2 rounded-3xl bg-white bg-opacity-30 backdrop-blur-lg'>
-      <div className='bg-white px-4 rounded-t-2xl'>
-        <Image src={imageUrlBase + product.id + '.jpg'} alt='' width={240} height={240} />
+      <div className='px-4 rounded-t-2xl bg-white dark:bg-transparent py-2'>
+        <Image
+          src={transparentImageUrlBase + product.id + '.jpg'}
+          alt=''
+          width={240}
+          height={240}
+        />
       </div>
       <div
         className='p-2 min-h-[4em] max-h-[4em] bg-green-200 flex items-center font-semibold text-xs 
