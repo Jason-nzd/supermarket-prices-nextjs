@@ -1,8 +1,9 @@
-import { CosmosClient, FeedOptions, SqlQuerySpec } from '@azure/cosmos';
+import { FeedOptions, SqlQuerySpec } from '@azure/cosmos';
 import { useEffect, useState } from 'react';
 import NavBar from '../components/NavBar';
 import ProductCard from '../components/ProductCard';
 import { Product } from '../typings';
+import { connectToCosmosDB } from '../utilities';
 
 interface Props {
   products: Product[];
@@ -46,19 +47,10 @@ function Home({ products }: Props) {
 
 // This function gets called at build time on server-side.
 export async function getStaticProps() {
-  // Create Cosmos client using connection string stored in .env
-  console.log(`--- Connecting to CosmosDB..`);
-  const COSMOS_CONSTRING = process.env.COSMOS_CONSTRING;
-  if (!COSMOS_CONSTRING) {
-    throw Error('Azure CosmosDB Connection string not found');
-  }
-  const cosmosClient = new CosmosClient(COSMOS_CONSTRING);
+  // Get CosmosDB container
+  const container = await connectToCosmosDB();
 
-  // Connect to supermarket-prices database
-  const database = await cosmosClient.database('supermarket-prices');
-  const container = await database.container('products');
-
-  // Set cosmos query options - limit to fetching 20 items at a time
+  // Set cosmos query options - limit to fetching 24 items at a time
   const options: FeedOptions = {
     maxItemCount: 24,
   };
