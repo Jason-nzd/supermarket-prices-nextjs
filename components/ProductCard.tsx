@@ -11,8 +11,9 @@ interface Props {
 
 // Image are hosted on azure storage - combine this url with ID and .jpg to form the image url
 //const imageUrlBase = 'https://supermarketpricewatch.blob.core.windows.net/countdownimages/';
-const transparentImageUrlBase =
-  'https://supermarketpricewatch.blob.core.windows.net/transparent-cd-images/';
+// const transparentImageUrlBase =
+//   'https://supermarketpricewatch.blob.core.windows.net/transparent-cd-images/';
+const transparentImageUrlBase = 'https://d1hhwouzawkav1.cloudfront.net/transparent-cd-images/';
 
 function ProductCard({ product }: Props) {
   return (

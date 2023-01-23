@@ -52,18 +52,32 @@ export async function getStaticProps() {
 
   // Set cosmos query options - limit to fetching 24 items at a time
   const options: FeedOptions = {
-    maxItemCount: 24,
+    maxItemCount: 30,
   };
 
   // Fetch products as Product objects
-  const products = (await container.items.readAll(options).fetchNext()).resources as Product[];
-  const querySpec: SqlQuerySpec = {
-    query: 'SELECT * FROM products p WHERE CONTAINS(p.name, @name, true)',
-    parameters: [{ name: '@name', value: 'milk' }],
-  };
+  const allProducts = (await container.items.readAll(options).fetchNext()).resources as Product[];
+
+  // const querySpec: SqlQuerySpec = {
+  //   query: 'SELECT * FROM products p WHERE CONTAINS(p.name, @name, true)',
+  //   parameters: [{ name: '@name', value: 'milk' }],
+  // };
+
+  const response = await container.items
+    .query('SELECT * FROM products p WHERE ARRAY_LENGTH(p.priceHistory)>1', options)
+    .fetchNext();
+  const products = response.resources as Product[];
+
+  // const products = allProducts.filter((product) => {
+  //   return product.priceHistory.length > 1;
+  // });
+  console.log(`--- Fetched ${allProducts.length} products and filtered to ` + products.length);
+  // console.log('Filtered array length is ' + filteredProducts.length);
+
+  // const hotItems = container.items.query('SELECT * FROM products WHERE ')
+
   // const products = (await container.items.query(querySpec, options).fetchNext())
   //   .resources as Product[];
-  console.log(`--- Fetching ${products.length} products`);
 
   return {
     props: {

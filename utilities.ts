@@ -1,4 +1,4 @@
-import { Container, CosmosClient, FeedOptions } from '@azure/cosmos';
+import { Container, CosmosClient } from '@azure/cosmos';
 
 // Helper function - Adds $ symbol and 2 decimal points if applicable
 export function printPrice(price: number) {

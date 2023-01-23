@@ -7,12 +7,13 @@ interface Props {
 }
 
 function ProductModal(props: Product) {
+  const { name, size, currentPrice } = props;
   return (
     <div>
       <div>ProductModal</div>
-      <h2>{props.name}</h2>
-      <h3>{props.size}</h3>
-      <h3>{printPrice(props.currentPrice)}</h3>
+      <h2>{name}</h2>
+      <h3>{size}</h3>
+      <h3>{printPrice(currentPrice)}</h3>
     </div>
   );
 }

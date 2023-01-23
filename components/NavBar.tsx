@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
+
+// let [searchQuery, setSearchQuery] = React.useState('');
 
 function NavBar() {
   const productCategories: string[] = ['Milk', 'Eggs', 'Meat', 'Bread', 'Fruit', 'Vegetables'];
@@ -84,13 +86,19 @@ function NavBar() {
           </div>
 
           <div className='ml-8 rounded-2xl border-slate-400 border-2'>
-            <form action=''>
+            <form action='/search' method='post'>
               <input
                 type='text'
-                name=''
-                id=''
+                name='search'
+                id='search'
+                required
                 placeholder='Search'
+                minLength={3}
+                maxLength={40}
                 className='bg-transparent text-white ml-4 mr-2 mt-1.5 align-top'
+                onChange={(value) => {
+                  console.log(value);
+                }}
               />
               <button type='submit' title='search'>
                 {/* Magnify icon from heroicons */}
