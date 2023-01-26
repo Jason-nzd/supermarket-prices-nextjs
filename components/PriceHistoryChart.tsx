@@ -37,12 +37,15 @@ function PriceHistoryChart({ priceHistory }: Props) {
         tension: 0.1,
       },
     ],
+    options: {
+      responsive: true,
+    },
   };
 
   // Display chart only if 2 or more data points exist
   if (priceHistory.length > 1) {
     return (
-      <div className='bg-white rounded-b-2xl p-2'>
+      <div className='bg-white rounded-b-2xl p-1'>
         <Line data={chartData} />
       </div>
     );

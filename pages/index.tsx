@@ -2,6 +2,7 @@ import { FeedOptions, SqlQuerySpec } from '@azure/cosmos';
 import { useEffect, useState } from 'react';
 import NavBar from '../components/NavBar';
 import ProductCard from '../components/ProductCard';
+import WideProductCard from '../components/WideProductCard';
 import { Product } from '../typings';
 import { connectToCosmosDB } from '../utilities';
 
@@ -27,7 +28,7 @@ function Home({ products }: Props) {
   });
 
   return (
-    <div className='bg-blue-600'>
+    <div className=''>
       <NavBar />
       {/* <div className='fixed'>Scroll position: {scrollY}px</div> */}
       <div
@@ -37,7 +38,7 @@ function Home({ products }: Props) {
       >
         <div className='mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 max-w-[140em] m-auto'>
           {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
+            <WideProductCard key={product.id} product={product} />
           ))}
         </div>
       </div>
