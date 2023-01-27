@@ -1,45 +1,45 @@
+import Link from 'next/link';
 import React, { useState } from 'react';
 
 // let [searchQuery, setSearchQuery] = React.useState('');
 
 function NavBar() {
-  const productCategories: string[] = ['Milk', 'Eggs', 'Meat', 'Bread', 'Fruit', 'Vegetables'];
   return (
     <nav className='relative bg-black bg-opacity-50 w-[70%] mx-auto'>
       <div className='container px-6 py-3 mx-auto'>
         <div className='flex flex-col md:flex-row md:justify-between md:items-center'>
           <div className='flex items-center justify-between'>
             <div className='flex items-center'>
-              <a
+              <Link
                 className='text-2xl font-bold text-gray-800 transition-colors duration-300 transform dark:text-white lg:text-3xl hover:text-gray-700 dark:hover:text-gray-300'
-                href='#'
+                href='/'
               >
                 Food Price Check
-              </a>
+              </Link>
             </div>
           </div>
 
           {/* Top-right menu */}
           <div className='absolute inset-x-0 z-20 w-full px-6 py-2 transition-all duration-300 ease-in-out md:mt-0 md:p-0 md:top-0 md:relative md:bg-transparent md:w-auto md:opacity-100 md:translate-x-0 md:flex md:items-center'>
             <div className='flex flex-col md:flex-row md:mx-1'>
-              <a
+              <Link
                 className='my-2 text-sm leading-5 text-gray-700 dark:text-black transition-colors duration-300 transform hover:text-blue-600 hover:underline md:mx-4 md:my-0'
                 href='#'
               >
                 Login
-              </a>
-              <a
+              </Link>
+              <Link
                 className='my-2 text-sm leading-5 text-gray-700 transition-colors duration-300 transform hover:text-blue-600 hover:underline md:mx-4 md:my-0'
                 href='#'
               >
                 Cart
-              </a>
-              <a
+              </Link>
+              <Link
                 className='my-2 text-sm leading-5 text-gray-700 transition-colors duration-300 transform hover:text-blue-600 hover:underline md:mx-4 md:my-0'
                 href='#'
               >
                 GitHub
-              </a>
+              </Link>
             </div>
           </div>
         </div>
@@ -47,42 +47,48 @@ function NavBar() {
         {/* <div className='flex py-3 mt-3 -mx-3'> */}
         <div className='flex mt-3 -mx-3'>
           <div className='mt-3'>
-            <a
+            <Link
               className='mx-4 text-md text-white transition-colors duration-300 hover:text-green-300 md:my-0'
-              href='#'
+              href='search?terms=milk'
             >
               Milk
-            </a>
-            <a
+            </Link>
+            <Link
               className='mx-4 text-md text-white transition-colors duration-300 hover:text-green-300 md:my-0'
-              href='#'
+              href='search?terms=Eggs'
             >
               Eggs
-            </a>
-            <a
+            </Link>
+            <Link
               className='mx-4 text-md text-white transition-colors duration-300 hover:text-green-300 md:my-0'
-              href='#'
+              href='search?terms=Bread'
             >
               Bread
-            </a>
-            <a
+            </Link>
+            <Link
               className='mx-4 text-md text-white transition-colors duration-300 hover:text-green-300 md:my-0'
-              href='#'
+              href='search?terms=Meat'
             >
               Meat
-            </a>
-            <a
+            </Link>
+            <Link
               className='mx-4 text-md text-white transition-colors duration-300 hover:text-green-300 md:my-0'
-              href='#'
+              href='search?terms=Fruit'
             >
               Fruit
-            </a>
-            <a
+            </Link>
+            <Link
               className='mx-4 text-md text-white transition-colors duration-300 hover:text-green-300 md:my-0'
-              href='#'
+              href='search?terms=Vegetables'
             >
               Vegetables
-            </a>
+            </Link>
+            <Link
+              className='mx-4 text-md text-white transition-colors duration-300 hover:text-green-300 md:my-0'
+              href='search?terms=Ice Cream'
+            >
+              Ice Cream
+            </Link>
           </div>
 
           <div className='ml-8 rounded-2xl border-slate-400 border-2'>
