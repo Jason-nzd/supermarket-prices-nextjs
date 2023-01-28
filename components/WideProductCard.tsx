@@ -16,29 +16,36 @@ function handleClick() {
 function WideProductCard({ product }: Props) {
   const linkHref = '/product/' + [product.id];
   return (
-    <div className=' w-[16em] flex flex-wrap p-2' onClick={handleClick}>
+    <div
+      className='bg-stone-50 rounded-3xl shadow-lg max-w-[17em] min-w-[15em] flex flex-wrap m-1 p-1
+      hover:scale-[102%] hover:shadow-2xl duration-300 ease-in-out cursor-pointer hover:bg-white
+      dark:bg-slate-800 dark:text-slate-200 dark:ring-slate-700 dark:ring-2 dark:m-1.5'
+      onClick={handleClick}
+    >
       {/* Title div */}
       <div
-        className='w-full bg-white rounded-t-3xl pt-1 px-2 
-    text-md text-center h-14 font-semibold'
+        className='w-full pt-3 px-2 rounded-3xl bg-opacity-70
+    text-md text-center h-14 font-semibold leading-4 z-20
+    dark:bg-slate-800 dark:bg-opacity-70'
       >
         {product.name}
       </div>
 
       {/* Image div with overlayed size and price */}
-      <div className='bg-white relative'>
+      <div className='relative w-full'>
         <Image
           src={transparentImageUrlBase + product.id + '.jpg'}
           alt=''
-          width={200}
-          height={200}
-          className='object-cover mx-8'
+          width={180}
+          height={180}
+          className='object-cover scale-[110%] mx-auto hover:scale-[120%] hover:-rotate-2 
+          duration-500 ease-in-out'
         />
 
         {/* Size div */}
         <div
-          className='absolute top-4 left-4 p-1 px-4 bg-white bg-opacity-70 rounded-3xl
-       text-sm text-slate-600 font-semibold shadow-xl'
+          className='absolute top-4 left-4 p-1 px-4 bg-white bg-opacity-80
+       text-sm text-slate-600 font-semibold rounded-3xl shadow-lg'
         >
           {product.size}
         </div>
@@ -46,14 +53,15 @@ function WideProductCard({ product }: Props) {
         {/* Price div */}
         <div
           className='absolute top-40 left-40 p-1 bg-yellow-400 border-2 border-yellow-300
-       w-auto text-center font-bold rounded-3xl shadow-md'
+       w-auto text-center font-bold rounded-3xl shadow-lg
+       dark:text-black'
         >
           {printPrice(product.currentPrice)}
         </div>
       </div>
 
       {/* Price history chart div */}
-      <div className='w-[15em]'>
+      <div className='w-full'>
         <PriceHistoryChart priceHistory={product.priceHistory} />
       </div>
     </div>
