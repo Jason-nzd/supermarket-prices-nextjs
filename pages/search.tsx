@@ -1,6 +1,6 @@
 import React from 'react';
 import NavBar from '../components/NavBar';
-import WideProductCard from '../components/WideProductCard';
+import WideProductCard from '../components/ProductCard';
 import { Product } from '../typings';
 import { getSearch } from '../utilities';
 import { useRouter } from 'next/router';
@@ -18,7 +18,6 @@ function search({ searchTerm, products }: Props) {
 
   return (
     <div className=''>
-      <NavBar />
       <div
         className='flex flex-col px-2 md:px-8 lg:px-16 bg-gradient-to-tr
          from-lime-500 to-lime-200

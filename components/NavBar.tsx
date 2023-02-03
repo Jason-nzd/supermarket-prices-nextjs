@@ -3,128 +3,127 @@ import React, { useState } from 'react';
 
 // let [searchQuery, setSearchQuery] = React.useState('');
 
+let fullyStaticMode = true;
+
 function NavBar() {
   return (
-    <nav className='relative bg-black bg-opacity-50 w-[70%] mx-auto'>
-      <div className='container px-6 py-3 mx-auto'>
-        <div className='flex flex-col md:flex-row md:justify-between md:items-center'>
-          <div className='flex items-center justify-between'>
-            <div className='flex items-center'>
-              <Link
-                className='text-2xl font-bold text-gray-800 transition-colors duration-300 transform dark:text-white lg:text-3xl hover:text-gray-700 dark:hover:text-gray-300'
-                href='/'
-              >
-                Food Price Check
-              </Link>
-            </div>
-          </div>
-
-          {/* Top-right menu */}
-          <div className='absolute inset-x-0 z-20 w-full px-6 py-2 transition-all duration-300 ease-in-out md:mt-0 md:p-0 md:top-0 md:relative md:bg-transparent md:w-auto md:opacity-100 md:translate-x-0 md:flex md:items-center'>
-            <div className='flex flex-col md:flex-row md:mx-1'>
-              <Link
-                className='my-2 text-sm leading-5 text-gray-700 dark:text-black transition-colors duration-300 transform hover:text-blue-600 hover:underline md:mx-4 md:my-0'
-                href='#'
-              >
-                Login
-              </Link>
-              <Link
-                className='my-2 text-sm leading-5 text-gray-700 transition-colors duration-300 transform hover:text-blue-600 hover:underline md:mx-4 md:my-0'
-                href='#'
-              >
-                Cart
-              </Link>
-              <Link
-                className='my-2 text-sm leading-5 text-gray-700 transition-colors duration-300 transform hover:text-blue-600 hover:underline md:mx-4 md:my-0'
-                href='#'
-              >
-                GitHub
-              </Link>
-            </div>
-          </div>
+    <nav className='mx-auto px-6 py-3 w-[65%]'>
+      <div className='flex flex-col md:flex-row md:justify-between md:items-center'>
+        {/* Brand Title */}
+        <div className='flex items-center'>
+          <Link
+            className='mt-2 mb-2 text-2xl font-bold text-stone-200 transition-colors duration-300 transform hover:text-white'
+            href='/'
+          >
+            Supermarket Price History
+          </Link>
         </div>
 
-        {/* <div className='flex py-3 mt-3 -mx-3'> */}
-        <div className='flex mt-3 -mx-3'>
-          <div className='mt-3'>
+        {/* Top-right corner menu */}
+        <div className='absolute inset-x-0 z-20 w-full px-6 py-2 transition-all duration-300 ease-in-out md:mt-0 md:p-0 md:top-0 md:relative md:bg-transparent md:w-auto md:opacity-100 md:translate-x-0 md:flex md:items-center'>
+          <div className='flex flex-col md:flex-row md:mx-1'>
             <Link
-              className='mx-4 text-md text-white transition-colors duration-300 hover:text-green-300 md:my-0'
-              href='search?terms=milk'
+              className='my-2 text-sm leading-5 text-stone-200 transition-colors duration-300 transform hover:text-white md:mx-4 md:my-0'
+              href='#'
             >
-              Milk
+              Login
             </Link>
             <Link
-              className='mx-4 text-md text-white transition-colors duration-300 hover:text-green-300 md:my-0'
-              href='search?terms=Eggs'
+              className='my-2 text-sm leading-5 text-stone-200 transition-colors duration-300 transform hover:text-white md:mx-4 md:my-0'
+              href='#'
             >
-              Eggs
+              Cart
             </Link>
             <Link
-              className='mx-4 text-md text-white transition-colors duration-300 hover:text-green-300 md:my-0'
-              href='search?terms=Bread'
+              className='my-2 text-sm leading-5 text-stone-200 transition-colors duration-300 transform hover:text-white md:mx-4 md:my-0'
+              href='https://github.com/Jason-nzd/supermarket-prices'
             >
-              Bread
-            </Link>
-            <Link
-              className='mx-4 text-md text-white transition-colors duration-300 hover:text-green-300 md:my-0'
-              href='search?terms=Meat'
-            >
-              Meat
-            </Link>
-            <Link
-              className='mx-4 text-md text-white transition-colors duration-300 hover:text-green-300 md:my-0'
-              href='search?terms=Fruit'
-            >
-              Fruit
-            </Link>
-            <Link
-              className='mx-4 text-md text-white transition-colors duration-300 hover:text-green-300 md:my-0'
-              href='search?terms=Vegetables'
-            >
-              Vegetables
-            </Link>
-            <Link
-              className='mx-4 text-md text-white transition-colors duration-300 hover:text-green-300 md:my-0'
-              href='search?terms=Ice Cream'
-            >
-              Ice Cream
+              GitHub
             </Link>
           </div>
+        </div>
+      </div>
 
-          <div className='ml-8 rounded-2xl border-slate-400 border-2'>
-            <form action='/search' method='post'>
-              <input
-                type='text'
-                name='search'
-                id='search'
-                required
-                placeholder='Search'
-                minLength={3}
-                maxLength={40}
-                className='bg-transparent text-white ml-4 mr-2 mt-1.5 align-top'
-                onChange={(value) => {
-                  console.log(value);
-                }}
-              />
-              <button type='submit' title='search'>
-                {/* Magnify icon from heroicons */}
-                <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  fill='none'
-                  viewBox='0 0 24 24'
-                  strokeWidth={1.5}
-                  stroke='white'
-                  className='w-6 h-6 mr-2 mt-1.5 align-top hover:scale-110'
-                >
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z'
-                  />
-                </svg>
-              </button>
-            </form>
-          </div>
+      {/* Categories Section */}
+      <div className='flex -mx-3'>
+        <div className='mt-2'>
+          <Link
+            className='mx-4 text-md text-white transition-colors duration-300 hover:text-green-300 md:my-0'
+            href='search?terms=milk'
+          >
+            Milk
+          </Link>
+          <Link
+            className='mx-4 text-md text-white transition-colors duration-300 hover:text-green-300 md:my-0'
+            href='search?terms=Eggs'
+          >
+            Eggs
+          </Link>
+          <Link
+            className='mx-4 text-md text-white transition-colors duration-300 hover:text-green-300 md:my-0'
+            href='search?terms=Bread'
+          >
+            Bread
+          </Link>
+          <Link
+            className='mx-4 text-md text-white transition-colors duration-300 hover:text-green-300 md:my-0'
+            href='search?terms=Meat'
+          >
+            Meat
+          </Link>
+          <Link
+            className='mx-4 text-md text-white transition-colors duration-300 hover:text-green-300 md:my-0'
+            href='search?terms=Fruit'
+          >
+            Fruit
+          </Link>
+          <Link
+            className='mx-4 text-md text-white transition-colors duration-300 hover:text-green-300 md:my-0'
+            href='search?terms=Vegetables'
+          >
+            Vegetables
+          </Link>
+          <Link
+            className='mx-4 text-md text-white transition-colors duration-300 hover:text-green-300 md:my-0'
+            href='search?terms=Ice Cream'
+          >
+            Ice Cream
+          </Link>
+        </div>
+
+        <div className='ml-8 rounded-2xl border-slate-400 border-2'>
+          <form action='/search' method='post'>
+            <input
+              type='text'
+              name='search'
+              id='search'
+              required
+              placeholder='Search'
+              minLength={3}
+              maxLength={40}
+              className='bg-transparent text-white ml-4 mr-2 mt-1.5 align-top'
+              onChange={(value) => {
+                console.log(value);
+              }}
+            />
+            <button type='submit' title='search'>
+              {/* Magnify icon from heroicons */}
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                fill='none'
+                viewBox='0 0 24 24'
+                strokeWidth={1.5}
+                stroke='white'
+                className='w-6 h-6 mr-2 mt-1.5 align-top hover:scale-110'
+              >
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  d='M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z'
+                />
+              </svg>
+            </button>
+          </form>
         </div>
       </div>
     </nav>

@@ -1,8 +1,7 @@
 import { Container, CosmosClient, FeedOptions, SqlQuerySpec } from '@azure/cosmos';
 import { Product } from './typings';
 
-export const transparentImageUrlBase: string =
-  'https://d1hhwouzawkav1.cloudfront.net/transparent-cd-images/';
+export const transparentImageUrlBase: string = 'https://d1hhwouzawkav1.cloudfront.net/';
 
 // Helper function - Adds $ symbol and 2 decimal points if applicable
 export function printPrice(price: number) {

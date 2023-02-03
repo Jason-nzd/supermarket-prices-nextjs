@@ -17,14 +17,15 @@ function WideProductCard({ product }: Props) {
   const linkHref = '/product/' + [product.id];
   return (
     <div
-      className='bg-stone-50 rounded-3xl shadow-lg max-w-[17em] min-w-[15em] flex flex-wrap m-1 p-1
-      hover:scale-[102%] hover:shadow-2xl duration-300 ease-in-out cursor-pointer hover:bg-white
+      className='bg-stone-50 rounded-3xl shadow-lg max-w-[17em] min-w-[15em] flex flex-wrap m-1 p-1 
+      bg-opacity-20 backdrop-blur-md ring-2 ring-white ring-opacity-50
+      hover:scale-[102%] hover:shadow-2xl duration-300 ease-in-out cursor-pointer hover:bg-opacity-30
       dark:bg-slate-800 dark:text-slate-200 dark:ring-slate-700 dark:ring-2 dark:m-1.5'
       onClick={handleClick}
     >
       {/* Title div */}
       <div
-        className='w-full pt-3 px-2 rounded-3xl bg-opacity-70
+        className='w-full pt-3 px-2 rounded-3xl text-black
     text-md text-center h-14 font-semibold leading-4 z-20
     dark:bg-slate-800 dark:bg-opacity-70'
       >
@@ -32,7 +33,7 @@ function WideProductCard({ product }: Props) {
       </div>
 
       {/* Image div with overlayed size and price */}
-      <div className='relative w-full'>
+      <div className='mt-1 relative w-full'>
         <Image
           src={transparentImageUrlBase + product.id + '.jpg'}
           alt=''
