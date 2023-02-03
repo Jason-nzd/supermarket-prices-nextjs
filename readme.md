@@ -8,9 +8,9 @@ Built on Next.js with TailwindCSS.
 
 ## Setup
 
-An Azure CosmosDB read-only or read-write connection string must be set as an environment variable in a .env file
+An Azure CosmosDB read-only or read-write connection string must be set as an environment variable in the .env.local file
 
-.env format
+.env.local format
 
 ```shell
 COSMOS_CONSTRING=
