@@ -7,11 +7,17 @@ const containerName = 'products';
 export const transparentImageUrlBase: string = 'https://d1hhwouzawkav1.cloudfront.net/';
 
 // Helper function - Adds $ symbol and 2 decimal points if applicable
-export function printPrice(price: number) {
-  // Check if a whole integer such as 8, and return without any decimals - $8
-  if (price.toString() === parseInt(price.toString()).toString()) return '$' + price;
-  // Else ensure 2 decimals instead of 1, such as $6.50 instead of $6.5
-  else return '$' + price.toFixed(2);
+export function printPrice(price: number, trimDecimals: boolean = false) {
+  if (trimDecimals) {
+    // If trimDecimals is set, 8.5 will become $8.5
+    return '$' + price;
+  } else if (price.toString() === parseInt(price.toString()).toString()) {
+    // If a whole integer such as 8, return without any decimals - $8
+    return '$' + price;
+  } else {
+    // Else return with decimal points extended to 2 - $8.50
+    return '$' + price.toFixed(2);
+  }
 }
 
 // Establish CosmosDB connection

@@ -3,8 +3,6 @@ import { useEffect, useState } from 'react';
 import WideProductCard from '../components/ProductCard';
 import { Product } from '../typings';
 import { connectToCosmosDB } from '../utilities';
-import bgImg from '../public/images/pexels-marco-antonio-victorino-2286776.jpg';
-import Image from 'next/image';
 
 interface Props {
   products: Product[];
@@ -14,18 +12,10 @@ interface Props {
 function Home({ products }: Props) {
   return (
     <main>
-      {/* <div
-        className='flex flex-col px-2 
-        md:px-8
-        lg:px-16
-        bg-gradient-to-tr from-lime-500 to-lime-200
-       dark:from-slate-800 dark:to-slate-900'
-      > */}
       <div
         className="flex flex-col px-2 md:px-8 lg:px-16 
       bg-top bg-cover bg-scroll bg-[url('../public/images/pexels-polina-tankilevitch-3735162-1.2k.jpg')]"
       >
-        {/* <Image src={bgImg} alt='' placeholder='blur' priority /> */}
         <div
           className='mt-8 grid max-w-[140em] m-auto
         grid-cols-2

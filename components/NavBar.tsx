@@ -40,6 +40,7 @@ function NavBar() {
             >
               GitHub
             </Link>
+            <Link href='/admin'>Admin</Link>
           </div>
         </div>
       </div>
