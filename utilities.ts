@@ -1,6 +1,9 @@
 import { Container, CosmosClient, FeedOptions, SqlQuerySpec } from '@azure/cosmos';
 import { Product } from './typings';
 
+const databaseName = 'supermarket-prices';
+const containerName = 'products';
+
 export const transparentImageUrlBase: string = 'https://d1hhwouzawkav1.cloudfront.net/';
 
 // Helper function - Adds $ symbol and 2 decimal points if applicable
@@ -11,21 +14,32 @@ export function printPrice(price: number) {
   else return '$' + price.toFixed(2);
 }
 
-// Establish a cosmosdb connection, usually called just once
+// Establish CosmosDB connection
 export async function connectToCosmosDB(): Promise<Container> {
-  // Create Cosmos client using connection string stored in .env
+  let cosmosClient: CosmosClient;
+  let container: Container;
+
+  // Check for valid connection string stored in .env
   console.log(`--- Connecting to CosmosDB..`);
   const COSMOS_CONSTRING = process.env.COSMOS_CONSTRING;
   if (!COSMOS_CONSTRING) {
     throw Error('Azure CosmosDB Connection string not found');
   }
-  const cosmosClient = new CosmosClient(COSMOS_CONSTRING);
 
-  // Connect to supermarket-prices database
-  const database = await cosmosClient.database('supermarket-prices');
-  const container = await database.container('products');
+  // Try to connect to CosmosDB using connection string
+  try {
+    cosmosClient = new CosmosClient(COSMOS_CONSTRING);
 
-  return container;
+    // Connect to database
+    const database = await cosmosClient.database(databaseName);
+
+    // Container to container
+    container = await database.container(containerName);
+
+    return container;
+  } catch (error) {
+    throw 'Invalid CosmosDB connection string, or unable to connect to CosmosDB';
+  }
 }
 
 // Get search results from cosmos, return as array of Product objects
