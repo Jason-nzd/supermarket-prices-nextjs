@@ -21,9 +21,8 @@ function PriceHistoryChart({ priceHistory }: Props) {
     priceDataOnly.push(datedPrice.price);
   });
 
-  // Add a new chart point highlighting today's price
-  dateDataOnly.push('Today');
-  priceDataOnly.push(priceDataOnly[priceDataOnly.length - 1]);
+  // Replace the latest date name with 'Today'
+  dateDataOnly[dateDataOnly.length - 1] = 'Today';
 
   // Prepare chart data for chart.js line chart
   const chartData = {

@@ -38,9 +38,9 @@ export async function getStaticProps() {
   // Get CosmosDB container
   const container = await connectToCosmosDB();
 
-  // Set cosmos query options - limit to fetching 24 items at a time
+  // Set cosmos query options - limit to fetching 42 items at a time
   const options: FeedOptions = {
-    maxItemCount: 30,
+    maxItemCount: 42,
   };
 
   // Fetch products as Product objects
