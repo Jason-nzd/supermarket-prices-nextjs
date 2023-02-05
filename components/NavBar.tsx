@@ -22,25 +22,18 @@ function NavBar() {
         {/* Top-right corner menu */}
         <div className='absolute inset-x-0 z-20 w-full px-6 py-2 transition-all duration-300 ease-in-out md:mt-0 md:p-0 md:top-0 md:relative md:bg-transparent md:w-auto md:opacity-100 md:translate-x-0 md:flex md:items-center'>
           <div className='flex flex-col md:flex-row md:mx-1'>
-            <Link
-              className='my-2 text-sm leading-5 text-stone-200 transition-colors duration-300 transform hover:text-white md:mx-4 md:my-0'
-              href='#'
-            >
+            <Link className='nav-small-link' href='#'>
               Login
             </Link>
-            <Link
-              className='my-2 text-sm leading-5 text-stone-200 transition-colors duration-300 transform hover:text-white md:mx-4 md:my-0'
-              href='#'
-            >
+            <Link className='nav-small-link' href='#'>
               Cart
             </Link>
-            <Link
-              className='my-2 text-sm leading-5 text-stone-200 transition-colors duration-300 transform hover:text-white md:mx-4 md:my-0'
-              href='https://github.com/Jason-nzd/supermarket-prices'
-            >
+            <Link className='nav-small-link' href='https://github.com/Jason-nzd/supermarket-prices'>
               GitHub
             </Link>
-            <Link href='/admin'>Admin</Link>
+            <Link className='nav-small-link' href='/admin'>
+              Admin
+            </Link>
           </div>
         </div>
       </div>
@@ -48,46 +41,25 @@ function NavBar() {
       {/* Categories Section */}
       <div className='flex -mx-3'>
         <div className='mt-2'>
-          <Link
-            className='mx-4 text-md text-white transition-colors duration-300 hover:text-green-300 md:my-0'
-            href='search?terms=milk'
-          >
+          <Link className='nav-main-link' href='search?terms=milk'>
             Milk
           </Link>
-          <Link
-            className='mx-4 text-md text-white transition-colors duration-300 hover:text-green-300 md:my-0'
-            href='search?terms=Eggs'
-          >
+          <Link className='nav-main-link' href='search?terms=Eggs'>
             Eggs
           </Link>
-          <Link
-            className='mx-4 text-md text-white transition-colors duration-300 hover:text-green-300 md:my-0'
-            href='search?terms=Bread'
-          >
+          <Link className='nav-main-link' href='search?terms=Bread'>
             Bread
           </Link>
-          <Link
-            className='mx-4 text-md text-white transition-colors duration-300 hover:text-green-300 md:my-0'
-            href='search?terms=Meat'
-          >
+          <Link className='nav-main-link' href='search?terms=Meat'>
             Meat
           </Link>
-          <Link
-            className='mx-4 text-md text-white transition-colors duration-300 hover:text-green-300 md:my-0'
-            href='search?terms=Fruit'
-          >
+          <Link className='nav-main-link' href='search?terms=Fruit'>
             Fruit
           </Link>
-          <Link
-            className='mx-4 text-md text-white transition-colors duration-300 hover:text-green-300 md:my-0'
-            href='search?terms=Vegetables'
-          >
+          <Link className='nav-main-link' href='search?terms=Vegetables'>
             Vegetables
           </Link>
-          <Link
-            className='mx-4 text-md text-white transition-colors duration-300 hover:text-green-300 md:my-0'
-            href='search?terms=Ice Cream'
-          >
+          <Link className='nav-main-link' href='search?terms=Ice Cream'>
             Ice Cream
           </Link>
         </div>

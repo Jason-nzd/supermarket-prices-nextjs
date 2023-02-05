@@ -7,8 +7,10 @@
     @apply px-2 py-1 rounded-md border border-stone-300;
   }
   .nav-main-link {
+    @apply mx-4 text-white transition-colors duration-300 hover:text-green-300 md:my-0;
   }
   .nav-small-link {
+    @apply my-2 text-sm leading-5 text-stone-200 transition-colors duration-300 transform hover:text-white md:mx-4 md:my-0;
   }
   .btn-primary {
     @apply py-2 px-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75;
