@@ -3,9 +3,9 @@ import NavBar from '../components/NavBar';
 
 export default function Document() {
   return (
-    <Html lang='en' className=''>
+    <Html lang='en'>
       <Head />
-      <body className='bg-green-700'>
+      <body>
         <NavBar />
         <Main />
         <NextScript />

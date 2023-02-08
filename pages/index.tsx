@@ -8,13 +8,14 @@ interface Props {
   products: Product[];
 }
 
-// Products will be populated at build time by getStaticProps()
+// Products props will be populated at build time by getStaticProps()
 function Home({ products }: Props) {
   return (
     <main>
       <div
         className="flex flex-col px-2 md:px-8 lg:px-16 
-      bg-top bg-cover bg-scroll bg-[url('../public/images/pexels-polina-tankilevitch-3735162-1.2k.jpg')]"
+      bg-top bg-cover bg-scroll bg-[#f2e8dc] 
+      bg-[url('../public/images/pexels-polina-tankilevitch-3735162-1.2k.jpg')]"
       >
         <div
           className='mt-8 grid max-w-[140em] m-auto

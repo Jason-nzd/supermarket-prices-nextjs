@@ -41,28 +41,28 @@ function ProductEditRow({ product }: Props) {
     // </tr>
 
     <tr className='hover:bg-gray-50'>
-      <th className='flex gap-3 px-6 py-0.5 font-normal text-gray-900'>
-        <Image src={transparentImageUrlBase + product.id + '.jpg'} alt='' width={60} height={50} />
+      <th className='flex gap-3 pl-4 py-0.5 font-normal text-gray-900'>
+        <Image src={transparentImageUrlBase + product.id + '.jpg'} alt='' width={50} height={50} />
       </th>
-      <td className='px-6 py-1'>
+      <td className='px-1 py-1'>
         <div className='text-sm'>
           <div className='text-gray-400'>#{product.id}</div>
         </div>
       </td>
-      <td className='px-6 py-1'>
+      <td className='px-1 py-1'>
         <div>
           <div className='font-medium text-gray-700'>{product.name}</div>
           <div className='text-gray-400'>{product.size}</div>
         </div>
       </td>
-      <td className='px-6 py-1'>
+      <td className='px-1 py-1'>
         <div className='flex gap-2'>
           {product.priceHistory.map((datedPrice) => {
             return <DatedPrice datedPrice={datedPrice} />;
           })}
         </div>
       </td>
-      <td className='px-6 py-1'>
+      <td className='pr-4 py-1'>
         <div className='flex justify-end gap-4'>
           <a x-data="{ tooltip: 'Edit' }" href='#'>
             <svg

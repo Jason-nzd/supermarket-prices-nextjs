@@ -49,7 +49,7 @@ export async function connectToCosmosDB(): Promise<Container> {
 }
 
 // Get search results from cosmos, return as array of Product objects
-export async function getSearch(searchTerm: string): Promise<Product[]> {
+export async function searchProductName(searchTerm: string): Promise<Product[]> {
   const container = await connectToCosmosDB();
 
   // Set cosmos query options - limit to fetching 24 items at a time
