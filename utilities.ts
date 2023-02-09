@@ -1,5 +1,5 @@
 import { Container, CosmosClient, FeedOptions, SqlQuerySpec } from '@azure/cosmos';
-import { Product } from './typings';
+import { DatedPrice, Product } from './typings';
 
 const databaseName = 'supermarket-prices';
 const containerName = 'products';
@@ -18,6 +18,16 @@ export function printPrice(price: number, trimDecimals: boolean = false) {
     // Else return with decimal points extended to 2 - $8.50
     return '$' + price.toFixed(2);
   }
+}
+
+// Helper function - Takes a DatedPrice[] object and returns if price is trending down
+export function priceTrendingDown(priceHistory: DatedPrice[]): boolean {
+  if (priceHistory.length > 1) {
+    const latestPrice = priceHistory[priceHistory.length - 1].price;
+    const olderPrice = priceHistory[priceHistory.length - 2].price;
+    if (latestPrice < olderPrice) return true;
+  }
+  return false;
 }
 
 // Establish CosmosDB connection

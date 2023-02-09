@@ -1,6 +1,6 @@
 import React from 'react';
 import { DatedPrice } from '../typings';
-import { printPrice } from '../utilities';
+import { priceTrendingDown, printPrice } from '../utilities';
 import { CategoryScale, Chart, LinearScale, PointElement, LineElement } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 
@@ -24,20 +24,69 @@ function PriceHistoryChart({ priceHistory }: Props) {
   // Replace the latest date name with 'Today'
   dateDataOnly[dateDataOnly.length - 1] = 'Today';
 
+  // Set line colour to green or red depending on price trend
+  const trendColour = priceTrendingDown(priceHistory) ? 'rgb(0, 255, 0)' : 'rgb(255, 0, 0)';
+
   // Prepare chart data for chart.js line chart
   const chartData = {
     labels: dateDataOnly,
     datasets: [
       {
-        label: 'Price Dataset',
+        label: 'Price History',
         data: priceDataOnly,
-        fill: true,
-        borderColor: 'rgb(75, 192, 192)',
-        tension: 0.1,
+        // fill: true,
+        borderColor: trendColour,
+        pointBorderColor: trendColour,
+        pointBackgroundColor: 'white',
+        pointRadius: 4,
+        pointHoverRadius: 6,
+        pointHitRadius: 30,
+        pointBorderWidth: 3,
+        backgroundColor: 'transparent',
+        borderWidth: 3,
+        tension: 0,
       },
     ],
     options: {
-      responsive: true,
+      y: {
+        grid: {
+          color: 'black',
+          borderDash: [5, 2],
+          borderColor: 'black',
+          tickColor: 'red',
+          tickWidth: 2,
+        },
+
+        ticks: {
+          color: 'red',
+          font: {
+            weight: 'bold',
+          },
+        },
+
+        title: {
+          display: true,
+          text: 'Speed (in mph)',
+          font: {
+            weight: 'bold',
+            size: 22,
+          },
+        },
+      },
+
+      // scales: {
+      //   yAxes: [
+      //     {
+      //       ticks: {
+      //         beginAtZero: true,
+      //         stepSize: 5,
+      //         callback: (value: number, index: number, values: number[]) => {
+      //           return value + 'k';
+      //         },
+      //       },
+      //     },
+      //   ],
+      // },
     },
   };
 

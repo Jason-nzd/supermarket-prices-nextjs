@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import { Product } from '../typings';
-import { printPrice, transparentImageUrlBase } from '../utilities';
+import { priceTrendingDown, printPrice, transparentImageUrlBase } from '../utilities';
 import PriceHistoryChart from './PriceHistoryChart';
 
 interface Props {
@@ -15,6 +15,7 @@ function handleClick() {
 
 function ProductCard({ product }: Props) {
   const linkHref = '/product/' + [product.id];
+
   return (
     <div
       className='relative bg-stone-50 max-w-[22em] min-w-[14em] flex flex-wrap m-1.5 p-0 
@@ -53,12 +54,50 @@ function ProductCard({ product }: Props) {
         </div>
 
         {/* Price div */}
-        <div
-          className='z-20 absolute top-20 left-40 p-1 bg-[#75F3A3] border-2 border-white
-       w-auto text-center font-bold rounded-3xl shadow-lg
-       dark:text-black'
-        >
-          {printPrice(product.currentPrice)}
+        <div className='z-20 absolute top-20 left-40 w-auto text-center font-bold'>
+          {/* If trending down, display in green and with down icon */}
+          {priceTrendingDown(product.priceHistory) && (
+            <div className='bg-green-600 flex rounded-3xl shadow-lg p-1 border-2 border-white z-30'>
+              <div>{printPrice(product.currentPrice)}</div>
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                fill='none'
+                viewBox='0 0 24 24'
+                strokeWidth='1.5'
+                stroke='currentColor'
+                className='w-6 h-6'
+              >
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  d='M2.25 6L9 12.75l4.286-4.286a11.948 11.948 0 014.306 6.43l.776 2.898m0 0l3.182-5.511m-3.182 5.51l-5.511-3.181'
+                />
+              </svg>
+            </div>
+          )}
+
+          {/* If trending up, display in red and with up icon */}
+          {!priceTrendingDown(product.priceHistory) && (
+            <div className='bg-red-600 flex rounded-3xl shadow-lg p-1 border-2 border-white z-30'>
+              <div>{printPrice(product.currentPrice)}</div>
+              <div>
+                <svg
+                  xmlns='http://www.w3.org/2000/svg'
+                  fill='none'
+                  viewBox='0 0 24 24'
+                  strokeWidth='1.5'
+                  stroke='currentColor'
+                  className='w-6 h-6'
+                >
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    d='M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941'
+                  />
+                </svg>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Price history chart div */}
