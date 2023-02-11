@@ -67,18 +67,24 @@ export async function searchProductName(
     maxItemCount: 30,
   };
 
-  const ext = onlyProductsWithHistory ? 'AND ARRAY_LENGTH(p.priceHistory)>1' : '';
+  const onlyWithHistory = onlyProductsWithHistory ? 'AND ARRAY_LENGTH(p.priceHistory)>1' : '';
 
   const querySpec: SqlQuerySpec = {
-    query: 'SELECT * FROM products p WHERE CONTAINS(p.name, @name, true)' + ext,
+    query: 'SELECT * FROM products p WHERE CONTAINS(p.name, @name, true)' + onlyWithHistory,
     parameters: [{ name: '@name', value: searchTerm }],
   };
 
-  const response = await container.items
-    // .query('SELECT * FROM products p WHERE ARRAY_LENGTH(p.priceHistory)>1', options)
-    .query(querySpec, options)
-    .fetchNext();
-  return response.resources as Product[];
+  const response = await container.items.query(querySpec, options).fetchNext();
+
+  // Create a new products array, set only specific fields from CosmosDB
+  let products: Product[] = [];
+  const documents = response.resources.map((productDocument) => {
+    const { id, name, currentPrice, size, sourceSite, priceHistory } = productDocument;
+    const p: Product = { id, name, currentPrice, size, sourceSite, priceHistory };
+    products.push(p);
+  });
+
+  return products;
 }
 
 // Get a specific product using id and optional partition key
