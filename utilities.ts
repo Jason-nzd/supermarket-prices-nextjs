@@ -6,16 +6,13 @@ const containerName = 'products';
 
 export const transparentImageUrlBase: string = 'https://d1hhwouzawkav1.cloudfront.net/';
 
-// Helper function - Adds $ symbol and 2 decimal points if applicable
-export function printPrice(price: number, trimDecimals: boolean = false) {
-  if (trimDecimals) {
-    // If trimDecimals is set, 8.5 will become $8.5
+// Adds $ symbol and 2 decimal points if applicable
+export function printPrice(price: number) {
+  // If a whole integer such as 8, return without any decimals - $8
+  if (price.toString() === parseInt(price.toString()).toString()) {
     return '$' + price;
-  } else if (price.toString() === parseInt(price.toString()).toString()) {
-    // If a whole integer such as 8, return without any decimals - $8
-    return '$' + price;
+    // Else return with decimals extended - 8.4 becomes $8.40
   } else {
-    // Else return with decimal points extended to 2 - $8.50
     return '$' + price.toFixed(2);
   }
 }
@@ -59,7 +56,10 @@ export async function connectToCosmosDB(): Promise<Container> {
 }
 
 // Get search results from cosmos, return as array of Product objects
-export async function searchProductName(searchTerm: string): Promise<Product[]> {
+export async function searchProductName(
+  searchTerm: string,
+  onlyProductsWithHistory: boolean
+): Promise<Product[]> {
   const container = await connectToCosmosDB();
 
   // Set cosmos query options - limit to fetching 24 items at a time
@@ -67,9 +67,10 @@ export async function searchProductName(searchTerm: string): Promise<Product[]> 
     maxItemCount: 30,
   };
 
+  const ext = onlyProductsWithHistory ? 'AND ARRAY_LENGTH(p.priceHistory)>1' : '';
+
   const querySpec: SqlQuerySpec = {
-    query:
-      'SELECT * FROM products p WHERE CONTAINS(p.name, @name, true) AND ARRAY_LENGTH(p.priceHistory)>1',
+    query: 'SELECT * FROM products p WHERE CONTAINS(p.name, @name, true)' + ext,
     parameters: [{ name: '@name', value: searchTerm }],
   };
 

@@ -19,7 +19,7 @@ const Category = ({ products }: Props) => {
       {/* Background Div */}
       <div className='flex flex-col bg-top bg-cover bg-scroll'>
         {/* Central Aligned Div */}
-        <div className='m-auto max-w-[99%] 2xl:max-w-[75%] '>
+        <div className='m-auto max-w-[99%] 3xl:max-w-[75%] '>
           {/* Page Title */}
           <div className='my-4 pl-2 text-xl text-[#3C8DA3] font-bold'>
             {_.startCase(category?.toString())}
@@ -28,11 +28,12 @@ const Category = ({ products }: Props) => {
           {/* Products Grid */}
           <div
             className='grid
-            grid-cols-2
-            md:grid-cols-3
-            lg:grid-cols-4
-            xl:grid-cols-5
-            2xl:grid-cols-5'
+            grid-cols-1
+            md:grid-cols-2
+            lg:grid-cols-3
+            xl:grid-cols-4
+            2xl:grid-cols-5
+            3xl:grid-cols-5'
           >
             {products.map((product) => (
               <ProductCard key={product.id} product={product} />
@@ -68,7 +69,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 // Gets products from DB based on search term
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const searchTerm = params?.category as string;
-  const products = await searchProductName(searchTerm);
+  const products = await searchProductName(searchTerm, false);
 
   return {
     props: {

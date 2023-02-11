@@ -12,9 +12,10 @@ function PriceHistoryChart({ priceHistory }: Props) {
   // Initialize chart.js line chart
   Chart.register(CategoryScale, LinearScale, PointElement, LineElement);
 
-  // Separate data fields for x and y chart axis
+  // Separate arrays for x and y chart axis
   let dateDataOnly: string[] = [];
   let priceDataOnly: number[] = [];
+
   priceHistory.forEach((datedPrice) => {
     // Remove day and year from date label
     dateDataOnly.push(datedPrice.date.slice(4, datedPrice.date.length - 5));
@@ -23,6 +24,13 @@ function PriceHistoryChart({ priceHistory }: Props) {
 
   // Replace the latest date name with 'Today'
   dateDataOnly[dateDataOnly.length - 1] = 'Today';
+
+  // If only 1 history point is available, add an extra point required for line rendering
+  if (priceHistory.length === 1) {
+    dateDataOnly[1] = dateDataOnly[0];
+    dateDataOnly[0] = 'Last';
+    priceDataOnly[1] = priceDataOnly[0];
+  }
 
   // Set line colour to green or red depending on price trend
   const trendColour = priceTrendingDown(priceHistory) ? 'rgb(0, 255, 0)' : 'rgb(255, 0, 0)';
@@ -34,7 +42,6 @@ function PriceHistoryChart({ priceHistory }: Props) {
       {
         label: 'Price History',
         data: priceDataOnly,
-        // fill: true,
         borderColor: trendColour,
         pointBorderColor: trendColour,
         pointBackgroundColor: 'white',
@@ -42,12 +49,14 @@ function PriceHistoryChart({ priceHistory }: Props) {
         pointHoverRadius: 6,
         pointHitRadius: 30,
         pointBorderWidth: 3,
-        backgroundColor: 'transparent',
+        //backgroundColor: 'transparent',
         borderWidth: 3,
         tension: 0,
       },
     ],
     options: {
+      responsive: true,
+      maintainAspectRatio: false,
       y: {
         grid: {
           color: 'black',
@@ -90,17 +99,7 @@ function PriceHistoryChart({ priceHistory }: Props) {
     },
   };
 
-  // Display chart only if 2 or more data points exist
-  if (priceHistory.length > 1) {
-    return (
-      <div className='rounded-b-2xl p-1'>
-        <Line data={chartData} />
-      </div>
-    );
-  } else {
-    // No Price History to display
-    return <div></div>;
-  }
+  return <Line data={chartData} />;
 }
 
 export default PriceHistoryChart;

@@ -1,5 +1,13 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+module.exports = {
+  // exportPathMap: async function(
+  //   defaultPathMap,
+  //   { dev, dir, outDir, distDir, buildId }
+  // ){
+  //   return {
+
+  //   }
+  // },
   reactStrictMode: true,
   images: {
     remotePatterns: [
@@ -18,5 +26,3 @@ const nextConfig = {
     ],
   },
 };
-
-module.exports = nextConfig;

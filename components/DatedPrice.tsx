@@ -13,7 +13,7 @@ function DatedPrice({ datedPrice }: Props) {
         <div>{datedPrice.date.substring(4, 10)}</div>
         <div className='font-light text-gray-400'>{datedPrice.date.substring(11)}</div>
       </div>
-      <div className='text-sm pl-4'>{printPrice(datedPrice.price, false).padEnd(8)}</div>
+      <div className='text-sm pl-4'>{printPrice(datedPrice.price).padEnd(8)}</div>
     </div>
   );
 }
