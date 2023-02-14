@@ -12,25 +12,25 @@ function PriceTag({ product }: Props) {
       {/* If trending down, display in green and with down icon */}
       {priceTrendingDown(product.priceHistory) && (
         <div className='flex bg-white rounded-3xl border-2 border-[#8DF500] shadow-lg px-2'>
-          <div className='mt-[0.16rem] text-md'>$</div>
-          <div className='mb-1 font-bold text-xl tracking-tighter'>
+          <div className='mt-[0.16rem] text-sm lg:text-md'>$</div>
+          <div className='mb-1 font-bold text-md lg:text-xl tracking-tighter'>
             {printDollars(product.currentPrice)}
           </div>
-          <div className='pl-[0.1rem] mt-[0.2rem] font-semibold text-sm tracking-normal'>
+          <div className='pl-[0.1rem] mt-[0.2rem] font-semibold text-xs lg:text-sm tracking-normal'>
             {printCents(product.currentPrice)}
           </div>
-          <div className='pl-1'>{upIcon}</div>
+          <div className='pl-1 items-center'>{upIcon}</div>
         </div>
       )}
 
       {/* If trending up, display in red and with up icon */}
       {!priceTrendingDown(product.priceHistory) && (
         <div className='flex bg-white rounded-3xl border-2 border-[#DB260A] shadow-lg px-2'>
-          <div className='mt-[0.16rem] text-md'>$</div>
-          <div className='mb-1 font-bold text-xl tracking-tighter'>
+          <div className='mt-[0.16rem] text-sm lg:text-md'>$</div>
+          <div className='mb-1 font-bold text-md lg:text-xl tracking-tighter'>
             {printDollars(product.currentPrice)}
           </div>
-          <div className='pl-[0.1rem] mt-[0.2rem] font-semibold text-sm tracking-normal'>
+          <div className='pl-[0.1rem] mt-[0.2rem] font-semibold text-xs lg:text-sm tracking-normal'>
             {printCents(product.currentPrice)}
           </div>
           <div className='pl-1'>{downIcon}</div>
@@ -53,16 +53,14 @@ function printCents(price: number) {
 const upIcon = (
   <svg
     xmlns='http://www.w3.org/2000/svg'
-    fill='none'
-    viewBox='0 0 24 24'
-    strokeWidth='2'
-    stroke='#8DF500'
-    className='w-8 h-8'
+    viewBox='0 0 20 20'
+    fill='#8DF500'
+    className='w-6 h-6 xl:w-8 xl:h-8'
   >
     <path
-      strokeLinecap='round'
-      strokeLinejoin='round'
-      d='M2.25 6L9 12.75l4.286-4.286a11.948 11.948 0 014.306 6.43l.776 2.898m0 0l3.182-5.511m-3.182 5.51l-5.511-3.181'
+      fillRule='evenodd'
+      d='M12.577 4.878a.75.75 0 01.919-.53l4.78 1.281a.75.75 0 01.531.919l-1.281 4.78a.75.75 0 01-1.449-.387l.81-3.022a19.407 19.407 0 00-5.594 5.203.75.75 0 01-1.139.093L7 10.06l-4.72 4.72a.75.75 0 01-1.06-1.061l5.25-5.25a.75.75 0 011.06 0l3.074 3.073a20.923 20.923 0 015.545-4.931l-3.042-.815a.75.75 0 01-.53-.919z'
+      clipRule='evenodd'
     />
   </svg>
 );
@@ -70,16 +68,14 @@ const upIcon = (
 const downIcon = (
   <svg
     xmlns='http://www.w3.org/2000/svg'
-    fill='none'
-    viewBox='0 0 24 24'
-    strokeWidth='2'
-    stroke='#DB260A'
-    className='w-8 h-8'
+    viewBox='0 0 20 20'
+    fill='#DB260A'
+    className='w-6 h-6 xl:w-8 xl:h-8'
   >
     <path
-      strokeLinecap='round'
-      strokeLinejoin='round'
-      d='M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941'
+      fillRule='evenodd'
+      d='M1.22 5.222a.75.75 0 011.06 0L7 9.942l3.768-3.769a.75.75 0 011.113.058 20.908 20.908 0 013.813 7.254l1.574-2.727a.75.75 0 011.3.75l-2.475 4.286a.75.75 0 01-1.025.275l-4.287-2.475a.75.75 0 01.75-1.3l2.71 1.565a19.422 19.422 0 00-3.013-6.024L7.53 11.533a.75.75 0 01-1.06 0l-5.25-5.25a.75.75 0 010-1.06z'
+      clipRule='evenodd'
     />
   </svg>
 );

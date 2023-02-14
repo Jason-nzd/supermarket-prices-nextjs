@@ -19,11 +19,11 @@ function Home({ products }: Props) {
       >
         <div
           className='mt-8 grid max-w-[140em] m-auto
-        grid-cols-2
-        md:grid-cols-3 
-        lg:grid-cols-4 
-        xl:grid-cols-5 
-        2xl:grid-cols-6'
+        grid-cols-1
+        md:grid-cols-2
+        lg:grid-cols-3
+        xl:grid-cols-4
+        2xl:grid-cols-5'
         >
           {products.map((product) => (
             <WideProductCard key={product.id} product={product} />
