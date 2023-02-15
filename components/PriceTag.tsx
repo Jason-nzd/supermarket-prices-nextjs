@@ -8,7 +8,7 @@ interface Props {
 
 function PriceTag({ product }: Props) {
   return (
-    <div className='z-50'>
+    <div className='z-50 w-min'>
       {/* If trending down, display in green and with down icon */}
       {priceTrendingDown(product.priceHistory) && (
         <div className='flex bg-white rounded-3xl border-2 border-[#8DF500] shadow-lg px-2'>

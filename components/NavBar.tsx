@@ -10,53 +10,43 @@ let fullyStaticMode = true;
 function NavBar() {
   return (
     <div className='nav'>
-      <nav className='mx-auto px-6 py-3 w-[70%]'>
-        <div className='flex flex-col md:flex-row md:justify-between md:items-center'>
+      <nav className='mx-auto px-10 py-2 w-full 2xl:w-[71%]'>
+        <div className='flex'>
+          {/* <div className='xl:hidden'>BB</div> */}
           {/* Brand Title */}
-          <div className='flex items-center'>
-            <Link
-              className='mt-2 mb-2 text-2xl font-bold text-stone-200 transition-colors
+          <div
+            className='items-center my-1 text-2xl font-bold text-stone-100 transition-colors
              duration-300 transform hover:text-white'
-              href='/'
-            >
-              Supermarket Price History
-            </Link>
+          >
+            <Link href='/'>Supermarket Price History</Link>
           </div>
 
           {/* Top-right corner menu */}
-          <div
-            className='absolute inset-x-0 z-20 w-full px-6 py-2 transition-all duration-300
-         ease-in-out md:mt-0 md:p-0 md:top-0 md:relative md:bg-transparent md:w-auto md:opacity-100
-          md:translate-x-0 md:flex md:items-center'
-          >
-            <div className='flex flex-col md:flex-row md:mx-1'>
-              <Link className='nav-small-link' href='#'>
-                {userIcon}
-                Login
-              </Link>
-              <Link className='nav-small-link' href='#'>
-                {cartIcon}
-                Cart
-              </Link>
-              <Link
-                className='nav-small-link'
-                href='https://github.com/Jason-nzd/supermarket-prices'
-              >
-                {rocketShipIcon}
-                GitHub
-              </Link>
-              <Link className='nav-small-link' href='/admin'>
-                <div className=''>
-                  {tableIcon}
-                  Admin
-                </div>
-              </Link>
-            </div>
+          <div className='my-1 ml-auto flex h-12  overflow-hidden'>
+            <button onClick={() => {}}>Theme</button>
+            <Link className='nav-small-link' href='#'>
+              {userIcon}
+              Login
+            </Link>
+            <Link className='nav-small-link' href='#'>
+              {cartIcon}
+              Cart
+            </Link>
+            <Link className='nav-small-link' href='https://github.com/Jason-nzd/supermarket-prices'>
+              {rocketShipIcon}
+              GitHub
+            </Link>
+            <Link className='nav-small-link' href='/admin'>
+              <div className=''>
+                {tableIcon}
+                Admin
+              </div>
+            </Link>
           </div>
         </div>
 
         {/* Categories Section */}
-        <div className='flex items-center -mx-3.5 mt-2 w-5/6'>
+        <div className='flex items-center -mx-3.5 mt-2'>
           {categoryNames.map((name) => {
             const link = '/products/' + name;
             return (

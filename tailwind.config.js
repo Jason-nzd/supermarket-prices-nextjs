@@ -4,12 +4,12 @@ module.exports = {
   darkMode: 'class',
   theme: {
     screens: {
-      sm: '480px',
-      md: '768px',
-      lg: '1100px',
-      xl: '1440px',
+      sm: '400px',
+      md: '500px',
+      lg: '900px',
+      xl: '1200px',
       '2xl': '1700px',
-      '3xl': '2400px',
+      '3xl': '2100px',
     },
     // colors: {
     //   blue: '#1fb6ff',
