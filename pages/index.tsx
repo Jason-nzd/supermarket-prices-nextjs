@@ -1,6 +1,5 @@
-import { FeedOptions } from '@azure/cosmos';
-import { useEffect, useState } from 'react';
-import ProductCard from '../components/ProductCard';
+import { FeedOptions, SqlQuerySpec } from '@azure/cosmos';
+import ProductsGrid from '../components/ProductsGrid';
 import { Product } from '../typings';
 import { connectToCosmosDB } from '../utilities';
 
@@ -19,20 +18,7 @@ function Home({ products }: Props) {
           {/* Page Title */}
           <div className='my-4 pl-2 text-xl text-[#3C8DA3] font-bold'></div>
 
-          {/* Products Grid */}
-          <div
-            className='grid
-            grid-cols-2
-            md:grid-cols-2
-            lg:grid-cols-3
-            xl:grid-cols-4
-            2xl:grid-cols-4
-            3xl:grid-cols-5'
-          >
-            {products.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
+          <ProductsGrid products={products} />
         </div>
       </div>
     </main>
@@ -41,21 +27,49 @@ function Home({ products }: Props) {
 
 // This function gets called at build time on server-side.
 export async function getStaticProps() {
-  // Get CosmosDB container
-  const container = await connectToCosmosDB();
+  // Establish CosmosDB connection
+  const countdownContainer = await connectToCosmosDB('supermarket-prices', 'products');
 
-  // Set cosmos query options - limit to fetching 42 items at a time
+  // Set cosmos query options
   const options: FeedOptions = {
-    maxItemCount: 25,
+    maxItemCount: 15,
+  };
+  const querySpec: SqlQuerySpec = {
+    query: 'SELECT * FROM products',
   };
 
-  // Fetch products as Product objects
-  // const allProducts = (await container.items.readAll(options).fetchNext()).resources as Product[];
+  // Create a new products array, set only specific fields from CosmosDB
+  let products: Product[] = [];
 
-  const response = await container.items
-    .query('SELECT * FROM products p WHERE ARRAY_LENGTH(p.priceHistory)>1', options)
-    .fetchNext();
-  const products = response.resources as Product[];
+  // Perform DB fetch
+  const response = await countdownContainer.items.query(querySpec, options).fetchNext();
+  const hasMoreSearchResults = response.hasMoreResults;
+
+  response.resources.map((productDocument) => {
+    const { id, name, currentPrice, size, sourceSite, priceHistory } = productDocument;
+    const p: Product = { id, name, currentPrice, size, sourceSite, priceHistory };
+    products.push(p);
+  });
+
+  // Add 2nd database
+  const multiStoreContainer = await connectToCosmosDB('supermarket-prices', 'supermarket-products');
+  const multiStoreResponse = await multiStoreContainer.items.query(querySpec, options).fetchNext();
+  multiStoreResponse.resources.map((productDocument) => {
+    const { id, name, currentPrice, sourceSite, priceHistory } = productDocument;
+    let size = '';
+
+    const p: Product = { id, name, currentPrice, size, sourceSite, priceHistory };
+    products.push(p);
+  });
+
+  // Sort all stores products by date
+  products.sort((a, b) => {
+    const dateA = new Date(a.priceHistory[a.priceHistory.length - 1].date);
+    const dateB = new Date(b.priceHistory[b.priceHistory.length - 1].date);
+    if (dateA > dateB) return -1;
+    if (dateA < dateB) return 1;
+    return 0;
+  });
 
   return {
     props: {

@@ -10,7 +10,7 @@ interface Props {
 function ImageWithFallback({ id, width }: Props) {
   const [imgSrc, setImgSrc] = useState(transparentImageUrlBase + id + '.jpg');
 
-  const fallbackSrc = 'https://d1hhwouzawkav1.cloudfront.net/placeholder.png';
+  const fallbackSrc = 'https://d1hhwouzawkav1.cloudfront.net/placeholder-square.png';
 
   return (
     <Image

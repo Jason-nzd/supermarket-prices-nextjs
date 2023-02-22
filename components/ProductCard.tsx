@@ -1,3 +1,4 @@
+import { divide } from 'lodash';
 import React from 'react';
 import { Product } from '../typings';
 import ImageWithFallback from './ImageWithFallback';
@@ -16,21 +17,25 @@ function handleClick() {
 function ProductCard({ product }: Props) {
   const linkHref = '/product/' + [product.id];
 
+  console.log(product.name);
+  console.log(product.priceHistory[product.priceHistory.length - 1].date);
+
   return (
     <div
-      className='bg-stone-50 max-w-[22em] grid m-0.5 lg:m-1 p-0 rounded-3xl shadow-lg
+      className='bg-stone-50 max-w-[22em] grid m-0.5 lg:m-1 p-0 rounded-2xl shadow-lg
       hover:scale-[102%] hover:shadow-2xl duration-300 ease-in-out cursor-pointer hover:bg-opacity-90
       dark:bg-slate-800 dark:text-slate-200 dark:ring-slate-700 dark:ring-2 dark:m-1.5'
       onClick={handleClick}
     >
-      {/* Title div */}
+      {/* Title Div */}
       <div
-        className='w-full pt-2 px-3 rounded-3xl text-[#3C8DA3] text-sm text-center font-semibold
+        className='w-full h-12 pt-1.5 px-3 rounded-t-2xl text-[#3C8DA3] text-sm text-center font-semibold
          leading-4 z-20 dark:bg-slate-800 dark:bg-opacity-70'
       >
         {product.name}
       </div>
 
+      {/* Central Div containing image, chart, price info */}
       <div className='flex flex-auto w-auto h-auto'>
         {/* Image Div */}
         <div className='relative'>
@@ -42,7 +47,7 @@ function ProductCard({ product }: Props) {
             <div
               className='z-20 absolute top-[4rem] left-[1rem] p-1.5 px-3 
               bg-black bg-opacity-20 backdrop-blur-sm text-white text-sm font-semibold 
-              ring-1 ring-white rounded-3xl shadow-md'
+              ring-1 ring-white rounded-2xl shadow-md'
             >
               {product.size}
             </div>
@@ -65,6 +70,24 @@ function ProductCard({ product }: Props) {
             )}
           </div>
         </div>
+      </div>
+      <div className='text-xs text-slate-400 p-1 text-center'>
+        Updated {product.priceHistory[product.priceHistory.length - 1].date.substring(4)}
+      </div>
+      {/* Source Site Div */}
+      <div className='text-sm text-center align-bottom'>
+        {product.sourceSite.includes('countdown.co.nz') && (
+          <div className='p-1 rounded-b-2xl text-white bg-[#007837]'>Countdown</div>
+        )}
+        {product.sourceSite === 'thewarehouse.co.nz' && (
+          <div className='p-1 rounded-b-2xl text-white bg-[#c00]'>The Warehouse</div>
+        )}
+        {product.sourceSite === 'paknsave.co.nz' && (
+          <div className='p-1 rounded-b-2xl text-black bg-[#ffd600]'>PAK'nSAVE</div>
+        )}
+        {!product.sourceSite.includes('countdown.co.nz') &&
+          product.sourceSite !== 'thewarehouse.co.nz' &&
+          product.sourceSite !== 'paknsave.co.nz' && <div>{product.sourceSite}</div>}
       </div>
     </div>
   );

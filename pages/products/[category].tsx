@@ -1,16 +1,18 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import React from 'react';
-import ProductCard from '../../components/ProductCard';
 import { Product } from '../../typings';
-import { searchProductName } from '../../utilities';
+import { connectToCosmosDB, searchProductName } from '../../utilities';
 import _ from 'lodash';
+import { FeedOptions, SqlQuerySpec } from '@azure/cosmos';
+import ProductsGrid from '../../components/ProductsGrid';
 
 interface Props {
   products: Product[];
+  hasMoreSearchResults: boolean;
 }
 
-const Category = ({ products }: Props) => {
+const Category = ({ products, hasMoreSearchResults }: Props) => {
   const router = useRouter();
   const { category } = router.query;
 
@@ -25,20 +27,9 @@ const Category = ({ products }: Props) => {
             {_.startCase(category?.toString())}
           </div>
 
-          {/* Products Grid */}
-          <div
-            className='grid
-            grid-cols-2
-            md:grid-cols-2
-            lg:grid-cols-3
-            xl:grid-cols-4
-            2xl:grid-cols-4
-            3xl:grid-cols-5'
-          >
-            {products.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
+          <ProductsGrid products={products} />
+
+          {hasMoreSearchResults && <div className='text-center m-4 text-lg'>Page 1 2 3 4 5</div>}
         </div>
       </div>
     </main>
@@ -69,11 +60,53 @@ export const getStaticPaths: GetStaticPaths = async () => {
 // Gets products from DB based on search term
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const searchTerm = params?.category as string;
-  const products = await searchProductName(searchTerm, false);
+
+  // Establish CosmosDB connection
+  const countdownContainer = await connectToCosmosDB('supermarket-prices', 'products');
+
+  // Set cosmos query options
+  const options: FeedOptions = {
+    maxItemCount: 15,
+  };
+  const querySpec: SqlQuerySpec = {
+    query: 'SELECT * FROM products p WHERE CONTAINS(p.name, @name, true)',
+    parameters: [{ name: '@name', value: searchTerm }],
+  };
+
+  // Perform DB fetch
+  const response = await countdownContainer.items.query(querySpec, options).fetchNext();
+  const hasMoreSearchResults = response.hasMoreResults;
+
+  // Create a new products array, set only specific fields from CosmosDB
+  let products: Product[] = [];
+  response.resources.map((productDocument) => {
+    const { id, name, currentPrice, size, sourceSite, priceHistory } = productDocument;
+    const p: Product = { id, name, currentPrice, size, sourceSite, priceHistory };
+    products.push(p);
+  });
+
+  // Add 2nd database
+  const multiStoreContainer = await connectToCosmosDB('supermarket-prices', 'supermarket-products');
+  const multiStoreResponse = await multiStoreContainer.items.query(querySpec, options).fetchNext();
+  multiStoreResponse.resources.map((productDocument) => {
+    const { id, name, currentPrice, sourceSite, priceHistory } = productDocument;
+    let size = '';
+
+    const p: Product = { id, name, currentPrice, size, sourceSite, priceHistory };
+    products.push(p);
+  });
+
+  // Sort all stores products by name
+  products.sort((a, b) => {
+    if (a.name < b.name) return -1;
+    if (a.name > b.name) return 1;
+    return 0;
+  });
 
   return {
     props: {
       products,
+      hasMoreSearchResults,
     },
   };
 };

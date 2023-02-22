@@ -1,9 +1,6 @@
 import { Container, CosmosClient, FeedOptions, SqlQuerySpec } from '@azure/cosmos';
 import { DatedPrice, Product } from './typings';
 
-const databaseName = 'supermarket-prices';
-const containerName = 'products';
-
 export const transparentImageUrlBase: string = 'https://d1hhwouzawkav1.cloudfront.net/';
 
 // Adds $ symbol and 2 decimal points if applicable
@@ -28,7 +25,10 @@ export function priceTrendingDown(priceHistory: DatedPrice[]): boolean {
 }
 
 // Establish CosmosDB connection
-export async function connectToCosmosDB(): Promise<Container> {
+export async function connectToCosmosDB(
+  databaseName: string,
+  containerName: string
+): Promise<Container> {
   let cosmosClient: CosmosClient;
   let container: Container;
 
@@ -60,7 +60,7 @@ export async function searchProductName(
   searchTerm: string,
   onlyProductsWithHistory: boolean
 ): Promise<Product[]> {
-  const container = await connectToCosmosDB();
+  const container = await connectToCosmosDB('supermarket-prices', 'products');
 
   // Set cosmos query options - limit to fetching 24 items at a time
   const options: FeedOptions = {
@@ -89,7 +89,7 @@ export async function searchProductName(
 
 // Get a specific product using id and optional partition key
 export async function getProduct(id: string, partitionKey?: string): Promise<Product> {
-  const container = await connectToCosmosDB();
+  const container = await connectToCosmosDB('supermarket-prices', 'products');
   const response = await container.item(id).read();
 
   console.log(response);
