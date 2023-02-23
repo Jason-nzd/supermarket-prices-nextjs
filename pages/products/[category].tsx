@@ -2,7 +2,12 @@ import { GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { Product } from '../../typings';
-import { connectToCosmosDB, searchProductName } from '../../utilities';
+import {
+  cleanProductFields,
+  connectToCosmosDB,
+  searchProductName,
+  sortProductsByName,
+} from '../../utilities';
 import _ from 'lodash';
 import { FeedOptions, SqlQuerySpec } from '@azure/cosmos';
 import ProductsGrid from '../../components/ProductsGrid';
@@ -61,47 +66,66 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const searchTerm = params?.category as string;
 
+  // Create a new products array to be populated by multiple DB lookups
+  let products: Product[] = [];
+
   // Establish CosmosDB connection
-  const countdownContainer = await connectToCosmosDB('supermarket-prices', 'products');
+  const container = await connectToCosmosDB();
 
   // Set cosmos query options
   const options: FeedOptions = {
-    maxItemCount: 15,
+    maxItemCount: 20,
   };
-  const querySpec: SqlQuerySpec = {
+
+  // Countdown SQL Query
+  const countdownQuery: SqlQuerySpec = {
     query: 'SELECT * FROM products p WHERE CONTAINS(p.name, @name, true)',
     parameters: [{ name: '@name', value: searchTerm }],
   };
 
-  // Perform DB fetch
-  const response = await countdownContainer.items.query(querySpec, options).fetchNext();
-  const hasMoreSearchResults = response.hasMoreResults;
+  // Perform Countdown DB Fetch
+  const countdownResponse = await container.items.query(countdownQuery, options).fetchNext();
+  const hasMoreSearchResults = countdownResponse.hasMoreResults;
 
-  // Create a new products array, set only specific fields from CosmosDB
-  let products: Product[] = [];
-  response.resources.map((productDocument) => {
-    const { id, name, currentPrice, size, sourceSite, priceHistory } = productDocument;
-    const p: Product = { id, name, currentPrice, size, sourceSite, priceHistory };
-    products.push(p);
+  // Push products into array and set only specific fields from CosmosDB
+  countdownResponse.resources.map((productDocument) => {
+    products.push(cleanProductFields(productDocument));
   });
 
-  // Add 2nd database
-  const multiStoreContainer = await connectToCosmosDB('supermarket-prices', 'supermarket-products');
-  const multiStoreResponse = await multiStoreContainer.items.query(querySpec, options).fetchNext();
-  multiStoreResponse.resources.map((productDocument) => {
-    const { id, name, currentPrice, sourceSite, priceHistory } = productDocument;
-    let size = '';
+  // Pak n Save SQL Query
+  // const paknsaveQuery: SqlQuerySpec = {
+  //   query:
+  //     "SELECT * FROM products p WHERE CONTAINS(p.name, @name, true) AND p.sourceSite = 'paknsave.co.nz'",
+  //   parameters: [{ name: '@name', value: searchTerm }],
+  // };
+  const paknsaveQuery: SqlQuerySpec = {
+    query: 'SELECT * FROM products p WHERE ARRAY_CONTAINS(p.category, @name, true)',
+    parameters: [{ name: '@name', value: searchTerm }],
+  };
 
-    const p: Product = { id, name, currentPrice, size, sourceSite, priceHistory };
-    products.push(p);
+  // Perform DB fetch and push products into array
+  const paknsaveResponse = await container.items.query(paknsaveQuery, options).fetchNext();
+  paknsaveResponse.resources.map((productDocument) => {
+    products.push(cleanProductFields(productDocument));
   });
+
+  // The Warehouse SQL Query
+  const warehouseQuery: SqlQuerySpec = {
+    query:
+      "SELECT * FROM products p WHERE CONTAINS(p.name, @name, true) AND p.sourceSite = 'thewarehouse.co.nz'",
+    parameters: [{ name: '@name', value: searchTerm }],
+  };
+
+  // Perform DB fetch and push products into array
+  const warehouseResponse = await container.items.query(warehouseQuery, options).fetchNext();
+  // warehouseResponse.resources.map((productDocument) => {
+  //   const { id, name, currentPrice, size, sourceSite, priceHistory } = productDocument;
+  //   const p: Product = { id, name, currentPrice, size, sourceSite, priceHistory };
+  //   products.push(p);
+  // });
 
   // Sort all stores products by name
-  products.sort((a, b) => {
-    if (a.name < b.name) return -1;
-    if (a.name > b.name) return 1;
-    return 0;
-  });
+  sortProductsByName(products);
 
   return {
     props: {

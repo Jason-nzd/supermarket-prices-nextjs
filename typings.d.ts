@@ -5,6 +5,7 @@ export interface Product {
   priceHistory: DatedPrice[];
   size?: string;
   sourceSite: string;
+  category?: string[];
 }
 
 export interface DatedPrice {

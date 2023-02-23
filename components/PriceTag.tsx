@@ -1,6 +1,6 @@
 import React from 'react';
 import { Product } from '../typings';
-import { priceTrendingDown, printPrice } from '../utilities';
+import { PriceTrend, priceTrend } from '../utilities';
 
 interface Props {
   product: Product;
@@ -10,7 +10,7 @@ function PriceTag({ product }: Props) {
   return (
     <div className='z-50 w-min'>
       {/* If trending down, display in green and with down icon */}
-      {priceTrendingDown(product.priceHistory) && (
+      {priceTrend(product.priceHistory) === PriceTrend.Decreased && (
         <div className='flex bg-white rounded-3xl border-2 border-[#8DF500] shadow-lg px-2'>
           <div className='mt-[0.16rem] text-sm lg:text-md'>$</div>
           <div className='mb-1 font-bold text-md lg:text-xl tracking-tighter'>
@@ -24,7 +24,7 @@ function PriceTag({ product }: Props) {
       )}
 
       {/* If trending up, display in red and with up icon */}
-      {!priceTrendingDown(product.priceHistory) && (
+      {priceTrend(product.priceHistory) === PriceTrend.Increased && (
         <div className='flex bg-white rounded-3xl border-2 border-[#DB260A] shadow-lg px-2'>
           <div className='mt-[0.16rem] text-sm lg:text-md'>$</div>
           <div className='mb-1 font-bold text-md lg:text-xl tracking-tighter'>
@@ -36,16 +36,34 @@ function PriceTag({ product }: Props) {
           <div className='pl-1'>{downIcon}</div>
         </div>
       )}
+
+      {/* If no trend, display with no icon */}
+      {priceTrend(product.priceHistory) === PriceTrend.Same && (
+        <div className='flex bg-white rounded-3xl border-2 border-black shadow-lg px-2'>
+          <div className='mt-[0.16rem] text-sm lg:text-md'>$</div>
+          <div className='mb-1 font-bold text-md lg:text-xl tracking-tighter'>
+            {printDollars(product.currentPrice)}
+          </div>
+          <div className='pl-[0.1rem] mt-[0.2rem] font-semibold text-xs lg:text-sm tracking-normal'>
+            {printCents(product.currentPrice)}
+          </div>
+          <div className='pl-1'></div>
+        </div>
+      )}
     </div>
   );
 }
 
 function printDollars(price: number) {
-  return price.toString().split('.')[0];
+  if (price === null) return 'XX';
+  else if (price.toString().includes('.')) {
+    return price.toString().split('.')[0];
+  } else return price.toString();
 }
 
 function printCents(price: number) {
-  if (price.toString().includes('.')) {
+  if (price === null) return 'XX';
+  else if (price.toString().includes('.')) {
     return '.' + price.toString().split('.')[1].padEnd(2, '0');
   } else return '';
 }

@@ -1,4 +1,3 @@
-import { divide } from 'lodash';
 import React from 'react';
 import { Product } from '../typings';
 import ImageWithFallback from './ImageWithFallback';
@@ -16,9 +15,6 @@ function handleClick() {
 
 function ProductCard({ product }: Props) {
   const linkHref = '/product/' + [product.id];
-
-  console.log(product.name);
-  console.log(product.priceHistory[product.priceHistory.length - 1].date);
 
   return (
     <div
@@ -42,11 +38,12 @@ function ProductCard({ product }: Props) {
           <div className='p-2 pr-0 object-cover'>
             <ImageWithFallback id={product.id} width={180} />
           </div>
+
           {/* Optional Size Div overlaid on top of image */}
           {product.size && (
             <div
-              className='z-20 absolute top-[4rem] left-[1rem] p-1.5 px-3 
-              bg-black bg-opacity-20 backdrop-blur-sm text-white text-sm font-semibold 
+              className='z-20 absolute top-[4rem] left-[1rem] p-0.5 md:p-1.5 px-3 
+              bg-black bg-opacity-[30%] backdrop-blur-sm text-white text-xs md:text-sm font-semibold 
               ring-1 ring-white rounded-2xl shadow-md'
             >
               {product.size}
@@ -59,11 +56,12 @@ function ProductCard({ product }: Props) {
             <PriceHistoryChart priceHistory={product.priceHistory} />
           </div>
 
-          {/* Price Div */}
+          {/* Price Tag Div */}
           <div className='flex flex-row-reverse pr-4'>
             <PriceTag product={product} />
           </div>
 
+          {/* Price Highest/Lowest Div */}
           <div className='p-1 pt-2'>
             {product.priceHistory.length > 1 && (
               <PriceHistoryTips priceHistory={product.priceHistory} />
@@ -71,9 +69,11 @@ function ProductCard({ product }: Props) {
           </div>
         </div>
       </div>
+
       <div className='text-xs text-slate-400 p-1 text-center'>
         Updated {product.priceHistory[product.priceHistory.length - 1].date.substring(4)}
       </div>
+
       {/* Source Site Div */}
       <div className='text-sm text-center align-bottom'>
         {product.sourceSite.includes('countdown.co.nz') && (

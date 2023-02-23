@@ -11,17 +11,20 @@ interface Props {
 function AdminPanel({ products }: Props) {
   return (
     <main>
-      <div className='py-10 w-auto 2xl:max-w-7xl mx-auto'>
+      <div className='py-10 w-auto 2xl:max-w-[70%] mx-auto'>
         <div className='overflow-hidden rounded-lg border border-gray-200 shadow-md m-5'>
           <table className='w-full border-collapse bg-white text-left text-sm text-gray-500'>
             <thead className='bg-gray-50'>
               <tr>
                 <th scope='col' className='pl-4 py-4 font-medium text-gray-900 w-50'></th>
-                <th scope='col' className='px-1 py-4 font-medium text-gray-900'>
+                <th scope='col' className='pl-2 px-1 py-4 font-medium text-gray-900'>
                   ID
                 </th>
                 <th scope='col' className='px-1 py-4 font-medium text-gray-900'>
                   Name & Size
+                </th>
+                <th scope='col' className='px-1 py-4 font-medium text-gray-900'>
+                  Category
                 </th>
                 <th scope='col' className='px-1 py-4 font-medium text-gray-900 '>
                   Price History
@@ -47,7 +50,7 @@ export async function getStaticProps() {
 
   // Set cosmos query options - limit to fetching 24 items at a time
   const options: FeedOptions = {
-    maxItemCount: 10,
+    maxItemCount: 40,
   };
 
   const response = await container.items

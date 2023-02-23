@@ -1,6 +1,6 @@
 import React from 'react';
 import { DatedPrice } from '../typings';
-import { priceTrendingDown, printPrice } from '../utilities';
+import { priceTrend, PriceTrend, printPrice } from '../utilities';
 import { CategoryScale, Chart, LinearScale, PointElement, LineElement } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 
@@ -33,7 +33,18 @@ function PriceHistoryChart({ priceHistory }: Props) {
   }
 
   // Set line colour to green or red depending on price trend
-  const trendColour = priceTrendingDown(priceHistory) ? 'rgb(0, 255, 0)' : 'rgb(255, 0, 0)';
+  let trendColour = '';
+  switch (priceTrend(priceHistory)) {
+    case PriceTrend.Decreased:
+      trendColour = 'rgb(0, 255, 0)';
+      break;
+    case PriceTrend.Increased:
+      trendColour = 'rgb(255, 0, 0)';
+      break;
+    default:
+      trendColour = 'rgb(190, 190, 190)';
+      break;
+  }
 
   // Prepare chart data for chart.js line chart
   const chartData = {

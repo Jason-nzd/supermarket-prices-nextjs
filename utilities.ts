@@ -14,21 +14,24 @@ export function printPrice(price: number) {
   }
 }
 
-// Helper function - Takes a DatedPrice[] object and returns if price is trending down
-export function priceTrendingDown(priceHistory: DatedPrice[]): boolean {
+// Takes a DatedPrice[] object and returns if price is trending down
+export function priceTrend(priceHistory: DatedPrice[]): PriceTrend {
   if (priceHistory.length > 1) {
     const latestPrice = priceHistory[priceHistory.length - 1].price;
     const olderPrice = priceHistory[priceHistory.length - 2].price;
-    if (latestPrice < olderPrice) return true;
-  }
-  return false;
+    if (latestPrice < olderPrice) return PriceTrend.Decreased;
+    else return PriceTrend.Increased;
+  } else return PriceTrend.Same;
+}
+
+export enum PriceTrend {
+  Increased,
+  Decreased,
+  Same,
 }
 
 // Establish CosmosDB connection
-export async function connectToCosmosDB(
-  databaseName: string,
-  containerName: string
-): Promise<Container> {
+export async function connectToCosmosDB(): Promise<Container> {
   let cosmosClient: CosmosClient;
   let container: Container;
 
@@ -44,10 +47,10 @@ export async function connectToCosmosDB(
     cosmosClient = new CosmosClient(COSMOS_CONSTRING);
 
     // Connect to database
-    const database = await cosmosClient.database(databaseName);
+    const database = await cosmosClient.database('supermarket-prices');
 
     // Container to container
-    container = await database.container(containerName);
+    container = await database.container('products');
 
     return container;
   } catch (error) {
@@ -60,7 +63,7 @@ export async function searchProductName(
   searchTerm: string,
   onlyProductsWithHistory: boolean
 ): Promise<Product[]> {
-  const container = await connectToCosmosDB('supermarket-prices', 'products');
+  const container = await connectToCosmosDB();
 
   // Set cosmos query options - limit to fetching 24 items at a time
   const options: FeedOptions = {
@@ -79,8 +82,8 @@ export async function searchProductName(
   // Create a new products array, set only specific fields from CosmosDB
   let products: Product[] = [];
   const documents = response.resources.map((productDocument) => {
-    const { id, name, currentPrice, size, sourceSite, priceHistory } = productDocument;
-    const p: Product = { id, name, currentPrice, size, sourceSite, priceHistory };
+    const { id, name, currentPrice, size, sourceSite, priceHistory, category } = productDocument;
+    const p: Product = { id, name, currentPrice, size, sourceSite, priceHistory, category };
     products.push(p);
   });
 
@@ -89,11 +92,44 @@ export async function searchProductName(
 
 // Get a specific product using id and optional partition key
 export async function getProduct(id: string, partitionKey?: string): Promise<Product> {
-  const container = await connectToCosmosDB('supermarket-prices', 'products');
+  const container = await connectToCosmosDB();
   const response = await container.item(id).read();
 
   console.log(response);
   if (response.statusCode === 200) {
     return response.resource as Product;
   } else return Promise.reject();
+}
+
+export function cleanProductFields(document: Product) {
+  let { id, name, currentPrice, size, sourceSite, priceHistory, category } = document;
+  if (!category) category = ['No Category'];
+  const cleanedProduct: Product = {
+    id,
+    name,
+    currentPrice,
+    size,
+    sourceSite,
+    priceHistory,
+    category,
+  };
+  return cleanedProduct;
+}
+
+export function sortProductsByName(products: Product[]) {
+  products.sort((a, b) => {
+    if (a.name < b.name) return -1;
+    if (a.name > b.name) return 1;
+    return 0;
+  });
+}
+
+export function sortProductsByDate(products: Product[]) {
+  return products.sort((a, b) => {
+    const dateA = new Date(a.priceHistory[a.priceHistory.length - 1].date);
+    const dateB = new Date(b.priceHistory[b.priceHistory.length - 1].date);
+    if (dateA > dateB) return -1;
+    if (dateA < dateB) return 1;
+    return 0;
+  });
 }
