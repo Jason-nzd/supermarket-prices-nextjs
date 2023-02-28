@@ -6,6 +6,7 @@ export interface Product {
   size?: string;
   sourceSite: string;
   category?: string[];
+  lastUpdated?: string;
 }
 
 export interface DatedPrice {

@@ -16,6 +16,9 @@ function handleClick() {
 function ProductCard({ product }: Props) {
   const linkHref = '/product/' + [product.id];
 
+  const showCategories = true;
+  const showLastUpdated = true;
+
   return (
     <div
       className='bg-stone-50 max-w-[22em] grid m-0.5 lg:m-1 p-0 rounded-2xl shadow-lg
@@ -70,9 +73,15 @@ function ProductCard({ product }: Props) {
         </div>
       </div>
 
-      <div className='text-xs text-slate-400 p-1 text-center'>
-        Updated {product.priceHistory[product.priceHistory.length - 1].date.substring(4)}
-      </div>
+      {showCategories && (
+        <div className='text-xs text-slate-400 p-1 text-center'>{product.category![0]}</div>
+      )}
+
+      {showLastUpdated && (
+        <div className='text-xs text-slate-400 p-1 text-center'>
+          Updated {product.priceHistory[product.priceHistory.length - 1].date.substring(4)}
+        </div>
+      )}
 
       {/* Source Site Div */}
       <div className='text-sm text-center align-bottom'>

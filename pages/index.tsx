@@ -1,7 +1,6 @@
-import { FeedOptions, SqlQuerySpec } from '@azure/cosmos';
 import ProductsGrid from '../components/ProductsGrid';
 import { Product } from '../typings';
-import { cleanProductFields, connectToCosmosDB, sortProductsByDate } from '../utilities';
+import { DBFetchByName } from '../utilities';
 
 interface Props {
   products: Product[];
@@ -27,27 +26,7 @@ function Home({ products }: Props) {
 
 // This function gets called at build time on server-side.
 export async function getStaticProps() {
-  // Establish CosmosDB connection
-  const container = await connectToCosmosDB();
-
-  // Set cosmos query options
-  const options: FeedOptions = {
-    maxItemCount: 20,
-  };
-  const querySpec: SqlQuerySpec = {
-    query: 'SELECT * FROM products p WHERE ARRAY_LENGTH(p.priceHistory)>2',
-  };
-
-  // Create a new products array, set only specific fields from CosmosDB
-  let products: Product[] = [];
-
-  // Perform DB fetch
-  const response = await container.items.query(querySpec, options).fetchNext();
-  const hasMoreSearchResults = response.hasMoreResults;
-
-  response.resources.map((productDocument) => {
-    products.push(cleanProductFields(productDocument));
-  });
+  const products = await DBFetchByName('chocolate');
 
   return {
     props: {

@@ -1,55 +1,57 @@
 import { GetStaticProps } from 'next';
 import React from 'react';
 import { Product } from '../../typings';
-import { connectToCosmosDB } from '../../utilities';
+import { DBFetchByName, DBGetProduct } from '../../utilities';
 import _ from 'lodash';
 import ProductsGrid from '../../components/ProductsGrid';
 
 interface Props {
-  products: Product[];
+  milkProducts: Product[];
+  trimMilkProducts: Product[];
+  oatSoyProducts: Product[];
+  otherMilkProducts: Product[];
 }
 
-const Category = ({ products }: Props) => {
+const Category = ({ milkProducts, trimMilkProducts, oatSoyProducts, otherMilkProducts }: Props) => {
   return (
     <main>
       {/* Background Div */}
       <div className=''>
         {/* Central Aligned Div */}
         <div className='mx-auto w-full 2xl:max-w-[70%] '>
-          {/* Page Title */}
-          <div className='my-4 pl-2 text-xl text-[#3C8DA3] font-bold'>Milk Deals</div>
-          <ProductsGrid products={products} />
+          {/* Categorised Product Grids*/}
+          <div className='my-4 pl-2 text-xl text-[#3C8DA3] font-bold'>Standard Milk</div>
+          <ProductsGrid products={milkProducts} />
+          <div className='my-4 pl-2 text-xl text-[#3C8DA3] font-bold'>Trim Milk</div>
+          <ProductsGrid products={trimMilkProducts} />
+          <div className='my-4 pl-2 text-xl text-[#3C8DA3] font-bold'>Oat & Soy Milk</div>
+          <ProductsGrid products={oatSoyProducts} />
+          <div className='my-4 pl-2 text-xl text-[#3C8DA3] font-bold'>Other Milk</div>
+          <ProductsGrid products={otherMilkProducts} />
         </div>
       </div>
     </main>
   );
 };
 
-// Gets products
 export const getStaticProps: GetStaticProps = async () => {
-  // Create a new products array, set only specific fields from CosmosDB
-  let products: Product[] = [];
+  // 2L Standard Milk using specific item lookups
+  let milkProducts: Product[] = [];
+  milkProducts.push(await DBGetProduct('282765', 'Countdown Standard Milk'));
+  milkProducts.push(await DBGetProduct('R1528048', 'Cow & Gate Blue Standard Milk 2L'));
+  milkProducts.push(await DBGetProduct('P5201479', 'Value Standard Milk'));
 
-  // Establish CosmosDB connection
-  const container = await connectToCosmosDB();
-
-  const countdownStandardMilk: Product = (
-    await container.item('282765', 'Countdown Standard Milk').read()
-  ).resource;
-  const warehouseStandardMilk: Product = (
-    await container.item('R1528048', 'Cow & Gate Blue Standard Milk 2L').read()
-  ).resource;
-  const paknsaveStandardMilk: Product = (
-    await container.item('P5201479', 'Value Standard Milk').read()
-  ).resource;
-
-  products.push(countdownStandardMilk);
-  products.push(warehouseStandardMilk);
-  products.push(paknsaveStandardMilk);
+  // Other milk use name lookups
+  const trimMilkProducts = await DBFetchByName('trim milk', 10);
+  const oatSoyProducts = await DBFetchByName('oat milk', 10);
+  const otherMilkProducts = await DBFetchByName('soy milk', 10);
 
   return {
     props: {
-      products,
+      milkProducts,
+      trimMilkProducts,
+      oatSoyProducts,
+      otherMilkProducts,
     },
   };
 };

@@ -1,29 +1,35 @@
 import _ from 'lodash';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { categoryNames } from '../pages/products/[category]';
 
-// let [searchQuery, setSearchQuery] = React.useState('');
-
-let fullyStaticMode = true;
-
 function NavBar() {
+  const [searchQuery, setSearchQuery] = useState<string>('');
+
+  const onChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    const query = event.target.value;
+    setSearchQuery(query);
+  }, []);
+
   return (
     <div className='nav'>
       <nav className='mx-auto px-10 py-2 w-full 2xl:w-[71%]'>
-        <div className='flex'>
+        {/* Div containing title on left, login/cart menu on right */}
+        <div className='flex mt-1'>
+          {searchQuery}
           {/* <div className='xl:hidden'>BB</div> */}
+
           {/* Brand Title */}
           <div
-            className='items-center my-1 text-2xl font-bold text-stone-100 transition-colors
+            className='items-center text-2xl font-bold text-stone-100 transition-colors
              duration-300 transform hover:text-white'
           >
             <Link href='/'>Supermarket Price History</Link>
           </div>
 
           {/* Top-right corner menu */}
-          <div className='my-1 ml-auto flex h-12  overflow-hidden'>
-            <button onClick={() => {}}>Theme</button>
+          <div className='ml-auto flex overflow-hidden'>
+            {/* <button onClick={() => {}}>Theme</button> */}
             <Link className='nav-small-link' href='#'>
               {userIcon}
               Login
@@ -37,16 +43,14 @@ function NavBar() {
               GitHub
             </Link>
             <Link className='nav-small-link' href='/admin'>
-              <div className=''>
-                {tableIcon}
-                Admin
-              </div>
+              {tableIcon}
+              Admin
             </Link>
           </div>
         </div>
 
         {/* Categories Section */}
-        <div className='flex items-center -mx-3.5 mt-2'>
+        <div className='flex items-center -mx-3.5 mt-0'>
           {categoryNames.map((name) => {
             const link = '/products/' + name;
             return (
@@ -70,10 +74,9 @@ function NavBar() {
               placeholder='Search'
               minLength={3}
               maxLength={40}
-              className='bg-transparent text-white pl-4 placeholder-[#75F3A3]'
-              onChange={(value) => {
-                console.log(value);
-              }}
+              className='bg-transparent focus:outline-none text-white pl-4 placeholder-[#75F3A3]'
+              onChange={onChange}
+              value={searchQuery}
             />
             <button type='button' title='Search'>
               {magnifyIcon}

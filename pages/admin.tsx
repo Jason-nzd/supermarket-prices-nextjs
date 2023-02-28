@@ -1,18 +1,44 @@
-import { FeedOptions } from '@azure/cosmos';
+import { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
+import { HtmlHTMLAttributes, useCallback, useState } from 'react';
 import ProductEditRow from '../components/ProductEditRow';
 import { Product } from '../typings';
-import { connectToCosmosDB } from '../utilities';
+import { DBFetchByName } from '../utilities';
 
 interface Props {
   products: Product[];
 }
 
-// Products will be populated at build time by getStaticProps()
 function AdminPanel({ products }: Props) {
+  const router = useRouter();
+  const { search } = router.query;
+  const [searchQuery, setSearchQuery] = useState<string>('');
+
+  const onChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    const query = event.target.value;
+    setSearchQuery(query);
+  }, []);
+
+  async function executeSearch() {}
+
   return (
     <main>
-      <div className='py-10 w-auto 2xl:max-w-[70%] mx-auto'>
-        <div className='overflow-hidden rounded-lg border border-gray-200 shadow-md m-5'>
+      <div className='w-auto 2xl:max-w-[70%] mx-auto'>
+        {/* Search Bar */}
+        <div className='flex mx-3 mt-4'>
+          <input
+            className='focus:outline-none w-full rounded-lg text-sm p-2'
+            onChange={onChange}
+            placeholder='Search'
+            type='text'
+            value={searchQuery}
+          />
+          <button onClick={executeSearch} className='px-4 ring-2 ring-black'>
+            Search
+          </button>
+        </div>
+
+        <div className='overflow-hidden rounded-lg border border-gray-200 shadow-md m-3'>
           <table className='w-full border-collapse bg-white text-left text-sm text-gray-500'>
             <thead className='bg-gray-50'>
               <tr>
@@ -32,6 +58,8 @@ function AdminPanel({ products }: Props) {
                 <th scope='col' className='pr-4 py-4 font-medium text-gray-900'></th>
               </tr>
             </thead>
+
+            {/* Table Body uses a map of Product Rows*/}
             <tbody className='divide-y divide-gray-100 border-t border-gray-100'>
               {products.map((product) => (
                 <ProductEditRow product={product} key={product.id} />
@@ -43,20 +71,9 @@ function AdminPanel({ products }: Props) {
     </main>
   );
 }
+
 export async function getStaticProps() {
-  // export async function getServerSideProps() {
-  // Get CosmosDB container
-  const container = await connectToCosmosDB();
-
-  // Set cosmos query options - limit to fetching 24 items at a time
-  const options: FeedOptions = {
-    maxItemCount: 40,
-  };
-
-  const response = await container.items
-    .query('SELECT * FROM products p WHERE ARRAY_LENGTH(p.priceHistory)>1', options)
-    .fetchNext();
-  const products = response.resources as Product[];
+  const products = await DBFetchByName('bread', 40);
 
   return {
     props: {
@@ -64,5 +81,16 @@ export async function getStaticProps() {
     },
   };
 }
+
+// export const getServerSideProps: GetServerSideProps = async (context) => {
+//   context.res.setHeader('Cache-Control', 'public, s-maxage=10, stale-while-revalidate=59');
+//   const products = await DBFetchByName('bread', 40);
+
+//   return {
+//     props: {
+//       products,
+//     },
+//   };
+// };
 
 export default AdminPanel;

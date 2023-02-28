@@ -3,9 +3,7 @@ import React, { useState } from 'react';
 import { Product } from '../typings';
 import { transparentImageUrlBase } from '../utilities';
 import DatedPrice from './DatedPrice';
-
-// let [productName, setProductName] = React.useState('');
-// let [productSize, setProductSize] = React.useState('');
+import ImageWithFallback from './ImageWithFallback';
 
 interface Props {
   product: Product;
@@ -27,7 +25,7 @@ function ProductEditRow({ product }: Props) {
     <tr className='hover:bg-gray-50'>
       {/* Thumbnail Image */}
       <th className='pl-2'>
-        <Image src={transparentImageUrlBase + product.id + '.jpg'} alt='' width={50} height={50} />
+        <ImageWithFallback id={product.id} width={50} />
       </th>
 
       {/* Product ID */}
@@ -67,7 +65,7 @@ function ProductEditRow({ product }: Props) {
       <td className='w-auto'>
         <div className='flex gap-1'>
           {product.priceHistory.map((datedPrice) => {
-            return <DatedPrice datedPrice={datedPrice} />;
+            return <DatedPrice datedPrice={datedPrice} key={datedPrice.date} />;
           })}
         </div>
       </td>
