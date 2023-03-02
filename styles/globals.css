@@ -19,7 +19,7 @@
     @apply mx-4 text-primary-colour hover-to-white md:my-0;
   }
   .nav-small-link {
-    @apply my-2 text-sm flex flex-col items-center leading-5 text-primary-colour hover-to-white md:mx-4 md:my-0;
+    @apply py-1 mx-1 text-xs lg:text-sm flex flex-col items-center leading-5 text-primary-colour hover-to-white md:mx-4 md:my-0;
   }
   .btn-primary {
     @apply py-2 px-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75;

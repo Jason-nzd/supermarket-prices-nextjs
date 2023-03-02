@@ -7,49 +7,47 @@ interface Props {
 }
 
 function PriceTag({ product }: Props) {
+  let priceTagDivClass = 'flex items-center bg-white rounded-3xl border-2 shadow-lg px-2 ';
+  let icon;
+  switch (priceTrend(product.priceHistory)) {
+    // If trending down, display in green and with down icon
+    case PriceTrend.Decreased:
+      priceTagDivClass += 'border-[#8DF500]';
+      icon = downIcon;
+      break;
+
+    // If trending up, display in red and with up icon
+    case PriceTrend.Increased:
+      priceTagDivClass += 'border-[#DB260A]';
+      icon = upIcon;
+      break;
+
+    // Otherwise display in black with no icon
+    default:
+    case PriceTrend.Same:
+      priceTagDivClass += 'border-black';
+      break;
+  }
+
   return (
     <div className='z-50 w-min'>
-      {/* If trending down, display in green and with down icon */}
-      {priceTrend(product.priceHistory) === PriceTrend.Decreased && (
-        <div className='flex bg-white rounded-3xl border-2 border-[#8DF500] shadow-lg px-2'>
-          <div className='mt-[0.16rem] text-sm lg:text-md'>$</div>
-          <div className='mb-1 font-bold text-md lg:text-xl tracking-tighter'>
-            {printDollars(product.currentPrice)}
-          </div>
-          <div className='pl-[0.1rem] mt-[0.2rem] font-semibold text-xs lg:text-sm tracking-normal'>
-            {printCents(product.currentPrice)}
-          </div>
-          <div className='pl-1 items-center'>{upIcon}</div>
-        </div>
-      )}
+      <div className={priceTagDivClass}>
+        {/* Dollar Symbol */}
+        <div className='mb-[0.07rem] text-sm lg:text-md'>$</div>
 
-      {/* If trending up, display in red and with up icon */}
-      {priceTrend(product.priceHistory) === PriceTrend.Increased && (
-        <div className='flex bg-white rounded-3xl border-2 border-[#DB260A] shadow-lg px-2'>
-          <div className='mt-[0.16rem] text-sm lg:text-md'>$</div>
-          <div className='mb-1 font-bold text-md lg:text-xl tracking-tighter'>
-            {printDollars(product.currentPrice)}
-          </div>
-          <div className='pl-[0.1rem] mt-[0.2rem] font-semibold text-xs lg:text-sm tracking-normal'>
-            {printCents(product.currentPrice)}
-          </div>
-          <div className='pl-1'>{downIcon}</div>
+        {/* Dollars */}
+        <div className='mb-0.5 font-bold text-md lg:text-xl tracking-tighter'>
+          {printDollars(product.currentPrice)}
         </div>
-      )}
 
-      {/* If no trend, display with no icon */}
-      {priceTrend(product.priceHistory) === PriceTrend.Same && (
-        <div className='flex bg-white rounded-3xl border-2 border-black shadow-lg px-2'>
-          <div className='mt-[0.16rem] text-sm lg:text-md'>$</div>
-          <div className='mb-1 font-bold text-md lg:text-xl tracking-tighter'>
-            {printDollars(product.currentPrice)}
-          </div>
-          <div className='pl-[0.1rem] mt-[0.2rem] font-semibold text-xs lg:text-sm tracking-normal'>
-            {printCents(product.currentPrice)}
-          </div>
-          <div className='pl-1'></div>
+        {/* Cents */}
+        <div className='pl-[0.1rem]  font-semibold text-xs lg:text-sm tracking-normal'>
+          {printCents(product.currentPrice)}
         </div>
-      )}
+
+        {/* Icon */}
+        <div className='pl-1 items-center'>{icon}</div>
+      </div>
     </div>
   );
 }
@@ -72,10 +70,10 @@ const upIcon = (
   <svg
     xmlns='http://www.w3.org/2000/svg'
     viewBox='0 0 20 20'
-    fill='#8DF500'
-    width='6'
-    height='6'
-    className='w-6 h-6 xl:w-8 xl:h-8'
+    fill='#DB260A'
+    width='4'
+    height='4'
+    className='w-4 h-4 xl:w-6 xl:h-6'
   >
     <path
       fillRule='evenodd'
@@ -89,10 +87,10 @@ const downIcon = (
   <svg
     xmlns='http://www.w3.org/2000/svg'
     viewBox='0 0 20 20'
-    fill='#DB260A'
-    width='6'
-    height='6'
-    className='w-6 h-6 xl:w-8 xl:h-8'
+    fill='#8DF500'
+    width='4'
+    height='4'
+    className='w-4 h-4 xl:w-6 xl:h-6'
   >
     <path
       fillRule='evenodd'

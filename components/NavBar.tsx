@@ -1,7 +1,9 @@
 import _ from 'lodash';
+import Image from 'next/image';
 import Link from 'next/link';
 import React, { useCallback, useState } from 'react';
 import { categoryNames } from '../pages/products/[category]';
+import kiwifruit from '../public/images/kiwifruit.png';
 
 function NavBar() {
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -13,22 +15,31 @@ function NavBar() {
 
   return (
     <div className='nav'>
-      <nav className='mx-auto px-10 py-2 w-full 2xl:w-[71%]'>
+      <nav className='mx-auto pt-0.5 px-1 w-full 2xl:w-[70%]'>
         {/* Div containing title on left, login/cart menu on right */}
-        <div className='flex mt-1'>
+        <div className='flex mt-1 items-center'>
           {searchQuery}
           {/* <div className='xl:hidden'>BB</div> */}
 
           {/* Brand Title */}
-          <div
-            className='items-center text-2xl font-bold text-stone-100 transition-colors
-             duration-300 transform hover:text-white'
-          >
-            <Link href='/'>Supermarket Price History</Link>
-          </div>
+          <Link href='/' className='flex flex-wrap items-center min-w-fit'>
+            <Image
+              src={kiwifruit}
+              alt=''
+              className='w-12 pr-1 duration-200 hover:rotate-12 hover:scale-[102%]'
+            />
+            <h1 className='text-3xl font-bold text-stone-100 hover-to-white hover:scale-[102%]'>
+              Kiwi Price
+            </h1>
+          </Link>
+
+          {/* Sub Title */}
+          <h3 className='ml-8 pt-2 text-[0.2em] md:text-xs lg:text-sm duration-500 transition-all font-bold sm:text-stone-200 select-none h-8 overflow-hidden'>
+            Comparing the cost of food across New Zealand
+          </h3>
 
           {/* Top-right corner menu */}
-          <div className='ml-auto flex overflow-hidden'>
+          <div className='ml-auto flex mt-2 min-w-fit'>
             {/* <button onClick={() => {}}>Theme</button> */}
             <Link className='nav-small-link' href='#'>
               {userIcon}
@@ -50,7 +61,7 @@ function NavBar() {
         </div>
 
         {/* Categories Section */}
-        <div className='flex items-center -mx-3.5 mt-0'>
+        <div className='flex flex-wrap items-center items-justify -mx-3.5 pb-3 overflow-hidden'>
           {categoryNames.map((name) => {
             const link = '/products/' + name;
             return (
@@ -65,7 +76,7 @@ function NavBar() {
           </button>
 
           {/* Search Bar */}
-          <div className='ml-8 rounded-2xl mt-1 border-2 border-[#75F3A3] h-8'>
+          <div className='ml-8 rounded-2xl border-2 border-[#75F3A3] h-8'>
             <input
               type='text'
               name='search'

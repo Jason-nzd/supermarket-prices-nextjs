@@ -12,7 +12,7 @@ function PriceHistoryTips({ priceHistory }: Props) {
   });
 
   return (
-    <div className='text-xs text-slate-400 text-right pr-4'>
+    <div className='text-sm text-slate-700 text-right pr-4'>
       <div>Highest: {printPrice(Math.max(...priceDataOnly))}</div>
       <div> Lowest: {printPrice(Math.min(...priceDataOnly))}</div>
     </div>

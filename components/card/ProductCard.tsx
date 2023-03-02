@@ -16,8 +16,8 @@ function handleClick() {
 function ProductCard({ product }: Props) {
   const linkHref = '/product/' + [product.id];
 
-  const showCategories = true;
-  const showLastUpdated = true;
+  const showCategories = false;
+  const showLastUpdated = false;
 
   return (
     <div
@@ -28,7 +28,7 @@ function ProductCard({ product }: Props) {
     >
       {/* Title Div */}
       <div
-        className='w-full h-12 pt-1.5 px-3 rounded-t-2xl text-[#3C8DA3] text-sm text-center font-semibold
+        className='w-full h-12 pt-2 px-3 rounded-t-2xl text-[#3C8DA3] text-sm text-center font-semibold
          leading-4 z-20 dark:bg-slate-800 dark:bg-opacity-70'
       >
         {product.name}

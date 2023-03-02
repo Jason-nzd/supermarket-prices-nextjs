@@ -22,9 +22,9 @@ const Category = ({ products, hasMoreSearchResults }: Props) => {
       {/* Background Div */}
       <div className=''>
         {/* Central Aligned Div */}
-        <div className='mx-auto w-full 2xl:max-w-[70%] '>
+        <div className='mx-auto w-full 2xl:max-w-[70%]'>
           {/* Top Bar with Title and Filter Selection */}
-          <div className='flex items-center'>
+          <div className='flex items-center w-fit'>
             {/* Page Title */}
             <div className='my-4 pl-2 text-xl text-[#3C8DA3] font-bold'>
               {_.startCase(category?.toString())}
