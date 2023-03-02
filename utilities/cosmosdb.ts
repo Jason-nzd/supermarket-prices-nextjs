@@ -16,7 +16,6 @@ export async function connectToCosmosDB(): Promise<boolean> {
   if (container != null) return true;
 
   // Check for valid connection string stored in .env
-  console.log(`--- Connecting to CosmosDB..`);
   const COSMOS_CONSTRING = process.env.COSMOS_CONSTRING;
   if (!COSMOS_CONSTRING) {
     console.log('Azure CosmosDB Connection string not found');
@@ -33,7 +32,10 @@ export async function connectToCosmosDB(): Promise<boolean> {
 
     return true;
   } catch (error) {
-    console.log('Invalid CosmosDB connection string, or unable to connect to CosmosDB');
+    console.log(
+      'Invalid CosmosDB connection string, or unable to connect to CosmosDB\n' +
+        'Check .env.local in root folder, with COSMOS_CONSTRING=<your CosmoDB read connection string>'
+    );
     return false;
   }
 }
@@ -61,7 +63,7 @@ export async function DBGetProduct(id: string, partitionKey?: string): Promise<P
 // Fetch all products with optional parameters for customized queries
 export async function DBFetchAll(
   maxItems: number = 20,
-  store: Store = Store.All,
+  store: Store = Store.Any,
   priceHistoryLimit: PriceHistoryLimit = PriceHistoryLimit.Any,
   orderBy: OrderByMode = OrderByMode.None
 ): Promise<Product[]> {
@@ -75,7 +77,7 @@ export async function DBFetchAll(
   };
 
   // Log completed queries to console
-  console.warn('\n' + querySpec.query + '\n');
+  console.warn('\n' + querySpec.query);
 
   // Use fetchProductsByQuerySpec to do the actual CosmosDB lookup
   return await fetchProductsByQuerySpec(querySpec, maxItems);
@@ -184,7 +186,7 @@ function queryAddPriceHistoryLimit(
 export async function DBFetchByCategory(
   searchTerm: string,
   maxItems: number = 20,
-  store: Store = Store.All,
+  store: Store = Store.Any,
   priceHistoryLimit: PriceHistoryLimit = PriceHistoryLimit.Any,
   orderBy: OrderByMode = OrderByMode.None
 ): Promise<Product[]> {
@@ -205,7 +207,7 @@ export async function DBFetchByCategory(
 export async function DBFetchByName(
   searchTerm: string,
   maxItems: number = 20,
-  store: Store = Store.All,
+  store: Store = Store.Any,
   priceHistoryLimit: PriceHistoryLimit = PriceHistoryLimit.Any,
   orderBy: OrderByMode = OrderByMode.None
 ): Promise<Product[]> {

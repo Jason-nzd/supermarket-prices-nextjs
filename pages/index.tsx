@@ -33,22 +33,22 @@ export async function getStaticProps() {
   const countdownProducts = await DBFetchAll(
     10,
     Store.Countdown,
-    OrderByMode.None,
-    PriceHistoryLimit.FourOrMore
+    PriceHistoryLimit.FourOrMore,
+    OrderByMode.DateNewest
   );
 
   const paknsaveProducts = await DBFetchAll(
     5,
     Store.Paknsave,
-    OrderByMode.DateNewest,
-    PriceHistoryLimit.Any
+    PriceHistoryLimit.Any,
+    OrderByMode.DateNewest
   );
 
   const warehouseProducts = await DBFetchAll(
     5,
     Store.Warehouse,
-    OrderByMode.DateNewest,
-    PriceHistoryLimit.Any
+    PriceHistoryLimit.Any,
+    OrderByMode.DateNewest
   );
 
   return {
