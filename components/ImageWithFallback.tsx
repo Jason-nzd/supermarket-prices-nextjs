@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { transparentImageUrlBase } from '../utilities';
+import { transparentImageUrlBase } from '../utilities/utilities';
 
 interface Props {
   id: string;

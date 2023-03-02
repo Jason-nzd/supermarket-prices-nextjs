@@ -1,6 +1,6 @@
 import React from 'react';
-import { Product } from '../typings';
-import ImageWithFallback from './ImageWithFallback';
+import { Product } from '../../typings';
+import ImageWithFallback from '../ImageWithFallback';
 import PriceHistoryChart from './PriceHistoryChart';
 import PriceHistoryTips from './PriceHistoryTips';
 import PriceTag from './PriceTag';

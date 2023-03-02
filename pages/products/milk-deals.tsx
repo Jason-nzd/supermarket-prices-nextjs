@@ -1,7 +1,7 @@
 import { GetStaticProps } from 'next';
 import React from 'react';
 import { Product } from '../../typings';
-import { DBFetchByName, DBGetProduct } from '../../utilities';
+import { DBFetchByName, DBGetProduct } from '../../utilities/utilities';
 import _ from 'lodash';
 import ProductsGrid from '../../components/ProductsGrid';
 

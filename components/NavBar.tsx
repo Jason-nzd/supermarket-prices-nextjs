@@ -39,7 +39,7 @@ function NavBar() {
               Cart
             </Link>
             <Link className='nav-small-link' href='https://github.com/Jason-nzd/supermarket-prices'>
-              {rocketShipIcon}
+              {githubIcon}
               GitHub
             </Link>
             <Link className='nav-small-link' href='/admin'>
@@ -88,10 +88,25 @@ function NavBar() {
   );
 }
 
+const githubIcon = (
+  <svg
+    xmlns='http://www.w3.org/2000/svg'
+    width='16'
+    height='16'
+    fill='currentColor'
+    className='w-6 h-6'
+    viewBox='0 0 16 16'
+  >
+    <path d='M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z' />
+  </svg>
+);
+
 const userIcon = (
   <div className='w-6 h-6'>
     <svg
       xmlns='http://www.w3.org/2000/svg'
+      width='16'
+      height='16'
       fill='none'
       viewBox='0 0 24 24'
       strokeWidth='1.5'
@@ -111,6 +126,8 @@ const cartIcon = (
   <svg
     xmlns='http://www.w3.org/2000/svg'
     fill='none'
+    width='16'
+    height='16'
     viewBox='0 0 24 24'
     strokeWidth='1.5'
     stroke='currentColor'
@@ -128,6 +145,8 @@ const tableIcon = (
   <svg
     xmlns='http://www.w3.org/2000/svg'
     fill='none'
+    width='16'
+    height='16'
     viewBox='0 0 24 24'
     strokeWidth='1.5'
     stroke='currentColor'
@@ -141,27 +160,12 @@ const tableIcon = (
   </svg>
 );
 
-const rocketShipIcon = (
-  <svg
-    xmlns='http://www.w3.org/2000/svg'
-    fill='none'
-    viewBox='0 0 24 24'
-    strokeWidth='1.5'
-    stroke='currentColor'
-    className='w-6 h-6'
-  >
-    <path
-      strokeLinecap='round'
-      strokeLinejoin='round'
-      d='M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z'
-    />
-  </svg>
-);
-
 const plusIcon = (
   <svg
     xmlns='http://www.w3.org/2000/svg'
     fill='none'
+    width='16'
+    height='16'
     viewBox='0 0 24 24'
     strokeWidth='1'
     stroke='currentColor'
@@ -179,6 +183,8 @@ const magnifyIcon = (
   <svg
     xmlns='http://www.w3.org/2000/svg'
     fill='none'
+    width='16'
+    height='16'
     viewBox='0 0 24 24'
     strokeWidth={1.5}
     stroke='white'

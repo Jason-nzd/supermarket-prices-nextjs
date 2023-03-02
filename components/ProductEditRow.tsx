@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import React, { useState } from 'react';
 import { Product } from '../typings';
-import { transparentImageUrlBase } from '../utilities';
-import DatedPrice from './DatedPrice';
+import { transparentImageUrlBase } from '../utilities/utilities';
+import DatedPrice from './card/DatedPrice';
 import ImageWithFallback from './ImageWithFallback';
 
 interface Props {

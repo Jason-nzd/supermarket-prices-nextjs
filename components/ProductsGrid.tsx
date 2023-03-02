@@ -1,5 +1,5 @@
 import { Product } from '../typings';
-import ProductCard from './ProductCard';
+import ProductCard from './card/ProductCard';
 
 interface Props {
   products: Product[];

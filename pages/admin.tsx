@@ -1,9 +1,9 @@
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import { HtmlHTMLAttributes, useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import ProductEditRow from '../components/ProductEditRow';
 import { Product } from '../typings';
-import { DBFetchByName } from '../utilities';
+import { DBFetchByName } from '../utilities/cosmosdb';
 
 interface Props {
   products: Product[];

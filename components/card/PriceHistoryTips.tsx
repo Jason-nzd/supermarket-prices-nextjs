@@ -1,6 +1,6 @@
 import React from 'react';
-import { DatedPrice } from '../typings';
-import { printPrice } from '../utilities';
+import { DatedPrice } from '../../typings';
+import { printPrice } from '../../utilities/utilities';
 
 interface Props {
   priceHistory: DatedPrice[];

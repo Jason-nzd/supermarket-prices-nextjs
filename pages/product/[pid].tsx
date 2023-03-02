@@ -2,9 +2,9 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React from 'react';
 import NavBar from '../../components/NavBar';
-import PriceHistoryChart from '../../components/PriceHistoryChart';
+import PriceHistoryChart from '../../components/card/PriceHistoryChart';
 import { Product } from '../../typings';
-import { getProduct, printPrice, transparentImageUrlBase } from '../../utilities';
+import { getProduct, printPrice, transparentImageUrlBase } from '../../utilities/utilities';
 
 const Post = () => {
   const router = useRouter();

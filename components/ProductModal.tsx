@@ -1,5 +1,5 @@
 import React from 'react';
-import { connectToCosmosDB, printPrice } from '../utilities';
+import { printPrice } from '../utilities/utilities';
 import { Product } from '../typings';
 
 interface Props {

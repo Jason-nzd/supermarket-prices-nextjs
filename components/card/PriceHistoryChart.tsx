@@ -1,6 +1,6 @@
 import React from 'react';
-import { DatedPrice } from '../typings';
-import { priceTrend, PriceTrend, printPrice } from '../utilities';
+import { DatedPrice } from '../../typings';
+import { priceTrend, PriceTrend, printPrice } from '../../utilities/utilities';
 import { CategoryScale, Chart, LinearScale, PointElement, LineElement } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 

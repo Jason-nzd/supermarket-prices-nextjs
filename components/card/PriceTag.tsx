@@ -1,6 +1,6 @@
 import React from 'react';
-import { Product } from '../typings';
-import { PriceTrend, priceTrend } from '../utilities';
+import { Product } from '../../typings';
+import { PriceTrend, priceTrend } from '../../utilities/utilities';
 
 interface Props {
   product: Product;

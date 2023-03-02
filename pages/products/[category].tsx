@@ -2,9 +2,9 @@ import { GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { Product } from '../../typings';
-import { DBFetchByName } from '../../utilities';
 import _ from 'lodash';
 import ProductsGrid from '../../components/ProductsGrid';
+import { DBFetchByName } from '../../utilities/cosmosdb';
 
 interface Props {
   products: Product[];
