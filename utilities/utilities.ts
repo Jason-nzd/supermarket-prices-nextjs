@@ -1,6 +1,6 @@
 import { DatedPrice, Product } from '../typings';
 
-// CDN Variables
+// AWS Cloudfront CDN url base
 export const transparentImageUrlBase: string = 'https://d1hhwouzawkav1.cloudfront.net/';
 
 // Enums
@@ -16,7 +16,7 @@ export enum Store {
   CountdownPaknSave,
   CountdownWarehouse,
   PaknsaveWarehouse,
-  All,
+  Any,
 }
 export enum OrderByMode {
   DateNewest,

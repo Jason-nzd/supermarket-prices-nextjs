@@ -5,6 +5,8 @@ import { Product } from '../../typings';
 import _ from 'lodash';
 import ProductsGrid from '../../components/ProductsGrid';
 import { DBFetchByName } from '../../utilities/cosmosdb';
+import ResultsFilterPanel from '../../components/ResultsFilterPanel';
+import { OrderByMode, PriceHistoryLimit, Store } from '../../utilities/utilities';
 
 interface Props {
   products: Product[];
@@ -21,13 +23,23 @@ const Category = ({ products, hasMoreSearchResults }: Props) => {
       <div className=''>
         {/* Central Aligned Div */}
         <div className='mx-auto w-full 2xl:max-w-[70%] '>
-          {/* Page Title */}
-          <div className='my-4 pl-2 text-xl text-[#3C8DA3] font-bold'>
-            {_.startCase(category?.toString())}
+          {/* Top Bar with Title and Filter Selection */}
+          <div className='flex items-center'>
+            {/* Page Title */}
+            <div className='my-4 pl-2 text-xl text-[#3C8DA3] font-bold'>
+              {_.startCase(category?.toString())}
+            </div>
+
+            {/* Filter Selection */}
+            <div className='ml-20'>
+              <ResultsFilterPanel />
+            </div>
           </div>
 
+          {/* Products Grid */}
           <ProductsGrid products={products} />
 
+          {/* Pagination */}
           {hasMoreSearchResults && <div className='text-center m-4 text-lg'>Page 1 2 3 4 5</div>}
         </div>
       </div>
@@ -60,7 +72,13 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const searchTerm = params?.category as string;
 
-  const products = await DBFetchByName(searchTerm, 40);
+  const products = await DBFetchByName(
+    searchTerm,
+    30,
+    Store.Any,
+    PriceHistoryLimit.TwoOrMore,
+    OrderByMode.DateNewest
+  );
 
   const hasMoreSearchResults = false;
 
