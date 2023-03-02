@@ -73,6 +73,8 @@ const upIcon = (
     xmlns='http://www.w3.org/2000/svg'
     viewBox='0 0 20 20'
     fill='#8DF500'
+    width='6'
+    height='6'
     className='w-6 h-6 xl:w-8 xl:h-8'
   >
     <path
@@ -88,6 +90,8 @@ const downIcon = (
     xmlns='http://www.w3.org/2000/svg'
     viewBox='0 0 20 20'
     fill='#DB260A'
+    width='6'
+    height='6'
     className='w-6 h-6 xl:w-8 xl:h-8'
   >
     <path

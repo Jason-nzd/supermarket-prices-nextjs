@@ -1,9 +1,9 @@
 import { GetStaticProps } from 'next';
 import React from 'react';
 import { Product } from '../../typings';
-import { DBFetchByName, DBGetProduct } from '../../utilities/utilities';
 import _ from 'lodash';
 import ProductsGrid from '../../components/ProductsGrid';
+import { DBFetchByName, DBGetProduct } from '../../utilities/cosmosdb';
 
 interface Props {
   milkProducts: Product[];
