@@ -13,3 +13,12 @@ export interface DatedPrice {
   date: string;
   price: number;
 }
+
+export interface User {
+  name: string;
+  darkMode: boolean;
+  isWidePage: boolean;
+  productColumns: number;
+  loggedIn: boolean;
+  isAdmin: boolean;
+}

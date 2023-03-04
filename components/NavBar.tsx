@@ -6,6 +6,8 @@ import { categoryNames } from '../pages/products/[category]';
 import kiwifruit from '../public/images/kiwifruit.png';
 
 function NavBar() {
+  //const isWidePage = useMediaQuery('(min-width: 960px)');
+  const isWidePage = true;
   const [searchQuery, setSearchQuery] = useState<string>('');
 
   const onChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
@@ -15,9 +17,9 @@ function NavBar() {
 
   return (
     <div className='nav'>
-      <nav className='mx-auto pt-0.5 px-1 w-full 2xl:w-[70%]'>
+      <nav className='mx-auto pt-0 xl:pt-0.5 px-1 w-full 2xl:w-[70%]'>
         {/* Div containing title on left, login/cart menu on right */}
-        <div className='flex mt-1 items-center'>
+        <div className='flex mt-0 items-center pl-2 xl:pl-4'>
           {searchQuery}
           {/* <div className='xl:hidden'>BB</div> */}
 
@@ -26,15 +28,21 @@ function NavBar() {
             <Image
               src={kiwifruit}
               alt=''
-              className='w-12 pr-1 duration-200 hover:rotate-12 hover:scale-[102%]'
+              className='w-8 lg:w-10 xl:w-12 pr-1 duration-200 hover:rotate-12 hover:scale-[102%]'
             />
-            <h1 className='text-3xl font-bold text-stone-100 hover-to-white hover:scale-[102%]'>
+            <h1
+              className='text-xl lg:text-2xl xl:text-3xl font-bold text-stone-100 
+              hover-to-white hover:scale-[102%]'
+            >
               Kiwi Price
             </h1>
           </Link>
 
           {/* Sub Title */}
-          <h3 className='ml-8 pt-2 text-[0.2em] md:text-xs lg:text-sm duration-500 transition-all font-bold sm:text-stone-200 select-none h-8 overflow-hidden'>
+          <h3
+            className='ml-8 pt-2 text-[0.2em] md:text-xs lg:text-sm select-none h-8 
+          duration-500 transition-all font-bold sm:text-stone-200 overflow-hidden'
+          >
             Comparing the cost of food across New Zealand
           </h3>
 
@@ -49,10 +57,6 @@ function NavBar() {
               {cartIcon}
               Cart
             </Link>
-            <Link className='nav-small-link' href='https://github.com/Jason-nzd/supermarket-prices'>
-              {githubIcon}
-              GitHub
-            </Link>
             <Link className='nav-small-link' href='/admin'>
               {tableIcon}
               Admin
@@ -61,56 +65,47 @@ function NavBar() {
         </div>
 
         {/* Categories Section */}
-        <div className='flex flex-wrap items-center items-justify -mx-3.5 pb-3 overflow-hidden'>
-          {categoryNames.map((name) => {
-            const link = '/products/' + name;
-            return (
-              <Link className='nav-main-link' href={link} key={link}>
-                {_.startCase(name)}
-              </Link>
-            );
-          })}
-          {/* Add custom category with plus icon */}
-          <button type='button' title='Add'>
-            {plusIcon}
-          </button>
-
-          {/* Search Bar */}
-          <div className='ml-8 rounded-2xl border-2 border-[#75F3A3] h-8'>
-            <input
-              type='text'
-              name='search'
-              id='search'
-              required
-              placeholder='Search'
-              minLength={3}
-              maxLength={40}
-              className='bg-transparent focus:outline-none text-white pl-4 placeholder-[#75F3A3]'
-              onChange={onChange}
-              value={searchQuery}
-            />
-            <button type='button' title='Search'>
-              {magnifyIcon}
+        {isWidePage && (
+          <div className='flex flex-wrap items-center items-justify -mx-3.5 pb-3 overflow-hidden pl-2 xl:pl-4'>
+            {categoryNames.map((name) => {
+              const link = '/products/' + name;
+              return (
+                <Link className='nav-main-link' href={link} key={link}>
+                  {_.startCase(name)}
+                </Link>
+              );
+            })}
+            {/* Add custom category with plus icon */}
+            <button type='button' title='Add'>
+              {plusIcon}
             </button>
+
+            {/* Search Bar */}
+            <div className='flex flex-wrap ml-8 rounded-2xl border-2 border-[#75F3A3] h-8 mr-4'>
+              <input
+                type='text'
+                name='search'
+                id='search'
+                required
+                placeholder='Search'
+                minLength={3}
+                maxLength={40}
+                className='bg-transparent focus:outline-none text-white pl-4 placeholder-[#75F3A3] align-top'
+                onChange={onChange}
+                value={searchQuery}
+              />
+              <div className=''>
+                <button type='button' title='Search'>
+                  {magnifyIcon}
+                </button>
+              </div>
+            </div>
           </div>
-        </div>
+        )}
       </nav>
     </div>
   );
 }
-
-const githubIcon = (
-  <svg
-    xmlns='http://www.w3.org/2000/svg'
-    width='16'
-    height='16'
-    fill='currentColor'
-    className='w-6 h-6'
-    viewBox='0 0 16 16'
-  >
-    <path d='M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z' />
-  </svg>
-);
 
 const userIcon = (
   <div className='w-6 h-6'>
@@ -198,7 +193,7 @@ const magnifyIcon = (
     height='16'
     viewBox='0 0 24 24'
     strokeWidth={1.5}
-    stroke='white'
+    stroke='#75F3A3'
     className='w-5 h-5 mr-2 pt-1.5 scale-[150%] hover:scale-[160%]'
   >
     <path

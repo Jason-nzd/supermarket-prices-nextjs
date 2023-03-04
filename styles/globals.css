@@ -13,7 +13,7 @@
     @apply text-[#75F3A3];
   }
   .text-input {
-    @apply px-2 py-1 rounded-md border border-stone-300;
+    @apply px-2 my-0 py-0 rounded-md border border-stone-300;
   }
   .nav-main-link {
     @apply mx-4 text-primary-colour hover-to-white md:my-0;

@@ -22,7 +22,7 @@ const Category = ({ products, hasMoreSearchResults }: Props) => {
       {/* Background Div */}
       <div className=''>
         {/* Central Aligned Div */}
-        <div className='mx-auto w-full 2xl:max-w-[70%]'>
+        <div className='mx-auto w-full 2xl:max-w-[70%] px-2'>
           {/* Top Bar with Title and Filter Selection */}
           <div className='flex items-center w-fit'>
             {/* Page Title */}
@@ -76,7 +76,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     searchTerm,
     30,
     Store.Any,
-    PriceHistoryLimit.TwoOrMore,
+    PriceHistoryLimit.Any,
     OrderByMode.DateNewest
   );
 

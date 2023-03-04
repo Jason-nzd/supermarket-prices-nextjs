@@ -16,7 +16,7 @@ function Home({ countdownProducts, paknsaveProducts, warehouseProducts }: Props)
       {/* Background Div */}
       <div className=''>
         {/* Central Aligned Div */}
-        <div className='mx-auto w-full 2xl:max-w-[70%] '>
+        <div className='px-2 mx-auto w-full 2xl:max-w-[70%] '>
           {/* Page Title */}
           <div className='my-4 pl-2 text-xl text-[#3C8DA3] font-bold'></div>
           {countdownProducts && <ProductsGrid products={countdownProducts} />}
@@ -40,7 +40,7 @@ export async function getStaticProps() {
   const paknsaveProducts = await DBFetchAll(
     5,
     Store.Paknsave,
-    PriceHistoryLimit.Any,
+    PriceHistoryLimit.TwoOrMore,
     OrderByMode.DateNewest
   );
 
