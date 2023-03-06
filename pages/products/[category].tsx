@@ -19,29 +19,26 @@ const Category = ({ products, hasMoreSearchResults }: Props) => {
 
   return (
     <main>
-      {/* Background Div */}
-      <div className=''>
-        {/* Central Aligned Div */}
-        <div className='mx-auto w-full 2xl:max-w-[70%] px-2'>
-          {/* Top Bar with Title and Filter Selection */}
-          <div className='flex items-center w-fit'>
-            {/* Page Title */}
-            <div className='my-4 pl-2 text-xl text-[#3C8DA3] font-bold'>
-              {_.startCase(category?.toString())}
-            </div>
-
-            {/* Filter Selection */}
-            <div className='ml-20'>
-              <ResultsFilterPanel />
-            </div>
+      {/* Central Aligned Div */}
+      <div className='mx-auto w-full 2xl:max-w-[70%] px-2'>
+        {/* Top Bar with Title and Filter Selection */}
+        <div className='flex items-center w-fit'>
+          {/* Page Title */}
+          <div className='my-4 pl-2 text-xl text-[#3C8DA3] font-bold'>
+            {_.startCase(category?.toString())}
           </div>
 
-          {/* Products Grid */}
-          <ProductsGrid products={products} />
-
-          {/* Pagination */}
-          {hasMoreSearchResults && <div className='text-center m-4 text-lg'>Page 1 2 3 4 5</div>}
+          {/* Filter Selection */}
+          <div className='ml-20'>
+            <ResultsFilterPanel />
+          </div>
         </div>
+
+        {/* Products Grid */}
+        <ProductsGrid products={products} />
+
+        {/* Pagination */}
+        {hasMoreSearchResults && <div className='text-center m-4 text-lg'>Page 1 2 3 4 5</div>}
       </div>
     </main>
   );
@@ -77,7 +74,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     30,
     Store.Any,
     PriceHistoryLimit.Any,
-    OrderByMode.DateNewest
+    OrderByMode.Latest
   );
 
   const hasMoreSearchResults = false;

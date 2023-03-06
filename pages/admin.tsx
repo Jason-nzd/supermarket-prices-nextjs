@@ -3,7 +3,8 @@ import { useRouter } from 'next/router';
 import { useCallback, useState } from 'react';
 import ProductEditRow from '../components/ProductEditRow';
 import { Product } from '../typings';
-import { DBFetchByName } from '../utilities/cosmosdb';
+import { DBFetchAll, DBFetchByName } from '../utilities/cosmosdb';
+import { OrderByMode, PriceHistoryLimit, Store } from '../utilities/utilities';
 
 interface Props {
   products: Product[];
@@ -73,7 +74,7 @@ function AdminPanel({ products }: Props) {
 }
 
 export async function getStaticProps() {
-  const products = await DBFetchByName('bread', 40);
+  const products = await DBFetchAll(80, Store.Any, PriceHistoryLimit.Any, OrderByMode.Oldest);
 
   return {
     props: {

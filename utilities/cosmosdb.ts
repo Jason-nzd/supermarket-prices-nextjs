@@ -113,10 +113,10 @@ async function fetchProductsByQuerySpec(query: SqlQuerySpec, maxItems: number): 
 function queryAddOrderBy(orderBy: OrderByMode): string {
   let sqlQueryAddon = '';
   switch (orderBy) {
-    case OrderByMode.DateNewest:
+    case OrderByMode.Latest:
       sqlQueryAddon = ' ORDER BY p.lastUpdated DESC';
       break;
-    case OrderByMode.DateOldest:
+    case OrderByMode.Oldest:
       sqlQueryAddon = ' ORDER BY p.lastUpdated';
       break;
     case OrderByMode.PriceLowest:

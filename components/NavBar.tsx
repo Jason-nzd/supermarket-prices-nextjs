@@ -5,7 +5,7 @@ import React, { useCallback, useState } from 'react';
 import { categoryNames } from '../pages/products/[category]';
 import kiwifruit from '../public/images/kiwifruit.png';
 
-function NavBar() {
+const NavBar = () => {
   //const isWidePage = useMediaQuery('(min-width: 960px)');
   const isWidePage = true;
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -14,6 +14,10 @@ function NavBar() {
     const query = event.target.value;
     setSearchQuery(query);
   }, []);
+
+  const handleSearch = () => {
+    //router.push('/products/milk-deals');
+  };
 
   return (
     <div className='nav'>
@@ -95,7 +99,7 @@ function NavBar() {
                 value={searchQuery}
               />
               <div className=''>
-                <button type='button' title='Search'>
+                <button type='button' title='Search' onClick={handleSearch}>
                   {magnifyIcon}
                 </button>
               </div>
@@ -105,7 +109,7 @@ function NavBar() {
       </nav>
     </div>
   );
-}
+};
 
 const userIcon = (
   <div className='w-6 h-6'>

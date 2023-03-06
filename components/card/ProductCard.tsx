@@ -20,12 +20,7 @@ function ProductCard({ product }: Props) {
   const showLastUpdated = true;
 
   return (
-    <div
-      className='bg-stone-50 max-w-[22em] grid m-0.5 lg:m-1 p-0 rounded-2xl shadow-lg
-      hover:scale-[102%] hover:shadow-2xl duration-300 ease-in-out cursor-pointer hover:bg-opacity-90
-      dark:bg-slate-800 dark:text-slate-200 dark:ring-slate-700 dark:ring-2 dark:m-1.5'
-      onClick={handleClick}
-    >
+    <div className='product-card' onClick={handleClick}>
       {/* Title Div */}
       <div
         className='w-full h-12 pt-2 px-3 rounded-t-2xl text-[#3C8DA3] text-sm text-center font-semibold

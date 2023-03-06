@@ -19,8 +19,8 @@ export enum Store {
   Any,
 }
 export enum OrderByMode {
-  DateNewest,
-  DateOldest,
+  Latest,
+  Oldest,
   PriceLowest,
   PriceHighest,
   None,

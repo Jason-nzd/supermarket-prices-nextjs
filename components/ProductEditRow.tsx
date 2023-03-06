@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import React, { useState } from 'react';
 import { Product } from '../typings';
 import { transparentImageUrlBase } from '../utilities/utilities';
@@ -25,7 +24,10 @@ function ProductEditRow({ product }: Props) {
     <tr className='hover:bg-gray-50'>
       {/* Thumbnail Image */}
       <th className='pl-2'>
-        <ImageWithFallback id={product.id} width={50} />
+        {/* <ImageWithFallback id={product.id} width={50} /> */}
+        <div className='text-xs text-center font-light'>
+          {product.lastUpdated} - {product.sourceSite.substring(0, product.sourceSite.length - 6)}
+        </div>
       </th>
 
       {/* Product ID */}
