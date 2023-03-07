@@ -32,4 +32,7 @@
     hover:scale-[102%] hover:shadow-2xl duration-300 ease-in-out cursor-pointer hover:bg-opacity-90
     dark:bg-slate-800 dark:text-slate-200 dark:ring-slate-700 dark:ring-2 dark:m-1.5;
   }
+  .grid-title {
+    @apply my-4 pl-2 text-xl text-[#3C8DA3] font-bold text-center;
+  }
 }

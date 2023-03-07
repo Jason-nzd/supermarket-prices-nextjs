@@ -29,9 +29,7 @@ const Category = ({ products, hasMoreSearchResults }: Props) => {
           </div>
 
           {/* Filter Selection */}
-          <div className='ml-20'>
-            <ResultsFilterPanel />
-          </div>
+          <div className='ml-20'>{/* <ResultsFilterPanel /> */}</div>
         </div>
 
         {/* Products Grid */}
@@ -44,7 +42,7 @@ const Category = ({ products, hasMoreSearchResults }: Props) => {
   );
 };
 
-export const categoryNames = ['milk', 'eggs', 'bread', 'meat', 'fruit', 'vegetables', 'ice cream'];
+export const categoryNames = ['eggs', 'meat', 'fruit', 'vegetables', 'ice cream', 'cat'];
 
 // Takes an array of category search terms, and returns them in { path } format
 export function getAllStaticPaths() {
@@ -71,7 +69,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   const products = await DBFetchByName(
     searchTerm,
-    30,
+    40,
     Store.Any,
     PriceHistoryLimit.Any,
     OrderByMode.Latest

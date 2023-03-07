@@ -74,7 +74,7 @@ function AdminPanel({ products }: Props) {
 }
 
 export async function getStaticProps() {
-  const products = await DBFetchAll(80, Store.Any, PriceHistoryLimit.Any, OrderByMode.Oldest);
+  const products = await DBFetchByName('trim milk', 60);
 
   return {
     props: {

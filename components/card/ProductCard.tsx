@@ -1,5 +1,6 @@
 import React from 'react';
 import { Product } from '../../typings';
+import { utcDateToShortDate } from '../../utilities/utilities';
 import ImageWithFallback from '../ImageWithFallback';
 import PriceHistoryChart from './PriceHistoryChart';
 import PriceHistoryTips from './PriceHistoryTips';
@@ -16,7 +17,7 @@ function handleClick() {
 function ProductCard({ product }: Props) {
   const linkHref = '/product/' + [product.id];
 
-  const showCategories = true;
+  const showCategories = false;
   const showLastUpdated = true;
 
   return (
@@ -70,14 +71,14 @@ function ProductCard({ product }: Props) {
 
       {showCategories && product.category != null && product.category!.length > 0 && (
         <div className='text-xs text-slate-400 p-0.5 text-center leading-3'>
-          {/* {product.category!.join(', ')} */}
-          {product.category}
+          {product.category!.join(', ')}
+          {/* {product.category} */}
         </div>
       )}
 
       {showLastUpdated && (
         <div className='text-xs text-slate-400 p-1 text-center leading-3'>
-          Updated {product.priceHistory[product.priceHistory.length - 1].date.substring(4)}
+          Updated {utcDateToShortDate(product.lastUpdated)}
         </div>
       )}
 

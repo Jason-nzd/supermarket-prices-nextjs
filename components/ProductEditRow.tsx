@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Product } from '../typings';
-import { transparentImageUrlBase } from '../utilities/utilities';
+import { transparentImageUrlBase, utcDateToShortDate } from '../utilities/utilities';
 import DatedPrice from './card/DatedPrice';
 import ImageWithFallback from './ImageWithFallback';
 
@@ -26,7 +26,7 @@ function ProductEditRow({ product }: Props) {
       <th className='pl-2'>
         {/* <ImageWithFallback id={product.id} width={50} /> */}
         <div className='text-xs text-center font-light'>
-          {product.lastUpdated} - {product.sourceSite.substring(0, product.sourceSite.length - 6)}
+          {product.sourceSite.substring(0, product.sourceSite.length - 6)}
         </div>
       </th>
 
@@ -67,7 +67,7 @@ function ProductEditRow({ product }: Props) {
       <td className='w-auto'>
         <div className='flex gap-1'>
           {product.priceHistory.map((datedPrice) => {
-            return <DatedPrice datedPrice={datedPrice} key={datedPrice.date} />;
+            return <DatedPrice datedPrice={datedPrice} key={datedPrice.date.toString()} />;
           })}
         </div>
       </td>

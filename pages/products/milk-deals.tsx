@@ -8,11 +8,16 @@ import { DBFetchByName, DBGetProduct } from '../../utilities/cosmosdb';
 interface Props {
   milkProducts: Product[];
   trimMilkProducts: Product[];
-  oatSoyProducts: Product[];
+  oatMilkProducts: Product[];
   otherMilkProducts: Product[];
 }
 
-const Category = ({ milkProducts, trimMilkProducts, oatSoyProducts, otherMilkProducts }: Props) => {
+const Category = ({
+  milkProducts,
+  trimMilkProducts,
+  oatMilkProducts,
+  otherMilkProducts,
+}: Props) => {
   return (
     <main>
       {/* Background Div */}
@@ -20,13 +25,13 @@ const Category = ({ milkProducts, trimMilkProducts, oatSoyProducts, otherMilkPro
         {/* Central Aligned Div */}
         <div className='mx-auto w-full 2xl:max-w-[70%] '>
           {/* Categorised Product Grids*/}
-          <div className='my-4 pl-2 text-xl text-[#3C8DA3] font-bold'>Standard Milk</div>
+          <div className='grid-title'>Standard Milk</div>
           <ProductsGrid products={milkProducts} />
-          <div className='my-4 pl-2 text-xl text-[#3C8DA3] font-bold'>Trim Milk</div>
+          <div className='grid-title'>Trim Milk</div>
           <ProductsGrid products={trimMilkProducts} />
-          <div className='my-4 pl-2 text-xl text-[#3C8DA3] font-bold'>Oat & Soy Milk</div>
-          <ProductsGrid products={oatSoyProducts} />
-          <div className='my-4 pl-2 text-xl text-[#3C8DA3] font-bold'>Other Milk</div>
+          <div className='grid-title'>Oat Milk</div>
+          <ProductsGrid products={oatMilkProducts} />
+          <div className='grid-title'>Other Milk</div>
           <ProductsGrid products={otherMilkProducts} />
         </div>
       </div>
@@ -41,16 +46,25 @@ export const getStaticProps: GetStaticProps = async () => {
   milkProducts.push(await DBGetProduct('R1528048', 'Cow & Gate Blue Standard Milk 2L'));
   milkProducts.push(await DBGetProduct('P5201479', 'Value Standard Milk'));
 
+  // Trim milk - specific items
+  const trimMilkProducts: Product[] = [];
+  trimMilkProducts.push(await DBGetProduct('282780', 'Countdown Trim Milk'));
+  trimMilkProducts.push(await DBGetProduct('282773', 'Countdown Trim Milk'));
+  trimMilkProducts.push(await DBGetProduct('282726', 'Anchor Trim Milk 99 7 Fat Free'));
+  trimMilkProducts.push(await DBGetProduct('282817', 'Anchor Trim Milk 99 7 Fat Free'));
+  trimMilkProducts.push(await DBGetProduct('P5201486', 'Value Trim Milk'));
+  trimMilkProducts.push(await DBGetProduct('R939536', 'Meadow Fresh Trim Milk 2L White'));
+  trimMilkProducts.push(await DBGetProduct('R939535', 'Meadow Fresh Calci Trim Milk 2L'));
+
   // Other milk use name lookups
-  const trimMilkProducts = await DBFetchByName('trim milk', 10);
-  const oatSoyProducts = await DBFetchByName('oat milk', 10);
+  const oatMilkProducts = await DBFetchByName('oat milk', 10);
   const otherMilkProducts = await DBFetchByName('soy milk', 10);
 
   return {
     props: {
       milkProducts,
       trimMilkProducts,
-      oatSoyProducts,
+      oatMilkProducts,
       otherMilkProducts,
     },
   };

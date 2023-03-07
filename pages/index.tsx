@@ -38,7 +38,7 @@ export async function getStaticProps() {
   );
 
   const paknsaveProducts = await DBFetchAll(
-    5,
+    10,
     Store.Paknsave,
     PriceHistoryLimit.TwoOrMore,
     OrderByMode.Latest

@@ -1,6 +1,6 @@
 import React from 'react';
 import { DatedPrice } from '../../typings';
-import { priceTrend, PriceTrend, printPrice } from '../../utilities/utilities';
+import { priceTrend, PriceTrend, printPrice, utcDateToShortDate } from '../../utilities/utilities';
 import { CategoryScale, Chart, LinearScale, PointElement, LineElement } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 
@@ -13,22 +13,22 @@ function PriceHistoryChart({ priceHistory }: Props) {
   Chart.register(CategoryScale, LinearScale, PointElement, LineElement);
 
   // Separate arrays for x and y chart axis
-  let dateDataOnly: string[] = [];
+  let dateStringsOnly: string[] = [];
   let priceDataOnly: number[] = [];
 
   priceHistory.forEach((datedPrice) => {
     // Remove day and year from date label
-    dateDataOnly.push(datedPrice.date.slice(4, datedPrice.date.length - 5));
+    dateStringsOnly.push(utcDateToShortDate(datedPrice.date));
     priceDataOnly.push(datedPrice.price);
   });
 
   // Replace the latest date name with 'Today'
-  dateDataOnly[dateDataOnly.length - 1] = 'Today';
+  dateStringsOnly[dateStringsOnly.length - 1] = 'Today';
 
   // If only 1 history point is available, add an extra point required for line rendering
   if (priceHistory.length === 1) {
-    dateDataOnly[1] = dateDataOnly[0];
-    dateDataOnly[0] = 'Last';
+    dateStringsOnly[1] = dateStringsOnly[0];
+    dateStringsOnly[0] = 'Last';
     priceDataOnly[1] = priceDataOnly[0];
   }
 
@@ -48,7 +48,7 @@ function PriceHistoryChart({ priceHistory }: Props) {
 
   // Prepare chart data for chart.js line chart
   const chartData = {
-    labels: dateDataOnly,
+    labels: dateStringsOnly,
     datasets: [
       {
         label: 'Price History',

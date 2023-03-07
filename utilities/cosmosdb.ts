@@ -1,4 +1,11 @@
-import { Container, CosmosClient, FeedOptions, ItemResponse, SqlQuerySpec } from '@azure/cosmos';
+import {
+  Container,
+  CosmosClient,
+  FeedOptions,
+  FeedResponse,
+  ItemResponse,
+  SqlQuerySpec,
+} from '@azure/cosmos';
 import { Product } from '../typings';
 import { cleanProductFields, OrderByMode, PriceHistoryLimit, Store } from './utilities';
 
@@ -96,7 +103,9 @@ async function fetchProductsByQuerySpec(query: SqlQuerySpec, maxItems: number): 
   if (await connectToCosmosDB()) {
     try {
       // Perform DB Fetch
-      const dbResponse = await container.items.query(query, options).fetchNext();
+      const dbResponse: FeedResponse<Product> = await container.items
+        .query(query, options)
+        .fetchNext();
 
       // Push products into array and clean specific fields from CosmosDB
       dbResponse.resources.map((productDocument) => {
