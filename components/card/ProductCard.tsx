@@ -78,7 +78,7 @@ function ProductCard({ product }: Props) {
 
       {showLastUpdated && (
         <div className='text-xs text-slate-300 p-1.5 text-center leading-3'>
-          Price last updated {utcDateToShortDate(product.lastUpdated)}
+          Updated {product.lastUpdated + ' ' + utcDateToShortDate(product.lastUpdated)}
         </div>
       )}
 

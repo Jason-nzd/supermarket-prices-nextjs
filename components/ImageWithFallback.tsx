@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
+import img from '../public/images/placeholder-square.png';
 
 interface Props {
   id: string;
@@ -8,9 +9,8 @@ interface Props {
 
 function ImageWithFallback({ id, addClasses = '' }: Props) {
   // AWS Cloudfront CDN url base
-  const transparentImageUrlBase = 'https://d1hhwouzawkav1.cloudfront.net/';
-  const fallbackSrc = 'https://d1hhwouzawkav1.cloudfront.net/placeholder-square.png';
-  const imgBase = 'https://supermarketimages.s3.ap-southeast-2.amazonaws.com/';
+  const fallbackSrc = img.src;
+  const imgBase = 'https://d299jx99qoogrq.cloudfront.net/';
   const [imgSrc, setImgSrc] = useState(imgBase + id + '.webp');
 
   const classesToApply = 'object-contain ' + addClasses;
