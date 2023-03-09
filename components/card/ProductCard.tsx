@@ -31,11 +31,11 @@ function ProductCard({ product }: Props) {
       </div>
 
       {/* Central Div containing image, chart, price info */}
-      <div className='flex flex-auto w-auto h-auto'>
+      <div className='flex flex-auto w-full h-full'>
         {/* Image Div */}
-        <div className='relative'>
-          <div className='p-2 pr-0 object-cover'>
-            <ImageWithFallback id={product.id} width={180} />
+        <div className='relative w-2/5'>
+          <div className=''>
+            <ImageWithFallback id={product.id} addClasses='pl-2' />
           </div>
 
           {/* Optional Size Div overlaid on top of image */}
@@ -49,7 +49,7 @@ function ProductCard({ product }: Props) {
             </div>
           )}
         </div>
-        <div className='w-3/4 lg:w-1/2'>
+        <div className='w-3/5'>
           {/* Price history chart Div */}
           <div className='pl-0 pt-4 pr-0.5'>
             <PriceHistoryChart priceHistory={product.priceHistory} />
@@ -60,8 +60,8 @@ function ProductCard({ product }: Props) {
             <PriceTag product={product} />
           </div>
 
-          {/* Price Highest/Lowest Div */}
-          <div className='p-1 pt-2'>
+          {/* Price Tips Highest/Lowest Div */}
+          <div className='p-1 pt-2 mr-auto'>
             {product.priceHistory.length > 1 && (
               <PriceHistoryTips priceHistory={product.priceHistory} />
             )}
@@ -77,13 +77,13 @@ function ProductCard({ product }: Props) {
       )}
 
       {showLastUpdated && (
-        <div className='text-xs text-slate-400 p-1 text-center leading-3'>
-          Updated {utcDateToShortDate(product.lastUpdated)}
+        <div className='text-xs text-slate-300 p-1.5 text-center leading-3'>
+          Price last updated {utcDateToShortDate(product.lastUpdated)}
         </div>
       )}
 
       {/* Source Site Div */}
-      <div className='text-sm text-center align-bottom'>
+      <div className='text-sm text-center'>
         {product.sourceSite.includes('countdown.co.nz') && (
           <div className='p-1 rounded-b-2xl text-white bg-[#007837]'>Countdown</div>
         )}

@@ -12,9 +12,11 @@ function PriceHistoryTips({ priceHistory }: Props) {
   });
 
   return (
-    <div className='text-sm text-slate-700 text-right pr-4'>
-      <div>Highest: {printPrice(Math.max(...priceDataOnly))}</div>
-      <div> Lowest: {printPrice(Math.min(...priceDataOnly))}</div>
+    <div className='text-xs text-slate-600 grid grid-cols-2 w-fit gap-x-2 ml-auto'>
+      <div className='text-right'>Highest:</div>
+      <div className='text-left font-semibold'>{printPrice(Math.max(...priceDataOnly))}</div>
+      <div className='text-right'>Lowest:</div>
+      <div className='text-left font-semibold'>{printPrice(Math.min(...priceDataOnly))}</div>
     </div>
   );
 }

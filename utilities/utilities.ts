@@ -1,8 +1,5 @@
 import { DatedPrice, Product } from '../typings';
 
-// AWS Cloudfront CDN url base
-export const transparentImageUrlBase: string = 'https://d1hhwouzawkav1.cloudfront.net/';
-
 // Enums
 export enum PriceTrend {
   Increased,

@@ -8,7 +8,7 @@ interface Props {
 function ProductsGrid({ products }: Props) {
   return (
     <div
-      className='grid w-fit mx-auto
+      className='grid w-full mx-auto
             grid-cols-2
             md:grid-cols-2
             lg:grid-cols-3
