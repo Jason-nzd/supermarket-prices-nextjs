@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Product } from '../typings';
-import { transparentImageUrlBase, utcDateToShortDate } from '../utilities/utilities';
+import { utcDateToShortDate } from '../utilities/utilities';
 import DatedPrice from './card/DatedPrice';
 import ImageWithFallback from './ImageWithFallback';
 
@@ -24,7 +24,7 @@ function ProductEditRow({ product }: Props) {
     <tr className='hover:bg-gray-50'>
       {/* Thumbnail Image */}
       <th className='pl-2'>
-        {/* <ImageWithFallback id={product.id} width={50} /> */}
+        <ImageWithFallback id={product.id} />
         <div className='text-xs text-center font-light'>
           {product.sourceSite.substring(0, product.sourceSite.length - 6)}
         </div>
