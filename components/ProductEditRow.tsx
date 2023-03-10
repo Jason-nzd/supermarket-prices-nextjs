@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import React, { useState } from 'react';
 import { Product } from '../typings';
 import { utcDateToShortDate } from '../utilities/utilities';
@@ -20,11 +21,13 @@ function ProductEditRow({ product }: Props) {
     productHidden ? setProductHidden(false) : setProductHidden(true);
   }
 
+  const imageSrc = `${process.env.IMAGE_PATH}${product.id}.webp`;
+
   return (
     <tr className='hover:bg-gray-50'>
       {/* Thumbnail Image */}
-      <th className='pl-2'>
-        <ImageWithFallback id={product.id} />
+      <th className='pl-2 flex place-items-center place-content-around gap-x-2'>
+        {/* <ImageWithFallback id={product.id} /> */}
         <div className='text-xs text-center font-light'>
           {product.sourceSite.substring(0, product.sourceSite.length - 6)}
         </div>

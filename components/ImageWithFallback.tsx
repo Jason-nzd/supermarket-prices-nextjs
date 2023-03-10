@@ -7,12 +7,15 @@ interface Props {
   addClasses?: string;
 }
 
+// This is a modified replacement for <Image />
+// It will try to load a product image using 'id' as the filename,
+//  if nothing is found it will fallback to a placeholder image.
 function ImageWithFallback({ id, addClasses = '' }: Props) {
-  // AWS Cloudfront CDN url base
   const fallbackSrc = img.src;
-  const imgBase = 'https://d3exe3d4jjp99f.cloudfront.net/';
-  const [imgSrc, setImgSrc] = useState(imgBase + id + '.webp');
+  const imagesPath = process.env.IMAGES_PATH;
+  const [imgSrc, setImgSrc] = useState(imagesPath + id + '.webp');
 
+  // Tailwind classes can be optionally added
   const classesToApply = 'object-contain ' + addClasses;
 
   return (

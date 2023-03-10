@@ -38,7 +38,7 @@ const NavBar = () => {
               className='text-xl lg:text-2xl xl:text-3xl font-bold text-stone-100 
               hover-to-white hover:scale-[102%]'
             >
-              Kiwi Price
+              KiwiPrice.xyz
             </h1>
           </Link>
 

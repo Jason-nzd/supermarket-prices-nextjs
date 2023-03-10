@@ -18,7 +18,9 @@ function Home({ countdownProducts, paknsaveProducts, warehouseProducts }: Props)
         {/* Central Aligned Div */}
         <div className='px-2 mx-auto w-full 2xl:max-w-[70%] '>
           {/* Page Title */}
-          <div className='my-4 pl-2 text-xl text-[#3C8DA3] font-bold'></div>
+          <div className='my-4 pl-2 text-xl text-[#3C8DA3] font-bold'>
+            Today's Trending Products
+          </div>
           {countdownProducts && <ProductsGrid products={countdownProducts} />}
           {paknsaveProducts && <ProductsGrid products={paknsaveProducts} />}
           {warehouseProducts && <ProductsGrid products={warehouseProducts} />}
