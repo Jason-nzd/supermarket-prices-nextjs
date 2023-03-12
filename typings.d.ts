@@ -7,6 +7,7 @@ export interface Product {
   sourceSite: string;
   category?: string[];
   lastUpdated: Date;
+  unitPrice?: number;
 }
 
 export interface DatedPrice {

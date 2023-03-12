@@ -83,9 +83,6 @@ export async function DBFetchAll(
       queryAddOrderBy(orderBy),
   };
 
-  // Log completed queries to console
-  console.warn('\n' + querySpec.query);
-
   // Use fetchProductsByQuerySpec to do the actual CosmosDB lookup
   return await fetchProductsByQuerySpec(querySpec, maxItems);
 }
@@ -107,12 +104,15 @@ async function fetchProductsByQuerySpec(query: SqlQuerySpec, maxItems: number): 
         .query(query, options)
         .fetchNext();
 
+      // Log query to console
+      console.warn(query.query);
+
       // Push products into array and clean specific fields from CosmosDB
       dbResponse.resources.map((productDocument) => {
         resultingProducts.push(cleanProductFields(productDocument));
       });
     } catch (error) {
-      console.log(error);
+      console.log('Error on fetchProductsByQuerySpec()\n ' + error);
     }
   }
   return resultingProducts;
@@ -199,7 +199,7 @@ export async function DBFetchByCategory(
   priceHistoryLimit: PriceHistoryLimit = PriceHistoryLimit.Any,
   orderBy: OrderByMode = OrderByMode.None
 ): Promise<Product[]> {
-  const queryBase = 'SELECT * FROM products p WHERE ARRAY_CONTAINS(p.name, @name, true)';
+  const queryBase = 'SELECT * FROM products p WHERE ARRAY_CONTAINS(p.category, @name, true)';
   const query: SqlQuerySpec = {
     query:
       queryBase +

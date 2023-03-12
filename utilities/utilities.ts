@@ -31,8 +31,17 @@ export enum PriceHistoryLimit {
 // Removes undesired fields that CosmosDB creates
 export function cleanProductFields(document: Product): Product {
   let { id, name, currentPrice, size, sourceSite, priceHistory, category, lastUpdated } = document;
-  if (!lastUpdated) lastUpdated = new Date();
-  if (!category) category = ['No Category'];
+  try {
+    // Also check for valid date and category formats
+    if (lastUpdated === undefined || lastUpdated === null) {
+      console.log(name + ' has null date - ' + lastUpdated);
+    } else if (!lastUpdated.toString().endsWith('Z')) {
+      console.log(name + ' has non-utc date - ' + lastUpdated);
+    }
+    if (!category) category = ['No Category'];
+  } catch (error) {
+    console.log(`Error on cleanProductFields() for ${name}\n` + error);
+  }
   const cleanedProduct: Product = {
     id,
     name,
