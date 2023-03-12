@@ -19,39 +19,32 @@ function ProductCard({ product }: Props) {
 
   const showCategories = false;
   const showLastUpdated = true;
+  const hasPriceHistory = product.priceHistory.length > 1;
 
   return (
     <div className='product-card' onClick={handleClick}>
       {/* Title Div */}
       <div
-        className='w-full h-12 pt-2 px-3 rounded-t-2xl text-[#3C8DA3] text-sm text-center font-semibold
-         leading-4 z-20 dark:bg-slate-800 dark:bg-opacity-70'
+        className='w-full h-12 pt-2 px-3 rounded-t-2xl text-[#3C8DA3] text-sm
+         text-center font-semibold leading-4 z-20 dark:bg-slate-800 dark:bg-opacity-70'
       >
         {product.name}
       </div>
 
       {/* Central Div containing image, chart, price info */}
-      <div className='flex flex-auto w-full h-full'>
+      <div className='flex flex-auto w-full'>
         {/* Image Div */}
         <div className='relative w-2/5'>
           <div className=''>
-            <ImageWithFallback id={product.id} addClasses='pl-2' />
+            <ImageWithFallback id={product.id} width={200} addClasses='pl-2' />
           </div>
 
-          {/* Optional Size Div overlaid on top of image */}
-          {product.size && (
-            <div
-              className='z-20 absolute top-[4rem] left-[1rem] p-0.5 md:p-1.5 px-3 
-              bg-black bg-opacity-[30%] backdrop-blur-sm text-white text-xs md:text-sm font-semibold 
-              ring-1 ring-white rounded-2xl shadow-md'
-            >
-              {product.size}
-            </div>
-          )}
+          {/* Optional Size div overlaid on top of image */}
+          {product.size && <div className='size-tag'>{product.size}</div>}
         </div>
         <div className='w-3/5'>
           {/* Price history chart Div */}
-          <div className='pl-0 pt-4 pr-0.5'>
+          <div className='pl-0 pr-0.5 z-50'>
             <PriceHistoryChart priceHistory={product.priceHistory} />
           </div>
 
@@ -72,13 +65,18 @@ function ProductCard({ product }: Props) {
       {showCategories && product.category != null && product.category!.length > 0 && (
         <div className='text-xs text-slate-400 p-0.5 text-center leading-3'>
           {product.category!.join(', ')}
-          {/* {product.category} */}
         </div>
       )}
 
-      {showLastUpdated && (
+      {showLastUpdated && hasPriceHistory && (
         <div className='text-xs text-slate-300 p-1.5 text-center leading-3'>
-          Updated {product.lastUpdated + ' ' + utcDateToShortDate(product.lastUpdated)}
+          Price Last Changed {utcDateToShortDate(product.lastUpdated)}
+        </div>
+      )}
+
+      {showLastUpdated && !hasPriceHistory && (
+        <div className='text-xs text-slate-300 p-1.5 text-center leading-3'>
+          First Added {utcDateToShortDate(product.lastUpdated)}
         </div>
       )}
 

@@ -110,7 +110,7 @@ function PriceHistoryChart({ priceHistory }: Props) {
     },
   };
 
-  return <Line data={chartData} />;
+  return <Line data={chartData} className='z-50' />;
 }
 
 export default PriceHistoryChart;
