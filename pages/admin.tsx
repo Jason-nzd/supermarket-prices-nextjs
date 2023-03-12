@@ -24,7 +24,8 @@ function AdminPanel({ products }: Props) {
 
   return (
     <main>
-      <div className='w-auto 2xl:max-w-[70%] mx-auto'>
+      {/* Central Aligned Div */}
+      <div className='px-2 mx-auto w-fit lg:max-w-[99%] 2xl:max-w-[70%]'>
         {/* Search Bar */}
         <div className='flex mx-3 mt-4'>
           <input
@@ -34,7 +35,7 @@ function AdminPanel({ products }: Props) {
             type='text'
             value={searchQuery}
           />
-          <button onClick={executeSearch} className='px-4 ring-2 ring-black'>
+          <button onClick={executeSearch} className='px-6 ring-2 ring-black'>
             Search
           </button>
         </div>
@@ -44,19 +45,20 @@ function AdminPanel({ products }: Props) {
             <thead className='bg-gray-50'>
               <tr>
                 <th scope='col' className='pl-4 py-4 font-medium text-gray-900 w-50'></th>
-                <th scope='col' className='pl-2 px-1 py-4 font-medium text-gray-900'>
+                <th scope='col' className='pl-7 px-6 py-4 font-medium text-gray-900'>
                   ID
                 </th>
-                <th scope='col' className='px-1 py-4 font-medium text-gray-900'>
+                <th scope='col' className='px-6 py-4 font-medium text-gray-900 min-w-[20rem]'>
                   Name & Size
                 </th>
-                <th scope='col' className='px-1 py-4 font-medium text-gray-900'>
+                <th scope='col' className='px-6 py-4 font-medium text-gray-900 '>
                   Category
                 </th>
-                <th scope='col' className='px-1 py-4 font-medium text-gray-900 '>
+                <th scope='col' className='px-6 py-4 font-medium text-gray-900 '>
                   Price History
                 </th>
-                <th scope='col' className='pr-4 py-4 font-medium text-gray-900'></th>
+                {/* Empty th for expanding icons panel */}
+                <th scope='col' className='pr-4 py-4 font-medium text-gray-900 min-w-[8rem]'></th>
               </tr>
             </thead>
 

@@ -48,16 +48,18 @@ function ProductCard({ product }: Props) {
             <PriceHistoryChart priceHistory={product.priceHistory} />
           </div>
 
-          {/* Price Tag Div */}
-          <div className='flex flex-row-reverse pr-4'>
-            <PriceTag product={product} />
-          </div>
+          <div className='flex flex-row-reverse items-center'>
+            {/* Price Tag Div */}
+            <div className='m-1 mr-2'>
+              <PriceTag product={product} />
+            </div>
 
-          {/* Price Tips Highest/Lowest Div */}
-          <div className='p-1 pt-2 mr-auto'>
-            {product.priceHistory.length > 1 && (
-              <PriceHistoryTips priceHistory={product.priceHistory} />
-            )}
+            {/* Price Tips Highest/Lowest Div */}
+            <div className='ml-1'>
+              {product.priceHistory.length > 1 && (
+                <PriceHistoryTips priceHistory={product.priceHistory} />
+              )}
+            </div>
           </div>
         </div>
       </div>

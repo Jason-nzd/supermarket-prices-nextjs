@@ -6,8 +6,6 @@ import { categoryNames } from '../pages/products/[category]';
 import kiwifruit from '../public/images/kiwifruit.png';
 
 const NavBar = () => {
-  //const isWidePage = useMediaQuery('(min-width: 960px)');
-  const isWidePage = true;
   const [searchQuery, setSearchQuery] = useState<string>('');
 
   const onChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
@@ -20,38 +18,34 @@ const NavBar = () => {
   };
 
   return (
-    <div className='nav'>
-      <nav className='mx-auto pt-0 xl:pt-0.5 px-1 w-full 2xl:w-[70%]'>
-        {/* Div containing title on left, login/cart menu on right */}
-        <div className='flex mt-0 items-center pl-2 xl:pl-4'>
-          {searchQuery}
-          {/* <div className='xl:hidden'>BB</div> */}
+    <nav className='py-1.5 w-full'>
+      <div className='mx-auto lg:w-[100%] 2xl:w-[70%] transition-all duration-500'>
+        {/* Title on left for wide, center for mobile, login/cart menu on right */}
+        <div className='flex w-full pl-2 xl:pl-4'>
+          {/* Mobile burger menu */}
+          <div className='lg:hidden text-primary-colour hover-to-white cursor-pointer'>
+            {burgerIcon}
+          </div>
 
-          {/* Brand Title */}
-          <Link href='/' className='flex flex-wrap items-center min-w-fit'>
+          {/* Brand Icon & Title */}
+          <Link href='/' className='flex w-fit ml-auto lg:ml-0'>
             <Image
               src={kiwifruit}
               alt=''
-              className='w-8 lg:w-10 xl:w-12 pr-1 duration-200 hover:rotate-12 hover:scale-[102%]'
+              className='w-9 pr-1 duration-200 hover:rotate-12 hover:scale-[102%]'
             />
-            <h1
-              className='text-xl lg:text-2xl xl:text-3xl font-bold text-stone-100 
-              hover-to-white hover:scale-[102%]'
-            >
+            <h1 className='text-2xl font-bold text-stone-100 hover-to-white hover:scale-[102%]'>
               KiwiPrice.xyz
             </h1>
           </Link>
 
           {/* Sub Title */}
-          <h3
-            className='ml-8 pt-2 text-[0.2em] md:text-xs lg:text-sm select-none h-8 
-          duration-500 transition-all font-bold sm:text-stone-200 overflow-hidden'
-          >
+          <h3 className='hidden lg:block ml-8 pt-2.5 text-sm select-none h-8 font-bold text-stone-200'>
             Comparing the cost of food across New Zealand
           </h3>
 
-          {/* Top-right corner menu */}
-          <div className='ml-auto flex mt-2 min-w-fit'>
+          {/* Top-right corner menu - wide */}
+          <div className='hidden lg:flex ml-auto mr-2'>
             {/* <button onClick={() => {}}>Theme</button> */}
             <Link className='nav-small-link' href='#'>
               {userIcon}
@@ -66,11 +60,19 @@ const NavBar = () => {
               Admin
             </Link>
           </div>
+
+          {/* Top-right corner menu - mobile */}
+          <div className='lg:hidden ml-auto'>
+            <Link className='nav-small-link' href='#'>
+              {userIcon}
+            </Link>
+          </div>
         </div>
 
-        {/* Categories Section */}
-        {isWidePage && (
-          <div className='flex flex-wrap items-center items-justify -mx-3.5 pb-3 overflow-hidden pl-2 xl:pl-4'>
+        {/* Categories and Search Section */}
+        <div className='hidden lg:flex flex-wrap pb-1 pl-1 xl:pl-4 w-full h-10 overflow-hidden'>
+          {/* Categories */}
+          <div className='flex items-center place-content-start overflow-hidden h-8 gap-x-1'>
             <Link className='nav-main-link' href='/products/milk'>
               Milk
             </Link>
@@ -91,13 +93,16 @@ const NavBar = () => {
                 </Link>
               );
             })}
+          </div>
+          <div>
             {/* Add custom category with plus icon */}
             <button type='button' title='Add'>
               {plusIcon}
             </button>
-
+          </div>
+          <div className='w-fit flex flex-wrap'>
             {/* Search Bar */}
-            <div className='flex flex-wrap ml-8 rounded-2xl border-2 border-[#75F3A3] h-8 mr-4'>
+            <div className='flex flex-wrap rounded-2xl border-2 border-[#75F3A3] h-8'>
               <input
                 type='text'
                 name='search'
@@ -108,6 +113,7 @@ const NavBar = () => {
                 maxLength={40}
                 className='bg-transparent focus:outline-none text-white pl-4 placeholder-[#75F3A3] align-top'
                 onChange={onChange}
+                onSubmit={handleSearch}
                 value={searchQuery}
               />
               <div className=''>
@@ -117,31 +123,45 @@ const NavBar = () => {
               </div>
             </div>
           </div>
-        )}
-      </nav>
-    </div>
+        </div>
+      </div>
+    </nav>
   );
 };
 
+const burgerIcon = (
+  <svg
+    xmlns='http://www.w3.org/2000/svg'
+    width='16'
+    height='16'
+    fill='currentColor'
+    className='w-6 h-6'
+    viewBox='0 0 16 16'
+  >
+    <path
+      fill-rule='evenodd'
+      d='M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z'
+    />
+  </svg>
+);
+
 const userIcon = (
-  <div className='w-6 h-6'>
-    <svg
-      xmlns='http://www.w3.org/2000/svg'
-      width='16'
-      height='16'
-      fill='none'
-      viewBox='0 0 24 24'
-      strokeWidth='1.5'
-      stroke='currentColor'
-      className='w-6 h-6'
-    >
-      <path
-        strokeLinecap='round'
-        strokeLinejoin='round'
-        d='M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z'
-      />
-    </svg>
-  </div>
+  <svg
+    xmlns='http://www.w3.org/2000/svg'
+    width='16'
+    height='16'
+    fill='none'
+    viewBox='0 0 24 24'
+    strokeWidth='1.5'
+    stroke='currentColor'
+    className='w-6 h-6'
+  >
+    <path
+      strokeLinecap='round'
+      strokeLinejoin='round'
+      d='M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z'
+    />
+  </svg>
 );
 
 const cartIcon = (

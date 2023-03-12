@@ -26,7 +26,7 @@ function ProductEditRow({ product }: Props) {
   return (
     <tr className='hover:bg-gray-50'>
       {/* Thumbnail Image */}
-      <th className='pl-2 place-content-around gap-x-2 w-fit'>
+      <th className='pl-2 place-content-around gap-x-2'>
         {/* <ImageWithFallback id={product.id} /> */}
         <div className='text-xs text-center font-light'>
           {product.sourceSite.substring(0, product.sourceSite.length - 6)}
@@ -34,14 +34,14 @@ function ProductEditRow({ product }: Props) {
       </th>
 
       {/* Product ID */}
-      <td className='px-1 py-1 w-min'>
+      <td className='px-6 py-1'>
         <div className='text-sm'>
           <div className='text-gray-400'>#{product.id}</div>
         </div>
       </td>
 
       {/* Name & Size */}
-      <td className='px-1 py-1 max-w-[12rem]'>
+      <td className='px-6 py-1'>
         <div>
           {/* Render Product Name as either an editable text input or plain div */}
           {editMode && (
@@ -61,7 +61,14 @@ function ProductEditRow({ product }: Props) {
           {/* Product Size is also editable*/}
           {editMode && (
             <div className='text-gray-400 py-0.5 px-2 border-2 border-blue-300 rounded-lg'>
-              <input type='text' title='Product Size' name='size' id='size' value={product.size} />
+              <input
+                type='text'
+                title='Product Size'
+                name='size'
+                id='size'
+                value={product.size}
+                className=' '
+              />
             </div>
           )}
           {!editMode && <div className='text-gray-400'>{product.size}</div>}
@@ -69,12 +76,12 @@ function ProductEditRow({ product }: Props) {
       </td>
 
       {/* Category */}
-      <td className='px-1 py-1 w-min'>
+      <td className='px-6 py-1'>
         <div className='text-xs'>{product.category?.join(', ')}</div>
       </td>
 
       {/* Price History */}
-      <td className='w-auto'>
+      <td className='px-6'>
         <div className='flex gap-1'>
           {product.priceHistory.map((datedPrice) => {
             return <DatedPrice datedPrice={datedPrice} key={datedPrice.date.toString()} />;
@@ -83,7 +90,7 @@ function ProductEditRow({ product }: Props) {
       </td>
 
       {/* Edit Buttons TD */}
-      <td className='pr-4 py-1 min-w-[4rem]'>
+      <td className='pr-4 py-1'>
         <div className='flex justify-end gap-4'>
           {/* Edit Button with pencil icon */}
           {!editMode && (

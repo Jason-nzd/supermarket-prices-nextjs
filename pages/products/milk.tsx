@@ -23,7 +23,7 @@ const Category = ({
       {/* Background Div */}
       <div className=''>
         {/* Central Aligned Div */}
-        <div className='mx-auto w-full 2xl:max-w-[70%] '>
+        <div className='px-2 mx-auto w-fit lg:max-w-[99%] 2xl:max-w-[70%]'>
           {/* Categorised Product Grids*/}
           <div className='grid-title'>Standard Milk</div>
           <ProductsGrid products={milkProducts} />

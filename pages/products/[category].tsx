@@ -20,7 +20,7 @@ const Category = ({ products, hasMoreSearchResults }: Props) => {
   return (
     <main>
       {/* Central Aligned Div */}
-      <div className='mx-auto w-full 2xl:max-w-[70%] px-2'>
+      <div className='px-2 mx-auto w-fit lg:max-w-[99%] 2xl:max-w-[70%]'>
         {/* Top Bar with Title and Filter Selection */}
         <div className='flex items-center w-fit'>
           {/* Page Title */}
