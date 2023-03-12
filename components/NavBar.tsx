@@ -71,8 +71,17 @@ const NavBar = () => {
         {/* Categories Section */}
         {isWidePage && (
           <div className='flex flex-wrap items-center items-justify -mx-3.5 pb-3 overflow-hidden pl-2 xl:pl-4'>
-            <Link className='nav-main-link' href='/products/milk-deals'>
+            <Link className='nav-main-link' href='/products/milk'>
               Milk
+            </Link>
+            <Link className='nav-main-link' href='/products/eggs'>
+              Eggs
+            </Link>
+            <Link className='nav-main-link' href='/products/bread'>
+              Bread
+            </Link>
+            <Link className='nav-main-link' href='/products/fruit'>
+              Fruit
             </Link>
             {categoryNames.map((name) => {
               const link = '/products/' + name;

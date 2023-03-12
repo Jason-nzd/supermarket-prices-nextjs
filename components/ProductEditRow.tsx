@@ -26,7 +26,7 @@ function ProductEditRow({ product }: Props) {
   return (
     <tr className='hover:bg-gray-50'>
       {/* Thumbnail Image */}
-      <th className='pl-2 flex place-items-center place-content-around gap-x-2'>
+      <th className='pl-2 place-content-around gap-x-2 w-fit'>
         {/* <ImageWithFallback id={product.id} /> */}
         <div className='text-xs text-center font-light'>
           {product.sourceSite.substring(0, product.sourceSite.length - 6)}
@@ -34,26 +34,33 @@ function ProductEditRow({ product }: Props) {
       </th>
 
       {/* Product ID */}
-      <td className='px-1 py-1'>
+      <td className='px-1 py-1 w-min'>
         <div className='text-sm'>
           <div className='text-gray-400'>#{product.id}</div>
         </div>
       </td>
 
       {/* Name & Size */}
-      <td className='px-1 py-1 w-auto'>
+      <td className='px-1 py-1 max-w-[12rem]'>
         <div>
           {/* Render Product Name as either an editable text input or plain div */}
           {editMode && (
-            <div className='font-medium text-gray-700'>
-              <input type='text' title='Product Name' name='name' id='name' value={product.name} />
+            <div className='font-medium text-gray-700 py-0.5 px-2 mb-0.5 border-2 border-blue-300 rounded-lg'>
+              <input
+                type='text'
+                title='Product Name'
+                name='name'
+                id='name'
+                value={product.name}
+                className='w-full'
+              />
             </div>
           )}
           {!editMode && <div className='font-medium text-gray-700'>{product.name}</div>}
 
           {/* Product Size is also editable*/}
           {editMode && (
-            <div className='text-gray-400 ring-blue-400'>
+            <div className='text-gray-400 py-0.5 px-2 border-2 border-blue-300 rounded-lg'>
               <input type='text' title='Product Size' name='size' id='size' value={product.size} />
             </div>
           )}
@@ -63,7 +70,7 @@ function ProductEditRow({ product }: Props) {
 
       {/* Category */}
       <td className='px-1 py-1 w-min'>
-        <div className='text-xs'>{product.category}</div>
+        <div className='text-xs'>{product.category?.join(', ')}</div>
       </td>
 
       {/* Price History */}
@@ -76,7 +83,7 @@ function ProductEditRow({ product }: Props) {
       </td>
 
       {/* Edit Buttons TD */}
-      <td className='pr-4 py-1 w-30'>
+      <td className='pr-4 py-1 min-w-[4rem]'>
         <div className='flex justify-end gap-4'>
           {/* Edit Button with pencil icon */}
           {!editMode && (
