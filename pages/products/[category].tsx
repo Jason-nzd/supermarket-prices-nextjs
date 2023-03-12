@@ -42,15 +42,7 @@ const Category = ({ products, hasMoreSearchResults }: Props) => {
   );
 };
 
-export const categoryNames = [
-  'eggs',
-  'meat',
-  'fruit',
-  'vegetables',
-  'ice cream',
-  'cat',
-  'chocolate',
-];
+export const categoryNames = ['meat', 'vegetables', 'ice cream', 'cat', 'chocolate'];
 
 // Takes an array of category search terms, and returns them in { path } format
 export function getAllStaticPaths() {

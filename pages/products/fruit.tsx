@@ -40,7 +40,8 @@ const Category = ({ apples, bananas, citrus, berries, other }: Props) => {
 export const getStaticProps: GetStaticProps = async () => {
   const countdownFruit = await DBFetchByCategory('fruit-veg', 60);
   const paknFruit = await DBFetchByCategory('fresh-fruit', 60);
-  const products = countdownFruit.concat(paknFruit);
+  const paknFruit2 = await DBFetchByCategory('prepacked-fresh-fruit', 60);
+  const products = countdownFruit.concat(paknFruit).concat(paknFruit2);
 
   const apples: Product[] = [];
   const bananas: Product[] = [];
