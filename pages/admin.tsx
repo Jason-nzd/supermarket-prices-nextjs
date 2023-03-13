@@ -1,26 +1,32 @@
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import ProductEditRow from '../components/ProductEditRow';
 import { Product } from '../typings';
 import { DBFetchAll, DBFetchByName } from '../utilities/cosmosdb';
 import { OrderByMode, PriceHistoryLimit, Store } from '../utilities/utilities';
 
-interface Props {
-  products: Product[];
-}
-
-function AdminPanel({ products }: Props) {
-  const router = useRouter();
-  const { search } = router.query;
+const AdminPanel = () => {
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [productResults, setProductResults] = useState<Product[]>([]);
 
-  const onChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    const query = event.target.value;
-    setSearchQuery(query);
-  }, []);
+  useEffect(() => {
+    async function fetchData() {
+      const defaultProducts = await DBFetchByName('banana');
+      setProductResults(defaultProducts);
+    }
+  });
 
-  async function executeSearch() {}
+  async function executeSearch() {
+    if (searchQuery.length > 0) {
+      useEffect(() => {
+        async function fetchData() {
+          const defaultProducts = await DBFetchByName('searchQuery');
+          setProductResults(defaultProducts);
+        }
+      });
+    }
+  }
 
   return (
     <main>
@@ -30,7 +36,8 @@ function AdminPanel({ products }: Props) {
         <div className='flex mx-3 mt-4'>
           <input
             className='focus:outline-none w-full rounded-lg text-sm p-2'
-            onChange={onChange}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onSubmit={executeSearch}
             placeholder='Search'
             type='text'
             value={searchQuery}
@@ -64,30 +71,32 @@ function AdminPanel({ products }: Props) {
 
             {/* Table Body uses a map of Product Rows*/}
             <tbody className='divide-y divide-gray-100 border-t border-gray-100'>
-              {products.map((product) => (
+              {productResults.map((product) => (
                 <ProductEditRow product={product} key={product.id} />
               ))}
+              {/* {productResults.map((result) => {
+                // <ProductEditRow product={product} key={product.id} />
+              })} */}
             </tbody>
           </table>
         </div>
       </div>
     </main>
   );
-}
+};
 
-export async function getStaticProps() {
-  const products = await DBFetchByName('trim milk', 60);
+// export async function getStaticProps() {
+//   const products = await DBFetchByName('trim milk', 60);
 
-  return {
-    props: {
-      products,
-    },
-  };
-}
+//   return {
+//     props: {
+//       products,
+//     },
+//   };
+// }
 
 // export const getServerSideProps: GetServerSideProps = async (context) => {
-//   context.res.setHeader('Cache-Control', 'public, s-maxage=10, stale-while-revalidate=59');
-//   const products = await DBFetchByName('bread', 40);
+//   const products = await DBFetchByName(searchQuery, 40);
 
 //   return {
 //     props: {
