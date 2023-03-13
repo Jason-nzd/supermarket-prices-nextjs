@@ -40,3 +40,4 @@ package-lock.json
 next-env.d.ts
 
 *.bat
+.hintrc
