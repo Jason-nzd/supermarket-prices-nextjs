@@ -17,11 +17,13 @@ const NavBar = () => {
     //router.push('/products/milk-deals');
   };
 
+  const ok = Date();
+
   return (
     <nav className='py-1.5 w-full'>
       <div className='mx-auto lg:w-[100%] 2xl:w-[70%] transition-all duration-500'>
         {/* Title on left for wide, center for mobile, login/cart menu on right */}
-        <div className='flex w-full pl-2 xl:pl-4'>
+        <div className='flex w-full pl-2 xl:pl-4 items-center'>
           {/* Mobile burger menu */}
           <div className='lg:hidden text-primary-colour hover-to-white cursor-pointer'>
             {burgerIcon}
@@ -42,6 +44,10 @@ const NavBar = () => {
           {/* Sub Title */}
           <h3 className='hidden lg:block ml-8 pt-2.5 text-sm select-none h-8 font-bold text-stone-200'>
             Comparing the cost of food across New Zealand
+          </h3>
+
+          <h3 className='hidden lg:block ml-8 pt-2.5 text-sm select-none h-8 text-stone-200'>
+            Updated on {Date().substring(0, 15)}
           </h3>
 
           {/* Top-right corner menu - wide */}
