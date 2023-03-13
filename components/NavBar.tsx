@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React, { useCallback, useState } from 'react';
 import { categoryNames } from '../pages/products/[category]';
-import kiwifruit from '../public/images/kiwifruit.png';
+import kiwifruit from '../public/android-chrome-192x192.png';
 
 const NavBar = () => {
   const [searchQuery, setSearchQuery] = useState<string>('');
