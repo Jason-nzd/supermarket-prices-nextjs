@@ -33,23 +33,23 @@ function Home({ countdownProducts, paknsaveProducts, warehouseProducts }: Props)
 // Perform a DB lookup for each store, so all stores get some coverage on the home page
 export async function getStaticProps() {
   const countdownProducts = await DBFetchAll(
-    10,
+    8,
     Store.Countdown,
     PriceHistoryLimit.FourOrMore,
     OrderByMode.Latest
   );
 
   const paknsaveProducts = await DBFetchAll(
-    10,
+    8,
     Store.Paknsave,
     PriceHistoryLimit.TwoOrMore,
     OrderByMode.Latest
   );
 
   const warehouseProducts = await DBFetchAll(
-    5,
+    4,
     Store.Warehouse,
-    PriceHistoryLimit.Any,
+    PriceHistoryLimit.TwoOrMore,
     OrderByMode.Latest
   );
 
