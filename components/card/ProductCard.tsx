@@ -10,16 +10,17 @@ interface Props {
   product: Product;
 }
 
-function handleClick() {
-  console.log('ok');
-}
-
 function ProductCard({ product }: Props) {
   const linkHref = '/product/' + [product.id];
 
   const showCategories = false;
   const showLastUpdated = true;
   const hasPriceHistory = product.priceHistory.length > 1;
+
+  function handleClick() {
+    console.log('ok');
+    navigator.clipboard.writeText(product.id);
+  }
 
   return (
     <div className='product-card' onClick={handleClick}>
