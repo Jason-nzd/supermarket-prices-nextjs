@@ -43,15 +43,11 @@ const NavBar = () => {
 
           {/* Sub Title */}
           <h3 className='hidden lg:block ml-8 pt-2.5 text-sm select-none h-8 font-bold text-stone-200'>
-            Comparing the cost of food across New Zealand
-          </h3>
-
-          <h3 className='hidden lg:block ml-8 pt-2.5 text-sm select-none h-8 text-stone-200'>
-            Updated on {Date().substring(0, 15)}
+            Comparing the cost of food across New Zealand - Updated on {Date().substring(4, 15)}
           </h3>
 
           {/* Top-right corner menu - wide */}
-          <div className='hidden lg:flex ml-auto mr-2'>
+          <div className='hidden lg:flex ml-auto mr-2 bg-red'>
             {/* <button onClick={() => {}}>Theme</button> */}
             <Link className='nav-small-link' href='#'>
               {userIcon}
