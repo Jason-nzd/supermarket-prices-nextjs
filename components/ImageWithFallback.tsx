@@ -13,7 +13,7 @@ interface Props {
 //  if nothing is found it will fallback to a placeholder image.
 function ImageWithFallback({ id, width = 200, addClasses = '' }: Props) {
   const fallbackSrc = fallbackImg.src;
-  const imagesHost = process.env.IMAGES_PATH;
+  const imagesHost = process.env.IMAGES_PATH || 'https://kiwiprice.xyz/';
   const [imgSrc, setImgSrc] = useState(imagesHost + 'product-images/200/' + id + '.webp');
 
   return (
