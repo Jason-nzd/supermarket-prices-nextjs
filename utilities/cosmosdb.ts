@@ -6,6 +6,7 @@ import {
   ItemResponse,
   SqlQuerySpec,
 } from '@azure/cosmos';
+import { useSampleProductsInstead } from './sample-products';
 import { Product } from '../typings';
 import { cleanProductFields, OrderByMode, PriceHistoryLimit, Store } from './utilities';
 
@@ -114,7 +115,7 @@ async function fetchProductsByQuerySpec(query: SqlQuerySpec, maxItems: number): 
     } catch (error) {
       console.log('Error on fetchProductsByQuerySpec()\n ' + error);
     }
-  }
+  } else return useSampleProductsInstead();
   return resultingProducts;
 }
 
