@@ -11,20 +11,23 @@ const AdminPanel = () => {
   const [productResults, setProductResults] = useState<Product[]>([]);
 
   useEffect(() => {
-    async function fetchData() {
-      const defaultProducts = await DBFetchByName('banana');
+    (async () => {
+      const defaultProducts = await DBFetchByName(
+        'banana',
+        40,
+        Store.Any,
+        PriceHistoryLimit.Any,
+        OrderByMode.None,
+        true
+      );
       setProductResults(defaultProducts);
-    }
-  });
+    })();
+
+    return () => {};
+  }, []);
 
   async function executeSearch() {
     if (searchQuery.length > 0) {
-      useEffect(() => {
-        async function fetchData() {
-          const defaultProducts = await DBFetchByName('searchQuery');
-          setProductResults(defaultProducts);
-        }
-      });
     }
   }
 
@@ -74,9 +77,6 @@ const AdminPanel = () => {
               {productResults.map((product) => (
                 <ProductEditRow product={product} key={product.id} />
               ))}
-              {/* {productResults.map((result) => {
-                // <ProductEditRow product={product} key={product.id} />
-              })} */}
             </tbody>
           </table>
         </div>

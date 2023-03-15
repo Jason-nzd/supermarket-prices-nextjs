@@ -73,7 +73,8 @@ export async function DBFetchAll(
   maxItems: number = 20,
   store: Store = Store.Any,
   priceHistoryLimit: PriceHistoryLimit = PriceHistoryLimit.Any,
-  orderBy: OrderByMode = OrderByMode.None
+  orderBy: OrderByMode = OrderByMode.None,
+  useRestAPIInsteadOfSDK: boolean = false
 ): Promise<Product[]> {
   // Query is built using the follow base, and adding on optional extra conditions
   const querySpec: SqlQuerySpec = {
@@ -85,37 +86,72 @@ export async function DBFetchAll(
   };
 
   // Use fetchProductsByQuerySpec to do the actual CosmosDB lookup
-  return await fetchProductsByQuerySpec(querySpec, maxItems);
+  return await fetchProductsByQuerySpec(querySpec, maxItems, useRestAPIInsteadOfSDK);
 }
 
 // Takes a completed query and performs the CosmosDB lookup
-async function fetchProductsByQuerySpec(query: SqlQuerySpec, maxItems: number): Promise<Product[]> {
-  // Set Cosmos Query options
-  const options: FeedOptions = {
-    maxItemCount: maxItems,
-  };
-
+async function fetchProductsByQuerySpec(
+  querySpec: SqlQuerySpec,
+  maxItems: number,
+  useRestAPIInsteadOfSDK: boolean = false
+): Promise<Product[]> {
   let resultingProducts: Product[] = [];
 
-  // Establish CosmosDB connection
-  if (await connectToCosmosDB()) {
-    try {
-      // Perform DB Fetch
-      const dbResponse: FeedResponse<Product> = await container.items
-        .query(query, options)
-        .fetchNext();
+  // When running on the client-side, fetches can be made to the REST API
+  if (useRestAPIInsteadOfSDK) {
+    // Log query to console
+    console.warn('API: ' + querySpec.query);
 
-      // Log query to console
-      console.warn(query.query);
+    // CosmosDB API doesn't support ORDER BY, so it needs to be removed
+    const orderByIndex = querySpec.query.indexOf('ORDER BY');
+    if (orderByIndex > 0) querySpec.query = querySpec.query.substring(0, orderByIndex);
 
-      // Push products into array and clean specific fields from CosmosDB
-      dbResponse.resources.map((productDocument) => {
+    // Fetch response using POST
+    const apiResponse = await fetch('https://supermarket-api.azure-api.net/', {
+      method: 'POST',
+      body: JSON.stringify(querySpec),
+      mode: 'cors',
+      headers: {
+        'x-ms-max-item-count': maxItems.toString(),
+      },
+    });
+
+    // If successful, set resultingProducts to response json
+    if (apiResponse.status === 200) {
+      const apiJsonResponse = await apiResponse.json();
+      const apiProducts: Product[] = apiJsonResponse.Documents;
+
+      // Push products into array and clean unwanted fields from CosmosDB
+      apiProducts.map((productDocument) => {
         resultingProducts.push(cleanProductFields(productDocument));
       });
-    } catch (error) {
-      console.log('Error on fetchProductsByQuerySpec()\n ' + error);
+    } else {
+      console.log(apiResponse.statusText);
     }
-  } else return useSampleProductsInstead();
+  } else {
+    // Log query to console
+    console.warn('SDK: ' + querySpec.query);
+    // When running on the server, we can access CosmosDB directly using the SDK
+    if (await connectToCosmosDB()) {
+      try {
+        // Set Cosmos Query options
+        const options: FeedOptions = {
+          maxItemCount: maxItems,
+        };
+        // Perform DB Fetch
+        const dbResponse: FeedResponse<Product> = await container.items
+          .query(querySpec, options)
+          .fetchNext();
+
+        // Push products into array and clean specific fields from CosmosDB
+        dbResponse.resources.map((productDocument) => {
+          resultingProducts.push(cleanProductFields(productDocument));
+        });
+      } catch (error) {
+        console.log('Error on fetchProductsByQuerySpec()\n ' + error);
+      }
+    } else return useSampleProductsInstead();
+  }
   return resultingProducts;
 }
 
@@ -198,7 +234,8 @@ export async function DBFetchByCategory(
   maxItems: number = 20,
   store: Store = Store.Any,
   priceHistoryLimit: PriceHistoryLimit = PriceHistoryLimit.Any,
-  orderBy: OrderByMode = OrderByMode.None
+  orderBy: OrderByMode = OrderByMode.None,
+  useRestAPIInsteadOfSDK: boolean = false
 ): Promise<Product[]> {
   const queryBase = 'SELECT * FROM products p WHERE ARRAY_CONTAINS(p.category, @name, true)';
   const query: SqlQuerySpec = {
@@ -210,7 +247,7 @@ export async function DBFetchByCategory(
     parameters: [{ name: '@name', value: searchTerm }],
   };
 
-  return await fetchProductsByQuerySpec(query, maxItems);
+  return await fetchProductsByQuerySpec(query, maxItems, useRestAPIInsteadOfSDK);
 }
 
 // Fetch products by searching name, with optional store selection
@@ -219,7 +256,8 @@ export async function DBFetchByName(
   maxItems: number = 20,
   store: Store = Store.Any,
   priceHistoryLimit: PriceHistoryLimit = PriceHistoryLimit.Any,
-  orderBy: OrderByMode = OrderByMode.None
+  orderBy: OrderByMode = OrderByMode.None,
+  useRestAPIInsteadOfSDK: boolean = false
 ): Promise<Product[]> {
   const queryBase = 'SELECT * FROM products p WHERE CONTAINS(p.name, @name, true)';
   const query: SqlQuerySpec = {
@@ -231,5 +269,5 @@ export async function DBFetchByName(
     parameters: [{ name: '@name', value: searchTerm }],
   };
 
-  return await fetchProductsByQuerySpec(query, maxItems);
+  return await fetchProductsByQuerySpec(query, maxItems, useRestAPIInsteadOfSDK);
 }
