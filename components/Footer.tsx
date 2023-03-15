@@ -12,7 +12,7 @@ function Footer() {
       <div className='py-2 flex gap-2 mx-auto justify-center'>
         Icons licensed from
         <Link href='https://icon-icons.com' className='hover-to-white'>
-          icons-icons.com
+          icon-icons.com
         </Link>
         <Link href='https://icons.getbootstrap.com/' className='hover-to-white'>
           icons.getbootstrap.com
