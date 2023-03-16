@@ -160,16 +160,19 @@ function queryAddOrderBy(orderBy: OrderByMode): string {
   let sqlQueryAddon = '';
   switch (orderBy) {
     case OrderByMode.Latest:
-      sqlQueryAddon = ' ORDER BY p.lastUpdated DESC';
+      sqlQueryAddon = ' ORDER BY p.lastChecked DESC';
       break;
     case OrderByMode.Oldest:
-      sqlQueryAddon = ' ORDER BY p.lastUpdated';
+      sqlQueryAddon = ' ORDER BY p.lastChecked';
       break;
     case OrderByMode.PriceLowest:
       sqlQueryAddon = ' ORDER BY p.currentPrice';
       break;
     case OrderByMode.PriceHighest:
       sqlQueryAddon = ' ORDER BY p.currentPrice DESC';
+      break;
+    case OrderByMode.Name:
+      sqlQueryAddon = ' ORDER BY p.name';
       break;
     default:
     case OrderByMode.None:

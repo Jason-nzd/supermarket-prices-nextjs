@@ -6,9 +6,10 @@ import { Line } from 'react-chartjs-2';
 
 interface Props {
   priceHistory: DatedPrice[];
+  lastChecked: Date;
 }
 
-function PriceHistoryChart({ priceHistory }: Props) {
+function PriceHistoryChart({ priceHistory, lastChecked }: Props) {
   // Initialize chart.js line chart
   Chart.register(CategoryScale, LinearScale, PointElement, LineElement);
 
@@ -22,14 +23,15 @@ function PriceHistoryChart({ priceHistory }: Props) {
     priceDataOnly.push(datedPrice.price);
   });
 
-  // Replace the latest date name with 'Today'
-  dateStringsOnly[dateStringsOnly.length - 1] = 'Today';
+  const lastDateString = utcDateToShortDate(lastChecked, true);
 
   // If only 1 history point is available, add an extra point required for line rendering
   if (priceHistory.length === 1) {
-    dateStringsOnly[1] = dateStringsOnly[0];
-    dateStringsOnly[0] = 'Last';
+    dateStringsOnly[1] = lastDateString;
     priceDataOnly[1] = priceDataOnly[0];
+  } else {
+    // Replace the last price date with the last checked date
+    dateStringsOnly[dateStringsOnly.length - 1] = lastDateString;
   }
 
   // Set line colour to green or red depending on price trend

@@ -14,7 +14,7 @@ function ProductCard({ product }: Props) {
   const linkHref = '/product/' + [product.id];
 
   const showCategories = false;
-  const showLastUpdated = true;
+  const showLastUpdated = false;
   const hasPriceHistory = product.priceHistory.length > 1;
 
   function handleClick() {
@@ -46,7 +46,10 @@ function ProductCard({ product }: Props) {
         <div className='w-3/5'>
           {/* Price history chart Div */}
           <div className='pl-0 pr-0.5 z-50'>
-            <PriceHistoryChart priceHistory={product.priceHistory} />
+            <PriceHistoryChart
+              priceHistory={product.priceHistory}
+              lastChecked={product.lastChecked}
+            />
           </div>
 
           <div className='flex flex-row-reverse items-center'>
@@ -70,6 +73,10 @@ function ProductCard({ product }: Props) {
           {product.category!.join(', ')}
         </div>
       )}
+
+      <div className='text-xs text-slate-400 p-1.5 text-center leading-3'>
+        Last Updated {utcDateToShortDate(product.lastChecked, true)}
+      </div>
 
       {showLastUpdated && hasPriceHistory && (
         <div className='text-xs text-slate-300 p-1.5 text-center leading-3'>

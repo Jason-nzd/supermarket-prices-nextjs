@@ -20,6 +20,7 @@ export enum OrderByMode {
   Oldest,
   PriceLowest,
   PriceHighest,
+  Name,
   None,
 }
 export enum PriceHistoryLimit {
@@ -30,7 +31,17 @@ export enum PriceHistoryLimit {
 
 // Removes undesired fields that CosmosDB creates
 export function cleanProductFields(document: Product): Product {
-  let { id, name, currentPrice, size, sourceSite, priceHistory, category, lastUpdated } = document;
+  let {
+    id,
+    name,
+    currentPrice,
+    size,
+    sourceSite,
+    priceHistory,
+    category,
+    lastUpdated,
+    lastChecked,
+  } = document;
   try {
     // Also check for valid date and category formats
     if (lastUpdated === undefined || lastUpdated === null) {
@@ -39,6 +50,7 @@ export function cleanProductFields(document: Product): Product {
       console.log(name + ' has non-utc date - ' + lastUpdated);
     }
     if (!category) category = ['No Category'];
+    if (!lastChecked) lastChecked = lastUpdated;
   } catch (error) {
     console.log(`Error on cleanProductFields() for ${name}\n` + error);
   }
@@ -51,13 +63,20 @@ export function cleanProductFields(document: Product): Product {
     priceHistory,
     category,
     lastUpdated,
+    lastChecked,
   };
   return cleanedProduct;
 }
 
-export function utcDateToShortDate(utcDate: Date): string {
-  var d = new Date(utcDate);
-  return d.toDateString().substring(4, 11);
+// utcDateToShortDate()
+// --------------------
+// Will take a UTC Date and return in format Mar 16, or 'Today'
+export function utcDateToShortDate(utcDate: Date, returnTodayString: boolean = false): string {
+  var date = new Date(utcDate).toDateString(); // Thu Mar 16 2023
+  var now = new Date().toDateString();
+
+  if (date === now && returnTodayString) return 'Today';
+  else return date.substring(4, 11); // Mar 16
 }
 
 export function sortProductsByName(products: Product[]): Product[] {

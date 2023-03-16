@@ -18,7 +18,7 @@ const AdminPanel = () => {
         Store.Any,
         PriceHistoryLimit.Any,
         OrderByMode.None,
-        true
+        false
       );
       setProductResults(defaultProducts);
     })();

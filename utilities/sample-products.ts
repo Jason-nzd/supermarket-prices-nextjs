@@ -20,6 +20,7 @@ export function useSampleProductsInstead(): Product[] {
       size: product.size,
       sourceSite: product.sourceSite,
       lastUpdated: product.lastUpdated as unknown as Date,
+      lastChecked: product.lastUpdated as unknown as Date, //todo regen new products
       priceHistory: fixedPriceHistory,
     };
 
