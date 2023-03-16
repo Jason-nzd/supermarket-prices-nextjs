@@ -35,7 +35,7 @@ function ProductCard({ product }: Props) {
       {/* Central Div containing image, chart, price info */}
       <div className='flex flex-auto w-full'>
         {/* Image Div */}
-        <div className='relative w-2/5'>
+        <div className='relative w-full'>
           <div className=''>
             <ImageWithFallback id={product.id} width={200} addClasses='pl-2' />
           </div>

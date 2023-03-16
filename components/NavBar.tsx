@@ -20,91 +20,80 @@ const NavBar = () => {
   const ok = Date();
 
   return (
-    <nav className='py-1.5 w-full'>
-      <div className='mx-auto lg:w-[100%] 2xl:w-[70%] transition-all duration-500'>
-        {/* Title on left for wide, center for mobile, login/cart menu on right */}
-        <div className='flex w-full pl-2 xl:pl-4 items-center'>
-          {/* Mobile burger menu */}
-          <div className='lg:hidden text-primary-colour hover-to-white cursor-pointer'>
-            {burgerIcon}
-          </div>
+    <nav className='w-full overflow-hidden'>
+      <div className='max-w-[160rem] mx-auto lg:w-[100%] 2xl:w-[70%] transition-all duration-500 flex flex-nowrap h-full'>
+        {/* Column 1 - Logo*/}
+        <div className='ml-2'>
+          <Image
+            src={kiwifruit}
+            alt=''
+            className='hidden lg:block w-[5rem] min-w-[5rem] pt-1 pb-2 duration-200 hover:rotate-12 hover:scale-[102%]'
+          />
+        </div>
 
-          {/* Brand Icon & Title */}
-          <Link href='/' className='flex w-fit ml-auto lg:ml-0'>
+        {/* Column 2 - Title - Sub-title - Categories - Search */}
+        <div className='block w-full'>
+          {/* Row 1 - Title - Sub-title */}
+          <div className='flex flex-wrap w-full h-1/2 items-center lg:items-center ml-1'>
+            {/* Mobile Burger Menu */}
+            <div className='lg:hidden text-primary-colour hover-to-white cursor-pointer'>
+              {burgerIcon}
+            </div>
+
+            {/* Mobile Icon */}
             <Image
               src={kiwifruit}
               alt=''
-              className='w-9 pr-1 duration-200 hover:rotate-12 hover:scale-[102%]'
+              className='ml-auto py-1 block lg:hidden w-[3rem] duration-200 hover:rotate-12 hover:scale-[102%]'
             />
-            <h1 className='text-2xl font-bold text-stone-100 hover-to-white hover:scale-[102%]'>
-              KiwiPrice.xyz
-            </h1>
-          </Link>
+            {/* Brand Title */}
+            <Link href='/' className='mr-auto lg:mr-0'>
+              <h1 className='ml-2.5 text-2xl font-bold text-stone-100 hover-to-white hover:scale-[102%]'>
+                KiwiPrice.xyz
+              </h1>
+            </Link>
 
-          {/* Sub Title */}
-          <h3 className='hidden lg:block ml-8 pt-2.5 text-sm select-none h-8 font-bold text-stone-200'>
-            Comparing the cost of food across New Zealand - Updated on {Date().substring(4, 15)}
-          </h3>
-
-          {/* Top-right corner menu - wide */}
-          <div className='hidden lg:flex ml-auto mr-2 bg-red'>
-            {/* <button onClick={() => {}}>Theme</button> */}
-            <Link className='nav-small-link' href='#'>
-              {userIcon}
-              Login
-            </Link>
-            <Link className='nav-small-link' href='#'>
-              {cartIcon}
-              Cart
-            </Link>
-            <Link className='nav-small-link' href='/admin'>
-              {tableIcon}
-              Admin
-            </Link>
+            {/* Sub Title */}
+            <h3 className='hidden lg:flex ml-8 mr-auto text-sm select-none font-bold text-stone-200'>
+              Comparing the cost of food across New Zealand
+            </h3>
           </div>
 
-          {/* Top-right corner menu - mobile */}
-          <div className='lg:hidden ml-auto'>
-            <Link className='nav-small-link' href='#'>
-              {userIcon}
-            </Link>
-          </div>
-        </div>
+          {/* Row 2 - Categories - Search Bar*/}
+          <div className='flex-nowrap w-full h-1/2 hidden lg:flex items-center pb-4'>
+            {/* Categories */}
+            <div className='flex items-center overflow-hidden'>
+              <Link className='nav-main-link' href='/products/milk'>
+                Milk
+              </Link>
+              <Link className='nav-main-link' href='/products/eggs'>
+                Eggs
+              </Link>
+              <Link className='nav-main-link' href='/products/bread'>
+                Bread
+              </Link>
+              <Link className='nav-main-link' href='/products/fruit'>
+                Fruit
+              </Link>
+              {categoryNames.map((name) => {
+                const link = '/products/' + name;
+                return (
+                  <Link className='nav-main-link' href={link} key={link}>
+                    {_.startCase(name)}
+                  </Link>
+                );
+              })}
+            </div>
 
-        {/* Categories and Search Section */}
-        <div className='hidden lg:flex flex-wrap pb-1 pl-1 xl:pl-4 w-full h-10 overflow-hidden'>
-          {/* Categories */}
-          <div className='flex items-center place-content-start overflow-hidden h-8 gap-x-1'>
-            <Link className='nav-main-link' href='/products/milk'>
-              Milk
-            </Link>
-            <Link className='nav-main-link' href='/products/eggs'>
-              Eggs
-            </Link>
-            <Link className='nav-main-link' href='/products/bread'>
-              Bread
-            </Link>
-            <Link className='nav-main-link' href='/products/fruit'>
-              Fruit
-            </Link>
-            {categoryNames.map((name) => {
-              const link = '/products/' + name;
-              return (
-                <Link className='nav-main-link' href={link} key={link}>
-                  {_.startCase(name)}
-                </Link>
-              );
-            })}
-          </div>
-          <div>
             {/* Add custom category with plus icon */}
-            <button type='button' title='Add'>
-              {plusIcon}
-            </button>
-          </div>
-          <div className='w-fit flex flex-wrap'>
+            {/* <div>
+              <button type='button' title='Add'>
+                {plusIcon}
+              </button>
+            </div> */}
+
             {/* Search Bar */}
-            <div className='flex flex-wrap rounded-2xl border-2 border-[#75F3A3] h-8'>
+            <div className='flex rounded-2xl border-2 border-[#75F3A3] h-8 min-w-[3rem]'>
               <input
                 type='text'
                 name='search'
@@ -126,6 +115,35 @@ const NavBar = () => {
             </div>
           </div>
         </div>
+
+        {/* Column 3 - Right Menu */}
+        <div className='hidden lg:block pl-4 ml-auto mr-2 items-center'>
+          <h3 className='py-3 text-primary-colour text-sm select-none text-center'>
+            Updated {Date().substring(4, 15)}
+          </h3>
+
+          <div className='flex items-center'>
+            {/* <button onClick={() => {}}>Theme</button> */}
+            <Link className='nav-small-link' href='#'>
+              {userIcon}
+              Login
+            </Link>
+            <Link className='nav-small-link' href='#'>
+              {cartIcon}
+              Cart
+            </Link>
+            <Link className='nav-small-link' href='/admin'>
+              {tableIcon}
+              Admin
+            </Link>
+          </div>
+        </div>
+        {/* Column 3 - Mobile Right Menu */}
+        <div className='block mt-2 h-full lg:hidden ml-auto items-center'>
+          <Link className='nav-small-link w-12 items-center' href='#'>
+            {userIcon}
+          </Link>
+        </div>
       </div>
     </nav>
   );
@@ -137,7 +155,7 @@ const burgerIcon = (
     width='16'
     height='16'
     fill='currentColor'
-    className='w-6 h-6'
+    className='w-12 h-12'
     viewBox='0 0 16 16'
   >
     <path
@@ -156,7 +174,7 @@ const userIcon = (
     viewBox='0 0 24 24'
     strokeWidth='1.5'
     stroke='currentColor'
-    className='w-6 h-6'
+    className='w-10 h-10 lg:w-6 lg:h-6'
   >
     <path
       strokeLinecap='round'
