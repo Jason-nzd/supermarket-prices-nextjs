@@ -1,12 +1,15 @@
 import _ from 'lodash';
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import { categoryNames } from '../pages/products/[category]';
+import { ThemeContext } from '../pages/_app';
 import kiwifruit from '../public/android-chrome-192x192.png';
 import SearchBar from './SearchBar';
 
 const NavBar = () => {
+  const theme = useContext(ThemeContext);
+
   return (
     <nav className='w-full overflow-hidden'>
       <div className='max-w-[160rem] mx-auto lg:w-[100%] 2xl:w-[70%] transition-all duration-500 flex flex-nowrap h-full'>
@@ -92,7 +95,8 @@ const NavBar = () => {
           </h3>
 
           <div className='flex items-center'>
-            {/* <button onClick={() => {}}>Theme</button> */}
+            {/* <div onClick={() => {}}>{theme}</div> */}
+            {/* <button () => {}}>Theme</button> */}
             <Link className='nav-small-link' href='#'>
               {userIcon}
               Login

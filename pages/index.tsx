@@ -1,7 +1,9 @@
+import { useContext } from 'react';
 import ProductsGrid from '../components/ProductsGrid';
 import { Product } from '../typings';
 import { DBFetchAll } from '../utilities/cosmosdb';
 import { OrderByMode, PriceHistoryLimit, Store } from '../utilities/utilities';
+import { ThemeContext } from './_app';
 
 interface Props {
   countdownProducts: Product[];
@@ -10,13 +12,15 @@ interface Props {
 }
 
 // Products props will be populated at build time by getStaticProps()
-function Home({ countdownProducts, paknsaveProducts, warehouseProducts }: Props) {
+export default function Home({ countdownProducts, paknsaveProducts, warehouseProducts }: Props) {
+  const theme = useContext(ThemeContext);
+
   return (
-    <main>
+    <div className={theme}>
       {/* Background Div */}
-      <div className=''>
+      <div className='pt-1 pb-12'>
         {/* Central Aligned Div */}
-        <div className='px-2 mx-auto w-[100%] 2xl:w-[70%] transition-all duration-500'>
+        <div className='px-2 mx-auto w-[100%] 2xl:w-[70%] transition-all duration-500 min-h-screen'>
           {/* Page Title */}
           <div className='my-4 pl-2 text-xl text-[#3C8DA3] font-bold'>
             Today's Trending Products
@@ -26,7 +30,7 @@ function Home({ countdownProducts, paknsaveProducts, warehouseProducts }: Props)
           {warehouseProducts && <ProductsGrid products={warehouseProducts} />}
         </div>
       </div>
-    </main>
+    </div>
   );
 }
 
@@ -61,5 +65,3 @@ export async function getStaticProps() {
     },
   };
 }
-
-export default Home;
