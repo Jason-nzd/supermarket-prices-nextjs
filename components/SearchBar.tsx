@@ -1,44 +1,40 @@
-import React, { useCallback, useState } from 'react';
+import { useRouter } from 'next/router';
+import React, { useState } from 'react';
 
-function SearchBar() {
+export default function SearchBar() {
+  // const router = useRouter();
   const [searchQuery, setSearchQuery] = useState<string>('');
 
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const query = event.target.value;
-    setSearchQuery(query);
+  const handleSearch = async (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('searched');
+    // router.push('/admin');
   };
 
-  const handleSearch = () => {
-    //router.push('/products/milk-deals');
-  };
   return (
     <>
-      <div className='flex rounded-2xl border-2 border-[#75F3A3] h-8 min-w-[3rem]'>
-        <input
-          type='text'
-          name='search'
-          id='search'
-          required
-          placeholder='Search'
-          minLength={3}
-          maxLength={40}
-          className='bg-transparent focus:outline-none text-white pl-4 placeholder-[#75F3A3] align-top'
-          onChange={(e) => setSearchQuery(e.target.value)}
-          //onSubmit={handleSearch}
-          //value={searchQuery}
-        />
-        <div className=''>
-          <button type='button' title='Search' onClick={handleSearch}>
+      <div className='flex rounded-2xl border-2 border-[#75F3A3] h-8 min-w-[3rem] w-fit place-items-center'>
+        <form onSubmit={handleSearch}>
+          <input
+            type='text'
+            // name='search'
+            // id='search'
+            // required
+            placeholder='Search'
+            minLength={3}
+            maxLength={40}
+            className='bg-transparent focus:outline-none text-white pl-4 placeholder-[#75F3A3] align-top'
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <button type='submit' title='Search' className='pb-1'>
             {magnifyIcon}
           </button>
-        </div>
+        </form>
+        {/* <div onClick={() => console.log('asf clicked')}>asf</div> */}
       </div>
-      <div>{searchQuery}</div>
     </>
   );
 }
-
-export default SearchBar;
 
 const magnifyIcon = (
   <svg
