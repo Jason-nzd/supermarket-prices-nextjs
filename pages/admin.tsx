@@ -34,7 +34,7 @@ const AdminPanel = () => {
   return (
     <main>
       {/* Central Aligned Div */}
-      <div className='px-2 mx-auto w-fit lg:max-w-[99%] 2xl:max-w-[70%]'>
+      <div className='px-2 mx-auto w-[100%] 2xl:w-[70%] transition-all duration-500'>
         {/* Search Bar */}
         <div className='flex mx-3 mt-4'>
           <input

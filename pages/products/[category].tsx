@@ -20,7 +20,7 @@ const Category = ({ products, hasMoreSearchResults }: Props) => {
   return (
     <main>
       {/* Central Aligned Div */}
-      <div className='px-2 mx-auto w-fit lg:max-w-[99%] 2xl:max-w-[70%]'>
+      <div className='px-2 mx-auto w-[100%] 2xl:w-[70%] transition-all duration-500'>
         {/* Top Bar with Title and Filter Selection */}
         <div className='flex items-center w-fit'>
           {/* Page Title */}
@@ -42,7 +42,7 @@ const Category = ({ products, hasMoreSearchResults }: Props) => {
   );
 };
 
-export const categoryNames = ['meat', 'vegetables', 'ice cream', 'cat', 'chocolate'];
+export const categoryNames = ['meat', 'vegetables', 'ice-cream', 'cat', 'chocolate'];
 
 // Takes an array of category search terms, and returns them in { path } format
 export function getAllStaticPaths() {

@@ -16,13 +16,14 @@
     @apply px-2 my-0 py-0 rounded-md border border-stone-300;
   }
   .nav-main-link {
-    @apply mx-1 xl:mx-4 text-primary-colour hover-to-white;
+    @apply mr-4 xl:mr-8 text-primary-colour hover-to-white transition-all;
   }
   .nav-small-link {
     @apply mx-3 text-xs flex flex-col items-center leading-tight text-primary-colour hover-to-white;
   }
   .btn-primary {
-    @apply py-2 px-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75;
+    @apply py-2 px-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700
+     focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75;
   }
   .hover-to-white {
     @apply transition-colors duration-300 hover:text-white;

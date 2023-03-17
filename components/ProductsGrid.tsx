@@ -8,7 +8,7 @@ interface Props {
 function ProductsGrid({ products }: Props) {
   return (
     <div
-      className='grid place-items-center place-content-center
+      className='grid
             grid-cols-1
             md:grid-cols-2
             lg:grid-cols-3

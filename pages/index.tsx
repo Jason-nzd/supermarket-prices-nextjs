@@ -16,7 +16,7 @@ function Home({ countdownProducts, paknsaveProducts, warehouseProducts }: Props)
       {/* Background Div */}
       <div className=''>
         {/* Central Aligned Div */}
-        <div className='px-2 mx-auto w-fit max-w-[99%] 2xl:max-w-[70%]'>
+        <div className='px-2 mx-auto w-[100%] 2xl:w-[70%] transition-all duration-500'>
           {/* Page Title */}
           <div className='my-4 pl-2 text-xl text-[#3C8DA3] font-bold'>
             Today's Trending Products

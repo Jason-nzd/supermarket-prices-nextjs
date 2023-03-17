@@ -48,13 +48,13 @@ const NavBar = () => {
             />
             {/* Brand Title */}
             <Link href='/' className='mr-auto lg:mr-0'>
-              <h1 className='ml-2.5 text-2xl font-bold text-stone-100 hover-to-white hover:scale-[102%]'>
+              <h1 className='ml-2 text-2xl font-bold text-stone-100 hover-to-white hover:scale-[102%]'>
                 KiwiPrice.xyz
               </h1>
             </Link>
 
             {/* Sub Title */}
-            <h3 className='hidden lg:flex ml-8 mr-auto text-sm select-none font-bold text-stone-200'>
+            <h3 className='hidden lg:flex ml-6 pt-2 mr-auto text-sm select-none font-bold text-stone-100'>
               Comparing the cost of food across New Zealand
             </h3>
           </div>
@@ -62,7 +62,7 @@ const NavBar = () => {
           {/* Row 2 - Categories - Search Bar*/}
           <div className='flex-nowrap w-full h-1/2 hidden lg:flex items-center pb-4'>
             {/* Categories */}
-            <div className='flex items-center overflow-hidden'>
+            <div className='flex items-center overflow-hidden ml-3'>
               <Link className='nav-main-link' href='/products/milk'>
                 Milk
               </Link>
@@ -118,7 +118,7 @@ const NavBar = () => {
 
         {/* Column 3 - Right Menu */}
         <div className='hidden lg:block pl-4 ml-auto mr-2 items-center'>
-          <h3 className='py-3 text-primary-colour text-sm select-none text-center'>
+          <h3 className='py-2 text-primary-colour text-sm select-none text-center'>
             Updated {Date().substring(4, 15)}
           </h3>
 
