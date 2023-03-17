@@ -3,7 +3,7 @@ import React from 'react';
 
 function Footer() {
   return (
-    <footer className='mt-6 py-6 bg-[#0ea40f] w-full h-full text-slate-300 text-sm'>
+    <footer className='py-6 bg-[#0ea40f] w-full h-full text-slate-300 text-sm'>
       <div className='flex mx-auto py-2 justify-center'>
         <Link className='flex gap-2' href='https://github.com/jason-nzd/supermarket-prices'>
           {githubIcon} GitHub

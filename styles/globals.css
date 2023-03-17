@@ -4,7 +4,13 @@
 
 @layer components {
   body {
-    @apply bg-[#E8EDEC];
+    @apply light;
+  }
+  .light {
+    @apply bg-zinc-200;
+  }
+  .dark {
+    @apply bg-black;
   }
   nav {
     @apply bg-[#1EA44F];
