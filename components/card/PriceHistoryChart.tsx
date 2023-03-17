@@ -17,21 +17,20 @@ function PriceHistoryChart({ priceHistory, lastChecked }: Props) {
   let dateStringsOnly: string[] = [];
   let priceDataOnly: number[] = [];
 
+  // Loop through each DatedPrice and remove day and year from date label
   priceHistory.forEach((datedPrice) => {
-    // Remove day and year from date label
-    dateStringsOnly.push(utcDateToShortDate(datedPrice.date));
+    dateStringsOnly.push(utcDateToShortDate(datedPrice.date, true));
     priceDataOnly.push(datedPrice.price);
   });
 
-  const lastDateString = utcDateToShortDate(lastChecked, true);
+  // Duplicate the most recent price point onto another price point when the product was last checked
+  //  this emphasises that the most recent price point is still valid when last checked
+  const mostRecentDate = new Date(priceHistory[priceHistory.length - 1].date).toDateString();
+  const today = new Date().toDateString();
 
-  // If only 1 history point is available, add an extra point required for line rendering
-  if (priceHistory.length === 1) {
-    dateStringsOnly[1] = lastDateString;
-    priceDataOnly[1] = priceDataOnly[0];
-  } else {
-    // Replace the last price date with the last checked date
-    dateStringsOnly[dateStringsOnly.length - 1] = lastDateString;
+  if (mostRecentDate !== today) {
+    dateStringsOnly.push(utcDateToShortDate(lastChecked, true));
+    priceDataOnly.push(priceHistory[priceHistory.length - 1].price);
   }
 
   // Set line colour to green or red depending on price trend
