@@ -130,7 +130,9 @@ async function fetchProductsByQuerySpec(
     }
   } else {
     // Log query to console
-    console.warn('SDK: ' + querySpec.query);
+    console.log('SDK: ' + querySpec.query);
+    if (querySpec.parameters !== undefined) console.log('\t' + querySpec.parameters[0]);
+
     // When running on the server, we can access CosmosDB directly using the SDK
     if (await connectToCosmosDB()) {
       try {
@@ -142,6 +144,8 @@ async function fetchProductsByQuerySpec(
         const dbResponse: FeedResponse<Product> = await container.items
           .query(querySpec, options)
           .fetchNext();
+
+        if (dbResponse.resources === undefined) return resultingProducts;
 
         // Push products into array and clean specific fields from CosmosDB
         dbResponse.resources.map((productDocument) => {
@@ -256,14 +260,17 @@ export async function DBFetchByCategory(
 // Fetch products by searching name, with optional store selection
 export async function DBFetchByName(
   searchTerm: string,
-  maxItems: number = 20,
+  maxItems: number = 60,
   store: Store = Store.Any,
   priceHistoryLimit: PriceHistoryLimit = PriceHistoryLimit.Any,
   orderBy: OrderByMode = OrderByMode.None,
   useRestAPIInsteadOfSDK: boolean = false
 ): Promise<Product[]> {
+  // Replace hyphens in search term
+  searchTerm = searchTerm.replace('-', ' ');
+
   const queryBase = 'SELECT * FROM products p WHERE CONTAINS(p.name, @name, true)';
-  const query: SqlQuerySpec = {
+  const querySpec: SqlQuerySpec = {
     query:
       queryBase +
       queryAddLimitStore(store, false) +
@@ -272,5 +279,5 @@ export async function DBFetchByName(
     parameters: [{ name: '@name', value: searchTerm }],
   };
 
-  return await fetchProductsByQuerySpec(query, maxItems, useRestAPIInsteadOfSDK);
+  return await fetchProductsByQuerySpec(querySpec, maxItems, useRestAPIInsteadOfSDK);
 }
