@@ -235,6 +235,15 @@ function queryAddPriceHistoryLimit(
   return queryAddon;
 }
 
+function queryAddOnlyRecentlyChecked(onlyRecentlyChecked: boolean, useAND: boolean = true) {
+  let queryAddon = '';
+  let optionalAND = useAND ? ' AND ' : ' WHERE ';
+
+  if (onlyRecentlyChecked) queryAddon = optionalAND + 'IS_DEFINED(p.lastChecked)';
+
+  return queryAddon;
+}
+
 // Fetch products by searching category
 export async function DBFetchByCategory(
   searchTerm: string,
@@ -242,6 +251,7 @@ export async function DBFetchByCategory(
   store: Store = Store.Any,
   priceHistoryLimit: PriceHistoryLimit = PriceHistoryLimit.Any,
   orderBy: OrderByMode = OrderByMode.None,
+  onlyRecentlyChecked: boolean = true,
   useRestAPIInsteadOfSDK: boolean = false
 ): Promise<Product[]> {
   const queryBase = 'SELECT * FROM products p WHERE ARRAY_CONTAINS(p.category, @name, true)';
@@ -249,6 +259,7 @@ export async function DBFetchByCategory(
     query:
       queryBase +
       queryAddLimitStore(store, false) +
+      queryAddOnlyRecentlyChecked(onlyRecentlyChecked) +
       queryAddPriceHistoryLimit(priceHistoryLimit) +
       queryAddOrderBy(orderBy),
     parameters: [{ name: '@name', value: searchTerm }],
@@ -264,6 +275,7 @@ export async function DBFetchByName(
   store: Store = Store.Any,
   priceHistoryLimit: PriceHistoryLimit = PriceHistoryLimit.Any,
   orderBy: OrderByMode = OrderByMode.None,
+  onlyRecentlyChecked: boolean = true,
   useRestAPIInsteadOfSDK: boolean = false
 ): Promise<Product[]> {
   // Replace hyphens in search term
@@ -274,6 +286,7 @@ export async function DBFetchByName(
     query:
       queryBase +
       queryAddLimitStore(store, false) +
+      queryAddOnlyRecentlyChecked(onlyRecentlyChecked) +
       queryAddPriceHistoryLimit(priceHistoryLimit) +
       queryAddOrderBy(orderBy),
     parameters: [{ name: '@name', value: searchTerm }],
