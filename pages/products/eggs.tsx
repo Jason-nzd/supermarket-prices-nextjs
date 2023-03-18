@@ -1,37 +1,37 @@
 import { GetStaticProps } from 'next';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Product } from '../../typings';
 import _ from 'lodash';
 import ProductsGrid from '../../components/ProductsGrid';
-import { DBFetchByCategory, DBFetchByName, DBGetProduct } from '../../utilities/cosmosdb';
+import { DBFetchByCategory } from '../../utilities/cosmosdb';
 import { printPrice } from '../../utilities/utilities';
+import { ThemeContext } from '../_app';
 
 interface Props {
-  size6: Product[];
+  mixedGrade: Product[];
   size7: Product[];
   size8plus: Product[];
-  other: Product[];
 }
 
-const Category = ({ size6, size7, size8plus, other }: Props) => {
+const Category = ({ mixedGrade, size7, size8plus }: Props) => {
+  const theme = useContext(ThemeContext);
+
   return (
-    <main>
+    <div className={theme}>
       {/* Background Div */}
-      <div className=''>
+      <div className='pt-1 pb-12'>
         {/* Central Aligned Div */}
-        <div className='px-2 mx-auto w-[100%] 2xl:w-[70%] transition-all duration-500'>
+        <div className='px-2 mx-auto w-[100%] 2xl:w-[70%] transition-all duration-500 min-h-screen'>
           {/* Categorised Product Grids*/}
-          <div className='grid-title'>Mixed Range Eggs</div>
-          <ProductsGrid products={other} />
-          <div className='grid-title'>Size 6 Eggs</div>
-          <ProductsGrid products={size6} />
+          <div className='grid-title'>Size 6 and Mixed Range Eggs</div>
+          <ProductsGrid products={mixedGrade} />
           <div className='grid-title'>Size 7 Eggs</div>
           <ProductsGrid products={size7} />
-          <div className='grid-title'>Size 8 and Above Eggs</div>
+          <div className='grid-title'>Size 8 and Jumbo Eggs</div>
           <ProductsGrid products={size8plus} />
         </div>
       </div>
-    </main>
+    </div>
   );
 };
 
@@ -39,20 +39,24 @@ export const getStaticProps: GetStaticProps = async () => {
   let products = await DBFetchByCategory('eggs', 100);
 
   // Sub-categories to display separately on page
-  let size6: Product[] = [];
+  let mixedGrade: Product[] = [];
   let size7: Product[] = [];
   let size8plus: Product[] = [];
-  let other: Product[] = [];
 
   // Try derive per unit price of each product
   products.forEach((product) => {
-    // Use regex to match digits
-    const size = product.size?.toLowerCase();
-    const quantityString = size?.match(/\d/g)?.join('');
+    // Try grab product size if any, else use the name
+    let size = product.size?.toLowerCase();
+    if (size === undefined || size === '') {
+      size = product.name.toLowerCase();
+    }
+
+    // Use regex to get any digits from size or name
+    const regexMatchOnlyDigits = size?.match(/\d/g)?.join('');
 
     // Parse to int and check is within valid range
-    if (quantityString !== undefined && parseInt(quantityString) < 50) {
-      const quantity = parseInt(quantityString);
+    if (regexMatchOnlyDigits !== undefined && parseInt(regexMatchOnlyDigits) < 50) {
+      const quantity = parseInt(regexMatchOnlyDigits);
 
       // Set per egg unit price
       product.unitPrice = product.currentPrice / quantity;
@@ -61,12 +65,9 @@ export const getStaticProps: GetStaticProps = async () => {
       // Update size tag
       product.size = quantity + ' Pack\n\n' + pricePerEgg + '/egg';
     }
-  });
-
-  // Filter out products that could not derive a per unit price
-  products = products.filter((product) => {
-    if (product.unitPrice === undefined) return false;
-    return true;
+    // If a unit price could not be derived,
+    //  set unitPrice to 99 to force ordering to bottom
+    else product.unitPrice = 99;
   });
 
   // Sort by unit price
@@ -78,7 +79,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
   // Loop through all products and split by category
   products.forEach((product) => {
-    if (product.name.toLowerCase().includes('size 6')) size6.push(product);
+    if (product.name.toLowerCase().includes('size 6')) mixedGrade.push(product);
     else if (product.name.toLowerCase().includes('size 7')) size7.push(product);
     else if (
       product.name.toLowerCase().includes('size 8') ||
@@ -87,20 +88,18 @@ export const getStaticProps: GetStaticProps = async () => {
       product.name.toLowerCase().includes('jumbo')
     )
       size8plus.push(product);
-    else other.push(product);
+    else mixedGrade.push(product);
   });
 
-  size6 = size6.slice(0, 10);
-  size7 = size7.slice(0, 10);
-  size8plus = size8plus.slice(0, 10);
-  other = other.slice(0, 10);
+  mixedGrade = mixedGrade.slice(0, 12);
+  size7 = size7.slice(0, 12);
+  size8plus = size8plus.slice(0, 12);
 
   return {
     props: {
-      size6,
+      mixedGrade,
       size7,
       size8plus,
-      other,
     },
   };
 };

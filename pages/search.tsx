@@ -29,18 +29,18 @@ export default function Search({ products, searchTerm }: Props) {
 }
 
 // Perform DB lookup
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const query = context.query;
-  const searchTerm = query.name as string;
+// export const getServerSideProps: GetServerSideProps = async (context) => {
+//   const query = context.query;
+//   const searchTerm = query.name as string;
 
-  if (searchTerm == null) return { props: {} };
+//   if (searchTerm == null) return { props: {} };
 
-  let products = await DBFetchByName(searchTerm);
+//   let products = await DBFetchByName(searchTerm);
 
-  return {
-    props: {
-      products,
-      searchTerm,
-    },
-  };
-};
+//   return {
+//     props: {
+//       products,
+//       searchTerm,
+//     },
+//   };
+// };
