@@ -85,77 +85,84 @@ export async function DBFetchAll(
       queryAddOrderBy(orderBy),
   };
 
-  // Use fetchProductsByQuerySpec to do the actual CosmosDB lookup
-  return await fetchProductsByQuerySpec(querySpec, maxItems, useRestAPIInsteadOfSDK);
+  if (useRestAPIInsteadOfSDK) return await fetchProductsUsingAPI(querySpec, maxItems);
+  else return await fetchProductsUsingSDK(querySpec, maxItems);
+}
+
+// When running on the client-side, fetches can be made to the REST API
+async function fetchProductsUsingAPI(
+  querySpec: SqlQuerySpec,
+  maxItems: number
+): Promise<Product[]> {
+  // Log query to console
+  console.warn('API: ' + querySpec.query);
+
+  let resultingProducts: Product[] = [];
+
+  // CosmosDB API doesn't support ORDER BY, so it needs to be removed
+  const orderByIndex = querySpec.query.indexOf('ORDER BY');
+  if (orderByIndex > 0) querySpec.query = querySpec.query.substring(0, orderByIndex);
+
+  // Fetch response using POST
+  const apiResponse = await fetch('https://supermarket-api.azure-api.net/', {
+    method: 'POST',
+    body: JSON.stringify(querySpec),
+    mode: 'cors',
+    headers: {
+      'x-ms-max-item-count': maxItems.toString(),
+    },
+  });
+
+  // If successful, set resultingProducts to response json
+  if (apiResponse.status === 200) {
+    const apiJsonResponse = await apiResponse.json();
+    const apiProducts: Product[] = apiJsonResponse.Documents;
+
+    // Push products into array and clean unwanted fields from CosmosDB
+    apiProducts.map((productDocument) => {
+      resultingProducts.push(cleanProductFields(productDocument));
+    });
+  } else {
+    console.log(apiResponse.statusText);
+  }
+  return resultingProducts;
 }
 
 // Takes a completed query and performs the CosmosDB lookup
-async function fetchProductsByQuerySpec(
+async function fetchProductsUsingSDK(
   querySpec: SqlQuerySpec,
-  maxItems: number,
-  useRestAPIInsteadOfSDK: boolean = false
+  maxItems: number
 ): Promise<Product[]> {
   let resultingProducts: Product[] = [];
 
-  // When running on the client-side, fetches can be made to the REST API
-  if (useRestAPIInsteadOfSDK) {
-    // Log query to console
-    console.warn('API: ' + querySpec.query);
+  // Log query to console
+  console.log('SDK: ' + querySpec.query);
+  if (querySpec.parameters !== undefined)
+    console.log('\t' + querySpec.parameters[0].name + ' = ' + querySpec.parameters[0].value);
 
-    // CosmosDB API doesn't support ORDER BY, so it needs to be removed
-    const orderByIndex = querySpec.query.indexOf('ORDER BY');
-    if (orderByIndex > 0) querySpec.query = querySpec.query.substring(0, orderByIndex);
+  // Access CosmosDB directly using the SDK
+  if (await connectToCosmosDB()) {
+    try {
+      // Set Cosmos Query options
+      const options: FeedOptions = {
+        maxItemCount: maxItems,
+      };
+      // Perform DB Fetch
+      const dbResponse: FeedResponse<Product> = await container.items
+        .query(querySpec, options)
+        .fetchNext();
 
-    // Fetch response using POST
-    const apiResponse = await fetch('https://supermarket-api.azure-api.net/', {
-      method: 'POST',
-      body: JSON.stringify(querySpec),
-      mode: 'cors',
-      headers: {
-        'x-ms-max-item-count': maxItems.toString(),
-      },
-    });
+      if (dbResponse.resources === undefined) return resultingProducts;
 
-    // If successful, set resultingProducts to response json
-    if (apiResponse.status === 200) {
-      const apiJsonResponse = await apiResponse.json();
-      const apiProducts: Product[] = apiJsonResponse.Documents;
-
-      // Push products into array and clean unwanted fields from CosmosDB
-      apiProducts.map((productDocument) => {
+      // Push products into array and clean specific fields from CosmosDB
+      dbResponse.resources.map((productDocument) => {
         resultingProducts.push(cleanProductFields(productDocument));
       });
-    } else {
-      console.log(apiResponse.statusText);
+    } catch (error) {
+      console.log('Error on fetchProductsUsingSDK()\n ' + error);
     }
-  } else {
-    // Log query to console
-    console.log('SDK: ' + querySpec.query);
-    if (querySpec.parameters !== undefined) console.log('\t' + querySpec.parameters[0]);
+  } else return useSampleProductsInstead();
 
-    // When running on the server, we can access CosmosDB directly using the SDK
-    if (await connectToCosmosDB()) {
-      try {
-        // Set Cosmos Query options
-        const options: FeedOptions = {
-          maxItemCount: maxItems,
-        };
-        // Perform DB Fetch
-        const dbResponse: FeedResponse<Product> = await container.items
-          .query(querySpec, options)
-          .fetchNext();
-
-        if (dbResponse.resources === undefined) return resultingProducts;
-
-        // Push products into array and clean specific fields from CosmosDB
-        dbResponse.resources.map((productDocument) => {
-          resultingProducts.push(cleanProductFields(productDocument));
-        });
-      } catch (error) {
-        console.log('Error on fetchProductsByQuerySpec()\n ' + error);
-      }
-    } else return useSampleProductsInstead();
-  }
   return resultingProducts;
 }
 
@@ -255,7 +262,7 @@ export async function DBFetchByCategory(
   useRestAPIInsteadOfSDK: boolean = false
 ): Promise<Product[]> {
   const queryBase = 'SELECT * FROM products p WHERE ARRAY_CONTAINS(p.category, @name, true)';
-  const query: SqlQuerySpec = {
+  const querySpec: SqlQuerySpec = {
     query:
       queryBase +
       queryAddLimitStore(store, false) +
@@ -264,8 +271,8 @@ export async function DBFetchByCategory(
       queryAddOrderBy(orderBy),
     parameters: [{ name: '@name', value: searchTerm }],
   };
-
-  return await fetchProductsByQuerySpec(query, maxItems, useRestAPIInsteadOfSDK);
+  if (useRestAPIInsteadOfSDK) return await fetchProductsUsingAPI(querySpec, maxItems);
+  else return await fetchProductsUsingSDK(querySpec, maxItems);
 }
 
 // Fetch products by searching name, with optional store selection
@@ -292,5 +299,6 @@ export async function DBFetchByName(
     parameters: [{ name: '@name', value: searchTerm }],
   };
 
-  return await fetchProductsByQuerySpec(querySpec, maxItems, useRestAPIInsteadOfSDK);
+  if (useRestAPIInsteadOfSDK) return await fetchProductsUsingAPI(querySpec, maxItems);
+  else return await fetchProductsUsingSDK(querySpec, maxItems);
 }
