@@ -1,12 +1,13 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Product } from '../../typings';
 import _ from 'lodash';
 import ProductsGrid from '../../components/ProductsGrid';
 import { DBFetchByName } from '../../utilities/cosmosdb';
 import ResultsFilterPanel from '../../components/ResultsFilterPanel';
 import { OrderByMode, PriceHistoryLimit, Store } from '../../utilities/utilities';
+import { ThemeContext } from '../_app';
 
 interface Props {
   products: Product[];
@@ -16,13 +17,14 @@ interface Props {
 const Category = ({ products, hasMoreSearchResults }: Props) => {
   const router = useRouter();
   const { category } = router.query;
+  const theme = useContext(ThemeContext);
 
   return (
-    <main>
-      {/* Central Aligned Div */}
-      <div className='px-2 mx-auto w-[100%] 2xl:w-[70%] transition-all duration-500'>
-        {/* Top Bar with Title and Filter Selection */}
-        <div className='flex items-center w-fit'>
+    <div className={theme}>
+      {/* Background Div */}
+      <div className='pt-1 pb-12'>
+        {/* Central Aligned Div */}
+        <div className='px-2 mx-auto w-[100%] 2xl:w-[70%] transition-all duration-500 min-h-screen'>
           {/* Page Title */}
           <div className='my-4 pl-2 text-xl text-[#3C8DA3] font-bold'>
             {_.startCase(category?.toString())}
@@ -30,19 +32,19 @@ const Category = ({ products, hasMoreSearchResults }: Props) => {
 
           {/* Filter Selection */}
           <div className='ml-20'>{/* <ResultsFilterPanel /> */}</div>
+
+          {/* Products Grid */}
+          <ProductsGrid products={products} />
+
+          {/* Pagination */}
+          {hasMoreSearchResults && <div className='text-center m-4 text-lg'>Page 1 2 3 4 5</div>}
         </div>
-
-        {/* Products Grid */}
-        <ProductsGrid products={products} />
-
-        {/* Pagination */}
-        {hasMoreSearchResults && <div className='text-center m-4 text-lg'>Page 1 2 3 4 5</div>}
       </div>
-    </main>
+    </div>
   );
 };
 
-export const categoryNames = ['meat', 'vegetables', 'ice-cream', 'cat', 'chocolate'];
+export const categoryNames = ['chicken', 'vegetables', 'ice-cream', 'doritos', 'chocolate'];
 
 // Takes an array of category search terms, and returns them in { path } format
 export function getAllStaticPaths() {
@@ -67,13 +69,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const searchTerm = params?.category as string;
 
-  const products = await DBFetchByName(
-    searchTerm,
-    40,
-    Store.Any,
-    PriceHistoryLimit.Any,
-    OrderByMode.Latest
-  );
+  const products = await DBFetchByName(searchTerm, 40, Store.Any, PriceHistoryLimit.Any);
 
   const hasMoreSearchResults = false;
 
