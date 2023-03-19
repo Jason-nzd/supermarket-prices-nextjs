@@ -36,4 +36,4 @@ COSMOS_CONSTRING=
 
 <https://kiwiprice.xyz>
 
-![alt text](https://github.com/Jason-nzd/supermarket-prices-nextjs/blob/master/public/images/screenshot.png?raw=true "Screenshot")
+![alt text](https://github.com/Jason-nzd/supermarket-prices-nextjs/blob/main/public/images/screenshot.png?raw=true "Screenshot")
