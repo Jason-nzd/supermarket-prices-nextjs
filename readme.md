@@ -7,7 +7,7 @@ Price history for each product is displayed using chart.js line charts.
 Built on Next.js using fully static html export.
 Styling is handled with TailwindCSS.
 
-Requires Node.js.
+Requires Node.js to build.
 
 ## Quick Setup
 
@@ -19,7 +19,7 @@ The website comes with some sample data built-in and can be launched as-is with 
 
 For use with Azure CosmosDB, a read-only or read-write connection string must be set as an environment variable COSMOS_CONSTRING. CosmosDB database and container names can be set in `/utilities/cosmosdb.ts`.
 
-Example `.env.local`:
+Example `.env`:
 
 ```shell
 COSMOS_CONSTRING=
@@ -35,3 +35,5 @@ COSMOS_CONSTRING=
 ## Static Website Demo
 
 <https://kiwiprice.xyz>
+
+![alt text](https://github.com/Jason-nzd/supermarket-prices-nextjs/blob/master/public/images/screenshot.png?raw=true "Screenshot")
