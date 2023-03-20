@@ -1,6 +1,6 @@
 import '../styles/globals.css';
 import type { AppProps } from 'next/app';
-import { Manrope } from '@next/font/google';
+import { Manrope } from 'next/font/google';
 import Head from 'next/head';
 import { createContext, useState } from 'react';
 
