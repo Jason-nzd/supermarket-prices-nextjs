@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { useCallback, useContext, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { categoryNames } from '../pages/products/[category]';
 import { ThemeContext } from '../pages/_app';
 import kiwifruit from '../public/android-chrome-192x192.png';
@@ -73,21 +73,19 @@ const NavBar = () => {
                 Fruit
               </Link>
 
-              <div>
+              {/* <div>
                 <button onClick={toggleDropdown}>Dropdown</button>
-                <ul className={showDropdown ? 'block' : 'hidden'}>
-                  {categoryNames.map((name) => {
-                    const href = '/products/' + name;
-                    return (
-                      <li>
-                        <Link className='' href={href} key={href}>
-                          {_.startCase(name)}
-                        </Link>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
+                <ul className={showDropdown ? 'block' : 'hidden'}> */}
+              {categoryNames.map((name) => {
+                const href = '/products/' + name;
+                return (
+                  <Link className='nav-main-link' href={href} key={href}>
+                    {_.startCase(name)}
+                  </Link>
+                );
+              })}
+              {/* </ul>
+              </div> */}
               {/* Add custom category with plus icon */}
               {/* <div>
               <button type='button' title='Add'>
