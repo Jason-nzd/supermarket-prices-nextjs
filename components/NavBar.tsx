@@ -20,13 +20,13 @@ const NavBar = () => {
     <nav className='w-full overflow-hidden'>
       <div className='max-w-[160rem] mx-auto lg:w-[100%] 2xl:w-[70%] transition-all duration-500 flex flex-nowrap h-full'>
         {/* Column 1 - Logo*/}
-        <div className='ml-2'>
+        <Link href='/' className='ml-2'>
           <Image
             src={kiwifruit}
             alt=''
             className='hidden lg:block w-[5rem] min-w-[5rem] pt-1 pb-2 duration-200 hover:rotate-12 hover:scale-[102%]'
           />
-        </div>
+        </Link>
 
         {/* Column 2 - Title - Sub-title - Categories - Search */}
         <div className='block w-full'>
@@ -57,7 +57,7 @@ const NavBar = () => {
           </div>
 
           {/* Row 2 - Categories - Search Bar*/}
-          <div className='flex-nowrap w-full h-1/2 hidden lg:flex items-center pb-4'>
+          <div className='flex-nowrap w-full h-1/2 hidden lg:flex items-center pb-4 whitespace-nowrap'>
             {/* Categories */}
             <div className='flex items-center overflow-hidden ml-3'>
               <Link className='nav-main-link' href='/products/milk'>
@@ -65,9 +65,6 @@ const NavBar = () => {
               </Link>
               <Link className='nav-main-link' href='/products/eggs'>
                 Eggs
-              </Link>
-              <Link className='nav-main-link' href='/products/bread'>
-                Bread
               </Link>
               <Link className='nav-main-link' href='/products/fruit'>
                 Fruit

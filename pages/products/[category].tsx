@@ -4,7 +4,7 @@ import React, { useContext } from 'react';
 import { Product } from '../../typings';
 import _ from 'lodash';
 import ProductsGrid from '../../components/ProductsGrid';
-import { DBFetchByName } from '../../utilities/cosmosdb';
+import { DBFetchByCategory, DBFetchByName } from '../../utilities/cosmosdb';
 import ResultsFilterPanel from '../../components/ResultsFilterPanel';
 import { OrderByMode, PriceHistoryLimit, Store } from '../../utilities/utilities';
 import { ThemeContext } from '../_app';
@@ -44,7 +44,16 @@ const Category = ({ products, hasMoreSearchResults }: Props) => {
   );
 };
 
-export const categoryNames = ['chicken', 'vegetables', 'ice-cream', 'doritos', 'chocolate'];
+export const categoryNames = [
+  'rice',
+  'fresh-vegetables',
+  'ice-cream',
+  'frozen-chips',
+  'chocolate',
+  'cat-food',
+  'fish-seafood',
+  'salmon',
+];
 
 // Takes an array of category search terms, and returns them in { path } format
 export function getAllStaticPaths() {
@@ -69,7 +78,27 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const searchTerm = params?.category as string;
 
-  const products = await DBFetchByName(searchTerm, 40, Store.Any, PriceHistoryLimit.Any);
+  // Try fetch products that have price history to show
+  let products = await DBFetchByCategory(
+    searchTerm,
+    60,
+    Store.Any,
+    PriceHistoryLimit.TwoOrMore,
+    OrderByMode.None,
+    true
+  );
+
+  // If too few results are found, re-run query with any price history
+  if (products.length <= 10) {
+    products = await DBFetchByCategory(
+      searchTerm,
+      60,
+      Store.Any,
+      PriceHistoryLimit.Any,
+      OrderByMode.None,
+      true
+    );
+  }
 
   const hasMoreSearchResults = false;
 

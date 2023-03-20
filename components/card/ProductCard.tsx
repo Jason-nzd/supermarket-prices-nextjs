@@ -1,3 +1,5 @@
+import _ from 'lodash';
+import Link from 'next/link';
 import React from 'react';
 import { Product } from '../../typings';
 import { utcDateToShortDate } from '../../utilities/utilities';
@@ -12,12 +14,11 @@ interface Props {
 
 function ProductCard({ product }: Props) {
   const linkHref = '/product/' + [product.id];
-
-  const showCategories = false;
-  const showLastUpdated = false;
+  const showCategories = true;
   const hasPriceHistory = product.priceHistory.length > 1;
 
   function handleClick() {
+    // Copy product id to clipboard when card is clicked
     console.log('ok');
     navigator.clipboard.writeText(product.id);
   }
@@ -68,17 +69,24 @@ function ProductCard({ product }: Props) {
         </div>
       </div>
 
-      {showCategories && product.category != null && product.category!.length > 0 && (
-        <div className='text-xs text-slate-400 p-0.5 text-center leading-3'>
-          {product.category!.join(', ')}
+      <div className='flex px-2 items-center'>
+        {showCategories && product.category != null && product.category!.length > 0 && (
+          <div className='flex pr-3 items-center'>
+            {product.category!.map((category) => {
+              return (
+                <div className='text-xs text-slate-400 px-1 hover:text-black hover:font-bold'>
+                  <Link href={'products/' + category}>{_.startCase(_.toLower(category))}</Link>
+                </div>
+              );
+            })}
+          </div>
+        )}
+
+        <div className='text-xs text-slate-400 p-2 ml-auto'>
+          Last Updated {utcDateToShortDate(product.lastChecked, true)}
         </div>
-      )}
-
-      <div className='text-xs text-slate-400 p-1.5 text-center leading-3'>
-        Last Updated {utcDateToShortDate(product.lastChecked, true)}
       </div>
-
-      {showLastUpdated && hasPriceHistory && (
+      {/* {showLastUpdated && hasPriceHistory && (
         <div className='text-xs text-slate-300 p-1.5 text-center leading-3'>
           Price Last Changed {utcDateToShortDate(product.lastUpdated)}
         </div>
@@ -88,7 +96,7 @@ function ProductCard({ product }: Props) {
         <div className='text-xs text-slate-300 p-1.5 text-center leading-3'>
           First Added {utcDateToShortDate(product.lastUpdated)}
         </div>
-      )}
+      )} */}
 
       {/* Source Site Div */}
       <div className='text-sm text-center'>
