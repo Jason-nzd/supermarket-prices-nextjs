@@ -9,6 +9,12 @@ import SearchBar from './SearchBar';
 
 const NavBar = () => {
   const theme = useContext(ThemeContext);
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  const toggleDropdown = () => {
+    if (showDropdown === false) setShowDropdown(true);
+    else setShowDropdown(false);
+  };
 
   return (
     <nav className='w-full overflow-hidden'>
@@ -66,25 +72,32 @@ const NavBar = () => {
               <Link className='nav-main-link' href='/products/fruit'>
                 Fruit
               </Link>
-              {categoryNames.map((name) => {
-                const link = '/products/' + name;
-                return (
-                  <Link className='nav-main-link' href={link} key={link}>
-                    {_.startCase(name)}
-                  </Link>
-                );
-              })}
-            </div>
 
-            {/* Add custom category with plus icon */}
-            {/* <div>
+              <div>
+                <button onClick={toggleDropdown}>Dropdown</button>
+                <ul className={showDropdown ? 'block' : 'hidden'}>
+                  {categoryNames.map((name) => {
+                    const href = '/products/' + name;
+                    return (
+                      <li>
+                        <Link className='' href={href} key={href}>
+                          {_.startCase(name)}
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+              {/* Add custom category with plus icon */}
+              {/* <div>
               <button type='button' title='Add'>
                 {plusIcon}
               </button>
             </div> */}
 
-            {/* Search Bar */}
-            <SearchBar />
+              {/* Search Bar */}
+              <SearchBar />
+            </div>
           </div>
         </div>
 
