@@ -1,5 +1,6 @@
 import { Product } from '../typings';
 import ProductCard from './card/ProductCard';
+import { Grid } from '@nextui-org/react';
 
 interface Props {
   products: Product[];
@@ -7,19 +8,13 @@ interface Props {
 
 function ProductsGrid({ products }: Props) {
   return (
-    <div
-      className='grid
-            grid-cols-1
-            md:grid-cols-2
-            lg:grid-cols-3
-            xl:grid-cols-4
-            2xl:grid-cols-4
-            3xl:grid-cols-5'
-    >
+    <Grid.Container justify='center' gap={1}>
       {products.map((product) => (
-        <ProductCard key={product.id} product={product} />
+        <Grid>
+          <ProductCard key={product.id} product={product} />
+        </Grid>
       ))}
-    </div>
+    </Grid.Container>
   );
 }
 

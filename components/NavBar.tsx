@@ -3,12 +3,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React, { useCallback, useContext, useState } from 'react';
 import { categoryNames } from '../pages/products/[category]';
-import { ThemeContext } from '../pages/_app';
 import kiwifruit from '../public/android-chrome-192x192.png';
 import SearchBar from './SearchBar';
 
 const NavBar = () => {
-  const theme = useContext(ThemeContext);
   const [showDropdown, setShowDropdown] = useState(false);
 
   const toggleDropdown = () => {

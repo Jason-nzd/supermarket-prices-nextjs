@@ -5,6 +5,7 @@ import ImageWithFallback from '../ImageWithFallback';
 import PriceHistoryChart from './PriceHistoryChart';
 import PriceHistoryTips from './PriceHistoryTips';
 import PriceTag from './PriceTag';
+import { Card, Text, Grid } from '@nextui-org/react';
 
 interface Props {
   product: Product;
@@ -22,90 +23,64 @@ function ProductCard({ product }: Props) {
     navigator.clipboard.writeText(product.id);
   }
 
+  const imgHref = 'https://images.kiwiprice.xyz/product-images/200/' + product.id + '.webp';
+
   return (
-    <div className='product-card' onClick={handleClick}>
-      {/* Title Div */}
-      <div
-        className='w-full h-12 pt-2 px-3 rounded-t-2xl text-[#3C8DA3] text-sm
-         text-center font-semibold leading-4 z-20 dark:bg-slate-800 dark:bg-opacity-70'
-      >
-        {product.name}
-      </div>
+    <Card css={{ mw: '400px' }} variant='bordered' isHoverable isPressable>
+      <Card.Header css={{ position: 'absolute', zIndex: 1, top: 5 }}>
+        <Text h4>{product.name}</Text>
+      </Card.Header>
 
-      {/* Central Div containing image, chart, price info */}
-      <div className='flex flex-auto w-full'>
-        {/* Image Div */}
-        <div className='relative w-full'>
-          <div className=''>
-            <ImageWithFallback id={product.id} width={200} addClasses='pl-2' />
-          </div>
+      <Card.Divider />
 
-          {/* Optional Size div overlaid on top of image */}
-          {product.size && <div className='size-tag'>{product.size}</div>}
-        </div>
-        <div className='w-3/5'>
-          {/* Price history chart Div */}
-          <div className='pl-0 pr-0.5 z-50'>
-            <PriceHistoryChart
-              priceHistory={product.priceHistory}
-              lastChecked={product.lastChecked}
-            />
-          </div>
+      <Card.Body>
+        <Card.Image
+          src={imgHref}
+          width='100%'
+          height={200}
+          objectFit='contain'
+          alt='Card image background'
+        />
+        <PriceHistoryChart priceHistory={product.priceHistory} lastChecked={product.lastChecked} />
+        <Grid.Container justify='space-around'>
+          <Grid xs={3}>{product.size}</Grid>
+          <Grid xs={3}>
+            <PriceTag product={product} />
+          </Grid>
+          <Grid xs={3}>
+            {product.priceHistory.length > 1 && (
+              <PriceHistoryTips priceHistory={product.priceHistory} />
+            )}
+          </Grid>
 
-          <div className='flex flex-row-reverse items-center'>
-            {/* Price Tag Div */}
-            <div className='m-1 mr-2'>
-              <PriceTag product={product} />
-            </div>
+          {/* {showCategories && product.category != null && product.category!.length > 0 && (
+          <div className=''>{product.category!.join(', ')}</div>
+        )}
 
-            {/* Price Tips Highest/Lowest Div */}
-            <div className='ml-1'>
-              {product.priceHistory.length > 1 && (
-                <PriceHistoryTips priceHistory={product.priceHistory} />
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
+        <div className=''>Last Updated {utcDateToShortDate(product.lastChecked, true)}</div>
 
-      {showCategories && product.category != null && product.category!.length > 0 && (
-        <div className='text-xs text-slate-400 p-0.5 text-center leading-3'>
-          {product.category!.join(', ')}
-        </div>
-      )}
+        {showLastUpdated && hasPriceHistory && (
+          <div className=''>Price Last Changed {utcDateToShortDate(product.lastUpdated)}</div>
+        )}
 
-      <div className='text-xs text-slate-400 p-1.5 text-center leading-3'>
-        Last Updated {utcDateToShortDate(product.lastChecked, true)}
-      </div>
+        {showLastUpdated && !hasPriceHistory && (
+          <div className=''>First Added {utcDateToShortDate(product.lastUpdated)}</div>
+        )} */}
+        </Grid.Container>
+      </Card.Body>
 
-      {showLastUpdated && hasPriceHistory && (
-        <div className='text-xs text-slate-300 p-1.5 text-center leading-3'>
-          Price Last Changed {utcDateToShortDate(product.lastUpdated)}
-        </div>
-      )}
-
-      {showLastUpdated && !hasPriceHistory && (
-        <div className='text-xs text-slate-300 p-1.5 text-center leading-3'>
-          First Added {utcDateToShortDate(product.lastUpdated)}
-        </div>
-      )}
+      <Card.Divider />
 
       {/* Source Site Div */}
-      <div className='text-sm text-center'>
-        {product.sourceSite.includes('countdown.co.nz') && (
-          <div className='p-1 rounded-b-2xl text-white bg-[#007837]'>Countdown</div>
-        )}
-        {product.sourceSite === 'thewarehouse.co.nz' && (
-          <div className='p-1 rounded-b-2xl text-white bg-[#c00]'>The Warehouse</div>
-        )}
-        {product.sourceSite === 'paknsave.co.nz' && (
-          <div className='p-1 rounded-b-2xl text-black bg-[#ffd600]'>PAK'nSAVE</div>
-        )}
+      <Card.Footer isBlurred>
+        {product.sourceSite.includes('countdown.co.nz') && <Text h5>Countdown</Text>}
+        {product.sourceSite === 'thewarehouse.co.nz' && <Text h5>The Warehouse</Text>}
+        {product.sourceSite === 'paknsave.co.nz' && <Text h5>PAK'nSAVE</Text>}
         {!product.sourceSite.includes('countdown.co.nz') &&
           product.sourceSite !== 'thewarehouse.co.nz' &&
-          product.sourceSite !== 'paknsave.co.nz' && <div>{product.sourceSite}</div>}
-      </div>
-    </div>
+          product.sourceSite !== 'paknsave.co.nz' && <Text h5>{product.sourceSite}</Text>}
+      </Card.Footer>
+    </Card>
   );
 }
 

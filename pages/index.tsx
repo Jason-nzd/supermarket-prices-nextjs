@@ -1,9 +1,8 @@
-import { useContext } from 'react';
+import { Container } from '@nextui-org/react';
 import ProductsGrid from '../components/ProductsGrid';
 import { Product } from '../typings';
 import { DBFetchAll } from '../utilities/cosmosdb';
 import { OrderByMode, PriceHistoryLimit, Store } from '../utilities/utilities';
-import { ThemeContext } from './_app';
 
 interface Props {
   countdownProducts: Product[];
@@ -13,10 +12,8 @@ interface Props {
 
 // Products props will be populated at build time by getStaticProps()
 export default function Home({ countdownProducts, paknsaveProducts, warehouseProducts }: Props) {
-  const theme = useContext(ThemeContext);
-
   return (
-    <div className={theme}>
+    <Container responsive>
       {/* Background Div */}
       <div className='pt-1 pb-12'>
         {/* Central Aligned Div */}
@@ -30,7 +27,7 @@ export default function Home({ countdownProducts, paknsaveProducts, warehousePro
           {warehouseProducts && <ProductsGrid products={warehouseProducts} />}
         </div>
       </div>
-    </div>
+    </Container>
   );
 }
 

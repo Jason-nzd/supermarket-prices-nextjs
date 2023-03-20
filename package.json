@@ -11,6 +11,7 @@
   "dependencies": {
     "@azure/cosmos": "^3.17.2",
     "@next/font": "13.1.1",
+    "@nextui-org/react": "^1.0.0-beta.12",
     "@types/node": "18.11.18",
     "@types/react": "18.0.26",
     "@types/react-dom": "18.0.10",
@@ -20,6 +21,7 @@
     "eslint-config-next": "13.1.1",
     "lodash": "^4.17.21",
     "next": "13.1.1",
+    "next-themes": "^0.2.1",
     "react": "^18.2.0",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "18.2.0",
@@ -28,7 +30,6 @@
   "devDependencies": {
     "@types/lodash": "^4.14.191",
     "autoprefixer": "^10.4.13",
-    "postcss": "^8.4.21",
-    "tailwindcss": "^3.2.4"
+    "postcss": "^8.4.21"
   }
 }
