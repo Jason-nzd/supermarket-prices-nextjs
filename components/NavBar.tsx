@@ -27,16 +27,15 @@ const NavBar = () => {
             className='hidden lg:block w-[5rem] min-w-[5rem] pt-1 pb-2 duration-200 hover:rotate-12 hover:scale-[102%]'
           />
         </Link>
+        {/* Mobile Burger Menu */}
+        <div className='lg:hidden text-primary-colour hover-to-white cursor-pointer'>
+          {burgerIcon}
+        </div>
 
         {/* Column 2 - Title - Sub-title - Categories - Search */}
-        <div className='block w-full'>
+        <div className='block max-w-[70%] xl:max-w-[77%] mx-auto lg:mx-0'>
           {/* Row 1 - Title - Sub-title */}
-          <div className='flex flex-wrap w-full h-1/2 items-center lg:items-center ml-1'>
-            {/* Mobile Burger Menu */}
-            <div className='lg:hidden text-primary-colour hover-to-white cursor-pointer'>
-              {burgerIcon}
-            </div>
-
+          <div className='flex flex-wrap h-1/2 items-center lg:items-center ml-1 w-full'>
             {/* Mobile Icon */}
             <Image
               src={kiwifruit}
@@ -52,12 +51,12 @@ const NavBar = () => {
 
             {/* Sub Title */}
             <h3 className='hidden lg:flex ml-6 pt-2 mr-auto text-sm select-none font-bold text-stone-100'>
-              Comparing the cost of food across New Zealand
+              Tracking the cost of food across New Zealand
             </h3>
           </div>
 
           {/* Row 2 - Categories - Search Bar*/}
-          <div className='flex-nowrap w-full h-1/2 hidden lg:flex items-center pb-4 whitespace-nowrap'>
+          <div className='flex-nowrap h-1/2 hidden lg:flex items-center pb-4 whitespace-nowrap'>
             {/* Categories */}
             <div className='flex items-center overflow-hidden ml-3'>
               <Link className='nav-main-link' href='/products/milk'>
@@ -89,15 +88,16 @@ const NavBar = () => {
                 {plusIcon}
               </button>
             </div> */}
-
-              {/* Search Bar */}
+            </div>
+            {/* Search Bar */}
+            <div className='mx-2'>
               <SearchBar />
             </div>
           </div>
         </div>
 
         {/* Column 3 - Right Menu */}
-        <div className='hidden lg:block pl-4 ml-auto mr-2 items-center'>
+        <div className='hidden lg:block pl-4 ml-auto mr-2 items-center min-w-fit'>
           <h3 className='py-2 text-primary-colour text-sm select-none text-center'>
             Updated {Date().substring(4, 15)}
           </h3>
@@ -120,7 +120,7 @@ const NavBar = () => {
           </div>
         </div>
         {/* Column 3 - Mobile Right Menu */}
-        <div className='block mt-2 h-full lg:hidden ml-auto items-center'>
+        <div className='block mt-2 h-full lg:hidden mx-0 items-center'>
           <Link className='nav-small-link w-12 items-center' href='#'>
             {userIcon}
           </Link>
