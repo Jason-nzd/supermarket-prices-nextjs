@@ -24,7 +24,7 @@ const Category = ({ products, hasMoreSearchResults }: Props) => {
       {/* Background Div */}
       <div className='pt-1 pb-12'>
         {/* Central Aligned Div */}
-        <div className='px-2 mx-auto w-[100%] 2xl:w-[70%] transition-all duration-500 min-h-screen'>
+        <div className='central-responsive-div'>
           {/* Page Title */}
           <div className='my-4 pl-2 text-xl text-[#3C8DA3] font-bold'>
             {_.startCase(category?.toString())}
@@ -53,6 +53,12 @@ export const categoryNames = [
   'cat-food',
   'fish-seafood',
   'salmon',
+  'ham',
+  'bacon',
+  'salami',
+  'chips',
+  'corn-chips',
+  'yoghurt',
 ];
 
 // Takes an array of category search terms, and returns them in { path } format

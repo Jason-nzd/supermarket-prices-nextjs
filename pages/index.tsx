@@ -20,14 +20,14 @@ export default function Home({ countdownProducts, paknsaveProducts, warehousePro
       {/* Background Div */}
       <div className='pt-1 pb-12'>
         {/* Central Aligned Div */}
-        <div className='px-2 mx-auto w-[100%] 2xl:w-[70%] transition-all duration-500 min-h-screen'>
+        <div className='central-responsive-div'>
           {/* Page Title */}
           <div className='my-4 pl-2 text-xl text-[#3C8DA3] font-bold'>
             Today's Trending Products
           </div>
-          {countdownProducts && <ProductsGrid products={countdownProducts} />}
-          {paknsaveProducts && <ProductsGrid products={paknsaveProducts} />}
-          {warehouseProducts && <ProductsGrid products={warehouseProducts} />}
+          {countdownProducts && <ProductsGrid products={countdownProducts} key='countdown' />}
+          {paknsaveProducts && <ProductsGrid products={paknsaveProducts} key='paknsave' />}
+          {warehouseProducts && <ProductsGrid products={warehouseProducts} key='warehouse' />}
         </div>
       </div>
     </div>

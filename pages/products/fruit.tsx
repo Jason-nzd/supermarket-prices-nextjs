@@ -33,7 +33,7 @@ const Category = ({
       {/* Background Div */}
       <div className=''>
         {/* Central Aligned Div */}
-        <div className='px-2 mx-auto w-[100%] 2xl:w-[70%] transition-all duration-500'>
+        <div className='central-responsive-div'>
           {/* Categorised Product Grids*/}
           <div className='grid-title'>Apples</div>
           <ProductsGrid products={apples} />

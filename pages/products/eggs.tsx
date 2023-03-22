@@ -21,7 +21,7 @@ const Category = ({ mixedGrade, size7, size8plus }: Props) => {
       {/* Background Div */}
       <div className='pt-1 pb-12'>
         {/* Central Aligned Div */}
-        <div className='px-2 mx-auto w-[100%] 2xl:w-[70%] transition-all duration-500 min-h-screen'>
+        <div className='central-responsive-div'>
           {/* Categorised Product Grids*/}
           <div className='grid-title'>Size 6 and Mixed Range Eggs</div>
           <ProductsGrid products={mixedGrade} />

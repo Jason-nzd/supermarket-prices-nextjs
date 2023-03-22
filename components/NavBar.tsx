@@ -16,9 +16,12 @@ const NavBar = () => {
     else setShowDropdown(false);
   };
 
+  const [userCategories, setUserCategories] = useState<string[]>(categoryNames.slice(0, 4));
+
   return (
     <nav className='w-full overflow-hidden'>
-      <div className='max-w-[160rem] mx-auto lg:w-[100%] 2xl:w-[70%] transition-all duration-500 flex flex-nowrap h-full'>
+      {/* <div className='max-w-[160rem] mx-auto lg:w-[100%] 2xl:w-[70%] transition-all duration-500 flex flex-nowrap h-full'> */}
+      <div className='mx-auto w-[100%] 2xl:w-[90rem] 3xl:w-[110rem] transition-all duration-500 flex flex-nowrap'>
         {/* Column 1 - Logo*/}
         <Link href='/' className='ml-2'>
           <Image
@@ -72,7 +75,7 @@ const NavBar = () => {
               {/* <div>
                 <button onClick={toggleDropdown}>Dropdown</button>
                 <ul className={showDropdown ? 'block' : 'hidden'}> */}
-              {categoryNames.map((name) => {
+              {userCategories.map((name) => {
                 const href = '/products/' + name;
                 return (
                   <Link className='nav-main-link' href={href} key={href}>
@@ -82,12 +85,12 @@ const NavBar = () => {
               })}
               {/* </ul>
               </div> */}
-              {/* Add custom category with plus icon */}
-              {/* <div>
-              <button type='button' title='Add'>
-                {plusIcon}
-              </button>
-            </div> */}
+              {/* User customized categories with plus icon */}
+              <div className='pt-1 mr-4'>
+                <button type='button' title='Customize'>
+                  {plusIcon}
+                </button>
+              </div>
             </div>
             {/* Search Bar */}
             <div className='mx-2'>
