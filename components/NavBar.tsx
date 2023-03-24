@@ -3,19 +3,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React, { useContext, useState } from 'react';
 import { categoryNames } from '../pages/products/[category]';
-import { ThemeContext } from '../pages/_app';
 import kiwifruit from '../public/android-chrome-192x192.png';
+import CategorySelector from './CategorySelector';
 import SearchBar from './SearchBar';
 
 const NavBar = () => {
-  const theme = useContext(ThemeContext);
-  const [showDropdown, setShowDropdown] = useState(false);
-
-  const toggleDropdown = () => {
-    if (showDropdown === false) setShowDropdown(true);
-    else setShowDropdown(false);
-  };
-
+  const [showCategoryModal, setShowCategoryModal] = useState(false);
   const [userCategories, setUserCategories] = useState<string[]>(categoryNames.slice(0, 4));
 
   return (
@@ -85,9 +78,10 @@ const NavBar = () => {
               })}
               {/* </ul>
               </div> */}
+              {showCategoryModal && <CategorySelector />}
               {/* User customized categories with plus icon */}
-              <div className='pt-1 mr-4'>
-                <button type='button' title='Customize'>
+              <div className='pt-1 mr-4 w-fit'>
+                <button type='button' title='Customize' onClick={() => setShowCategoryModal(true)}>
                   {plusIcon}
                 </button>
               </div>
