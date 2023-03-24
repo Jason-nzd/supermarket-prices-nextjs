@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React, { useContext, useState } from 'react';
 import { categoryNames } from '../pages/products/[category]';
+import { ThemeContext } from '../pages/_app';
 import kiwifruit from '../public/android-chrome-192x192.png';
 import CategorySelector from './CategorySelector';
 import SearchBar from './SearchBar';
@@ -10,6 +11,11 @@ import SearchBar from './SearchBar';
 const NavBar = () => {
   const [showCategoryModal, setShowCategoryModal] = useState(false);
   const [userCategories, setUserCategories] = useState<string[]>(categoryNames.slice(0, 4));
+  const theme = useContext(ThemeContext);
+
+  function toggleCategoryModal() {
+    setShowCategoryModal(showCategoryModal === false ? true : false);
+  }
 
   return (
     <nav className='w-full overflow-hidden'>
@@ -65,9 +71,6 @@ const NavBar = () => {
                 Fruit
               </Link>
 
-              {/* <div>
-                <button onClick={toggleDropdown}>Dropdown</button>
-                <ul className={showDropdown ? 'block' : 'hidden'}> */}
               {userCategories.map((name) => {
                 const href = '/products/' + name;
                 return (
@@ -76,12 +79,12 @@ const NavBar = () => {
                   </Link>
                 );
               })}
-              {/* </ul>
-              </div> */}
+
               {showCategoryModal && <CategorySelector />}
+
               {/* User customized categories with plus icon */}
               <div className='pt-1 mr-4 w-fit'>
-                <button type='button' title='Customize' onClick={() => setShowCategoryModal(true)}>
+                <button type='button' title='Customize' onClick={toggleCategoryModal}>
                   {plusIcon}
                 </button>
               </div>
@@ -101,7 +104,7 @@ const NavBar = () => {
 
           <div className='flex items-center'>
             {/* <div onClick={() => {}}>{theme}</div> */}
-            {/* <button () => {}}>Theme</button> */}
+
             <Link className='nav-small-link' href='#'>
               {userIcon}
               Login
