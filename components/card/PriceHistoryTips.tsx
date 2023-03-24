@@ -12,11 +12,11 @@ function PriceHistoryTips({ priceHistory }: Props) {
   });
 
   return (
-    <div className='text-xs text-slate-600 grid grid-cols-2 w-fit gap-x-1 ml-auto'>
-      <div className='text-right'>High:</div>
-      <div className='text-left font-semibold'>{printPrice(Math.max(...priceDataOnly))}</div>
-      <div className='text-right'>Low:</div>
-      <div className='text-left font-semibold'>{printPrice(Math.min(...priceDataOnly))}</div>
+    <div className='flex text-xs text-slate-600'>
+      <div>Low:</div>
+      <div className='font-semibold mr-4'>{printPrice(Math.min(...priceDataOnly))}</div>
+      <div>High:</div>
+      <div className='font-semibold'>{printPrice(Math.max(...priceDataOnly))}</div>
     </div>
   );
 }

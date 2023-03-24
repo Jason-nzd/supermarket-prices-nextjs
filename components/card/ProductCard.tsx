@@ -53,18 +53,18 @@ function ProductCard({ product }: Props) {
             />
           </div>
 
-          <div className='flex flex-row-reverse items-center'>
+          <div className='flex flex-col items-center'>
             {/* Price Tag Div */}
-            <div className='m-1 mr-2'>
+            <div className='m-1 mr-2 ml-auto pr-1'>
               <PriceTag product={product} />
             </div>
 
             {/* Price Tips Highest/Lowest Div */}
-            <div className='ml-1'>
-              {product.priceHistory.length > 1 && (
+            {product.priceHistory.length > 1 && (
+              <div className='mt-1 ml-auto pr-4'>
                 <PriceHistoryTips priceHistory={product.priceHistory} />
-              )}
-            </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -74,7 +74,7 @@ function ProductCard({ product }: Props) {
           <div className='flex pr-3 items-center'>
             {product.category!.map((category, index) => {
               return (
-                <div className='text-xs text-slate-400 px-1 hover:text-black hover:font-bold'>
+                <div className='text-xs text-slate-400 px-1 hover:text-black'>
                   <Link href={'products/' + category} key={index}>
                     {_.startCase(_.toLower(category))}
                   </Link>
