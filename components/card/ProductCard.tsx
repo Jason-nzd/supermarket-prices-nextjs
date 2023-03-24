@@ -24,7 +24,7 @@ function ProductCard({ product }: Props) {
   }
 
   return (
-    <div className='product-card' onClick={handleClick}>
+    <div className='product-card' onClick={handleClick} key={product.id}>
       {/* Title Div */}
       <div
         className='w-full h-12 pt-2 px-3 rounded-t-2xl text-[#3C8DA3] text-sm
@@ -72,10 +72,12 @@ function ProductCard({ product }: Props) {
       <div className='flex px-2 items-center'>
         {showCategories && product.category != null && product.category!.length > 0 && (
           <div className='flex pr-3 items-center'>
-            {product.category!.map((category) => {
+            {product.category!.map((category, index) => {
               return (
                 <div className='text-xs text-slate-400 px-1 hover:text-black hover:font-bold'>
-                  <Link href={'products/' + category}>{_.startCase(_.toLower(category))}</Link>
+                  <Link href={'products/' + category} key={index}>
+                    {_.startCase(_.toLower(category))}
+                  </Link>
                 </div>
               );
             })}
