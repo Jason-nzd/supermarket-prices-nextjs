@@ -1,9 +1,12 @@
 import { GetStaticProps } from 'next';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Product } from '../../typings';
 import _ from 'lodash';
 import ProductsGrid from '../../components/ProductsGrid';
 import { DBFetchByName, DBGetProduct } from '../../utilities/cosmosdb';
+import { ThemeContext } from '../_app';
+import NavBar from '../../components/NavBar';
+import Footer from '../../components/Footer';
 
 interface Props {
   milkProducts: Product[];
@@ -18,10 +21,13 @@ const Category = ({
   oatMilkProducts,
   otherMilkProducts,
 }: Props) => {
+  const theme = useContext(ThemeContext);
+
   return (
-    <main>
+    <main className={theme}>
+      <NavBar />
       {/* Background Div */}
-      <div className=''>
+      <div className='pt-1 pb-12'>
         {/* Central Aligned Div */}
         <div className='central-responsive-div'>
           {/* Categorised Product Grids*/}
@@ -35,6 +41,7 @@ const Category = ({
           <ProductsGrid products={otherMilkProducts} />
         </div>
       </div>
+      <Footer />
     </main>
   );
 };

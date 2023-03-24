@@ -8,6 +8,8 @@ import { DBFetchByCategory, DBFetchByName } from '../../utilities/cosmosdb';
 import ResultsFilterPanel from '../../components/ResultsFilterPanel';
 import { OrderByMode, PriceHistoryLimit, Store } from '../../utilities/utilities';
 import { ThemeContext } from '../_app';
+import NavBar from '../../components/NavBar';
+import Footer from '../../components/Footer';
 
 interface Props {
   products: Product[];
@@ -20,7 +22,8 @@ const Category = ({ products, hasMoreSearchResults }: Props) => {
   const theme = useContext(ThemeContext);
 
   return (
-    <div className={theme}>
+    <main className={theme}>
+      <NavBar />
       {/* Background Div */}
       <div className='pt-1 pb-12'>
         {/* Central Aligned Div */}
@@ -40,7 +43,8 @@ const Category = ({ products, hasMoreSearchResults }: Props) => {
           {hasMoreSearchResults && <div className='text-center m-4 text-lg'>Page 1 2 3 4 5</div>}
         </div>
       </div>
-    </div>
+      <Footer />
+    </main>
   );
 };
 

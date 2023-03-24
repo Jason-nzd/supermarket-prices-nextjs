@@ -1,10 +1,13 @@
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
+import Footer from '../components/Footer';
+import NavBar from '../components/NavBar';
 import ProductEditRow from '../components/ProductEditRow';
 import { Product } from '../typings';
 import { DBFetchAll, DBFetchByName } from '../utilities/cosmosdb';
 import { OrderByMode, PriceHistoryLimit, Store } from '../utilities/utilities';
+import { ThemeContext } from './_app';
 
 const AdminPanel = () => {
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -31,55 +34,62 @@ const AdminPanel = () => {
     }
   }
 
+  const theme = useContext(ThemeContext);
+
   return (
-    <main>
-      {/* Central Aligned Div */}
-      <div className='central-responsive-div'>
-        {/* Search Bar */}
-        <div className='flex mx-3 mt-4'>
-          <input
-            className='focus:outline-none w-full rounded-lg text-sm p-2'
-            onChange={(e) => setSearchQuery(e.target.value)}
-            onSubmit={executeSearch}
-            placeholder='Search'
-            type='text'
-            value={searchQuery}
-          />
-          <button onClick={executeSearch} className='px-6 ring-2 ring-black'>
-            Search
-          </button>
-        </div>
+    <main className={theme}>
+      <NavBar />
+      {/* Background Div */}
+      <div className='pt-1 pb-12'>
+        {/* Central Aligned Div */}
+        <div className='central-responsive-div'>
+          {/* Search Bar */}
+          <div className='flex mx-3 mt-4'>
+            <input
+              className='focus:outline-none w-full rounded-lg text-sm p-2'
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onSubmit={executeSearch}
+              placeholder='Search'
+              type='text'
+              value={searchQuery}
+            />
+            <button onClick={executeSearch} className='px-6 ring-2 ring-black'>
+              Search
+            </button>
+          </div>
 
-        <div className='overflow-hidden rounded-lg border border-gray-200 shadow-md m-3'>
-          <table className='w-full border-collapse bg-white text-left text-sm text-gray-500'>
-            <thead className='bg-gray-50'>
-              <tr>
-                <th scope='col' className='pl-4 py-4 font-medium text-gray-900 w-50'></th>
-                <th scope='col' className='pl-7 px-6 py-4 font-medium text-gray-900'>
-                  ID
-                </th>
-                <th scope='col' className='px-6 py-4 font-medium text-gray-900 min-w-[20rem]'>
-                  Name & Size
-                </th>
-                <th scope='col' className='px-6 py-4 font-medium text-gray-900 '>
-                  Category
-                </th>
-                <th scope='col' className='px-6 py-4 font-medium text-gray-900 '>
-                  Price History
-                </th>
-                {/* Empty th for expanding icons panel */}
-                <th scope='col' className='pr-4 py-4 font-medium text-gray-900 min-w-[8rem]'></th>
-              </tr>
-            </thead>
+          <div className='overflow-hidden rounded-lg border border-gray-200 shadow-md m-3'>
+            <table className='w-full border-collapse bg-white text-left text-sm text-gray-500'>
+              <thead className='bg-gray-50'>
+                <tr>
+                  <th scope='col' className='pl-4 py-4 font-medium text-gray-900 w-50'></th>
+                  <th scope='col' className='pl-7 px-6 py-4 font-medium text-gray-900'>
+                    ID
+                  </th>
+                  <th scope='col' className='px-6 py-4 font-medium text-gray-900 min-w-[20rem]'>
+                    Name & Size
+                  </th>
+                  <th scope='col' className='px-6 py-4 font-medium text-gray-900 '>
+                    Category
+                  </th>
+                  <th scope='col' className='px-6 py-4 font-medium text-gray-900 '>
+                    Price History
+                  </th>
+                  {/* Empty th for expanding icons panel */}
+                  <th scope='col' className='pr-4 py-4 font-medium text-gray-900 min-w-[8rem]'></th>
+                </tr>
+              </thead>
 
-            {/* Table Body uses a map of Product Rows*/}
-            <tbody className='divide-y divide-gray-100 border-t border-gray-100'>
-              {productResults.map((product) => (
-                <ProductEditRow product={product} key={product.id} />
-              ))}
-            </tbody>
-          </table>
+              {/* Table Body uses a map of Product Rows*/}
+              <tbody className='divide-y divide-gray-100 border-t border-gray-100'>
+                {productResults.map((product) => (
+                  <ProductEditRow product={product} key={product.id} />
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
+        <Footer />
       </div>
     </main>
   );

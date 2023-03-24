@@ -1,6 +1,4 @@
 import { Html, Head, Main, NextScript } from 'next/document';
-import Footer from '../components/Footer';
-import NavBar from '../components/NavBar';
 
 export default function Document() {
   return (
@@ -12,11 +10,9 @@ export default function Document() {
         <link rel='icon' type='image/png' sizes='192x192' href='/android-chrome-192x192.png' />
       </Head>
       <body>
-        <NavBar />
         <Main />
         <NextScript />
       </body>
-      <Footer />
     </Html>
   );
 }

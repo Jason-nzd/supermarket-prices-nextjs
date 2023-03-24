@@ -1,7 +1,9 @@
-import { GetServerSideProps } from 'next';
+import { useContext } from 'react';
+import Footer from '../components/Footer';
+import NavBar from '../components/NavBar';
 import ProductsGrid from '../components/ProductsGrid';
 import { Product } from '../typings';
-import { DBFetchByName } from '../utilities/cosmosdb';
+import { ThemeContext } from './_app';
 
 interface Props {
   products: Product[];
@@ -11,8 +13,11 @@ interface Props {
 export default function Search({ products, searchTerm }: Props) {
   let productsCount = 0;
   if (products !== undefined) productsCount = products.length;
+  const theme = useContext(ThemeContext);
+
   return (
-    <div className=''>
+    <main className={theme}>
+      <NavBar />
       {/* Background Div */}
       <div className='pt-1 pb-12'>
         {/* Central Aligned Div */}
@@ -24,7 +29,8 @@ export default function Search({ products, searchTerm }: Props) {
           <div className=''>{products && <ProductsGrid products={products} />}</div>
         </div>
       </div>
-    </div>
+      <Footer />
+    </main>
   );
 }
 

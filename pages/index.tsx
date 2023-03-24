@@ -1,4 +1,6 @@
 import { useContext } from 'react';
+import Footer from '../components/Footer';
+import NavBar from '../components/NavBar';
 import ProductsGrid from '../components/ProductsGrid';
 import { Product } from '../typings';
 import { DBFetchAll } from '../utilities/cosmosdb';
@@ -16,7 +18,8 @@ export default function Home({ countdownProducts, paknsaveProducts, warehousePro
   const theme = useContext(ThemeContext);
 
   return (
-    <div className={theme}>
+    <main className={theme}>
+      <NavBar />
       {/* Background Div */}
       <div className='pt-1 pb-12'>
         {/* Central Aligned Div */}
@@ -30,7 +33,8 @@ export default function Home({ countdownProducts, paknsaveProducts, warehousePro
           {warehouseProducts && <ProductsGrid products={warehouseProducts} key='warehouse' />}
         </div>
       </div>
-    </div>
+      <Footer />
+    </main>
   );
 }
 

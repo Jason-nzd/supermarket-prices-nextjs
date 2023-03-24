@@ -6,6 +6,8 @@ import ProductsGrid from '../../components/ProductsGrid';
 import { DBFetchByCategory } from '../../utilities/cosmosdb';
 import { printPrice } from '../../utilities/utilities';
 import { ThemeContext } from '../_app';
+import NavBar from '../../components/NavBar';
+import Footer from '../../components/Footer';
 
 interface Props {
   mixedGrade: Product[];
@@ -17,7 +19,8 @@ const Category = ({ mixedGrade, size7, size8plus }: Props) => {
   const theme = useContext(ThemeContext);
 
   return (
-    <div className={theme}>
+    <main className={theme}>
+      <NavBar />
       {/* Background Div */}
       <div className='pt-1 pb-12'>
         {/* Central Aligned Div */}
@@ -31,7 +34,8 @@ const Category = ({ mixedGrade, size7, size8plus }: Props) => {
           <ProductsGrid products={size8plus} />
         </div>
       </div>
-    </div>
+      <Footer />
+    </main>
   );
 };
 

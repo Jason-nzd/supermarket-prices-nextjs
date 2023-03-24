@@ -1,9 +1,12 @@
 import { GetStaticProps } from 'next';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Product } from '../../typings';
 import ProductsGrid from '../../components/ProductsGrid';
 import { DBFetchByCategory } from '../../utilities/cosmosdb';
 import { OrderByMode, PriceHistoryLimit, Store } from '../../utilities/utilities';
+import { ThemeContext } from '../_app';
+import NavBar from '../../components/NavBar';
+import Footer from '../../components/Footer';
 
 interface Props {
   apples: Product[];
@@ -28,10 +31,13 @@ const Category = ({
   grapes,
   other,
 }: Props) => {
+  const theme = useContext(ThemeContext);
+
   return (
-    <main>
+    <main className={theme}>
+      <NavBar />
       {/* Background Div */}
-      <div className=''>
+      <div className='pt-1 pb-12'>
         {/* Central Aligned Div */}
         <div className='central-responsive-div'>
           {/* Categorised Product Grids*/}
@@ -55,6 +61,7 @@ const Category = ({
           <ProductsGrid products={other} />
         </div>
       </div>
+      <Footer />
     </main>
   );
 };
