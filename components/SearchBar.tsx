@@ -2,13 +2,13 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 
 export default function SearchBar() {
-  // const router = useRouter();
+  const router = useRouter();
   const [searchQuery, setSearchQuery] = useState<string>('');
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('searched');
-    // router.push('/admin');
+    //console.log('searched ' + searchQuery);
+    router.push('/search?query=' + searchQuery);
   };
 
   return (
@@ -17,9 +17,9 @@ export default function SearchBar() {
         <form onSubmit={handleSearch}>
           <input
             type='text'
-            // name='search'
-            // id='search'
-            // required
+            name='search'
+            id='search'
+            required
             placeholder='Search'
             minLength={3}
             maxLength={40}
