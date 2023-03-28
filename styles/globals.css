@@ -16,7 +16,7 @@
     @apply bg-[#1EA44F];
   }
   .text-primary-colour {
-    @apply text-[#75F3A3];
+    @apply text-green-200;
   }
   .text-input {
     @apply px-2 my-0 py-0 rounded-md border border-stone-300;
