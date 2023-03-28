@@ -5,7 +5,7 @@ import React, { useContext, useState } from 'react';
 import { categoryNames } from '../pages/products/[category]';
 import { ThemeContext } from '../pages/_app';
 import kiwifruit from '../public/android-chrome-192x192.png';
-import CategorySelector from './CategorySelector';
+import CategorySelectMenu from './CategorySelectMenu';
 import SearchBar from './SearchBar';
 
 const NavBar = () => {
@@ -79,14 +79,8 @@ const NavBar = () => {
                   </Link>
                 );
               })}
-
-              {showCategoryModal && <CategorySelector />}
-
-              {/* User customized categories with plus icon */}
-              <div className='pt-1 mr-4 w-fit'>
-                <button type='button' title='Customize' onClick={toggleCategoryModal}>
-                  {plusIcon}
-                </button>
+              <div className='pr-[6rem] pb-[1.5rem] mb-[10px]'>
+                <CategorySelectMenu />
               </div>
             </div>
             {/* Search Bar */}
