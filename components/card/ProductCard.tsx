@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import _, { indexOf } from 'lodash';
 import Link from 'next/link';
 import React from 'react';
 import { Product } from '../../typings';
@@ -74,10 +74,8 @@ function ProductCard({ product }: Props) {
           <div className='flex pr-3 items-center'>
             {product.category!.map((category, index) => {
               return (
-                <div className='text-xs text-slate-400 px-1 hover:text-black'>
-                  <Link href={'products/' + category} key={index}>
-                    {_.startCase(_.toLower(category))}
-                  </Link>
+                <div className='text-xs text-slate-400 px-1 hover:text-black' key={index}>
+                  <Link href={'products/' + category}>{_.startCase(_.toLower(category))}</Link>
                 </div>
               );
             })}
