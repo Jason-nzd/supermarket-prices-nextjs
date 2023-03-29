@@ -11,44 +11,77 @@ function PriceTag({ product }: Props) {
   let unitPrice: number | undefined = undefined;
   let unitString = '';
   let quantity: number | undefined;
+  let deriveUnitPriceFromName = false;
 
   // If a product already has a unitPrice set, display it
   if (product.unitPrice) {
     unitPrice = product.unitPrice;
     unitString = '/' + _.capitalize(product.unitName) || 'Unit';
-  }
-
-  // Else try derive unit price from product size
-  else {
-    // Use regex to get any digits from size, then parse to a float
-    let regexSizeOnlyDigits = product.size?.match(/\d|\./g)?.join('');
-    if (regexSizeOnlyDigits) quantity = parseFloat(regexSizeOnlyDigits);
-
-    // Use regex to match a string ending with g kg L
-    unitString = '/' + product.size?.match(/\g$|kg$|L$|mL$/g)?.join('');
-
-    // If size is simply 'kg', process it as 1kg
-    if (product.size === 'kg') {
-      quantity = 1;
-      unitString = '/kg';
+  } else {
+    // Try match any units found in size or name
+    let matchedUnit = product.size
+      ?.toLowerCase()
+      .match(/\g$|kg$|l$|ml$/g)
+      ?.join('');
+    if (!matchedUnit) {
+      matchedUnit = product.name
+        ?.toLowerCase()
+        .match(/\g$|kg$|l$|ml$/g)
+        ?.join('');
+      deriveUnitPriceFromName = true;
     }
 
-    // If units are in grams, divide by 100 to get per 100g unit pricing
-    if (quantity && unitString === '/g') {
-      quantity = quantity / 100;
-      unitString = '/100g';
-    }
+    if (matchedUnit) {
+      // Use regex to get any digits from size or name, then parse to a float
+      let regexSizeOnlyDigits = deriveUnitPriceFromName
+        ? product.name?.match(/\d|\./g)?.join('')
+        : product.size?.match(/\d|\./g)?.join('');
+      if (regexSizeOnlyDigits) quantity = parseFloat(regexSizeOnlyDigits);
 
-    // If units are in mL, divide by 100 to get per 100mL unit pricing
-    if (quantity && unitString === '/mL') {
-      quantity = quantity / 100;
-      unitString = '/100mL';
-    }
+      // Handle edge case where size contains a 'multiplier x sub-unit' - eg. 4 x 107mL
+      let matchMultipliedSizeString = product.size?.match(/\d*\sx\s\d*mL$/g)?.join('');
+      if (matchMultipliedSizeString) {
+        //console.log(matchMultipliedSizeString);
+        const splitMultipliedSize = matchMultipliedSizeString.split('x');
+        const multiplier = parseInt(splitMultipliedSize[0].trim());
+        const subUnitSize = parseInt(splitMultipliedSize[1].trim());
+        quantity = multiplier * subUnitSize;
+      }
 
-    // Parse to int and check is within valid range
-    if (quantity && quantity > 0 && quantity < 999) {
-      // Set per unit price
-      unitPrice = product.currentPrice / quantity;
+      unitString = '/' + matchedUnit;
+
+      // If size is simply 'kg', process it as 1kg
+      if (product.size === 'kg') {
+        quantity = 1;
+        unitString = '/kg';
+      }
+
+      // If units are in grams, divide by 1000 and use kg instead
+      if (quantity && unitString === '/g') {
+        quantity = quantity / 1000;
+        unitString = '/kg';
+      }
+
+      // If units are in mL, divide by 1000 and use L instead
+      if (quantity && unitString === '/ml') {
+        quantity = quantity / 1000;
+        unitString = '/L';
+      }
+
+      // Capitalize L for Litres
+      if (quantity && unitString === '/l') unitString = '/L';
+
+      // Parse to int and check is within valid range
+      if (quantity && quantity > 0 && quantity < 999) {
+        // Set per unit price
+        unitPrice = product.currentPrice / quantity;
+      }
+
+      // console.log(
+      //   product.name + ' - ' + product.currentPrice + ' / ' + quantity?.toString() + matchedUnit
+      // ) +
+      //   ' - ' +
+      //   product.currentPrice / quantity!;
     }
   }
 
