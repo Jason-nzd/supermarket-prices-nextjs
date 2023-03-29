@@ -8,7 +8,8 @@ export interface Product {
   category?: string[];
   lastUpdated: Date;
   lastChecked: Date;
-  unitPrice?: number;
+  unitPrice?: number | null;
+  unitName?: string;
 }
 
 export interface DatedPrice {
