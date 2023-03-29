@@ -25,9 +25,9 @@ function CategorySelectMenu() {
           {categoryNames.map((categoryName) => {
             const href = '/products/' + categoryName;
             return (
-              <div className='flex p-0.5 gap-x-2 items-center'>
+              <div className='flex p-0.5 gap-x-2 items-center' key={categoryName}>
                 <StarFavourite category={categoryName} />
-                <Link className=' text-slate-800 hover-to-white' href={href} key={href}>
+                <Link className=' text-slate-800 hover-to-white' href={href}>
                   {_.startCase(categoryName)}
                 </Link>
               </div>
