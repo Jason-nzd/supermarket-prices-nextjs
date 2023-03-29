@@ -10,9 +10,10 @@ import { useSampleProductsInstead } from './sample-products';
 import { Product } from '../typings';
 import { cleanProductFields, OrderByMode, PriceHistoryLimit, Store } from './utilities';
 
-// CosmosDB Variables
-const dbName = 'supermarket-prices';
-const containerName = 'products';
+// CosmosDB Env Variables
+const COSMOS_CONSTRING = process.env.COSMOS_CONSTRING;
+const COSMOS_DBNAME = process.env.COSMOS_DBNAME;
+const COSMOS_CONTAINER = process.env.COSMOS_CONTAINER;
 
 // CosmosDB Singletons
 let cosmosClient: CosmosClient;
@@ -23,8 +24,7 @@ export async function connectToCosmosDB(): Promise<boolean> {
   // If already connected we can return here
   if (container != null) return true;
 
-  // Check for valid connection string stored in .env
-  const COSMOS_CONSTRING = process.env.COSMOS_CONSTRING;
+  // Check for any connection string stored in .env
   if (!COSMOS_CONSTRING) {
     console.log('Azure CosmosDB Connection string not found');
     return false;
@@ -35,14 +35,17 @@ export async function connectToCosmosDB(): Promise<boolean> {
     cosmosClient = new CosmosClient(COSMOS_CONSTRING);
 
     // Connect to database & container
-    const database = await cosmosClient.database(dbName);
-    container = await database.container(containerName);
+    const database = await cosmosClient.database(COSMOS_DBNAME!);
+    container = await database.container(COSMOS_CONTAINER!);
 
     return true;
   } catch (error) {
     console.log(
-      'Invalid CosmosDB connection string, or unable to connect to CosmosDB\n' +
-        'Check .env.local in root folder, with COSMOS_CONSTRING=<your CosmoDB read connection string>'
+      'Invalid CosmosDB connection string, Database name, or Container name\n' +
+        'Check env variables for:\n' +
+        '\tCOSMOS_CONSTRING=<your CosmoDB read connection string>\n' +
+        '\tCOSMOS_DBNAME=<your-database-name>\n' +
+        '\tCOSMOS_CONTAINER=<your-container-name>\n'
     );
     return false;
   }
@@ -147,19 +150,20 @@ async function fetchProductsUsingSDK(
       const options: FeedOptions = {
         maxItemCount: maxItems,
       };
+
       // Perform DB Fetch
       const dbResponse: FeedResponse<Product> = await container.items
         .query(querySpec, options)
         .fetchNext();
 
-      if (dbResponse.resources === undefined) return resultingProducts;
-
-      // Push products into array and clean specific fields from CosmosDB
-      dbResponse.resources.map((productDocument) => {
-        resultingProducts.push(cleanProductFields(productDocument));
-      });
+      if (dbResponse.resources !== undefined) {
+        // Push products into array and clean specific fields from CosmosDB
+        dbResponse.resources.map((productDocument, index) => {
+          resultingProducts.push(cleanProductFields(productDocument));
+        });
+      }
     } catch (error) {
-      console.log('Error on fetchProductsUsingSDK()\n ' + error);
+      console.log('Error on fetchProductsUsingSDK()\n' + error);
     }
   } else return useSampleProductsInstead();
 

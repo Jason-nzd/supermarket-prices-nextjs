@@ -1,6 +1,6 @@
 # Supermarket Price History Website
 
-This is a static website that pulls product data from Azure CosmosDB and displays them in a responsive grid.
+This is a static Next.js website that pulls product data from Azure CosmosDB and displays them in a responsive grid.
 
 Price history for each product is displayed using chart.js line charts.
 
@@ -17,12 +17,14 @@ The website comes with some sample data built-in and can be launched as-is with 
 
 ## Database Mode Setup
 
-For use with Azure CosmosDB, a read-only or read-write connection string must be set as an environment variable COSMOS_CONSTRING. CosmosDB database and container names can be set in `/utilities/cosmosdb.ts`.
+For use with Azure CosmosDB, a read-only or read-write connection string must be set as an environment variable COSMOS_CONSTRING. Database and container names are also set here.
 
 Example `.env`:
 
 ```shell
-COSMOS_CONSTRING=
+COSMOS_CONSTRING=AccountEndpoint=https://<your-cosmos>.documents.azure.com:443/;AccountKey=asdf1234==
+COSMOS_DBNAME=<your-database-name>
+COSMOS_CONTAINER=<your-container-name>
 ```
 
 ## Usage
