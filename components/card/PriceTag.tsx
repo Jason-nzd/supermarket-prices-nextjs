@@ -1,14 +1,60 @@
+import _ from 'lodash';
 import React from 'react';
 import { Product } from '../../typings';
-import { PriceTrend, priceTrend } from '../../utilities/utilities';
+import { PriceTrend, priceTrend, printPrice } from '../../utilities/utilities';
 
 interface Props {
   product: Product;
 }
 
 function PriceTag({ product }: Props) {
-  let priceTagDivClass = 'flex items-center bg-white rounded-3xl border-2 shadow-lg px-2 ';
+  let unitPrice: number | undefined = undefined;
+  let unitString = '';
+  let quantity: number | undefined;
+
+  // If a product already has a unitPrice set, display it
+  if (product.unitPrice) {
+    unitPrice = product.unitPrice;
+    unitString = '/' + _.capitalize(product.unitName) || 'Unit';
+  }
+
+  // Else try derive unit price from product size
+  else {
+    // Use regex to get any digits from size, then parse to a float
+    let regexSizeOnlyDigits = product.size?.match(/\d|\./g)?.join('');
+    if (regexSizeOnlyDigits) quantity = parseFloat(regexSizeOnlyDigits);
+
+    // Use regex to match a string ending with g kg L
+    unitString = '/' + product.size?.match(/\g$|kg$|L$|mL$/g)?.join('');
+
+    // If size is simply 'kg', process it as 1kg
+    if (product.size === 'kg') {
+      quantity = 1;
+      unitString = '/kg';
+    }
+
+    // If units are in grams, divide by 100 to get per 100g unit pricing
+    if (quantity && unitString === '/g') {
+      quantity = quantity / 100;
+      unitString = '/100g';
+    }
+
+    // If units are in mL, divide by 100 to get per 100mL unit pricing
+    if (quantity && unitString === '/mL') {
+      quantity = quantity / 100;
+      unitString = '/100mL';
+    }
+
+    // Parse to int and check is within valid range
+    if (quantity && quantity > 0 && quantity < 999) {
+      // Set per unit price
+      unitPrice = product.currentPrice / quantity;
+    }
+  }
+
+  let priceTagDivClass = 'items-center bg-white rounded-3xl border-2 shadow-lg px-3 py-1  ';
   let icon;
+
   switch (priceTrend(product.priceHistory)) {
     // If trending down, display in green and with down icon
     case PriceTrend.Decreased:
@@ -32,21 +78,31 @@ function PriceTag({ product }: Props) {
   return (
     <div className='z-50 w-min'>
       <div className={priceTagDivClass}>
-        {/* Dollar Symbol */}
-        <div className='mb-[0.07rem] text-sm lg:text-md'>$</div>
+        <div className='flex justify-center'>
+          {/* Dollar Symbol */}
+          <div className='pt-[0.2rem] text-sm lg:text-md'>$</div>
 
-        {/* Dollars */}
-        <div className='mb-0.5 font-bold text-md lg:text-xl tracking-tighter'>
-          {printDollars(product.currentPrice)}
+          {/* Dollars */}
+          <div className='font-bold text-md lg:text-xl tracking-tighter'>
+            {printDollars(product.currentPrice)}
+          </div>
+
+          {/* Cents */}
+          <div className='pt-[0.2rem] pl-[0.1rem] font-semibold text-xs lg:text-sm tracking-normal'>
+            {printCents(product.currentPrice)}
+          </div>
+
+          {/* Icon */}
+          <div className='pl-1 items-center'>{icon}</div>
         </div>
-
-        {/* Cents */}
-        <div className='pl-[0.1rem]  font-semibold text-xs lg:text-sm tracking-normal'>
-          {printCents(product.currentPrice)}
-        </div>
-
-        {/* Icon */}
-        <div className='pl-1 items-center'>{icon}</div>
+        {/* Unit Price */}
+        {unitPrice && (
+          <div className='flex text-sm items-center'>
+            <div className='text-xs'>$</div>
+            <div className='font-semibold'>{unitPrice.toFixed(1)}</div>
+            <div>{unitString}</div>
+          </div>
+        )}
       </div>
     </div>
   );

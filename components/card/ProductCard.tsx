@@ -44,7 +44,7 @@ function ProductCard({ product }: Props) {
           {/* Optional Size div overlaid on top of image */}
           {product.size && <div className='size-tag'>{product.size}</div>}
         </div>
-        <div className='w-3/5'>
+        <div className='w-3/6'>
           {/* Price history chart Div */}
           <div className='pl-0 pr-0.5 z-50'>
             <PriceHistoryChart
