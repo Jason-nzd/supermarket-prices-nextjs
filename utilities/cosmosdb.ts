@@ -107,14 +107,18 @@ async function fetchProductsUsingAPI(
   if (orderByIndex > 0) querySpec.query = querySpec.query.substring(0, orderByIndex);
 
   // Fetch response using POST
-  const apiResponse = await fetch('https://supermarket-api.azure-api.net/', {
+  const apiResponse = await fetch('https://api.kiwiprice.xyz/', {
     method: 'POST',
     body: JSON.stringify(querySpec),
     mode: 'cors',
     headers: {
+      'Content-Type': 'application/json',
       'x-ms-max-item-count': maxItems.toString(),
     },
+    redirect: 'follow',
+    referrerPolicy: 'no-referrer',
   });
+  console.log(apiResponse);
 
   // If successful, set resultingProducts to response json
   if (apiResponse.status === 200) {
