@@ -1,19 +1,18 @@
-import { useState, useEffect } from 'react';
-const useMediaQuery = {};
-// const useMediaQuery = (query: string) => {
-//   const [matches, setMatches] = useState(false);
+import { useEffect, useState } from 'react';
 
-//   useEffect(() => {
-//     const media = window.matchMedia(query);
-//     if (media.matches !== matches) {
-//       setMatches(media.matches);
-//     }
-//     const listener = () => setMatches(media.matches);
-//     window.addEventListener('resize', listener);
-//     return () => window.removeEventListener('resize', listener);
-//   }, [matches, query]);
+export const useMediaQuery = (screen: string) => {
+  const [matches, setMatches] = useState(false);
 
-//   return matches;
-// };
+  useEffect(() => {
+    const query = `(min-width: ${screen})`;
+    const media = window.matchMedia(query);
+    if (media.matches !== matches) {
+      setMatches(media.matches);
+    }
+    const listener = () => setMatches(media.matches);
+    window.addEventListener('resize', listener);
+    return () => window.removeEventListener('resize', listener);
+  }, [matches, screen]);
 
-export default useMediaQuery;
+  return matches;
+};
