@@ -11,6 +11,7 @@ interface Props {
 function ProductsGrid({ products, trimColumns = false }: Props) {
   let trimmedProducts: Product[] = [];
   if (trimColumns) {
+    trimmedProducts = products;
     // Trim products to 3 columns
     if (useMediaQuery('980px')) {
       trimmedProducts = products.slice(0, nextMultipleDown(products.length, 3));
