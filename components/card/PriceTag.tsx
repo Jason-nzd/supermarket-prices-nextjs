@@ -56,10 +56,15 @@ function PriceTag({ product }: Props) {
         unitString = '/kg';
       }
 
-      // If units are in grams, divide by 1000 and use kg instead
+      // If units are in grams, convert to either /kg or /100g
       if (quantity && unitString === '/g') {
-        quantity = quantity / 1000;
-        unitString = '/kg';
+        if (quantity < 500) {
+          quantity = quantity / 100;
+          unitString = '/100g';
+        } else {
+          quantity = quantity / 1000;
+          unitString = '/kg';
+        }
       }
 
       // If units are in mL, divide by 1000 and use L instead
