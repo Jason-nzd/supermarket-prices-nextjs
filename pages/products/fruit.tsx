@@ -88,10 +88,11 @@ export const getStaticProps: GetStaticProps = async () => {
 
   products.forEach((product) => {
     const name = product.name.toLowerCase();
-    if (name.includes('apple')) apples.push(product);
+    if (name.includes('apple') && !name.includes('pineapple')) apples.push(product);
     else if (name.includes('banana')) bananas.push(product);
     else if (name.includes('orange') || name.includes('mandarin')) oranges.push(product);
-    else if (name.includes('lemon') || name.includes('lime')) lemons.push(product);
+    else if (!name.includes('avocado') && (name.includes('lemon') || name.includes('lime')))
+      lemons.push(product);
     else if (name.includes('kiwifruit')) kiwifruit.push(product);
     else if (name.includes('peach') || name.includes('nectarine')) peaches.push(product);
     else if (name.includes('berries') || name.includes('berry')) berries.push(product);
