@@ -22,7 +22,8 @@
     @apply px-2 my-0 py-0 rounded-md border border-stone-300;
   }
   .nav-main-link {
-    @apply mr-4 xl:mr-8 text-primary-colour hover-to-white transition-all;
+    @apply text-primary-colour px-3 py-1 rounded-3xl 
+    hover:bg-green-300 hover:text-black hover:shadow-md transition-all;
   }
   .nav-small-link {
     @apply mx-3 text-xs flex flex-col items-center leading-tight text-primary-colour hover-to-white;

@@ -10,7 +10,7 @@ function CategorySelectMenu() {
 
   return (
     <Popover className='absolute z-50'>
-      <Popover.Button className='bg-green-300 rounded-3xl px-4 py-1 font-semibold hover:bg-green-100'>
+      <Popover.Button className='bg-green-300 rounded-3xl px-4 py-1 hover:bg-green-100 hover:shadow-md transition-colors'>
         More
       </Popover.Button>
       <Transition

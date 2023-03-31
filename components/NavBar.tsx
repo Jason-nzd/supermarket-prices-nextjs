@@ -2,6 +2,7 @@ import _ from 'lodash';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useContext, useState } from 'react';
+import { useMediaQuery } from '../hooks/useMediaQuery';
 import { categoryNames } from '../pages/products/[category]';
 import { ThemeContext } from '../pages/_app';
 import kiwifruit from '../public/android-chrome-192x192.png';
@@ -9,17 +10,13 @@ import CategorySelectMenu from './CategorySelectMenu';
 import SearchBar from './SearchBar';
 
 const NavBar = () => {
-  const [showCategoryModal, setShowCategoryModal] = useState(false);
   const [userCategories, setUserCategories] = useState<string[]>(categoryNames.slice(0, 4));
   const theme = useContext(ThemeContext);
 
-  function toggleCategoryModal() {
-    setShowCategoryModal(showCategoryModal === false ? true : false);
-  }
+  // if (useMediaQuery('700px')) setUserCategories(categoryNames.slice(0, 4));
 
   return (
     <nav className='w-full overflow-hidden'>
-      {/* <div className='max-w-[160rem] mx-auto lg:w-[100%] 2xl:w-[70%] transition-all duration-500 flex flex-nowrap h-full'> */}
       <div className='mx-auto w-[100%] 2xl:w-[90rem] 3xl:w-[110rem] transition-all duration-500 flex flex-nowrap'>
         {/* Column 1 - Logo*/}
         <Link href='/' className='ml-2'>
@@ -35,7 +32,7 @@ const NavBar = () => {
         </div>
 
         {/* Column 2 - Title - Sub-title - Categories - Search */}
-        <div className='block max-w-[70%] xl:max-w-[77%] mx-auto lg:mx-0'>
+        <div className='block w-full'>
           {/* Row 1 - Title - Sub-title */}
           <div className='flex flex-wrap h-1/2 items-center lg:items-center ml-1 w-full'>
             {/* Mobile Icon */}
@@ -46,7 +43,7 @@ const NavBar = () => {
             />
             {/* Brand Title */}
             <Link href='/' className='mr-auto lg:mr-0'>
-              <h1 className='ml-2 text-2xl font-bold text-stone-100 hover-to-white hover:scale-[102%]'>
+              <h1 className='ml-2 text-2xl font-bold text-stone-100 hover-to-white'>
                 KiwiPrice.xyz
               </h1>
             </Link>
@@ -60,7 +57,7 @@ const NavBar = () => {
           {/* Row 2 - Categories - Search Bar*/}
           <div className='flex-nowrap h-1/2 hidden lg:flex items-center pb-4 whitespace-nowrap'>
             {/* Categories */}
-            <div className='flex items-center overflow-hidden ml-3'>
+            <div className='flex items-center overflow-hidden'>
               <Link className='nav-main-link' href='/products/milk'>
                 Milk
               </Link>
@@ -70,22 +67,25 @@ const NavBar = () => {
               <Link className='nav-main-link' href='/products/fruit'>
                 Fruit
               </Link>
-
-              {userCategories.map((name) => {
-                const href = '/products/' + name;
-                return (
-                  <Link className='nav-main-link' href={href} key={href}>
-                    {_.startCase(name)}
-                  </Link>
-                );
-              })}
-              <div className='pr-[6rem] pb-[1.5rem] mb-[10px]'>
+              <div className='overflow-hidden'>
+                {userCategories.map((name) => {
+                  const href = '/products/' + name;
+                  return (
+                    <Link className='nav-main-link' href={href} key={href}>
+                      {_.startCase(name)}
+                    </Link>
+                  );
+                })}
+              </div>
+              <div className='pr-[6rem] pb-[1.5rem] mb-[10px] pl-1 ml-auto'>
                 <CategorySelectMenu />
               </div>
             </div>
-            {/* Search Bar */}
-            <div className='mx-2'>
-              <SearchBar />
+            <div className='ml-auto'>
+              {/* Search Bar */}
+              <div className='w-fit ml-auto'>
+                <SearchBar />
+              </div>
             </div>
           </div>
         </div>
