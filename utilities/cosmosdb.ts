@@ -190,6 +190,12 @@ function queryAddOrderBy(orderBy: OrderByMode): string {
     case OrderByMode.PriceHighest:
       sqlQueryAddon = ' ORDER BY p.currentPrice DESC';
       break;
+    case OrderByMode.UnitPriceLowest:
+      sqlQueryAddon = ' ORDER BY p.unitPrice';
+      break;
+    case OrderByMode.UnitPriceHighest:
+      sqlQueryAddon = ' ORDER BY p.unitPrice DESC';
+      break;
     case OrderByMode.Name:
       sqlQueryAddon = ' ORDER BY p.name';
       break;

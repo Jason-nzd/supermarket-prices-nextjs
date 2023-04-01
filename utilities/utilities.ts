@@ -20,6 +20,8 @@ export enum OrderByMode {
   Oldest,
   PriceLowest,
   PriceHighest,
+  UnitPriceLowest,
+  UnitPriceHighest,
   Name,
   None,
 }
@@ -41,6 +43,8 @@ export function cleanProductFields(document: Product): Product {
     category,
     lastUpdated,
     lastChecked,
+    unitPrice,
+    unitName,
   } = document;
   try {
     // Also check for valid date and category formats
@@ -51,6 +55,19 @@ export function cleanProductFields(document: Product): Product {
     }
     if (!category) category = ['No Category'];
     if (!lastChecked) lastChecked = lastUpdated;
+    if (!unitPrice) {
+      const derivedUnitString = deriveUnitPriceString(document);
+
+      if (derivedUnitString) {
+        unitPrice = Number.parseFloat(derivedUnitString.split('/')[0] as string);
+        unitName = derivedUnitString.split('/')[1];
+      } else {
+        unitPrice = null;
+        unitName = null;
+      }
+    } else if (unitPrice < 0.2) {
+      console.log('[Unusual UnitPrice from DB] = ' + name + ' - ' + unitPrice + '/' + unitName);
+    }
   } catch (error) {
     console.log(`Error on cleanProductFields() for ${name}\n` + error);
   }
@@ -64,8 +81,82 @@ export function cleanProductFields(document: Product): Product {
     category,
     lastUpdated,
     lastChecked,
+    unitPrice,
+    unitName,
   };
   return cleanedProduct;
+}
+
+export function deriveUnitPriceString(product: Product): string | undefined {
+  let quantity: number | undefined;
+  let deriveUnitPriceFromName = false;
+
+  // Try match any units found in size or name
+  let matchedUnit = product.size
+    ?.toLowerCase()
+    .match(/\g$|kg$|l$|ml$/g)
+    ?.join('');
+  if (!matchedUnit) {
+    matchedUnit = product.name
+      ?.toLowerCase()
+      .match(/\g$|kg$|l$|ml$/g)
+      ?.join('');
+    deriveUnitPriceFromName = true;
+  }
+
+  if (matchedUnit) {
+    // Use regex to get any digits from size or name, then parse to a float
+    let regexSizeOnlyDigits = deriveUnitPriceFromName
+      ? product.name?.match(/\d|\./g)?.join('')
+      : product.size?.match(/\d|\./g)?.join('');
+    if (regexSizeOnlyDigits) quantity = parseFloat(regexSizeOnlyDigits);
+
+    // Handle edge case where size contains a 'multiplier x sub-unit' - eg. 4 x 107mL
+    let matchMultipliedSizeString = product.size?.match(/\d+\sx\s\d+mL$/g)?.join('');
+    if (matchMultipliedSizeString) {
+      const splitMultipliedSize = matchMultipliedSizeString.split('x');
+      const multiplier = parseInt(splitMultipliedSize[0].trim());
+      const subUnitSize = parseInt(splitMultipliedSize[1].trim());
+      quantity = multiplier * subUnitSize;
+    }
+
+    product.unitName = matchedUnit;
+
+    // If size is simply 'kg', process it as 1kg
+    if (product.size === 'kg') {
+      quantity = 1;
+      product.unitName = 'kg';
+    }
+
+    // If units are in grams, convert to either /kg or /100g
+    if (quantity && product.unitName === 'g') {
+      if (quantity < 500) {
+        quantity = quantity / 100;
+        product.unitName = '100g';
+      } else {
+        quantity = quantity / 1000;
+        product.unitName = 'kg';
+      }
+    }
+
+    // If units are in mL, divide by 1000 and use L instead
+    if (quantity && product.unitName === 'ml') {
+      quantity = quantity / 1000;
+      product.unitName = 'L';
+    }
+
+    // Capitalize L for Litres
+    if (quantity && product.unitName === 'l') product.unitName = 'L';
+
+    // Parse to int and check is within valid range
+    if (quantity && quantity > 0 && quantity < 999) {
+      // Set per unit price
+      product.unitPrice = parseFloat((product.currentPrice / quantity).toPrecision(2));
+
+      return product.unitPrice + '/' + product.unitName;
+    }
+  }
+  return undefined;
 }
 
 // utcDateToShortDate()
@@ -93,6 +184,14 @@ export function sortProductsByDate(products: Product[]): Product[] {
     const dateB = new Date(b.priceHistory[b.priceHistory.length - 1].date);
     if (dateA > dateB) return -1;
     if (dateA < dateB) return 1;
+    return 0;
+  });
+}
+
+export function sortProductsByUnitPrice(products: Product[]): Product[] {
+  return products.sort((a, b) => {
+    if (a.unitPrice! < b.unitPrice!) return -1;
+    if (a.unitPrice! > b.unitPrice!) return 1;
     return 0;
   });
 }

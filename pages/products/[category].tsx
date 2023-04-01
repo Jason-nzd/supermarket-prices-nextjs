@@ -6,7 +6,12 @@ import _ from 'lodash';
 import ProductsGrid from '../../components/ProductsGrid';
 import { DBFetchByCategory, DBFetchByName } from '../../utilities/cosmosdb';
 import ResultsFilterPanel from '../../components/ResultsFilterPanel';
-import { OrderByMode, PriceHistoryLimit, Store } from '../../utilities/utilities';
+import {
+  OrderByMode,
+  PriceHistoryLimit,
+  Store,
+  sortProductsByUnitPrice,
+} from '../../utilities/utilities';
 import { ThemeContext } from '../_app';
 import NavBar from '../../components/NavBar';
 import Footer from '../../components/Footer';
@@ -109,6 +114,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       true
     );
   }
+
+  // Sort by unit price
+  products = sortProductsByUnitPrice(products);
 
   const hasMoreSearchResults = false;
 

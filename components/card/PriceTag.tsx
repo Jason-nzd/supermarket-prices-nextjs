@@ -1,97 +1,25 @@
 import _ from 'lodash';
 import React from 'react';
 import { Product } from '../../typings';
-import { PriceTrend, priceTrend, printPrice } from '../../utilities/utilities';
+import { PriceTrend, priceTrend } from '../../utilities/utilities';
 
 interface Props {
   product: Product;
 }
 
 function PriceTag({ product }: Props) {
-  let unitPrice: number | undefined = undefined;
-  let unitString = '';
-  let quantity: number | undefined;
-  let deriveUnitPriceFromName = false;
-
-  // If a product already has a unitPrice set, display it
-  if (product.unitPrice) {
-    unitPrice = product.unitPrice;
-    unitString = '/' + _.capitalize(product.unitName) || 'Unit';
-  } else {
-    // Try match any units found in size or name
-    let matchedUnit = product.size
-      ?.toLowerCase()
-      .match(/\g$|kg$|l$|ml$/g)
-      ?.join('');
-    if (!matchedUnit) {
-      matchedUnit = product.name
-        ?.toLowerCase()
-        .match(/\g$|kg$|l$|ml$/g)
-        ?.join('');
-      deriveUnitPriceFromName = true;
-    }
-
-    if (matchedUnit) {
-      // Use regex to get any digits from size or name, then parse to a float
-      let regexSizeOnlyDigits = deriveUnitPriceFromName
-        ? product.name?.match(/\d|\./g)?.join('')
-        : product.size?.match(/\d|\./g)?.join('');
-      if (regexSizeOnlyDigits) quantity = parseFloat(regexSizeOnlyDigits);
-
-      // Handle edge case where size contains a 'multiplier x sub-unit' - eg. 4 x 107mL
-      let matchMultipliedSizeString = product.size?.match(/\d*\sx\s\d*mL$/g)?.join('');
-      if (matchMultipliedSizeString) {
-        //console.log(matchMultipliedSizeString);
-        const splitMultipliedSize = matchMultipliedSizeString.split('x');
-        const multiplier = parseInt(splitMultipliedSize[0].trim());
-        const subUnitSize = parseInt(splitMultipliedSize[1].trim());
-        quantity = multiplier * subUnitSize;
-      }
-
-      unitString = '/' + matchedUnit;
-
-      // If size is simply 'kg', process it as 1kg
-      if (product.size === 'kg') {
-        quantity = 1;
-        unitString = '/kg';
-      }
-
-      // If units are in grams, convert to either /kg or /100g
-      if (quantity && unitString === '/g') {
-        if (quantity < 500) {
-          quantity = quantity / 100;
-          unitString = '/100g';
-        } else {
-          quantity = quantity / 1000;
-          unitString = '/kg';
-        }
-      }
-
-      // If units are in mL, divide by 1000 and use L instead
-      if (quantity && unitString === '/ml') {
-        quantity = quantity / 1000;
-        unitString = '/L';
-      }
-
-      // Capitalize L for Litres
-      if (quantity && unitString === '/l') unitString = '/L';
-
-      // Parse to int and check is within valid range
-      if (quantity && quantity > 0 && quantity < 999) {
-        // Set per unit price
-        unitPrice = product.currentPrice / quantity;
-      }
-
-      // console.log(
-      //   product.name + ' - ' + product.currentPrice + ' / ' + quantity?.toString() + matchedUnit
-      // ) +
-      //   ' - ' +
-      //   product.currentPrice / quantity!;
-    }
-  }
-
   let priceTagDivClass = 'items-center bg-white rounded-3xl border-2 shadow-lg px-3 py-1  ';
   let icon;
+
+  // Show separate pet unit price only if it is different from the regular price
+  let showUnitPrice = false;
+  if (product.unitPrice) {
+    showUnitPrice = true;
+    // console.log(product.name + ' - set unit price= ' + product.unitPrice + '/' + product.unitName);
+    // showUnitPrice = Math.abs(product.unitPrice - product.currentPrice) > 0.1;
+    // if (product.unitName === 'L') showUnitPrice = true;
+    //console.log(product.name + ' - ' + Math.abs(product.unitPrice - product.currentPrice));
+  }
 
   switch (priceTrend(product.priceHistory)) {
     // If trending down, display in green and with down icon
@@ -116,7 +44,7 @@ function PriceTag({ product }: Props) {
   return (
     <div className='z-50 w-min'>
       <div className={priceTagDivClass}>
-        <div className='flex justify-center'>
+        <div className='flex'>
           {/* Dollar Symbol */}
           <div className='pt-[0.2rem] text-sm lg:text-md'>$</div>
 
@@ -134,11 +62,11 @@ function PriceTag({ product }: Props) {
           <div className='pl-1 items-center'>{icon}</div>
         </div>
         {/* Unit Price */}
-        {unitPrice && (
-          <div className='flex text-sm items-center'>
+        {showUnitPrice && (
+          <div className='flex text-md items-center'>
             <div className='text-xs'>$</div>
-            <div className='font-semibold'>{unitPrice.toFixed(1)}</div>
-            <div>{unitString}</div>
+            <div className='font-semibold'>{product.unitPrice!.toFixed(1)}</div>
+            <div>{'/' + product.unitName || 'Unit'}</div>
           </div>
         )}
       </div>
