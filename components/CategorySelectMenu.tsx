@@ -21,13 +21,16 @@ function CategorySelectMenu() {
         leaveFrom='transform scale-100 opacity-100'
         leaveTo='transform scale-50 opacity-0'
       >
-        <Popover.Panel className='mt-1 -ml-8 bg-zinc-100 p-2 grid grid-cols-1 px-4 w-fit rounded-2xl shadow-2xl'>
+        <Popover.Panel className='mt-1 -ml-8 bg-zinc-100 py-2 px-4 grid grid-cols-1 w-fit rounded-2xl shadow-2xl'>
           {categoryNames.map((categoryName) => {
             const href = '/products/' + categoryName;
             return (
-              <div className='flex p-0.5 gap-x-2 items-center' key={categoryName}>
+              <div className='flex gap-x-2 items-center' key={categoryName}>
                 <StarFavourite category={categoryName} />
-                <Link className=' text-slate-800 hover-to-white' href={href}>
+                <Link
+                  className=' text-slate-800 m-0 py-1 px-2 rounded-2xl hover:shadow-md hover:bg-green-100'
+                  href={href}
+                >
                   {_.startCase(categoryName)}
                 </Link>
               </div>

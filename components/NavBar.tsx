@@ -67,7 +67,7 @@ const NavBar = () => {
               <Link className='nav-main-link' href='/products/fruit'>
                 Fruit
               </Link>
-              <div className='overflow-hidden'>
+              <div className=''>
                 {userCategories.map((name) => {
                   const href = '/products/' + name;
                   return (
