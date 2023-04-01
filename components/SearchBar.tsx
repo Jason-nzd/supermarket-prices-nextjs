@@ -8,7 +8,7 @@ export default function SearchBar() {
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
-    router.push('/search?query=' + searchQuery);
+    router.push('/client-search?query=' + searchQuery, undefined);
   };
 
   const handleButton = () => {
