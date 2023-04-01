@@ -99,7 +99,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   );
 
   // If too few results are found, re-run query with any price history
-  if (products.length <= 10) {
+  if (products.length <= 25) {
     products = await DBFetchByCategory(
       searchTerm,
       60,
