@@ -3,7 +3,12 @@ import React, { useContext } from 'react';
 import { Product } from '../../typings';
 import ProductsGrid from '../../components/ProductsGrid';
 import { DBFetchByCategory } from '../../utilities/cosmosdb';
-import { OrderByMode, PriceHistoryLimit, Store } from '../../utilities/utilities';
+import {
+  OrderByMode,
+  PriceHistoryLimit,
+  Store,
+  sortProductsByUnitPrice,
+} from '../../utilities/utilities';
 import { ThemeContext } from '../_app';
 import NavBar from '../../components/NavBar';
 import Footer from '../../components/Footer';
@@ -42,23 +47,23 @@ const Category = ({
         <div className='central-responsive-div'>
           {/* Categorised Product Grids*/}
           <div className='grid-title'>Apples</div>
-          <ProductsGrid products={apples} />
+          <ProductsGrid products={apples} trimColumns={true} />
           <div className='grid-title'>Bananas</div>
-          <ProductsGrid products={bananas} />
+          <ProductsGrid products={bananas} trimColumns={true} />
           <div className='grid-title'>Oranges & Mandarins</div>
-          <ProductsGrid products={oranges} />
+          <ProductsGrid products={oranges} trimColumns={true} />
           <div className='grid-title'>Lemons & Limes</div>
-          <ProductsGrid products={lemons} />
+          <ProductsGrid products={lemons} trimColumns={true} />
           <div className='grid-title'>Kiwifruit</div>
-          <ProductsGrid products={kiwifruit} />
+          <ProductsGrid products={kiwifruit} trimColumns={true} />
           <div className='grid-title'>Peaches, Plus, & Nectarines</div>
-          <ProductsGrid products={peaches} />
+          <ProductsGrid products={peaches} trimColumns={true} />
           <div className='grid-title'>Berries</div>
-          <ProductsGrid products={berries} />
+          <ProductsGrid products={berries} trimColumns={true} />
           <div className='grid-title'>Grapes</div>
-          <ProductsGrid products={grapes} />
+          <ProductsGrid products={grapes} trimColumns={true} />
           <div className='grid-title'>Other Fruit</div>
-          <ProductsGrid products={other} />
+          <ProductsGrid products={other} trimColumns={true} />
         </div>
       </div>
       <Footer />
@@ -76,30 +81,39 @@ export const getStaticProps: GetStaticProps = async () => {
     true
   );
 
-  const apples: Product[] = [];
-  const bananas: Product[] = [];
-  const oranges: Product[] = [];
-  const lemons: Product[] = [];
-  const kiwifruit: Product[] = [];
-  const peaches: Product[] = [];
-  const berries: Product[] = [];
-  const grapes: Product[] = [];
+  let apples: Product[] = [];
+  let bananas: Product[] = [];
+  let oranges: Product[] = [];
+  let lemons: Product[] = [];
+  let kiwifruit: Product[] = [];
+  let peaches: Product[] = [];
+  let berries: Product[] = [];
+  let grapes: Product[] = [];
   let other: Product[] = [];
 
   products.forEach((product) => {
     const name = product.name.toLowerCase();
     if (name.includes('apple') && !name.includes('pineapple')) apples.push(product);
     else if (name.includes('banana')) bananas.push(product);
-    else if (name.includes('orange') || name.includes('mandarin')) oranges.push(product);
-    else if (!name.includes('avocado') && (name.includes('lemon') || name.includes('lime')))
-      lemons.push(product);
+    else if (name.match('orange|mandarin')) oranges.push(product);
+    else if (!name.includes('avocado') && name.match('lemon|lime')) lemons.push(product);
     else if (name.includes('kiwifruit')) kiwifruit.push(product);
-    else if (name.includes('peach') || name.includes('nectarine')) peaches.push(product);
-    else if (name.includes('berries') || name.includes('berry')) berries.push(product);
+    else if (name.match('peach|nectarine')) peaches.push(product);
+    else if (name.match('berries|berry')) berries.push(product);
     else if (name.includes('grapes')) grapes.push(product);
     else other.push(product);
   });
   other = other.slice(0, 20);
+
+  // Sort all by unit price
+  apples = sortProductsByUnitPrice(apples).slice(0, 15);
+  bananas = sortProductsByUnitPrice(bananas).slice(0, 15);
+  oranges = sortProductsByUnitPrice(oranges).slice(0, 15);
+  kiwifruit = sortProductsByUnitPrice(kiwifruit).slice(0, 15);
+  peaches = sortProductsByUnitPrice(peaches).slice(0, 15);
+  berries = sortProductsByUnitPrice(berries).slice(0, 15);
+  grapes = sortProductsByUnitPrice(grapes).slice(0, 15);
+  other = other.slice(0, 30);
 
   // console.log(apples.length, bananas.length, citrus.length, berries.length, other.length);
 
