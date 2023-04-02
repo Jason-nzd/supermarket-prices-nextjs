@@ -14,22 +14,25 @@ const ClientSearch = () => {
   const theme = useContext(ThemeContext);
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [searchTerm, setSearchTerm] = useState<string>();
 
   useEffect(() => {
     (async () => {
       setIsLoading(true);
-      const dbProducts = await DBFetchByName(
-        searchTerm,
-        40,
-        Store.Any,
-        PriceHistoryLimit.Any,
-        OrderByMode.None,
-        false,
-        true
-      );
-      setProducts(dbProducts);
-      setIsLoading(false);
+      if (searchTerm) {
+        const dbProducts = await DBFetchByName(
+          searchTerm,
+          40,
+          Store.Any,
+          PriceHistoryLimit.Any,
+          OrderByMode.None,
+          false,
+          true
+        );
+
+        setProducts(dbProducts);
+        setIsLoading(false);
+      }
     })();
 
     return () => {};
@@ -49,7 +52,7 @@ const ClientSearch = () => {
                 {products.length} results found for '{_.capitalize(searchTerm)}'
               </span>
             )}
-            {isLoading && <span>Searching Database for {_.capitalize(searchTerm)}..</span>}
+            {isLoading && <span>Searching for {_.capitalize(searchTerm)}..</span>}
           </div>
           {products && <ProductsGrid products={products} />}
         </div>
