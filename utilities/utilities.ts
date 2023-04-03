@@ -128,15 +128,10 @@ export function deriveUnitPriceString(product: Product): string | undefined {
       product.unitName = 'kg';
     }
 
-    // If units are in grams, convert to either /kg or /100g
+    // If units are in grams, convert to /kg
     if (quantity && product.unitName === 'g') {
-      if (quantity < 500) {
-        quantity = quantity / 100;
-        product.unitName = '100g';
-      } else {
-        quantity = quantity / 1000;
-        product.unitName = 'kg';
-      }
+      quantity = quantity / 1000;
+      product.unitName = 'kg';
     }
 
     // If units are in mL, divide by 1000 and use L instead
