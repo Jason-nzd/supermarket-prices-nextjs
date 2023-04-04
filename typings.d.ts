@@ -10,6 +10,7 @@ export interface Product {
   lastChecked: Date;
   unitPrice?: number | null;
   unitName?: string | null;
+  originalUnitQuantity?: number | null;
 }
 
 export interface DatedPrice {

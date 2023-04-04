@@ -11,14 +11,17 @@ function PriceTag({ product }: Props) {
   let priceTagDivClass = 'items-center bg-white rounded-3xl border-2 shadow-lg px-3 py-1  ';
   let icon;
 
-  // Show separate pet unit price only if it is different from the regular price
-  let showUnitPrice = false;
   if (product.unitPrice) {
-    showUnitPrice = true;
-    // console.log(product.name + ' - set unit price= ' + product.unitPrice + '/' + product.unitName);
-    // showUnitPrice = Math.abs(product.unitPrice - product.currentPrice) > 0.1;
-    // if (product.unitName === 'L') showUnitPrice = true;
-    //console.log(product.name + ' - ' + Math.abs(product.unitPrice - product.currentPrice));
+    if (
+      product.originalUnitQuantity &&
+      product.originalUnitQuantity < 500 &&
+      product.originalUnitQuantity > 10 &&
+      product.unitName === 'kg'
+    ) {
+      // Convert from per /kg to per /100g
+      product.unitName = '100g';
+      product.unitPrice = product.unitPrice / 10;
+    }
   }
 
   switch (priceTrend(product.priceHistory)) {
@@ -62,7 +65,7 @@ function PriceTag({ product }: Props) {
           <div className='pl-1 items-center'>{icon}</div>
         </div>
         {/* Unit Price */}
-        {showUnitPrice && (
+        {product.unitPrice && (
           <div className='flex text-md items-center'>
             <div className='text-xs'>$</div>
             <div className='font-semibold'>{product.unitPrice!.toFixed(1)}</div>

@@ -45,6 +45,7 @@ export function cleanProductFields(document: Product): Product {
     lastChecked,
     unitPrice,
     unitName,
+    originalUnitQuantity,
   } = document;
   try {
     // Also check for valid date and category formats
@@ -68,6 +69,7 @@ export function cleanProductFields(document: Product): Product {
     } else if (unitPrice < 0.2) {
       console.log('[Unusual UnitPrice from DB] = ' + name + ' - ' + unitPrice + '/' + unitName);
     }
+    if (!originalUnitQuantity) originalUnitQuantity = null;
   } catch (error) {
     console.log(`Error on cleanProductFields() for ${name}\n` + error);
   }
@@ -83,6 +85,7 @@ export function cleanProductFields(document: Product): Product {
     lastChecked,
     unitPrice,
     unitName,
+    originalUnitQuantity,
   };
   return cleanedProduct;
 }
