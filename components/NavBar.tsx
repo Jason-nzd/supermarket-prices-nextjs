@@ -9,12 +9,11 @@ import kiwifruit from '../public/android-chrome-192x192.png';
 import CategorySelectMenu from './CategorySelectMenu';
 import SearchBar from './SearchBar';
 import { Popover, Transition } from '@headlessui/react';
+import MobileBurgerMenu from './MobileBurgerMenu';
 
 const NavBar = () => {
   const [userCategories, setUserCategories] = useState<string[]>(categoryNames.slice(0, 4));
   const theme = useContext(ThemeContext);
-
-  // if (useMediaQuery('700px')) setUserCategories(categoryNames.slice(0, 4));
 
   return (
     <nav className='w-full overflow-hidden'>
@@ -28,36 +27,9 @@ const NavBar = () => {
           />
         </Link>
         {/* Mobile Burger Menu */}
-        <Popover
-          className='absolute z-50 justify-start left-1 top-1 lg:hidden text-primary-colour hover-to-white
-         cursor-pointer'
-        >
-          <Popover.Button className='left-1 top-1'>{burgerIcon}</Popover.Button>
-          <Transition
-            enter='transition duration-100 ease-out'
-            enterFrom='transform scale-50 opacity-0'
-            enterTo='transform scale-100 opacity-100'
-            leave='transition duration-75 ease-out'
-            leaveFrom='transform scale-100 opacity-100'
-            leaveTo='transform scale-50 opacity-0'
-          >
-            <Popover.Panel className='mt-1 bg-zinc-100 py-2 px-4 grid grid-cols-1 w-fit rounded-2xl shadow-2xl'>
-              {categoryNames.map((categoryName) => {
-                const href = '/products/' + categoryName;
-                return (
-                  <div className='flex gap-x-2 items-center' key={categoryName}>
-                    <Link
-                      className=' text-slate-800 m-0 py-1 px-2 rounded-2xl hover:shadow-md hover:bg-green-100'
-                      href={href}
-                    >
-                      {_.startCase(categoryName)}
-                    </Link>
-                  </div>
-                );
-              })}
-            </Popover.Panel>
-          </Transition>
-        </Popover>
+        <div className='absolute z-50 justify-start left-1 top-1 lg:hidden'>
+          <MobileBurgerMenu />
+        </div>
 
         {/* Column 2 - Title - Sub-title - Categories - Search */}
         <div className='block w-full'>
@@ -152,7 +124,7 @@ const NavBar = () => {
   );
 };
 
-const burgerIcon = (
+export const burgerIcon = (
   <svg
     xmlns='http://www.w3.org/2000/svg'
     width='16'
@@ -168,7 +140,7 @@ const burgerIcon = (
   </svg>
 );
 
-const userIcon = (
+export const userIcon = (
   <svg
     xmlns='http://www.w3.org/2000/svg'
     width='16'
@@ -187,7 +159,7 @@ const userIcon = (
   </svg>
 );
 
-const cartIcon = (
+export const cartIcon = (
   <svg
     xmlns='http://www.w3.org/2000/svg'
     fill='none'
@@ -206,7 +178,7 @@ const cartIcon = (
   </svg>
 );
 
-const tableIcon = (
+export const tableIcon = (
   <svg
     xmlns='http://www.w3.org/2000/svg'
     fill='none'
@@ -225,7 +197,7 @@ const tableIcon = (
   </svg>
 );
 
-const plusIcon = (
+export const plusIcon = (
   <svg
     xmlns='http://www.w3.org/2000/svg'
     fill='none'

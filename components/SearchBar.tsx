@@ -15,43 +15,45 @@ export default function SearchBar() {
     // todo add popup modal
   };
 
-  const smallSearchBar = useMediaQuery('980px');
+  const bigSearchBar = useMediaQuery('980px');
 
   return (
     <>
-      <div className='flex rounded-2xl border-2 border-[#75F3A3] h-8 w-fit  transition-all duration-500'>
-        <form onSubmit={handleSearch} className='flex'>
-          <input
-            type='text'
-            name='search'
-            id='search'
-            required
-            placeholder='Search'
-            minLength={3}
-            maxLength={26}
-            className='bg-transparent w-[0.5rem] xl:w-full focus:outline-none text-white
+      {bigSearchBar && (
+        <div className='flex rounded-2xl border-2 border-[#75F3A3] h-8 w-fit transition-all duration-500'>
+          <form onSubmit={handleSearch} className='flex'>
+            <input
+              type='text'
+              name='search'
+              id='search'
+              required
+              placeholder='Search'
+              minLength={3}
+              maxLength={26}
+              className='bg-transparent w-[0.5rem] xl:w-full focus:outline-none text-white
              pl-3 placeholder-[#75F3A3] align-center transition-all duration-500'
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-          <div className='ml-auto'>
-            {!smallSearchBar && (
-              <button type='submit' title='Search' className='hover-to-white'>
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <div className='ml-auto hover-to-white text-green-100'>
+              <button type='submit' title='Search' className=''>
                 {magnifyIcon}
               </button>
-            )}
-            {smallSearchBar && (
-              <button
-                type='button'
-                onClick={handleButton}
-                title='Search'
-                className='hover-to-white'
-              >
-                {magnifyIcon}
-              </button>
-            )}
-          </div>
-        </form>
-      </div>
+            </div>
+          </form>
+        </div>
+      )}
+      {!bigSearchBar && (
+        <div className=''>
+          <button
+            type='button'
+            onClick={handleButton}
+            title='Search'
+            className='border-0 hover-to-white'
+          >
+            {magnifyIcon}
+          </button>
+        </div>
+      )}
     </>
   );
 }
@@ -64,7 +66,7 @@ const magnifyIcon = (
     height='16'
     viewBox='0 0 24 24'
     strokeWidth={1.5}
-    stroke='#75F3A3'
+    stroke='currentColor'
     className='w-5 h-5 mr-2 pt-1.5 scale-[150%] hover:scale-[160%]'
   >
     <path
