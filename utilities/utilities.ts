@@ -68,6 +68,7 @@ export function cleanProductFields(document: Product): Product {
       }
     } else if (unitPrice < 0.2) {
       console.log('[Unusual UnitPrice from DB] = ' + name + ' - ' + unitPrice + '/' + unitName);
+      unitPrice = null;
     }
     if (!originalUnitQuantity) originalUnitQuantity = null;
   } catch (error) {
