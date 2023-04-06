@@ -2,17 +2,14 @@ import _ from 'lodash';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useContext, useState } from 'react';
-import { useMediaQuery } from '../hooks/useMediaQuery';
-import { categoryNames } from '../pages/products/[category]';
 import { ThemeContext } from '../pages/_app';
 import kiwifruit from '../public/android-chrome-192x192.png';
 import CategorySelectMenu from './CategorySelectMenu';
 import SearchBar from './SearchBar';
-import { Popover, Transition } from '@headlessui/react';
 import MobileBurgerMenu from './MobileBurgerMenu';
 
 const NavBar = () => {
-  const [userCategories, setUserCategories] = useState<string[]>(categoryNames.slice(0, 4));
+  const [userCategories, setUserCategories] = useState<string[]>(['Loading Categories..']);
   const theme = useContext(ThemeContext);
 
   return (
@@ -58,27 +55,17 @@ const NavBar = () => {
           <div className='flex-nowrap h-1/2 hidden lg:flex items-center pb-4 whitespace-nowrap'>
             {/* Categories */}
             <div className='flex items-center overflow-hidden'>
-              <Link className='nav-main-link' href='/products/milk'>
-                Milk
-              </Link>
-              <Link className='nav-main-link' href='/products/eggs'>
-                Eggs
-              </Link>
-              <Link className='nav-main-link' href='/products/fruit'>
-                Fruit
-              </Link>
-              <div className=''>
-                {userCategories.map((name) => {
-                  const href = '/products/' + name;
-                  return (
-                    <Link className='nav-main-link' href={href} key={href}>
-                      {_.startCase(name)}
-                    </Link>
-                  );
-                })}
-              </div>
+              {userCategories.map((name) => {
+                const href = '/products/' + name;
+                return (
+                  <Link className='nav-main-link' href={href} key={href}>
+                    {_.startCase(name)}
+                  </Link>
+                );
+              })}
+
               <div className='pr-[6rem] pb-[1.5rem] mb-[10px] pl-1 ml-auto'>
-                <CategorySelectMenu />
+                <CategorySelectMenu updateNavCategories={setUserCategories} />
               </div>
             </div>
             <div className='ml-auto'>

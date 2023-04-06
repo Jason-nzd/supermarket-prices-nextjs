@@ -1,36 +1,31 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 interface Props {
   category: string;
+  isFavourite: boolean;
+  favCategory: (arg: string) => void;
+  unFavCategory: (arg: string) => void;
 }
 
-export default function StarFavourite({ category }: Props) {
-  const [userCategories, setUserCategories] = useState<string[]>([
-    'rice',
-    'fruit',
-    'fresh-vegetables',
-    'ice-cream',
-  ]);
-
+export default function StarFavourite({
+  category,
+  favCategory,
+  unFavCategory,
+  isFavourite,
+}: Props) {
   function handleClick() {
-    // Remove existing from favourites
-    if (userCategories.includes(category)) {
-      setUserCategories(
-        userCategories.filter((c) => {
-          return !(c === category);
-        })
-      );
-    }
-
-    // Add to favourites
-    else {
-      setUserCategories(userCategories.concat([category]));
+    if (isFavourite) {
+      unFavCategory(category);
+      isFavourite = false;
+    } else {
+      favCategory(category);
+      isFavourite = true;
     }
   }
-  const isFavouriteCategory = userCategories.includes(category);
+
   return (
     <div onClick={handleClick} className='hover:scale-110 cursor-pointer'>
-      {isFavouriteCategory ? starFilled : starEmpty}
+      {isFavourite ? starFilled : starEmpty}
     </div>
   );
 }

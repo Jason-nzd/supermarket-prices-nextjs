@@ -54,6 +54,9 @@ const Category = ({ products, hasMoreSearchResults }: Props) => {
 };
 
 export const categoryNames = [
+  'milk',
+  'eggs',
+  'fruit',
   'rice',
   'fresh-vegetables',
   'ice-cream',
