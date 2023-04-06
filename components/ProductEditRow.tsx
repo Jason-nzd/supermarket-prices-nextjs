@@ -4,6 +4,7 @@ import { Product } from '../typings';
 import { utcDateToShortDate } from '../utilities/utilities';
 import DatedPrice from './card/DatedPrice';
 import ImageWithFallback from './ImageWithFallback';
+import StoreIcon from './StoreIcon';
 
 interface Props {
   product: Product;
@@ -29,7 +30,8 @@ function ProductEditRow({ product }: Props) {
       <th className='pl-2 place-content-around gap-x-2'>
         {/* <ImageWithFallback id={product.id} /> */}
         <div className='text-xs text-center font-light'>
-          {product.sourceSite.substring(0, product.sourceSite.length - 6)}
+          <StoreIcon sourceSite={product.sourceSite} />
+          <Image src='././public/images/pk-logo-64.png' width={60} height={60} alt='' />
         </div>
       </th>
 
@@ -78,6 +80,16 @@ function ProductEditRow({ product }: Props) {
       {/* Category */}
       <td className='px-6 py-1'>
         <div className='text-xs'>{product.category?.join(', ')}</div>
+      </td>
+
+      {/* Unit Size */}
+      <td className='px-6 py-1'>
+        <div className='text-xs'>{product.originalUnitQuantity}</div>
+      </td>
+
+      {/* Unit Price */}
+      <td className='px-6 py-1'>
+        <div className='text-xs'>{product.unitPrice}</div>
       </td>
 
       {/* Price History */}
