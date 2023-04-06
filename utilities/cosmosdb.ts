@@ -97,12 +97,9 @@ async function fetchProductsUsingAPI(
   querySpec: SqlQuerySpec,
   maxItems: number
 ): Promise<Product[]> {
-  // Log query to console
-  console.warn('API: ' + querySpec.query);
-
   let resultingProducts: Product[] = [];
 
-  // CosmosDB API doesn't support ORDER BY, so it needs to be removed
+  // CosmosDB Rest API doesn't support ORDER BY, so it needs to be removed
   const orderByIndex = querySpec.query.indexOf('ORDER BY');
   if (orderByIndex > 0) querySpec.query = querySpec.query.substring(0, orderByIndex);
 
