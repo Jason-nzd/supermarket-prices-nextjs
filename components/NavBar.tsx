@@ -7,14 +7,16 @@ import kiwifruit from '../public/android-chrome-192x192.png';
 import CategorySelectMenu from './CategorySelectMenu';
 import SearchBar from './SearchBar';
 import MobileBurgerMenu from './MobileBurgerMenu';
+import { Switch } from '@headlessui/react';
 
 const NavBar = () => {
   const [userCategories, setUserCategories] = useState<string[]>(['Loading Categories..']);
   const theme = useContext(ThemeContext);
+  const [enabled, setEnabled] = useState(false);
 
   return (
     <nav className='w-full overflow-hidden'>
-      <div className='mx-auto w-[100%] 2xl:w-[90rem] 3xl:w-[110rem] transition-all duration-500 flex flex-nowrap'>
+      <div className='mx-auto w-[100%] 2xl:w-[90rem] 3xl:w-[110rem] transition-all duration-500 flex flex-nowrap items-center'>
         {/* Column 1 - Logo*/}
         <Link href='/' className='ml-2'>
           <Image
@@ -24,8 +26,13 @@ const NavBar = () => {
           />
         </Link>
         {/* Mobile Burger Menu */}
-        <div className='absolute z-50 justify-start left-1 top-1 lg:hidden'>
+        <div className='absolute z-50 justify-start lg:hidden left-1 top-1'>
           <MobileBurgerMenu />
+        </div>
+
+        {/* Mobile Search Menu */}
+        <div className='block z-50 justify-start left-[3rem] lg:hidden ml-14 pb-1'>
+          <SearchBar iconSize={8} iconHexColour='#86efac' />
         </div>
 
         {/* Column 2 - Title - Sub-title - Categories - Search */}
@@ -52,7 +59,7 @@ const NavBar = () => {
           </div>
 
           {/* Row 2 - Categories - Search Bar*/}
-          <div className='flex-nowrap h-1/2 hidden lg:flex items-center pb-4 whitespace-nowrap'>
+          <div className='flex-nowrap h-1/2 hidden lg:flex items-center pb-2 whitespace-nowrap'>
             {/* Categories */}
             <div className='flex items-center overflow-hidden'>
               {userCategories.map((name) => {
@@ -70,7 +77,7 @@ const NavBar = () => {
             </div>
             <div className='ml-auto'>
               {/* Search Bar */}
-              <div className='w-fit ml-auto'>
+              <div className='w-full ml-auto'>
                 <SearchBar />
               </div>
             </div>
@@ -79,20 +86,28 @@ const NavBar = () => {
 
         {/* Column 3 - Right Menu */}
         <div className='hidden lg:block pl-4 ml-auto mr-2 items-center min-w-fit'>
-          <h3 className='py-2 text-primary-colour text-sm select-none text-center'>
+          <h3 className='pb-1 text-primary-colour text-sm select-none text-center'>
             Updated {Date().substring(4, 15)}
           </h3>
 
           <div className='flex items-center'>
-            {/* <div onClick={() => {}}>{theme}</div> */}
-
+            <Switch
+              checked={enabled}
+              onChange={setEnabled}
+              className={`${
+                enabled ? 'bg-green-400' : 'bg-green-700'
+              } relative inline-flex h-6 w-11 items-center rounded-full`}
+            >
+              <span className='sr-only'>Enable notifications</span>
+              <span
+                className={`${
+                  enabled ? 'translate-x-6' : 'translate-x-1'
+                } inline-block h-4 w-4 transform rounded-full bg-white transition`}
+              />
+            </Switch>
             <Link className='nav-small-link' href='#'>
               {userIcon}
               Login
-            </Link>
-            <Link className='nav-small-link' href='#'>
-              {cartIcon}
-              Cart
             </Link>
             <Link className='nav-small-link' href='/admin'>
               {tableIcon}
@@ -100,8 +115,27 @@ const NavBar = () => {
             </Link>
           </div>
         </div>
-        {/* Column 3 - Mobile Right Menu */}
-        <div className='block mt-2 h-full lg:hidden mx-0 items-center'>
+
+        {/* Column 3 - Mobile Theme Toggle */}
+        <div className='block h-full lg:hidden mx-0 items-center'>
+          <Switch
+            checked={enabled}
+            onChange={setEnabled}
+            className={`${
+              enabled ? 'bg-green-400' : 'bg-green-700'
+            } relative inline-flex h-6 w-11 items-center rounded-full`}
+          >
+            <span className='sr-only'>Enable notifications</span>
+            <span
+              className={`${
+                enabled ? 'translate-x-6' : 'translate-x-1'
+              } inline-block h-4 w-4 transform rounded-full bg-white transition`}
+            />
+          </Switch>
+        </div>
+
+        {/* Column 3 - Mobile User Menu */}
+        <div className='block h-full lg:hidden mx-0 items-center'>
           <Link className='nav-small-link w-12 items-center' href='#'>
             {userIcon}
           </Link>

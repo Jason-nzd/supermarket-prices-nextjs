@@ -18,7 +18,7 @@ export default function SearchBar({ iconSize = 5, iconHexColour = 'currentColor'
     router.push('/client-search?query=' + searchQuery, undefined);
   };
 
-  let bigSearchBar = useMediaQuery('1340px');
+  let bigSearchBar = useMediaQuery('1140px');
 
   const handleMobileButton = () => {
     isModalOpen ? setIsModalOpen(false) : setIsModalOpen(true);
@@ -29,7 +29,7 @@ export default function SearchBar({ iconSize = 5, iconHexColour = 'currentColor'
     iconSize.toString() +
     ' h-' +
     iconSize.toString() +
-    ' mr-2 pt-1.5 scale-[150%] hover:scale-[160%]';
+    ' mr-2 pt-1.5 scale-[150%] hover:scale-[160%] hover:text-white';
   console.log(iconClasses);
   const magnifyIcon = (
     <svg
@@ -63,7 +63,7 @@ export default function SearchBar({ iconSize = 5, iconHexColour = 'currentColor'
               placeholder='Search'
               minLength={3}
               maxLength={26}
-              className='bg-transparent w-[0.4rem] xl:w-full focus:outline-none text-white
+              className='bg-transparent w-[8rem] xl:w-[16rem] focus:outline-none text-white
              pl-3 placeholder-[#75F3A3] align-center transition-all duration-500'
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -81,7 +81,7 @@ export default function SearchBar({ iconSize = 5, iconHexColour = 'currentColor'
             type='button'
             onClick={handleMobileButton}
             title='Search'
-            className='border-0 hover-to-white '
+            className='border-0 hover-to-white text-green-100'
           >
             {magnifyIcon}
           </button>

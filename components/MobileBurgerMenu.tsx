@@ -4,7 +4,6 @@ import { categoryNames } from '../pages/products/[category]';
 import Link from 'next/link';
 import _ from 'lodash';
 import { burgerIcon } from './NavBar';
-import SearchBar from './SearchBar';
 
 export default function MobileBurgerMenu() {
   return (
@@ -21,10 +20,7 @@ export default function MobileBurgerMenu() {
         leaveTo='transform scale-50 opacity-0'
       >
         <Popover.Panel className='mt-1 bg-zinc-100 p-4 grid grid-cols-1 w-fit rounded-2xl shadow-2xl text-slate-800'>
-          <div className='text-right py-2 px-6 rounded-2xl w-full hover:shadow-md hover:bg-green-100 cursor-pointer'>
-            <SearchBar />
-          </div>
-          {categoryNames.map((categoryName) => {
+          {['milk', 'eggs', 'fruit'].concat(categoryNames).map((categoryName) => {
             const href = '/products/' + categoryName;
             return (
               <div className='flex gap-x-2 items-center' key={categoryName}>
