@@ -105,8 +105,8 @@ const AdminPanel = () => {
             </div>
           )}
         </div>
-        <Footer />
       </div>
+      <Footer />
     </main>
   );
 };
