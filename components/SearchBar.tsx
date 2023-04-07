@@ -30,7 +30,7 @@ export default function SearchBar({ iconSize = 5, iconHexColour = 'currentColor'
     ' h-' +
     iconSize.toString() +
     ' mr-2 pt-1.5 scale-[150%] hover:scale-[160%] hover:text-white';
-  console.log(iconClasses);
+
   const magnifyIcon = (
     <svg
       xmlns='http://www.w3.org/2000/svg'
