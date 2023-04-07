@@ -13,7 +13,7 @@
     @apply bg-black;
   }
   .central-responsive-div {
-    @apply px-2 mx-auto w-[100%] 2xl:w-[90rem] 3xl:w-[110rem] transition-all duration-500 min-h-screen;
+    @apply px-2 mx-auto w-[100%] 2xl:w-[90rem] 3xl:w-[110rem] transition-all duration-500;
   }
   .content-body {
     @apply bg-zinc-200 pt-1 pb-12;
