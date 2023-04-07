@@ -9,6 +9,9 @@ interface Props {
   updateNavCategories: (arg: string[]) => void;
 }
 
+// let allCategories = ;
+// allCategories = allCategories.concat(categoryNames);
+
 function CategorySelectMenu({ updateNavCategories }: Props) {
   function setCategoriesCookie() {
     document.cookie = `User_Categories=${JSON.stringify(userCategories)}`;
@@ -72,7 +75,7 @@ function CategorySelectMenu({ updateNavCategories }: Props) {
           className='mt-1 -ml-8 bg-zinc-100 py-2 px-4 
         grid grid-cols-1 w-fit rounded-2xl shadow-2xl'
         >
-          {categoryNames.map((categoryName) => {
+          {['milk', 'eggs', 'fruit'].concat(categoryNames).map((categoryName) => {
             const href = '/products/' + categoryName;
             return (
               <div className='flex gap-x-2 items-center' key={categoryName}>
