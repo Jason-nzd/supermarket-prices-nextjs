@@ -7,13 +7,16 @@
     @apply light;
   }
   .light {
-    @apply bg-zinc-200;
+    @apply bg-[#1EA44F];
   }
   .dark {
     @apply bg-black;
   }
-  nav {
-    @apply bg-[#1EA44F];
+  .central-responsive-div {
+    @apply px-2 mx-auto w-[100%] 2xl:w-[90rem] 3xl:w-[110rem] transition-all duration-500 min-h-screen;
+  }
+  .content-body {
+    @apply bg-zinc-200 pt-1 pb-12;
   }
   .text-primary-colour {
     @apply text-green-200;
@@ -47,8 +50,5 @@
     @apply z-20 absolute top-[7rem] left-[1rem] p-1 px-2 text-center text-sm
     bg-black bg-opacity-[30%] backdrop-blur-sm text-white  font-semibold 
     ring-1 ring-white rounded-2xl shadow-md;
-  }
-  .central-responsive-div {
-    @apply px-2 mx-auto w-[100%] 2xl:w-[90rem] 3xl:w-[110rem] transition-all duration-500 min-h-screen;
   }
 }

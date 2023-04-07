@@ -30,7 +30,7 @@ const Category = ({ products, hasMoreSearchResults }: Props) => {
     <main className={theme}>
       <NavBar />
       {/* Background Div */}
-      <div className='pt-1 pb-12'>
+      <div className='content-body'>
         {/* Central Aligned Div */}
         <div className='central-responsive-div'>
           {/* Page Title */}
@@ -54,9 +54,6 @@ const Category = ({ products, hasMoreSearchResults }: Props) => {
 };
 
 export const categoryNames = [
-  'milk',
-  'eggs',
-  'fruit',
   'rice',
   'fresh-vegetables',
   'ice-cream',

@@ -21,7 +21,7 @@ export default function Home({ countdownProducts, paknsaveProducts, warehousePro
     <main className={theme}>
       <NavBar />
       {/* Background Div */}
-      <div className='pt-1 pb-12'>
+      <div className='content-body'>
         {/* Central Aligned Div */}
         <div className='central-responsive-div'>
           {/* Page Title */}
