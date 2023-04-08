@@ -1,13 +1,14 @@
 import _ from 'lodash';
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ThemeContext } from '../pages/_app';
 import kiwifruit from '../public/android-chrome-192x192.png';
 import CategorySelectMenu from './CategorySelectMenu';
 import SearchBar from './SearchBar';
 import MobileBurgerMenu from './MobileBurgerMenu';
 import { Switch } from '@headlessui/react';
+import lastUpdatedDate from '../utilities/dbLastChecked.json';
 
 const NavBar = () => {
   const [userCategories, setUserCategories] = useState<string[]>(['Loading Categories..']);
@@ -87,7 +88,7 @@ const NavBar = () => {
         {/* Column 3 - Right Menu */}
         <div className='hidden lg:block pl-4 ml-auto mr-2 items-center min-w-fit'>
           <h3 className='pb-1 text-primary-colour text-sm select-none text-center'>
-            Updated {Date().substring(4, 15)}
+            Updated {lastUpdatedDate}
           </h3>
 
           <div className='flex items-center'>
