@@ -161,12 +161,17 @@ export function deriveUnitPriceString(product: Product): string | undefined {
 // utcDateToShortDate()
 // --------------------
 // Will take a UTC Date and return in format Mar 16, or 'Today'
-export function utcDateToShortDate(utcDate: Date, returnTodayString: boolean = false): string {
+export function utcDateToShortDate(
+  utcDate: Date,
+  returnTodayString: boolean = false,
+  includeYear: boolean = false
+): string {
   var date = new Date(utcDate).toDateString(); // Thu Mar 16 2023
   var now = new Date().toDateString();
 
   if (date === now && returnTodayString) return 'Today';
-  else return date.substring(4, 11); // Mar 16
+  if (includeYear) return date.substring(4, 15); // Mar 16 2023
+  else return date.substring(4, 10); // Mar 16
 }
 
 export function sortProductsByName(products: Product[]): Product[] {
