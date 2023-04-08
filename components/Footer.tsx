@@ -3,16 +3,12 @@ import React from 'react';
 
 function Footer() {
   return (
-    <footer className='py-6 w-full h-full text-slate-300 text-sm'>
-      <div className='flex mx-auto py-2 justify-center'>
-        <Link
-          className='flex gap-2 hover-to-white items-center'
-          href='https://github.com/jason-nzd/supermarket-prices'
-        >
-          {githubIcon} GitHub
-        </Link>
+    <footer className='py-6 w-full h-full text-green-200 text-sm'>
+      <div className='flex mx-auto w-fit font-semibold'>
+        Prices are updated with best effort, but aren't guaranteed to be accurate for each store.
       </div>
-      <div className='py-2 flex gap-2 mx-auto justify-center'>
+      <div className='flex mx-auto py-2 justify-center'></div>
+      <div className='py-1 flex gap-2 mx-auto justify-center'>
         Icons licensed from
         <Link href='https://icon-icons.com' className='hover-to-white'>
           icon-icons.com
@@ -21,10 +17,17 @@ function Footer() {
           icons.getbootstrap.com
         </Link>
       </div>
-      <div className='text-center p-4'>
-        ©2023 jb - All Rights Reserved -{' '}
+      <div className='flex mx-auto gap-8 pt-4 w-fit'>
+        <div>©2023 jb</div>
+        <div>All Rights Reserved</div>
         <Link href='#' className='hover-to-white'>
           Privacy Policy
+        </Link>
+        <Link
+          className='flex gap-2 hover-to-white items-center'
+          href='https://github.com/jason-nzd/supermarket-prices'
+        >
+          {githubIcon} GitHub
         </Link>
       </div>
     </footer>
