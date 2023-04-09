@@ -15,7 +15,7 @@ interface Props {
 }
 
 const NavBar = ({ lastUpdatedDate }: Props) => {
-  const [userCategories, setUserCategories] = useState<string[]>(['Loading Categories..']);
+  const [userCategories, setUserCategories] = useState<string[]>();
   const theme = useContext(ThemeContext);
   const [enabled, setEnabled] = useState(false);
 
@@ -67,14 +67,15 @@ const NavBar = ({ lastUpdatedDate }: Props) => {
           <div className='flex-nowrap h-1/2 hidden lg:flex items-center pb-2 whitespace-nowrap'>
             {/* Categories */}
             <div className='flex items-center overflow-hidden'>
-              {userCategories.map((name) => {
-                const href = '/products/' + name;
-                return (
-                  <Link className='nav-main-link' href={href} key={href}>
-                    {_.startCase(name)}
-                  </Link>
-                );
-              })}
+              {userCategories &&
+                userCategories.map((name) => {
+                  const href = '/products/' + name;
+                  return (
+                    <Link className='nav-main-link' href={href} key={href}>
+                      {_.startCase(name)}
+                    </Link>
+                  );
+                })}
 
               <div className='pr-[6rem] pb-[1.5rem] mb-[10px] pl-1 ml-auto'>
                 <CategorySelectMenu updateNavCategories={setUserCategories} />
@@ -96,26 +97,26 @@ const NavBar = ({ lastUpdatedDate }: Props) => {
           </h3>
 
           <div className='h-1/2 flex items-center'>
-            <div className='pt-1'>
+            <div className='mt-1 hover:ring-2 rounded-xl ring-green-100'>
               <Switch
                 checked={enabled}
                 onChange={setEnabled}
                 className={`${
-                  enabled ? 'bg-green-400' : 'bg-green-700'
+                  enabled ? 'bg-blue-600' : 'bg-green-700'
                 } relative inline-flex h-6 w-9 items-center rounded-full`}
               >
                 <span className='sr-only'>Dark Theme</span>
                 <span
                   className={`${
                     enabled ? 'translate-x-4' : 'translate-x-1'
-                  } inline-block h-4 w-4 transform rounded-full bg-white transition`}
+                  } inline-block h-4 w-4 transform rounded-full bg-green-100 hover:bg-white transition`}
                 />
               </Switch>
             </div>
-            <Link className='nav-small-link' href='#'>
+            <Link className='ml-2 xl:ml-3 text-primary-colour hover-to-white' href='#'>
               {userIcon}
             </Link>
-            <Link className='nav-small-link' href='/admin'>
+            <Link className='mx-2 xl:ml-3 text-primary-colour hover-to-white' href='/admin'>
               {tableIcon}
             </Link>
           </div>

@@ -4,7 +4,7 @@ import React, { useContext } from 'react';
 import { Product } from '../../typings';
 import _ from 'lodash';
 import ProductsGrid from '../../components/ProductsGrid';
-import { DBFetchByCategory, DBFetchByName } from '../../utilities/cosmosdb';
+import { DBFetchByCategory, DBFetchByName, DBFetchByQuery } from '../../utilities/cosmosdb';
 import ResultsFilterPanel from '../../components/ResultsFilterPanel';
 import {
   OrderByMode,
@@ -34,9 +34,7 @@ const Category = ({ products, hasMoreSearchResults }: Props) => {
         {/* Central Aligned Div */}
         <div className='central-responsive-div'>
           {/* Page Title */}
-          <div className='my-4 pl-2 text-xl text-[#3C8DA3] font-bold'>
-            {_.startCase(category?.toString())}
-          </div>
+          <div className='grid-title'>{_.startCase(category?.toString())}</div>
 
           {/* Filter Selection */}
           <div className='ml-20'>{/* <ResultsFilterPanel /> */}</div>
@@ -94,25 +92,11 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const searchTerm = params?.category as string;
 
   // Try fetch products that have price history to show
-  let products = await DBFetchByCategory(
-    searchTerm,
-    60,
-    Store.Any,
-    PriceHistoryLimit.TwoOrMore,
-    OrderByMode.None,
-    true
-  );
+  let products = await DBFetchByCategory(searchTerm, 60, Store.Any, PriceHistoryLimit.TwoOrMore);
 
   // If too few results are found, re-run query with any price history
   if (products.length <= 25) {
-    products = await DBFetchByCategory(
-      searchTerm,
-      60,
-      Store.Any,
-      PriceHistoryLimit.Any,
-      OrderByMode.None,
-      true
-    );
+    products = await DBFetchByCategory(searchTerm, 60);
   }
 
   // Sort by unit price

@@ -25,9 +25,7 @@ export default function Home({ countdownProducts, paknsaveProducts, warehousePro
         {/* Central Aligned Div */}
         <div className='central-responsive-div'>
           {/* Page Title */}
-          <div className='my-4 pl-2 text-xl text-[#3C8DA3] font-bold'>
-            Today's Trending Products
-          </div>
+          <div className='grid-title'>Today's Trending Products</div>
           {countdownProducts && (
             <ProductsGrid products={countdownProducts} key='countdown' trimColumns={true} />
           )}
