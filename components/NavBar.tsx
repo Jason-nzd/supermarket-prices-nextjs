@@ -8,7 +8,7 @@ import CategorySelectMenu from './CategorySelectMenu';
 import SearchBar from './SearchBar';
 import MobileBurgerMenu from './MobileBurgerMenu';
 import { Switch } from '@headlessui/react';
-import { utcDateToShortDate } from '../utilities/utilities';
+import { utcDateToLongDate } from '../utilities/utilities';
 
 interface Props {
   lastUpdatedDate: Date;
@@ -93,7 +93,7 @@ const NavBar = ({ lastUpdatedDate }: Props) => {
         {/* Column 3 - Right Menu */}
         <div className='hidden lg:block pl-3 ml-auto mr-2 items-center min-w-fit h-full'>
           <h3 className='h-1/2 pb-2 pr-2 xl:pr-3 text-primary-colour text-sm select-none text-right'>
-            Updated {utcDateToShortDate(lastUpdatedDate, true, true)}
+            Updated {utcDateToLongDate(lastUpdatedDate)}
           </h3>
 
           <div className='h-1/2 flex items-center'>
