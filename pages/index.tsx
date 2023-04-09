@@ -71,7 +71,7 @@ export async function getStaticProps() {
   // Write the last Checked date to json, to later be read by components
   fs.writeFileSync(
     './utilities/dbLastChecked.json',
-    JSON.stringify(utcDateToShortDate(countdownProducts[0].lastChecked, true, true))
+    JSON.stringify(utcDateToShortDate(countdownProducts[0].lastChecked, false, true))
   );
 
   return {
