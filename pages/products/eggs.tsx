@@ -60,9 +60,6 @@ export const getStaticProps: GetStaticProps = async () => {
         ?.join('');
     }
 
-    // Use regex to get any digits from size or name
-    console.log(product.name + ' - ' + size);
-
     // Parse to int and check is within valid range
     if (size !== undefined && parseInt(size) < 80) {
       const quantity = parseInt(size);
