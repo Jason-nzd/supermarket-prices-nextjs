@@ -8,7 +8,7 @@ interface Props {
   iconHexColour?: string;
 }
 
-export default function SearchBar({ iconSize = 5, iconHexColour = 'currentColor' }: Props) {
+export default function SearchBar({ iconSize = 6, iconHexColour = 'currentColor' }: Props) {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState<string>('');
   let [isModalOpen, setIsModalOpen] = useState(false);
@@ -29,7 +29,7 @@ export default function SearchBar({ iconSize = 5, iconHexColour = 'currentColor'
     iconSize.toString() +
     ' h-' +
     iconSize.toString() +
-    ' mr-2 pt-1.5 scale-[150%] hover:scale-[160%] hover:text-white';
+    ' mr-2 pt-1.5 scale-[120%] hover:scale-[130%] hover:text-white';
 
   const magnifyIcon = (
     <svg
@@ -52,8 +52,8 @@ export default function SearchBar({ iconSize = 5, iconHexColour = 'currentColor'
 
   return (
     <>
-      {bigSearchBar && (
-        <div className='flex rounded-2xl border-2 border-[#75F3A3] h-8 w-fit transition-all duration-500'>
+      <div className='flex rounded-3xl border-2 border-green-300 h-8 w-fit transition-all duration-500'>
+        {bigSearchBar && (
           <form onSubmit={handleSearch} className='flex'>
             <input
               type='text'
@@ -67,26 +67,21 @@ export default function SearchBar({ iconSize = 5, iconHexColour = 'currentColor'
              pl-3 placeholder-[#75F3A3] align-center transition-all duration-500'
               onChange={(e) => setSearchQuery(e.target.value)}
             />
-            <div className='ml-auto hover-to-white text-green-100'>
+            <div className='ml-auto hover-to-white text-green-200'>
               <button type='submit' title='Search' className=''>
                 {magnifyIcon}
               </button>
             </div>
           </form>
-        </div>
-      )}
-      {!bigSearchBar && (
-        <div className=''>
-          <button
-            type='button'
-            onClick={handleMobileButton}
-            title='Search'
-            className='border-0 hover-to-white text-green-100'
-          >
-            {magnifyIcon}
-          </button>
-        </div>
-      )}
+        )}
+        {!bigSearchBar && (
+          <div className='pl-2 cursor-pointer' onClick={handleMobileButton}>
+            <button type='button' title='Search' className='text-green-200'>
+              {magnifyIcon}
+            </button>
+          </div>
+        )}
+      </div>
       <Dialog open={isModalOpen} onClose={() => setIsModalOpen(false)} className='relative z-50'>
         <div
           className='fixed inset-0 flex items-center justify-center p-2 bg-zinc-100 
