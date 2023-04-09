@@ -1,22 +1,26 @@
 import _ from 'lodash';
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { ThemeContext } from '../pages/_app';
 import kiwifruit from '../public/android-chrome-192x192.png';
 import CategorySelectMenu from './CategorySelectMenu';
 import SearchBar from './SearchBar';
 import MobileBurgerMenu from './MobileBurgerMenu';
 import { Switch } from '@headlessui/react';
-import lastUpdatedDate from '../utilities/dbLastChecked.json';
+import { utcDateToShortDate } from '../utilities/utilities';
 
-const NavBar = () => {
+interface Props {
+  lastUpdatedDate: Date;
+}
+
+const NavBar = ({ lastUpdatedDate }: Props) => {
   const [userCategories, setUserCategories] = useState<string[]>(['Loading Categories..']);
   const theme = useContext(ThemeContext);
   const [enabled, setEnabled] = useState(false);
 
   return (
-    <nav className='w-full overflow-hidden'>
+    <nav className='w-full h-full overflow-hidden'>
       <div className='mx-auto w-[100%] 2xl:w-[90rem] 3xl:w-[110rem] transition-all duration-500 flex flex-nowrap items-center'>
         {/* Column 1 - Logo*/}
         <Link href='/' className='ml-2'>
@@ -32,12 +36,12 @@ const NavBar = () => {
         </div>
 
         {/* Mobile Search Menu */}
-        <div className='block z-50 justify-start left-[3rem] lg:hidden ml-14 pb-1'>
-          <SearchBar iconSize={8} iconHexColour='#86efac' />
+        <div className='block z-50 left-[3rem] lg:hidden ml-14 pb-1'>
+          <SearchBar iconSize={6} iconHexColour='#86efac' />
         </div>
 
         {/* Column 2 - Title - Sub-title - Categories - Search */}
-        <div className='block w-full'>
+        <div className='block w-full h-[3.6rem] lg:h-[5rem]'>
           {/* Row 1 - Title - Sub-title */}
           <div className='flex flex-wrap h-1/2 items-center lg:items-center ml-1 w-full'>
             {/* Mobile Icon */}
@@ -86,33 +90,33 @@ const NavBar = () => {
         </div>
 
         {/* Column 3 - Right Menu */}
-        <div className='hidden lg:block pl-4 ml-auto mr-2 items-center min-w-fit'>
-          <h3 className='pb-1 text-primary-colour text-sm select-none text-center'>
-            Updated {lastUpdatedDate}
+        <div className='hidden lg:block pl-3 ml-auto mr-2 items-center min-w-fit h-full'>
+          <h3 className='h-1/2 pb-2 pr-2 xl:pr-3 text-primary-colour text-sm select-none text-right'>
+            Updated {utcDateToShortDate(lastUpdatedDate, true, true)}
           </h3>
 
-          <div className='flex items-center'>
-            <Switch
-              checked={enabled}
-              onChange={setEnabled}
-              className={`${
-                enabled ? 'bg-green-400' : 'bg-green-700'
-              } relative inline-flex h-6 w-11 items-center rounded-full`}
-            >
-              <span className='sr-only'>Enable notifications</span>
-              <span
+          <div className='h-1/2 flex items-center'>
+            <div className='pt-1'>
+              <Switch
+                checked={enabled}
+                onChange={setEnabled}
                 className={`${
-                  enabled ? 'translate-x-6' : 'translate-x-1'
-                } inline-block h-4 w-4 transform rounded-full bg-white transition`}
-              />
-            </Switch>
+                  enabled ? 'bg-green-400' : 'bg-green-700'
+                } relative inline-flex h-6 w-9 items-center rounded-full`}
+              >
+                <span className='sr-only'>Dark Theme</span>
+                <span
+                  className={`${
+                    enabled ? 'translate-x-4' : 'translate-x-1'
+                  } inline-block h-4 w-4 transform rounded-full bg-white transition`}
+                />
+              </Switch>
+            </div>
             <Link className='nav-small-link' href='#'>
               {userIcon}
-              Login
             </Link>
             <Link className='nav-small-link' href='/admin'>
               {tableIcon}
-              Admin
             </Link>
           </div>
         </div>
@@ -124,9 +128,9 @@ const NavBar = () => {
             onChange={setEnabled}
             className={`${
               enabled ? 'bg-green-400' : 'bg-green-700'
-            } relative inline-flex h-6 w-11 items-center rounded-full`}
+            } relative inline-flex h-4 w-9 items-center rounded-full`}
           >
-            <span className='sr-only'>Enable notifications</span>
+            <span className='sr-only'>Dark Theme</span>
             <span
               className={`${
                 enabled ? 'translate-x-6' : 'translate-x-1'
@@ -171,7 +175,7 @@ export const userIcon = (
     viewBox='0 0 24 24'
     strokeWidth='1.5'
     stroke='currentColor'
-    className='w-10 h-10 lg:w-6 lg:h-6'
+    className='w-10 h-10 lg:w-8 lg:h-8'
   >
     <path
       strokeLinecap='round'
@@ -190,7 +194,7 @@ export const cartIcon = (
     viewBox='0 0 24 24'
     strokeWidth='1.5'
     stroke='currentColor'
-    className='w-6 h-6'
+    className='w-8 h-8'
   >
     <path
       strokeLinecap='round'
@@ -209,7 +213,7 @@ export const tableIcon = (
     viewBox='0 0 24 24'
     strokeWidth='1.5'
     stroke='currentColor'
-    className='w-6 h-6'
+    className='w-8 h-8'
   >
     <path
       strokeLinecap='round'

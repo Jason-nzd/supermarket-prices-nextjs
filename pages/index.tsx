@@ -4,9 +4,8 @@ import NavBar from '../components/NavBar';
 import ProductsGrid from '../components/ProductsGrid';
 import { Product } from '../typings';
 import { DBFetchAll } from '../utilities/cosmosdb';
-import { OrderByMode, PriceHistoryLimit, Store, utcDateToShortDate } from '../utilities/utilities';
+import { OrderByMode, PriceHistoryLimit, Store } from '../utilities/utilities';
 import { ThemeContext } from './_app';
-import fs from 'fs';
 
 interface Props {
   countdownProducts: Product[];
@@ -20,7 +19,7 @@ export default function Home({ countdownProducts, paknsaveProducts, warehousePro
 
   return (
     <main className={theme}>
-      <NavBar />
+      <NavBar lastUpdatedDate={new Date()} />
       {/* Background Div */}
       <div className='content-body'>
         {/* Central Aligned Div */}
@@ -66,12 +65,6 @@ export async function getStaticProps() {
     Store.Warehouse,
     PriceHistoryLimit.TwoOrMore,
     OrderByMode.Latest
-  );
-
-  // Write the last Checked date to json, to later be read by components
-  fs.writeFileSync(
-    './utilities/dbLastChecked.json',
-    JSON.stringify(utcDateToShortDate(countdownProducts[0].lastChecked, false, true))
   );
 
   return {

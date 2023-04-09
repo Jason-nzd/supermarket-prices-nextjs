@@ -40,7 +40,7 @@ const ClientSearch = () => {
 
   return (
     <main className={theme} onLoad={() => setSearchTerm(router.query.query as string)}>
-      <NavBar />
+      <NavBar lastUpdatedDate={new Date()} />
       {/* Background Div */}
       <div className='content-body'>
         {/* Central Aligned Div */}

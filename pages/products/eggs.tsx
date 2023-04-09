@@ -20,7 +20,7 @@ const Category = ({ mixedGrade, size7, size8plus }: Props) => {
 
   return (
     <main className={theme}>
-      <NavBar />
+      <NavBar lastUpdatedDate={new Date()} />
       {/* Background Div */}
       <div className='content-body'>
         {/* Central Aligned Div */}

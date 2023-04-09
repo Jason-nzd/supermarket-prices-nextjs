@@ -27,7 +27,7 @@ const Category = ({ standardMilk, trimMilk, oatMilk, flavouredMilk, otherMilk }:
 
   return (
     <main className={theme}>
-      <NavBar />
+      <NavBar lastUpdatedDate={new Date()} />
       {/* Background Div */}
       <div className='content-body'>
         {/* Central Aligned Div */}

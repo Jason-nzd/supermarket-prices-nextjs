@@ -40,7 +40,7 @@ const Category = ({
 
   return (
     <main className={theme}>
-      <NavBar />
+      <NavBar lastUpdatedDate={new Date()} />
       {/* Background Div */}
       <div className='content-body'>
         {/* Central Aligned Div */}
