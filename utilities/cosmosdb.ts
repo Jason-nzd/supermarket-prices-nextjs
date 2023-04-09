@@ -264,18 +264,18 @@ function queryAddLastChecked(lastChecked: LastChecked, useAND: boolean = true) {
   let queryAddon = useAND ? ' AND ' : ' WHERE ';
   queryAddon += "p.lastChecked > '";
 
-  let today = new Date();
+  let todayModified = new Date();
   switch (lastChecked) {
     case LastChecked.Within2Days:
-      today.setDate(today.getDate() - 2);
+      todayModified.setDate(todayModified.getDate() - 2);
       break;
 
     case LastChecked.Within7Days:
-      today.setDate(today.getDate() - 7);
+      todayModified.setDate(todayModified.getDate() - 7);
       break;
 
     case LastChecked.Within30Days:
-      today.setDate(today.getDate() - 30);
+      todayModified.setDate(todayModified.getDate() - 30);
       break;
 
     case LastChecked.Any:
@@ -283,8 +283,12 @@ function queryAddLastChecked(lastChecked: LastChecked, useAND: boolean = true) {
       return '';
   }
 
-  // Convert to processed date to ISO, example: p.lastChecked > '2023-04-02T07:05:25.902Z'
-  queryAddon += today.toISOString() + "'";
+  // Convert processed date to ISO, example: p.lastChecked > '2023-04-02T07:05:25.902Z'
+  queryAddon += todayModified.toISOString();
+
+  // To improve potential caching, remove hours, mins, seconds, example: p.lastChecked > '2023-04-02'
+  queryAddon = queryAddon.split('T')[0] + "'";
+
   return queryAddon;
 }
 
