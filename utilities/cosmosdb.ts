@@ -4,11 +4,18 @@ import {
   FeedOptions,
   FeedResponse,
   ItemResponse,
+  SqlParameter,
   SqlQuerySpec,
 } from '@azure/cosmos';
 import { useSampleProductsInstead } from './sample-products';
 import { Product } from '../typings';
-import { cleanProductFields, OrderByMode, PriceHistoryLimit, Store } from './utilities';
+import {
+  cleanProductFields,
+  LastChecked,
+  OrderByMode,
+  PriceHistoryLimit,
+  Store,
+} from './utilities';
 
 // CosmosDB Env Variables
 const COSMOS_CONSTRING = process.env.COSMOS_CONSTRING;
@@ -234,31 +241,50 @@ function queryAddPriceHistoryLimit(
   priceHistoryLimit: PriceHistoryLimit,
   useAND: boolean = true
 ): string {
-  let queryAddon = '';
-  let optionalAND = useAND ? ' AND ' : ' WHERE ';
+  let queryAddon = useAND ? ' AND ' : ' WHERE ';
 
   switch (priceHistoryLimit) {
     case PriceHistoryLimit.TwoOrMore:
-      queryAddon = optionalAND + 'ARRAY_LENGTH(p.priceHistory)>=2';
+      queryAddon += 'ARRAY_LENGTH(p.priceHistory)>=2';
       break;
 
     case PriceHistoryLimit.FourOrMore:
-      queryAddon = optionalAND + 'ARRAY_LENGTH(p.priceHistory)>=4';
+      queryAddon += 'ARRAY_LENGTH(p.priceHistory)>=4';
       break;
 
     case PriceHistoryLimit.Any:
     default:
-      break;
+      return '';
   }
   return queryAddon;
 }
 
-function queryAddOnlyRecentlyChecked(onlyRecentlyChecked: boolean, useAND: boolean = true) {
-  let queryAddon = '';
-  let optionalAND = useAND ? ' AND ' : ' WHERE ';
+// Limit to products that have been recently checked
+function queryAddLastChecked(lastChecked: LastChecked, useAND: boolean = true) {
+  let queryAddon = useAND ? ' AND ' : ' WHERE ';
+  queryAddon += "p.lastChecked > '";
 
-  if (onlyRecentlyChecked) queryAddon = optionalAND + 'IS_DEFINED(p.lastChecked)';
+  let today = new Date();
+  switch (lastChecked) {
+    case LastChecked.Within2Days:
+      today.setDate(today.getDate() - 2);
+      break;
 
+    case LastChecked.Within7Days:
+      today.setDate(today.getDate() - 7);
+      break;
+
+    case LastChecked.Within30Days:
+      today.setDate(today.getDate() - 30);
+      break;
+
+    case LastChecked.Any:
+    default:
+      return '';
+  }
+
+  // Convert to processed date to ISO, example: p.lastChecked > '2023-04-02T07:05:25.902Z'
+  queryAddon += today.toISOString() + "'";
   return queryAddon;
 }
 
@@ -269,7 +295,7 @@ export async function DBFetchByCategory(
   store: Store = Store.Any,
   priceHistoryLimit: PriceHistoryLimit = PriceHistoryLimit.Any,
   orderBy: OrderByMode = OrderByMode.None,
-  onlyRecentlyChecked: boolean = true,
+  lastChecked: LastChecked = LastChecked.Within7Days,
   useRestAPIInsteadOfSDK: boolean = false
 ): Promise<Product[]> {
   const queryBase = 'SELECT * FROM products p WHERE ARRAY_CONTAINS(p.category, @name, true)';
@@ -277,7 +303,7 @@ export async function DBFetchByCategory(
     query:
       queryBase +
       queryAddLimitStore(store, false) +
-      queryAddOnlyRecentlyChecked(onlyRecentlyChecked) +
+      queryAddLastChecked(lastChecked) +
       queryAddPriceHistoryLimit(priceHistoryLimit) +
       queryAddOrderBy(orderBy),
     parameters: [{ name: '@name', value: searchTerm }],
@@ -293,7 +319,7 @@ export async function DBFetchByName(
   store: Store = Store.Any,
   priceHistoryLimit: PriceHistoryLimit = PriceHistoryLimit.Any,
   orderBy: OrderByMode = OrderByMode.None,
-  onlyRecentlyChecked: boolean = true,
+  lastChecked: LastChecked = LastChecked.Within7Days,
   useRestAPIInsteadOfSDK: boolean = false
 ): Promise<Product[]> {
   // Replace hyphens in search term
@@ -304,12 +330,27 @@ export async function DBFetchByName(
     query:
       queryBase +
       queryAddLimitStore(store, false) +
-      queryAddOnlyRecentlyChecked(onlyRecentlyChecked) +
+      queryAddLastChecked(lastChecked) +
       queryAddPriceHistoryLimit(priceHistoryLimit) +
       queryAddOrderBy(orderBy),
     parameters: [{ name: '@name', value: searchTerm }],
   };
 
+  if (useRestAPIInsteadOfSDK) return await fetchProductsUsingAPI(querySpec, maxItems);
+  else return await fetchProductsUsingSDK(querySpec, maxItems);
+}
+
+// Fetch products by searching with custom query
+export async function DBFetchByQuery(
+  sqlQuery: string,
+  sqlParameters?: SqlParameter[],
+  maxItems: number = 60,
+  useRestAPIInsteadOfSDK: boolean = false
+): Promise<Product[]> {
+  const querySpec: SqlQuerySpec = {
+    query: sqlQuery,
+    parameters: sqlParameters,
+  };
   if (useRestAPIInsteadOfSDK) return await fetchProductsUsingAPI(querySpec, maxItems);
   else return await fetchProductsUsingSDK(querySpec, maxItems);
 }

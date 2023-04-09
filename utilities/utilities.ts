@@ -30,6 +30,12 @@ export enum PriceHistoryLimit {
   TwoOrMore,
   FourOrMore,
 }
+export enum LastChecked {
+  Within2Days,
+  Within7Days,
+  Within30Days,
+  Any,
+}
 
 // Removes undesired fields that CosmosDB creates
 export function cleanProductFields(document: Product): Product {
@@ -57,15 +63,14 @@ export function cleanProductFields(document: Product): Product {
     if (!category) category = ['No Category'];
     if (!lastChecked) lastChecked = lastUpdated;
     if (!unitPrice) {
-      const derivedUnitString = deriveUnitPriceString(document);
+      unitPrice = null;
+      unitName = null;
+      // const derivedUnitString = deriveUnitPriceString(document);
 
-      if (derivedUnitString) {
-        unitPrice = Number.parseFloat(derivedUnitString.split('/')[0] as string);
-        unitName = derivedUnitString.split('/')[1];
-      } else {
-        unitPrice = null;
-        unitName = null;
-      }
+      // if (derivedUnitString) {
+      //   unitPrice = Number.parseFloat(derivedUnitString.split('/')[0] as string);
+      //   unitName = derivedUnitString.split('/')[1];
+      // }
     } else if (unitPrice < 0.2) {
       console.log('[Unusual UnitPrice from DB] = ' + name + ' - ' + unitPrice + '/' + unitName);
       unitPrice = null;
