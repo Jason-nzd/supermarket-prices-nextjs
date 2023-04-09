@@ -4,7 +4,7 @@ import NavBar from '../components/NavBar';
 import ProductsGrid from '../components/ProductsGrid';
 import { Product } from '../typings';
 import { DBFetchByName } from '../utilities/cosmosdb';
-import { OrderByMode, PriceHistoryLimit, Store } from '../utilities/utilities';
+import { LastChecked, OrderByMode, PriceHistoryLimit, Store } from '../utilities/utilities';
 import { ThemeContext } from './_app';
 import { useRouter } from 'next/router';
 import _ from 'lodash';
@@ -26,7 +26,7 @@ const ClientSearch = () => {
           Store.Any,
           PriceHistoryLimit.Any,
           OrderByMode.None,
-          false,
+          LastChecked.Within7Days,
           true
         );
 

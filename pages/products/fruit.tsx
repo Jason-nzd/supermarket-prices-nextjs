@@ -72,14 +72,7 @@ const Category = ({
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const products = await DBFetchByCategory(
-    'fresh-fruit',
-    200,
-    Store.Any,
-    PriceHistoryLimit.Any,
-    OrderByMode.None,
-    true
-  );
+  const products = await DBFetchByCategory('fresh-fruit', 200);
 
   let apples: Product[] = [];
   let bananas: Product[] = [];

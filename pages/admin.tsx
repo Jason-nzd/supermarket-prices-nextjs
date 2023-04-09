@@ -4,7 +4,7 @@ import NavBar from '../components/NavBar';
 import ProductEditRow from '../components/ProductEditRow';
 import { Product } from '../typings';
 import { DBFetchByName } from '../utilities/cosmosdb';
-import { OrderByMode, PriceHistoryLimit, Store } from '../utilities/utilities';
+import { LastChecked, OrderByMode, PriceHistoryLimit, Store } from '../utilities/utilities';
 import { ThemeContext } from './_app';
 import _ from 'lodash';
 
@@ -23,7 +23,7 @@ const AdminPanel = () => {
       Store.Any,
       PriceHistoryLimit.Any,
       OrderByMode.None,
-      false,
+      LastChecked.Any,
       true
     );
     setProducts(dbProducts);

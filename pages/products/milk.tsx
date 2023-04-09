@@ -52,14 +52,7 @@ const Category = ({ standardMilk, trimMilk, oatMilk, flavouredMilk, otherMilk }:
 
 export const getStaticProps: GetStaticProps = async () => {
   // Fetch all milk from DB
-  let allMilk = await DBFetchByCategory(
-    'milk',
-    300,
-    Store.Any,
-    PriceHistoryLimit.Any,
-    OrderByMode.None,
-    true
-  );
+  let allMilk = await DBFetchByCategory('milk', 300);
 
   let standardMilk: Product[] = [];
   let trimMilk: Product[] = [];
