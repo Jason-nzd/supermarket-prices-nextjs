@@ -8,10 +8,9 @@ import CategorySelectMenu from './CategorySelectMenu';
 import SearchBar from './SearchBar';
 import MobileBurgerMenu from './MobileBurgerMenu';
 import { Switch } from '@headlessui/react';
-import { utcDateToLongDate } from '../utilities/utilities';
 
 interface Props {
-  lastUpdatedDate: Date;
+  lastUpdatedDate: string;
 }
 
 const NavBar = ({ lastUpdatedDate }: Props) => {
@@ -92,12 +91,12 @@ const NavBar = ({ lastUpdatedDate }: Props) => {
 
         {/* Column 3 - Right Menu */}
         <div className='hidden lg:block pl-3 ml-auto mr-2 items-center min-w-fit h-full'>
-          <h3 className='h-1/2 pb-2 pr-2 xl:pr-3 text-primary-colour text-sm select-none text-right'>
-            Updated {utcDateToLongDate(lastUpdatedDate)}
+          <h3 className='h-1/2 pb-2 pr-2 text-primary-colour text-sm select-none text-right'>
+            Updated {lastUpdatedDate}
           </h3>
 
-          <div className='h-1/2 flex items-center'>
-            <div className='mt-1 hover:ring-2 rounded-xl ring-green-100'>
+          <div className='h-1/2 flex items-center ml-auto'>
+            <div className='mt-1 hover:ring-2 rounded-xl ring-green-100 ml-auto'>
               <Switch
                 checked={enabled}
                 onChange={setEnabled}
@@ -123,26 +122,26 @@ const NavBar = ({ lastUpdatedDate }: Props) => {
         </div>
 
         {/* Column 3 - Mobile Theme Toggle */}
-        <div className='block h-full lg:hidden mx-0 items-center'>
+        <div className='block h-full lg:hidden mx-2 items-center'>
           <Switch
             checked={enabled}
             onChange={setEnabled}
             className={`${
               enabled ? 'bg-green-400' : 'bg-green-700'
-            } relative inline-flex h-4 w-9 items-center rounded-full`}
+            } relative inline-flex h-7 w-10 items-center rounded-full`}
           >
             <span className='sr-only'>Dark Theme</span>
             <span
               className={`${
-                enabled ? 'translate-x-6' : 'translate-x-1'
-              } inline-block h-4 w-4 transform rounded-full bg-white transition`}
+                enabled ? 'translate-x-4' : 'translate-x-1'
+              } inline-block h-5 w-5 transform rounded-full bg-white transition`}
             />
           </Switch>
         </div>
 
         {/* Column 3 - Mobile User Menu */}
-        <div className='block h-full lg:hidden mx-0 items-center'>
-          <Link className='nav-small-link w-12 items-center' href='#'>
+        <div className='block h-full lg:hidden mx-2 items-center'>
+          <Link className='text-primary-colour w-12 items-center' href='#'>
             {userIcon}
           </Link>
         </div>

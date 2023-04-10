@@ -85,7 +85,7 @@ export default function SearchBar({ iconSize = 6, iconHexColour = 'currentColor'
       <Dialog open={isModalOpen} onClose={() => setIsModalOpen(false)} className='relative z-50'>
         <div
           className='fixed inset-0 flex items-center justify-center p-2 bg-zinc-100 
-            w-fit h-fit mx-auto top-[2.3rem] rounded-3xl shadow-xl text-black'
+            w-fit h-fit mx-auto top-[2.3rem] rounded-3xl shadow-xl text-black text-xl'
         >
           <Dialog.Panel>
             <form onSubmit={handleSearch} className='flex'>
@@ -96,7 +96,7 @@ export default function SearchBar({ iconSize = 6, iconHexColour = 'currentColor'
                 required
                 placeholder='Search'
                 minLength={3}
-                maxLength={26}
+                maxLength={30}
                 className='bg-transparent border-2 w-full focus:outline-none
                   px-3 placeholder-grey-400 align-center rounded-3xl'
                 onChange={(e) => setSearchQuery(e.target.value)}
