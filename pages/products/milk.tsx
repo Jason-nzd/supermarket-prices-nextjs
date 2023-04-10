@@ -12,6 +12,7 @@ import {
   PriceHistoryLimit,
   Store,
   sortProductsByUnitPrice,
+  utcDateToLongDate,
 } from '../../utilities/utilities';
 
 interface Props {
@@ -27,7 +28,7 @@ const Category = ({ standardMilk, trimMilk, oatMilk, flavouredMilk, otherMilk }:
 
   return (
     <main className={theme}>
-      <NavBar lastUpdatedDate={new Date()} />
+      <NavBar lastUpdatedDate={utcDateToLongDate(new Date())} />
       {/* Background Div */}
       <div className='content-body'>
         {/* Central Aligned Div */}

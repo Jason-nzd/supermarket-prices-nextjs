@@ -11,6 +11,7 @@ import {
   PriceHistoryLimit,
   Store,
   sortProductsByUnitPrice,
+  utcDateToLongDate,
 } from '../../utilities/utilities';
 import { ThemeContext } from '../_app';
 import NavBar from '../../components/NavBar';
@@ -28,7 +29,7 @@ const Category = ({ products, hasMoreSearchResults }: Props) => {
 
   return (
     <main className={theme}>
-      <NavBar lastUpdatedDate={new Date()} />
+      <NavBar lastUpdatedDate={utcDateToLongDate(new Date())} />
       {/* Background Div */}
       <div className='content-body'>
         {/* Central Aligned Div */}

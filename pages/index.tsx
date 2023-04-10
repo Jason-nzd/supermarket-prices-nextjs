@@ -4,7 +4,7 @@ import NavBar from '../components/NavBar';
 import ProductsGrid from '../components/ProductsGrid';
 import { Product } from '../typings';
 import { DBFetchAll } from '../utilities/cosmosdb';
-import { OrderByMode, PriceHistoryLimit, Store } from '../utilities/utilities';
+import { OrderByMode, PriceHistoryLimit, Store, utcDateToLongDate } from '../utilities/utilities';
 import { ThemeContext } from './_app';
 
 interface Props {
@@ -19,7 +19,7 @@ export default function Home({ countdownProducts, paknsaveProducts, warehousePro
 
   return (
     <main className={theme}>
-      <NavBar lastUpdatedDate={new Date()} />
+      <NavBar lastUpdatedDate={utcDateToLongDate(new Date())} />
       {/* Background Div */}
       <div className='content-body'>
         {/* Central Aligned Div */}

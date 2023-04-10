@@ -4,7 +4,7 @@ import { Product } from '../../typings';
 import _ from 'lodash';
 import ProductsGrid from '../../components/ProductsGrid';
 import { DBFetchByCategory } from '../../utilities/cosmosdb';
-import { printPrice } from '../../utilities/utilities';
+import { printPrice, utcDateToLongDate } from '../../utilities/utilities';
 import { ThemeContext } from '../_app';
 import NavBar from '../../components/NavBar';
 import Footer from '../../components/Footer';
@@ -20,7 +20,7 @@ const Category = ({ mixedGrade, size7, size8plus }: Props) => {
 
   return (
     <main className={theme}>
-      <NavBar lastUpdatedDate={new Date()} />
+      <NavBar lastUpdatedDate={utcDateToLongDate(new Date())} />
       {/* Background Div */}
       <div className='content-body'>
         {/* Central Aligned Div */}

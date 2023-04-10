@@ -4,7 +4,13 @@ import NavBar from '../components/NavBar';
 import ProductEditRow from '../components/ProductEditRow';
 import { Product } from '../typings';
 import { DBFetchByName } from '../utilities/cosmosdb';
-import { LastChecked, OrderByMode, PriceHistoryLimit, Store } from '../utilities/utilities';
+import {
+  LastChecked,
+  OrderByMode,
+  PriceHistoryLimit,
+  Store,
+  utcDateToLongDate,
+} from '../utilities/utilities';
 import { ThemeContext } from './_app';
 import _ from 'lodash';
 
@@ -32,7 +38,7 @@ const AdminPanel = () => {
 
   return (
     <main className={theme}>
-      <NavBar lastUpdatedDate={new Date()} />
+      <NavBar lastUpdatedDate={utcDateToLongDate(new Date())} />
       {/* Background Div */}
       <div className='content-body'>
         {/* Central Aligned Div */}
