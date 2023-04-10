@@ -4,12 +4,12 @@ import React from 'react';
 function Footer() {
   return (
     <footer className='py-6 w-full h-full text-green-200 text-sm'>
-      <div className='flex mx-auto w-fit font-semibold'>
+      <div className='flex mx-auto w-fit font-semibold px-4 text-center'>
         Prices are updated with best effort, but aren't guaranteed to be accurate for each store.
       </div>
       <div className='flex mx-auto py-2 justify-center'></div>
-      <div className='py-1 flex gap-2 mx-auto justify-center'>
-        Icons licensed from
+      <div className='py-1 flex gap-6 mx-auto justify-center'>
+        Icons licensed from:
         <Link href='https://icon-icons.com' className='hover-to-white'>
           icon-icons.com
         </Link>
@@ -17,7 +17,7 @@ function Footer() {
           icons.getbootstrap.com
         </Link>
       </div>
-      <div className='flex mx-auto gap-8 pt-4 w-fit'>
+      <div className='flex mx-auto gap-6 md:gap-14 pt-4 w-fit'>
         <div>©2023 jb</div>
         <div>All Rights Reserved</div>
         <Link href='#' className='hover-to-white'>
