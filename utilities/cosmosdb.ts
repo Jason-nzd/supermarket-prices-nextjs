@@ -122,7 +122,6 @@ async function fetchProductsUsingAPI(
     redirect: 'follow',
     referrerPolicy: 'no-referrer',
   });
-  console.log(apiResponse);
 
   // If successful, set resultingProducts to response json
   if (apiResponse.status === 200) {
