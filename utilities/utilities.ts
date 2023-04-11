@@ -171,25 +171,14 @@ export function utcDateToShortDate(utcDate: Date, returnTodayString: boolean = f
   var now = new Date().toDateString();
 
   if (date === now && returnTodayString) return 'Today';
-  // if (includeYear) return date.substring(4, 15); // Mar 16 2023
   else return date.substring(4, 10); // Mar 16
 }
 
 // utcDateToLongDate
 // -----------------
-// Takes UTC Date and returns 'Today, April 15 2023'
+// Takes UTC Date and returns 'April 15 2023'
 export function utcDateToLongDate(utcDate: Date): string {
-  let result: string = '';
-  var date = new Date(utcDate).toDateString(); // Thu Mar 16 2023
-  var now = new Date().toDateString();
-  var yesterday = new Date(utcDate.setDate(utcDate.getDate() - 1)).toDateString();
-
-  if (date === now) result += 'Today, ';
-  else if (date === yesterday) result += 'Yesterday, ';
-
-  result += date.substring(4, 15); // Mar 16 2023
-
-  return result;
+  return new Date(utcDate).toDateString(); // Thu Mar 16 2023
 }
 
 export function sortProductsByName(products: Product[]): Product[] {
