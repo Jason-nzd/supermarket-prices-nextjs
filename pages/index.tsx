@@ -11,15 +11,21 @@ interface Props {
   countdownProducts: Product[];
   paknsaveProducts: Product[];
   warehouseProducts: Product[];
+  lastChecked: string;
 }
 
 // Products props will be populated at build time by getStaticProps()
-export default function Home({ countdownProducts, paknsaveProducts, warehouseProducts }: Props) {
+export default function Home({
+  countdownProducts,
+  paknsaveProducts,
+  warehouseProducts,
+  lastChecked,
+}: Props) {
   const theme = useContext(ThemeContext);
 
   return (
     <main className={theme}>
-      <NavBar lastUpdatedDate={utcDateToLongDate(new Date())} />
+      <NavBar lastUpdatedDate={lastChecked} />
       {/* Background Div */}
       <div className='content-body'>
         {/* Central Aligned Div */}
@@ -65,11 +71,14 @@ export async function getStaticProps() {
     OrderByMode.Latest
   );
 
+  const lastChecked = utcDateToLongDate(new Date());
+
   return {
     props: {
       countdownProducts,
       paknsaveProducts,
       warehouseProducts,
+      lastChecked,
     },
   };
 }

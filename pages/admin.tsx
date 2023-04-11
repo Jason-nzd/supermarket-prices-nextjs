@@ -14,7 +14,11 @@ import {
 import { ThemeContext } from './_app';
 import _ from 'lodash';
 
-const AdminPanel = () => {
+interface Props {
+  lastChecked: string;
+}
+
+const AdminPanel = ({ lastChecked }: Props) => {
   const theme = useContext(ThemeContext);
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -38,7 +42,7 @@ const AdminPanel = () => {
 
   return (
     <main className={theme}>
-      <NavBar lastUpdatedDate={utcDateToLongDate(new Date())} />
+      <NavBar lastUpdatedDate={lastChecked} />
       {/* Background Div */}
       <div className='content-body'>
         {/* Central Aligned Div */}
@@ -116,5 +120,14 @@ const AdminPanel = () => {
     </main>
   );
 };
+
+export async function getStaticProps() {
+  const lastChecked = utcDateToLongDate(new Date());
+  return {
+    props: {
+      lastChecked,
+    },
+  };
+}
 
 export default AdminPanel;

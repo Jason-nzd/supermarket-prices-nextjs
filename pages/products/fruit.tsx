@@ -24,6 +24,7 @@ interface Props {
   berries: Product[];
   grapes: Product[];
   other: Product[];
+  lastChecked: string;
 }
 
 const Category = ({
@@ -36,12 +37,13 @@ const Category = ({
   berries,
   grapes,
   other,
+  lastChecked,
 }: Props) => {
   const theme = useContext(ThemeContext);
 
   return (
     <main className={theme}>
-      <NavBar lastUpdatedDate={utcDateToLongDate(new Date())} />
+      <NavBar lastUpdatedDate={lastChecked} />
       {/* Background Div */}
       <div className='content-body'>
         {/* Central Aligned Div */}
@@ -111,6 +113,8 @@ export const getStaticProps: GetStaticProps = async () => {
 
   // console.log(apples.length, bananas.length, citrus.length, berries.length, other.length);
 
+  const lastChecked = utcDateToLongDate(new Date());
+
   return {
     props: {
       apples,
@@ -122,6 +126,7 @@ export const getStaticProps: GetStaticProps = async () => {
       berries,
       grapes,
       other,
+      lastChecked,
     },
   };
 };

@@ -21,14 +21,22 @@ interface Props {
   oatMilk: Product[];
   flavouredMilk: Product[];
   otherMilk: Product[];
+  lastChecked: string;
 }
 
-const Category = ({ standardMilk, trimMilk, oatMilk, flavouredMilk, otherMilk }: Props) => {
+const Category = ({
+  standardMilk,
+  trimMilk,
+  oatMilk,
+  flavouredMilk,
+  otherMilk,
+  lastChecked,
+}: Props) => {
   const theme = useContext(ThemeContext);
 
   return (
     <main className={theme}>
-      <NavBar lastUpdatedDate={utcDateToLongDate(new Date())} />
+      <NavBar lastUpdatedDate={lastChecked} />
       {/* Background Div */}
       <div className='content-body'>
         {/* Central Aligned Div */}
@@ -82,6 +90,8 @@ export const getStaticProps: GetStaticProps = async () => {
   flavouredMilk = sortProductsByUnitPrice(flavouredMilk).slice(0, 15);
   otherMilk = sortProductsByUnitPrice(otherMilk).slice(0, 15);
 
+  const lastChecked = utcDateToLongDate(new Date());
+
   return {
     props: {
       standardMilk,
@@ -89,6 +99,7 @@ export const getStaticProps: GetStaticProps = async () => {
       oatMilk,
       flavouredMilk,
       otherMilk,
+      lastChecked,
     },
   };
 };

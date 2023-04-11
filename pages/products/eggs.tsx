@@ -13,14 +13,15 @@ interface Props {
   mixedGrade: Product[];
   size7: Product[];
   size8plus: Product[];
+  lastChecked: string;
 }
 
-const Category = ({ mixedGrade, size7, size8plus }: Props) => {
+const Category = ({ mixedGrade, size7, size8plus, lastChecked }: Props) => {
   const theme = useContext(ThemeContext);
 
   return (
     <main className={theme}>
-      <NavBar lastUpdatedDate={utcDateToLongDate(new Date())} />
+      <NavBar lastUpdatedDate={lastChecked} />
       {/* Background Div */}
       <div className='content-body'>
         {/* Central Aligned Div */}
@@ -107,11 +108,14 @@ export const getStaticProps: GetStaticProps = async () => {
   size7 = size7.slice(0, 12);
   size8plus = size8plus.slice(0, 12);
 
+  const lastChecked = utcDateToLongDate(new Date());
+
   return {
     props: {
       mixedGrade,
       size7,
       size8plus,
+      lastChecked,
     },
   };
 };
