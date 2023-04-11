@@ -20,20 +20,21 @@ import Footer from '../../components/Footer';
 interface Props {
   products: Product[];
   hasMoreSearchResults: boolean;
+  lastChecked: string;
 }
 
-const Category = ({ products, hasMoreSearchResults }: Props) => {
+const Category = ({ products, hasMoreSearchResults, lastChecked }: Props) => {
   const router = useRouter();
   const { category } = router.query;
   const theme = useContext(ThemeContext);
 
   return (
     <main className={theme}>
-      <NavBar lastUpdatedDate={utcDateToLongDate(new Date())} />
+      <NavBar lastUpdatedDate={lastChecked} />
       {/* Background Div */}
       <div className='content-body'>
         {/* Central Aligned Div */}
-        <div className='central-responsive-div'>
+        <div className='central-responsive-div min-h-[50rem]'>
           {/* Page Title */}
           <div className='grid-title'>{_.startCase(category?.toString())}</div>
 
@@ -57,15 +58,20 @@ export const categoryNames = [
   'fresh-vegetables',
   'ice-cream',
   'frozen-chips',
+  'frozen-vegetables',
   'chocolate',
   'cat-food',
-  'fish-seafood',
+  'seafood',
   'salmon',
+  'pies-sausage-rolls',
   'ham',
   'bacon',
+  'beef-lamb',
+  'chicken',
   'salami',
   'chips',
   'corn-chips',
+  'biscuits',
   'yoghurt',
 ];
 
@@ -105,10 +111,13 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   const hasMoreSearchResults = false;
 
+  const lastChecked = utcDateToLongDate(new Date());
+
   return {
     props: {
       products,
       hasMoreSearchResults,
+      lastChecked,
     },
   };
 };
