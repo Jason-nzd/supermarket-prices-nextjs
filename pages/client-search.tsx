@@ -9,23 +9,30 @@ import {
   OrderByMode,
   PriceHistoryLimit,
   Store,
+  sortProductsByUnitPrice,
   utcDateToLongDate,
 } from '../utilities/utilities';
 import { ThemeContext } from './_app';
 import { useRouter } from 'next/router';
 import _ from 'lodash';
 
-const ClientSearch = () => {
+interface Props {
+  lastChecked: string;
+}
+
+const ClientSearch = ({ lastChecked }: Props) => {
   const router = useRouter();
   const theme = useContext(ThemeContext);
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [searchTerm, setSearchTerm] = useState<string>();
 
+  if (router.query.query !== searchTerm) setSearchTerm(router.query.query as string);
+
   useEffect(() => {
     (async () => {
-      setIsLoading(true);
       if (searchTerm) {
+        setIsLoading(true);
         const dbProducts = await DBFetchByName(
           searchTerm,
           40,
@@ -36,7 +43,7 @@ const ClientSearch = () => {
           true
         );
 
-        setProducts(dbProducts);
+        setProducts(sortProductsByUnitPrice(dbProducts));
         setIsLoading(false);
       }
     })();
@@ -45,12 +52,12 @@ const ClientSearch = () => {
   }, [searchTerm]);
 
   return (
-    <main className={theme} onLoad={() => setSearchTerm(router.query.query as string)}>
-      <NavBar lastUpdatedDate={utcDateToLongDate(new Date())} />
+    <main className={theme}>
+      <NavBar lastUpdatedDate={lastChecked} />
       {/* Background Div */}
       <div className='content-body'>
         {/* Central Aligned Div */}
-        <div className='central-responsive-div min-h-[60rem]'>
+        <div className='central-responsive-div min-h-[50rem]'>
           {/* Page Title */}
           <div className='grid-title'>
             {!isLoading && (
@@ -89,5 +96,14 @@ const ClientSearch = () => {
     </main>
   );
 };
+
+export async function getStaticProps() {
+  const lastChecked = utcDateToLongDate(new Date());
+  return {
+    props: {
+      lastChecked,
+    },
+  };
+}
 
 export default ClientSearch;
