@@ -63,14 +63,17 @@ export function cleanProductFields(document: Product): Product {
     if (!category) category = ['No Category'];
     if (!lastChecked) lastChecked = lastUpdated;
     if (!unitPrice) {
-      unitPrice = null;
-      unitName = null;
-      // const derivedUnitString = deriveUnitPriceString(document);
+      // unitPrice = null;
+      // unitName = null;
+      const derivedUnitString = deriveUnitPriceString(document);
 
-      // if (derivedUnitString) {
-      //   unitPrice = Number.parseFloat(derivedUnitString.split('/')[0] as string);
-      //   unitName = derivedUnitString.split('/')[1];
-      // }
+      if (derivedUnitString) {
+        unitPrice = Number.parseFloat(derivedUnitString.split('/')[0] as string);
+        unitName = derivedUnitString.split('/')[1];
+      } else {
+        unitPrice = null;
+        unitName = null;
+      }
     } else if (unitPrice < 0.2) {
       console.log('[Unusual UnitPrice from DB] = ' + name + ' - ' + unitPrice + '/' + unitName);
       unitPrice = null;
@@ -103,22 +106,25 @@ export function deriveUnitPriceString(product: Product): string | undefined {
   // Try match any units found in size or name
   let matchedUnit = product.size
     ?.toLowerCase()
-    .match(/\g$|kg$|l$|ml$/g)
+    .match(/\d+(\.\d+)?\s?(g|kg|l|ml)\b/g)
     ?.join('');
   if (!matchedUnit) {
     matchedUnit = product.name
       ?.toLowerCase()
-      .match(/\g$|kg$|l$|ml$/g)
+      .match(/\d+(\.\d+)?\s?(g|kg|l|ml)\b/g)
       ?.join('');
     deriveUnitPriceFromName = true;
   }
 
   if (matchedUnit) {
-    // Use regex to get any digits from size or name, then parse to a float
+    // Get any digits or decimals from size or name, then parse to a float
     let regexSizeOnlyDigits = deriveUnitPriceFromName
       ? product.name?.match(/\d|\./g)?.join('')
       : product.size?.match(/\d|\./g)?.join('');
     if (regexSizeOnlyDigits) quantity = parseFloat(regexSizeOnlyDigits);
+
+    // Get unit name
+    product.unitName = matchedUnit.match(/(g|kg|l|ml)/g)?.join('');
 
     // Handle edge case where size contains a 'multiplier x sub-unit' - eg. 4 x 107mL
     let matchMultipliedSizeString = product.size?.match(/\d+\sx\s\d+mL$/g)?.join('');
@@ -129,10 +135,8 @@ export function deriveUnitPriceString(product: Product): string | undefined {
       quantity = multiplier * subUnitSize;
     }
 
-    product.unitName = matchedUnit;
-
     // If size is simply 'kg', process it as 1kg
-    if (product.size === 'kg') {
+    if (product.size === 'kg' || product.size?.includes('per kg')) {
       quantity = 1;
       product.unitName = 'kg';
     }
@@ -153,7 +157,7 @@ export function deriveUnitPriceString(product: Product): string | undefined {
     if (quantity && product.unitName === 'l') product.unitName = 'L';
 
     // Parse to int and check is within valid range
-    if (quantity && quantity > 0 && quantity < 999) {
+    if (quantity && quantity > 0 && quantity < 9999) {
       // Set per unit price
       product.unitPrice = parseFloat((product.currentPrice / quantity).toPrecision(2));
 
@@ -181,6 +185,8 @@ export function utcDateToLongDate(utcDate: Date): string {
   return new Date(utcDate).toDateString(); // Thu Mar 16 2023
 }
 
+// sortProductsByName()
+// --------------------
 export function sortProductsByName(products: Product[]): Product[] {
   return products.sort((a, b) => {
     if (a.name < b.name) return -1;
@@ -189,6 +195,8 @@ export function sortProductsByName(products: Product[]): Product[] {
   });
 }
 
+// sortProductsByDate()
+// --------------------
 export function sortProductsByDate(products: Product[]): Product[] {
   return products.sort((a, b) => {
     const dateA = new Date(a.priceHistory[a.priceHistory.length - 1].date);
@@ -199,6 +207,8 @@ export function sortProductsByDate(products: Product[]): Product[] {
   });
 }
 
+// sortProductsByUnitPrice()
+// -------------------------
 export function sortProductsByUnitPrice(products: Product[]): Product[] {
   return products.sort((a, b) => {
     if (a.unitPrice! < b.unitPrice!) return -1;
@@ -207,6 +217,8 @@ export function sortProductsByUnitPrice(products: Product[]): Product[] {
   });
 }
 
+// printPrice()
+// ------------
 // Adds $ symbol and 2 decimal points if applicable
 export function printPrice(price: number): string {
   // If a whole integer such as 8, return without any decimals - $8
@@ -218,7 +230,9 @@ export function printPrice(price: number): string {
   }
 }
 
-// Takes a DatedPrice[] object and returns if price is trending down
+// priceTrend()
+// ------------
+// Takes a DatedPrice[] object and returns if price is trending up/down
 export function priceTrend(priceHistory: DatedPrice[]): PriceTrend {
   if (priceHistory.length > 1) {
     const latestPrice = priceHistory[priceHistory.length - 1].price;
