@@ -9,12 +9,9 @@ interface Props {
   updateNavCategories: (arg: string[]) => void;
 }
 
-// let allCategories = ;
-// allCategories = allCategories.concat(categoryNames);
-
 function CategorySelectMenu({ updateNavCategories }: Props) {
   function setCategoriesCookie() {
-    document.cookie = `User_Categories=${JSON.stringify(userCategories)}`;
+    document.cookie = `User_Categories=${JSON.stringify(userCategories)};path='/'`;
   }
 
   // Set default favourite categories
