@@ -19,7 +19,7 @@ const NavBar = ({ lastUpdatedDate }: Props) => {
   const [enabled, setEnabled] = useState(false);
 
   return (
-    <nav className='w-full h-full overflow-hidden'>
+    <nav className='w-full h-fit overflow-hidden'>
       <div className='mx-auto w-[100%] 2xl:w-[90rem] 3xl:w-[110rem] transition-all duration-500 flex flex-nowrap items-center'>
         {/* Column 1 - Logo*/}
         <Link href='/' className='ml-2'>
@@ -40,9 +40,9 @@ const NavBar = ({ lastUpdatedDate }: Props) => {
         </div>
 
         {/* Column 2 - Title - Sub-title - Categories - Search */}
-        <div className='block w-full h-[3.6rem] lg:h-[5rem]'>
+        <div className='block w-full lg:w-[calc(100%-17rem)] h-[3.6rem] lg:h-[5rem]'>
           {/* Row 1 - Title - Sub-title */}
-          <div className='flex flex-wrap h-1/2 items-center lg:items-center ml-1 w-full'>
+          <div className='flex flex-wrap h-1/2 mx-auto w-full items-center lg:items-center ml-1'>
             {/* Mobile Icon */}
             <Image
               src={kiwifruit}
@@ -57,15 +57,15 @@ const NavBar = ({ lastUpdatedDate }: Props) => {
             </Link>
 
             {/* Sub Title */}
-            <h3 className='hidden lg:flex ml-6 pt-2 mr-auto text-sm select-none font-bold text-stone-100'>
+            <h3 className='hidden lg:flex ml-6 pt-2 mr-auto text-sm select-none font-bold text-zinc-100'>
               Tracking the cost of food across New Zealand
             </h3>
           </div>
 
           {/* Row 2 - Categories - Search Bar*/}
-          <div className='flex-nowrap h-1/2 hidden lg:flex items-center pb-2 whitespace-nowrap'>
+          <div className='h-1/2 hidden lg:flex items-center pb-2'>
             {/* Categories */}
-            <div className='flex items-center overflow-hidden'>
+            <div className='flex items-center overflow-hidden whitespace-nowrap w-fit'>
               {userCategories &&
                 userCategories.map((name) => {
                   const href = '/products/' + name;
@@ -75,25 +75,21 @@ const NavBar = ({ lastUpdatedDate }: Props) => {
                     </Link>
                   );
                 })}
-
-              <div className='pr-[6rem] pb-[1.5rem] mb-[10px] pl-1 ml-auto'>
-                <CategorySelectMenu updateNavCategories={setUserCategories} />
-              </div>
             </div>
-            <div className='ml-auto'>
-              {/* Search Bar */}
-              <div className='w-full ml-auto'>
-                <SearchBar />
-              </div>
+            <div className='pr-[6rem] pb-[1.5rem] mb-[10px] pl-1 w-fit ml-auto'>
+              <CategorySelectMenu updateNavCategories={setUserCategories} />
+            </div>
+            <div className='w-fit ml-auto'>
+              <SearchBar />
             </div>
           </div>
         </div>
 
         {/* Column 3 - Right Menu */}
-        <div className='hidden lg:block pl-3 ml-auto mr-2 items-center min-w-fit h-full'>
-          <h3 className='h-1/2 pb-2 pr-2 text-primary-colour text-sm select-none text-right'>
+        <div className='hidden lg:flex lg:flex-col items-center ml-auto w-fit h-full pr-2'>
+          <div className='h-1/2 pb-2 text-primary-colour text-sm select-none w-full pr-2'>
             Updated {lastUpdatedDate}
-          </h3>
+          </div>
 
           <div className='h-1/2 flex items-center ml-auto'>
             <div className='mt-1 hover:ring-2 rounded-xl ring-green-100 ml-auto'>
