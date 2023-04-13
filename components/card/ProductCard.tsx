@@ -31,8 +31,8 @@ function ProductCard({ product }: Props) {
       <div className='product-card' onClick={handleClick} key={product.id}>
         {/* Title Div */}
         <div
-          className='w-full h-12 pt-2 px-3 rounded-t-2xl text-[#3C8DA3] text-sm
-         text-center font-semibold leading-4 z-20 dark:bg-slate-800 dark:bg-opacity-70'
+          className='w-full h-12 pt-2 px-3 rounded-t-2xl text-[#3C8DA3] text-md lg:text-sm
+         text-center font-semibold leading-5 lg:leading-4 z-20 dark:bg-slate-800 dark:bg-opacity-70'
         >
           {product.name}
         </div>

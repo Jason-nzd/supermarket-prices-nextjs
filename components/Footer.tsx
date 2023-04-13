@@ -4,7 +4,7 @@ import React from 'react';
 function Footer() {
   return (
     <footer className='py-6 w-full h-full text-green-200 text-sm'>
-      <div className='flex mx-auto w-fit font-semibold px-4 text-center'>
+      <div className='flex mx-auto w-fit font-semibold px-4 text-center text-zinc-100'>
         Prices are updated with best effort, but aren't guaranteed to be accurate for each store.
       </div>
       <div className='flex mx-auto py-2 justify-center'></div>
