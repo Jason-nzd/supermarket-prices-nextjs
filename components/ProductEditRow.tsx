@@ -29,14 +29,14 @@ function ProductEditRow({ product }: Props) {
       {/* Thumbnail Image */}
       <th className='pl-2 place-content-around gap-x-2'>
         {/* <ImageWithFallback id={product.id} /> */}
-        <div className='text-xs text-center font-light'>
-          <StoreIcon sourceSite={product.sourceSite} />
-          <Image src='././public/images/pk-logo-64.png' width={60} height={60} alt='' />
+        <div className='text-xs text-center font-light ml-4'>
+          <StoreIcon sourceSite={product.sourceSite} width={30} />
+          {/* <Image src='../public/images/pk-logo-64.png' width={60} height={60} alt='' /> */}
         </div>
       </th>
 
       {/* Product ID */}
-      <td className='px-6 py-1'>
+      <td className='px-3 py-1'>
         <div className='text-sm'>
           <div className='text-gray-400'>#{product.id}</div>
         </div>
