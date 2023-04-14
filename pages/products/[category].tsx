@@ -59,6 +59,7 @@ export const categoryNames = [
   'ice-cream',
   'frozen-chips',
   'frozen-vegetables',
+  'frozen-seafood',
   'chocolate',
   'cat-food',
   'seafood',
@@ -68,11 +69,14 @@ export const categoryNames = [
   'bacon',
   'beef-lamb',
   'chicken',
+  'mince-patties',
   'salami',
   'chips',
   'corn-chips',
   'biscuits',
   'yoghurt',
+  'muesli-bars',
+  'bread',
 ];
 
 // Takes an array of category search terms, and returns them in { path } format
