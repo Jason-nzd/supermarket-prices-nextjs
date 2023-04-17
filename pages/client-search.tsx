@@ -35,11 +35,11 @@ const ClientSearch = ({ lastChecked }: Props) => {
         setIsLoading(true);
         const dbProducts = await DBFetchByName(
           searchTerm,
-          40,
+          60,
           Store.Any,
           PriceHistoryLimit.Any,
           OrderByMode.None,
-          LastChecked.Within7Days,
+          LastChecked.Within30Days,
           true
         );
 
