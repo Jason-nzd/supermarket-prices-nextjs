@@ -4,6 +4,7 @@ import { Product } from '../../typings';
 import ProductsGrid from '../../components/ProductsGrid';
 import { DBFetchByCategory } from '../../utilities/cosmosdb';
 import {
+  LastChecked,
   OrderByMode,
   PriceHistoryLimit,
   Store,
@@ -13,6 +14,7 @@ import {
 import { ThemeContext } from '../_app';
 import NavBar from '../../components/NavBar';
 import Footer from '../../components/Footer';
+import { orderBy } from 'lodash';
 
 interface Props {
   apples: Product[];
@@ -59,7 +61,7 @@ const Category = ({
           <ProductsGrid products={lemons} trimColumns={true} />
           <div className='grid-title'>Kiwifruit</div>
           <ProductsGrid products={kiwifruit} trimColumns={true} />
-          <div className='grid-title'>Peaches, Plus, & Nectarines</div>
+          <div className='grid-title'>Peaches, Plums, & Nectarines</div>
           <ProductsGrid products={peaches} trimColumns={true} />
           <div className='grid-title'>Berries</div>
           <ProductsGrid products={berries} trimColumns={true} />
@@ -75,7 +77,14 @@ const Category = ({
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  const products = await DBFetchByCategory('fresh-fruit', 200);
+  const products = await DBFetchByCategory(
+    'fresh-fruit',
+    300,
+    Store.Any,
+    PriceHistoryLimit.Any,
+    OrderByMode.None,
+    LastChecked.Within7Days
+  );
 
   let apples: Product[] = [];
   let bananas: Product[] = [];
@@ -92,9 +101,9 @@ export const getStaticProps: GetStaticProps = async () => {
     if (name.includes('apple') && !name.includes('pineapple')) apples.push(product);
     else if (name.includes('banana')) bananas.push(product);
     else if (name.match('orange|mandarin')) oranges.push(product);
-    else if (!name.includes('avocado') && name.match('lemon|lime')) lemons.push(product);
+    else if (name.match('lemon|lime') && !name.includes('avocado')) lemons.push(product);
     else if (name.includes('kiwifruit')) kiwifruit.push(product);
-    else if (name.match('peach|nectarine')) peaches.push(product);
+    else if (name.match('peach|nectarine|plum')) peaches.push(product);
     else if (name.match('berries|berry')) berries.push(product);
     else if (name.includes('grapes')) grapes.push(product);
     else other.push(product);
@@ -110,8 +119,6 @@ export const getStaticProps: GetStaticProps = async () => {
   berries = sortProductsByUnitPrice(berries).slice(0, 15);
   grapes = sortProductsByUnitPrice(grapes).slice(0, 15);
   other = other.slice(0, 30);
-
-  // console.log(apples.length, bananas.length, citrus.length, berries.length, other.length);
 
   const lastChecked = utcDateToLongDate(new Date());
 
