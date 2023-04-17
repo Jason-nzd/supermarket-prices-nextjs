@@ -74,8 +74,8 @@ export function cleanProductFields(document: Product): Product {
         unitPrice = null;
         unitName = null;
       }
-    } else if (unitPrice < 0.2) {
-      console.log('[Unusual UnitPrice from DB] = ' + name + ' - ' + unitPrice + '/' + unitName);
+    } else if (unitPrice < 0.2 || unitPrice > 200) {
+      console.log('[Unusual UnitPrice] = ' + name + ' - ' + unitPrice + '/' + unitName);
       unitPrice = null;
     }
     if (!originalUnitQuantity) originalUnitQuantity = null;
@@ -211,6 +211,11 @@ export function sortProductsByDate(products: Product[]): Product[] {
 // -------------------------
 export function sortProductsByUnitPrice(products: Product[]): Product[] {
   return products.sort((a, b) => {
+    // If no unit price is available, sort to bottom
+    if (a.unitPrice === null) a.unitPrice = 9999;
+    if (b.unitPrice === null) b.unitPrice = 9999;
+
+    // Else sort from lowest to highest unit price
     if (a.unitPrice! < b.unitPrice!) return -1;
     if (a.unitPrice! > b.unitPrice!) return 1;
     return 0;

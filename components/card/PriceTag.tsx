@@ -65,7 +65,7 @@ function PriceTag({ product }: Props) {
           <div className='pl-1 items-center'>{icon}</div>
         </div>
         {/* Unit Price */}
-        {product.unitPrice && (
+        {product.unitPrice && product.unitName && (
           <div className='flex text-md items-center'>
             <div className='text-xs'>$</div>
             <div className='font-semibold'>{product.unitPrice!.toFixed(1)}</div>

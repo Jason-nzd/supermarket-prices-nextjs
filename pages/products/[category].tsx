@@ -77,6 +77,10 @@ export const categoryNames = [
   'yoghurt',
   'muesli-bars',
   'bread',
+  'bread-rolls',
+  'soft-drinks',
+  'tea',
+  'coffee',
 ];
 
 // Takes an array of category search terms, and returns them in { path } format
