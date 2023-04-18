@@ -2,18 +2,18 @@ import _ from 'lodash';
 import Link from 'next/link';
 import React from 'react';
 import { Product } from '../typings';
-import { utcDateToShortDate } from '../utilities/utilities';
+import { utcDateToLongDate, utcDateToShortDate } from '../utilities/utilities';
 import ImageWithFallback from './ImageWithFallback';
 import PriceHistoryChart from './card/PriceHistoryChart';
 import PriceHistoryTips from './card/PriceHistoryTips';
 import PriceTag from './card/PriceTag';
+import StoreIcon from './StoreIcon';
 
 interface Props {
   product: Product;
 }
 
 function ProductModalFull({ product }: Props) {
-  const showCategories = true;
   const hasPriceHistory = product.priceHistory.length > 1;
 
   return (
@@ -21,22 +21,13 @@ function ProductModalFull({ product }: Props) {
       className='flex flex-col w-fit max-w-[90%] h-fit bg-white absolute top-5 mx-auto
      rounded-3xl shadow-2xl z-50'
     >
-      {/* Title Div */}
-      <div
-        className='w-full h-12 pt-2 px-3 rounded-t-2xl text-[#3C8DA3] text-md
-         text-center font-semibold leading-4 z-20 dark:bg-slate-800 dark:bg-opacity-70'
-      >
-        {product.name}
-      </div>
-
-      {/* Central Div containing image, chart, price info */}
       <div className='flex flex-row'>
-        {/* Image Div */}
-        <div className='relative w-1/2'>
-          <div className='pl-12 scale-110'>
+        {/* Image on left 2/3 */}
+        <div className='relative w-2/3'>
+          <div className='py-4 pl-4 pr-2 w-fit h-fit max-w-[600px]'>
             <ImageWithFallback
               id={product.id}
-              width={1000}
+              width={600}
               src={'product-images/' + product.id + '.webp'}
             />
             {/* Optional Size div overlaid on top of image */}
@@ -44,76 +35,95 @@ function ProductModalFull({ product }: Props) {
           </div>
         </div>
 
-        {/* Price history chart Div */}
-        <div className='flex flex-col w-1/2'>
-          <div className='pl-8'>
+        {/* Title, price chart and other information on right 1/3 */}
+        <div className='flex flex-col w-1/3 min-w-[20rem] h-full pr-8'>
+          {/* Title */}
+          <div
+            className='w-full h-12 pt-3 px-3 rounded-t-2xl text-[#3C8DA3] text-md
+              text-center font-semibold'
+          >
+            {product.name}
+          </div>
+
+          {/* Price Chart */}
+          <div className='w-[20rem] mt-6 pr-4'>
             <PriceHistoryChart
               priceHistory={product.priceHistory}
               lastChecked={product.lastChecked}
             />
           </div>
 
-          <div className='w-1/6 bg-red-500'>
-            <div className='flex flex-col'>
-              {/* Price Tag Div */}
-              <div className='m-1 mr-2 ml-auto pr-1'>
-                <PriceTag product={product} />
-              </div>
+          {/* Price Tag */}
+          <div className='mt-6 ml-4'>
+            <PriceTag product={product} />
+          </div>
 
-              {/* Price Tips Highest/Lowest Div */}
-              {product.priceHistory.length > 1 && (
-                <div className='mt-1 ml-auto pr-4'>
-                  <PriceHistoryTips priceHistory={product.priceHistory} />
-                </div>
-              )}
+          {/* Price Highest/Lowest */}
+          <div className='mt-6 ml-4 text-sm'>
+            {product.priceHistory.length > 1 && (
+              <PriceHistoryTips priceHistory={product.priceHistory} />
+            )}
+          </div>
+
+          {/* Categories */}
+          {product.category != null && product.category!.length > 0 && (
+            <div className='flex pr-3 items-center text-slate-400 text-sm mt-6 ml-4'>
+              Categories:
+              {product.category!.map((category, index) => {
+                return (
+                  <div className='px-1 hover:text-black' key={index}>
+                    <Link href={'products/' + category}>{_.startCase(_.toLower(category))}</Link>
+                  </div>
+                );
+              })}
             </div>
+          )}
+
+          {/* Last Updated */}
+          <div className='text-slate-400 text-sm mt-6 ml-4'>
+            Price Last Updated: {utcDateToLongDate(product.lastChecked)}
+          </div>
+
+          {/* Price Last Changed */}
+          {hasPriceHistory && (
+            <div className='text-slate-400 text-sm mt-2 ml-4'>
+              Price Last Changed: {utcDateToLongDate(product.lastUpdated)}
+            </div>
+          )}
+
+          {/* First Added */}
+          <div className='text-slate-400 text-sm mt-2 ml-4 mb-4'>
+            First Added to KiwiPrice: {utcDateToLongDate(product.priceHistory[0].date)}
           </div>
         </div>
       </div>
-
-      <div className='flex px-2 items-center'>
-        {showCategories && product.category != null && product.category!.length > 0 && (
-          <div className='flex pr-3 items-center'>
-            {product.category!.map((category, index) => {
-              return (
-                <div className='text-xs text-slate-400 px-1 hover:text-black' key={index}>
-                  <Link href={'products/' + category}>{_.startCase(_.toLower(category))}</Link>
-                </div>
-              );
-            })}
-          </div>
-        )}
-
-        <div className='text-xs text-slate-400 p-2 ml-auto'>
-          Last Updated {utcDateToShortDate(product.lastChecked, true)}
-        </div>
-      </div>
-      {/* {showLastUpdated && hasPriceHistory && (
-        <div className='text-xs text-slate-300 p-1.5 text-center leading-3'>
-          Price Last Changed {utcDateToShortDate(product.lastUpdated)}
-        </div>
-      )}
-
-      {showLastUpdated && !hasPriceHistory && (
-        <div className='text-xs text-slate-300 p-1.5 text-center leading-3'>
-          First Added {utcDateToShortDate(product.lastUpdated)}
-        </div>
-      )} */}
 
       {/* Source Site Div */}
-      <div className='text-sm text-center'>
+      <div className='text-sm text-center mt-1'>
         {product.sourceSite.includes('countdown.co.nz') && (
-          <div className='p-1 rounded-b-2xl text-white bg-[#007837]'>Countdown</div>
+          <div className='flex items-center justify-center gap-x-2 p-2 rounded-b-3xl text-white bg-[#007837]'>
+            <StoreIcon sourceSite={product.sourceSite} width={20} />
+            Countdown
+          </div>
         )}
         {product.sourceSite === 'thewarehouse.co.nz' && (
-          <div className='p-1 rounded-b-2xl text-white bg-[#c00]'>The Warehouse</div>
+          <div className='flex items-center justify-center gap-x-2 p-2 rounded-b-3xl text-white bg-[#c00]'>
+            <StoreIcon sourceSite={product.sourceSite} width={20} />
+            The Warehouse
+          </div>
         )}
         {product.sourceSite === 'paknsave.co.nz' && (
-          <div className='p-1 rounded-b-2xl text-black bg-[#ffd600]'>PAK'nSAVE</div>
+          <div className='flex items-center justify-center gap-x-2 p-2 rounded-b-3xl text-black bg-[#ffd600]'>
+            <StoreIcon sourceSite={product.sourceSite} width={20} />
+            PAK'nSAVE
+          </div>
         )}
+        {/* Display unknown and future source sites using this temporary purple div */}
         {!product.sourceSite.includes('countdown.co.nz') &&
           product.sourceSite !== 'thewarehouse.co.nz' &&
-          product.sourceSite !== 'paknsave.co.nz' && <div>{product.sourceSite}</div>}
+          product.sourceSite !== 'paknsave.co.nz' && (
+            <div className='rounded-b-3xl text-white bg-[#7a1ba0]'>{product.sourceSite}</div>
+          )}
       </div>
     </div>
   );
