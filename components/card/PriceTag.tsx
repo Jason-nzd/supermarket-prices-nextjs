@@ -8,7 +8,8 @@ interface Props {
 }
 
 function PriceTag({ product }: Props) {
-  let priceTagDivClass = 'items-center bg-white rounded-3xl border-2 shadow-lg px-3 py-1  ';
+  let priceTagDivClass =
+    'bg-white rounded-3xl border-2 shadow-lg px-4 py-1 w-fit flex items-center ';
   let icon;
 
   if (product.unitPrice) {
@@ -45,33 +46,37 @@ function PriceTag({ product }: Props) {
   }
 
   return (
-    <div className='z-50 w-min'>
+    <div className='z-50'>
       <div className={priceTagDivClass}>
-        <div className='flex'>
-          {/* Dollar Symbol */}
-          <div className='pt-[0.2rem] text-sm lg:text-md'>$</div>
+        {/* Icon */}
+        <div className='pr-2 scale-[140%]'>{icon}</div>
 
-          {/* Dollars */}
-          <div className='font-bold text-md lg:text-xl tracking-tighter'>
-            {printDollars(product.currentPrice)}
+        <div className='flex flex-col'>
+          {/* Price */}
+          <div className='flex'>
+            {/* Dollar Symbol */}
+            <div className='pt-[0.2rem] text-sm lg:text-md'>$</div>
+
+            {/* Dollars */}
+            <div className='font-bold text-md lg:text-xl tracking-tighter'>
+              {printDollars(product.currentPrice)}
+            </div>
+
+            {/* Cents */}
+            <div className='pt-[0.2rem] pl-[0.1rem] font-semibold text-xs lg:text-sm tracking-normal'>
+              {printCents(product.currentPrice)}
+            </div>
           </div>
 
-          {/* Cents */}
-          <div className='pt-[0.2rem] pl-[0.1rem] font-semibold text-xs lg:text-sm tracking-normal'>
-            {printCents(product.currentPrice)}
-          </div>
-
-          {/* Icon */}
-          <div className='pl-1 items-center'>{icon}</div>
+          {/* Unit Price */}
+          {product.unitPrice && product.unitName && (
+            <div className='flex text-md items-center'>
+              <div className='text-xs'>$</div>
+              <div className='font-semibold'>{product.unitPrice!.toFixed(1)}</div>
+              <div>{'/' + product.unitName || 'Unit'}</div>
+            </div>
+          )}
         </div>
-        {/* Unit Price */}
-        {product.unitPrice && product.unitName && (
-          <div className='flex text-md items-center'>
-            <div className='text-xs'>$</div>
-            <div className='font-semibold'>{product.unitPrice!.toFixed(1)}</div>
-            <div>{'/' + product.unitName || 'Unit'}</div>
-          </div>
-        )}
       </div>
     </div>
   );
