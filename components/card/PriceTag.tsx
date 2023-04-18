@@ -9,7 +9,7 @@ interface Props {
 
 function PriceTag({ product }: Props) {
   let priceTagDivClass =
-    'bg-white rounded-3xl border-2 shadow-lg px-4 py-1 w-fit flex items-center ';
+    'bg-white rounded-3xl border-2 shadow-md px-3 py-0.5 w-fit flex items-center ';
   let icon;
 
   if (product.unitPrice) {
@@ -58,12 +58,12 @@ function PriceTag({ product }: Props) {
             <div className='pt-[0.2rem] text-sm lg:text-md'>$</div>
 
             {/* Dollars */}
-            <div className='font-bold text-md lg:text-xl tracking-tighter'>
+            <div className='font-bold text-xl lg:text-md lg:text-xl tracking-tighter'>
               {printDollars(product.currentPrice)}
             </div>
 
             {/* Cents */}
-            <div className='pt-[0.2rem] pl-[0.1rem] font-semibold text-xs lg:text-sm tracking-normal'>
+            <div className='pt-[0.2rem] pl-[0.1rem] font-semibold text-sm tracking-normal'>
               {printCents(product.currentPrice)}
             </div>
           </div>
@@ -72,7 +72,9 @@ function PriceTag({ product }: Props) {
           {product.unitPrice && product.unitName && (
             <div className='flex text-md items-center'>
               <div className='text-xs'>$</div>
-              <div className='font-semibold'>{product.unitPrice!.toFixed(1)}</div>
+              <div className='font-semibold text-lg lg:text-md'>
+                {product.unitPrice!.toFixed(1)}
+              </div>
               <div>{'/' + product.unitName || 'Unit'}</div>
             </div>
           )}
