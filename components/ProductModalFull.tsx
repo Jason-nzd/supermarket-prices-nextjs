@@ -2,7 +2,7 @@ import _ from 'lodash';
 import Link from 'next/link';
 import React from 'react';
 import { Product } from '../typings';
-import { utcDateToLongDate, utcDateToShortDate } from '../utilities/utilities';
+import { utcDateToLongDate } from '../utilities/utilities';
 import ImageWithFallback from './ImageWithFallback';
 import PriceHistoryChart from './card/PriceHistoryChart';
 import PriceHistoryTips from './card/PriceHistoryTips';
@@ -18,12 +18,12 @@ function ProductModalFull({ product }: Props) {
 
   return (
     <div
-      className='flex flex-col w-fit max-w-[90%] h-fit bg-white absolute top-5 mx-auto
-     rounded-3xl shadow-2xl z-50'
+      className='flex md:flex-col max-w-[90%] lg:max-w-[100%] w-fit h-fit bg-white 
+      absolute top-5 mx-auto rounded-3xl shadow-2xl z-50'
     >
-      <div className='flex flex-row'>
+      <div className='flex flex-col md:flex-row'>
         {/* Image on left 2/3 */}
-        <div className='relative w-2/3'>
+        <div className='relative w-full md:w-2/3'>
           <div className='py-4 pl-4 pr-2 w-fit h-fit max-w-[600px]'>
             <ImageWithFallback
               id={product.id}
@@ -36,7 +36,7 @@ function ProductModalFull({ product }: Props) {
         </div>
 
         {/* Title, price chart and other information on right 1/3 */}
-        <div className='flex flex-col w-1/3 min-w-[20rem] h-full pr-8'>
+        <div className='flex flex-col w-full md:w-1/3 md:min-w-[20rem] h-full pr-8'>
           {/* Title */}
           <div
             className='w-full h-12 pt-3 px-3 rounded-t-2xl text-[#3C8DA3] text-md
