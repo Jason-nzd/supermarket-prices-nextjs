@@ -76,9 +76,11 @@ const NavBar = ({ lastUpdatedDate }: Props) => {
                   );
                 })}
             </div>
-            <div className='pr-[6rem] pb-[1.5rem] mb-[10px] pl-1 w-fit ml-auto'>
-              <CategorySelectMenu updateNavCategories={setUserCategories} />
-            </div>
+
+            {/* More Categories Button */}
+            <CategorySelectMenu updateNavCategories={setUserCategories} />
+
+            {/* Search Bar */}
             <div className='w-fit ml-auto'>
               <SearchBar />
             </div>
