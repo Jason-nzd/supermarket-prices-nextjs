@@ -54,33 +54,51 @@ const Category = ({ products, hasMoreSearchResults, lastChecked }: Props) => {
 };
 
 export const categoryNames = [
-  'rice',
+  //fresh
   'fresh-vegetables',
-  'ice-cream',
-  'frozen-chips',
-  'frozen-vegetables',
-  'frozen-seafood',
-  'chocolate',
-  'cat-food',
+  'bread',
+  'bread-rolls',
+
+  //chilled
+  //'milk',
+  'yoghurt',
+  'cheese',
+
+  //meat
   'seafood',
   'salmon',
-  'pies-sausage-rolls',
   'ham',
   'bacon',
   'beef-lamb',
   'chicken',
   'mince-patties',
   'salami',
+
+  //frozen
+  'ice-cream',
+  'frozen-chips',
+  'frozen-vegetables',
+  'frozen-seafood',
+  'pies-sausage-rolls',
+
+  //pantry
+  'rice',
+  'chocolate',
+  'cat-food',
   'chips',
   'corn-chips',
   'biscuits',
-  'yoghurt',
   'muesli-bars',
-  'bread',
-  'bread-rolls',
-  'soft-drinks',
-  'tea',
+
+  //drinks
+  'black-tea',
+  'green-tea',
+  'herbal-tea',
+  'drinking-chocolate',
   'coffee',
+  'soft-drinks',
+
+  //other
 ];
 
 // Takes an array of category search terms, and returns them in { path } format
