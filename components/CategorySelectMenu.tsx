@@ -1,15 +1,15 @@
-import { Popover, Transition } from '@headlessui/react';
+import { Dialog } from '@headlessui/react';
 import _ from 'lodash';
-import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
-import { categoryNames } from '../pages/products/[category]';
-import StarFavourite from './StarFavourite';
+import SubCategoryList from './SubCategoryList';
 
 interface Props {
   updateNavCategories: (arg: string[]) => void;
 }
 
 function CategorySelectMenu({ updateNavCategories }: Props) {
+  let [isOpen, setIsOpen] = useState(false);
+
   function setCategoriesCookie() {
     document.cookie = `User_Categories=${JSON.stringify(userCategories)};path='/'`;
   }
@@ -32,7 +32,7 @@ function CategorySelectMenu({ updateNavCategories }: Props) {
     if (readCookie) setUserCategories(JSON.parse(readCookie));
   }, []);
 
-  // Send categories to parent navbar
+  // Send fav categories to parent navbar
   updateNavCategories(userCategories);
 
   // Functions favCategory and unFavCategory will be called by child components
@@ -41,7 +41,6 @@ function CategorySelectMenu({ updateNavCategories }: Props) {
     updateNavCategories(userCategories);
     setCategoriesCookie();
   };
-
   const unFavCategory = (category: string) => {
     setUserCategories(
       userCategories.filter((c) => {
@@ -53,48 +52,104 @@ function CategorySelectMenu({ updateNavCategories }: Props) {
   };
 
   return (
-    <Popover className='absolute z-50'>
-      <Popover.Button
+    <>
+      <button
         className='bg-green-300 rounded-3xl px-4 mx-4 py-1 
       hover:bg-green-100 hover:shadow-md transition-colors text-green-800'
+        onClick={() => {
+          setIsOpen(true);
+        }}
       >
         More
-      </Popover.Button>
-      <Transition
-        enter='transition duration-100 ease-out'
-        enterFrom='transform scale-50 opacity-0'
-        enterTo='transform scale-100 opacity-100'
-        leave='transition duration-75 ease-out'
-        leaveFrom='transform scale-100 opacity-100'
-        leaveTo='transform scale-50 opacity-0'
-      >
-        <Popover.Panel
-          className='mt-1 -ml-8 bg-zinc-100 py-2 px-4 
-        grid grid-cols-1 w-fit rounded-2xl shadow-2xl'
-        >
-          {['milk', 'eggs', 'fruit'].concat(categoryNames).map((categoryName) => {
-            const href = '/products/' + categoryName;
-            return (
-              <div className='flex gap-x-2 items-center' key={categoryName}>
-                <StarFavourite
-                  category={categoryName}
-                  favCategory={favCategory}
-                  unFavCategory={unFavCategory}
-                  isFavourite={userCategories.includes(categoryName)}
-                />
-                <Link
-                  className=' text-slate-800 m-0 py-1 px-2 rounded-2xl 
-                  hover:shadow-md hover:bg-green-100'
-                  href={href}
-                >
-                  {_.startCase(categoryName)}
-                </Link>
-              </div>
-            );
-          })}
-        </Popover.Panel>
-      </Transition>
-    </Popover>
+      </button>
+
+      <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
+        <div className='fixed inset-0 z-50 mx-auto w-fit h-fit max-w-[95%] top-[5%] overflow-hidden'>
+          <Dialog.Panel
+            className='bg-white grid grid-flow-col grid-rows-3 md:grid-rows-2 lg:grid-rows-1 rounded-3xl
+           shadow-2xl p-2 xl:p-4 px-4 xl:px-8 gap-x-5 xl:gap-x-12 gap-y-2 md:gap-y-4 transition-all'
+          >
+            <SubCategoryList
+              subCategoryTitle='Fresh Foods'
+              subCategoryNames={['eggs', 'fruit', 'fresh-vegetables', 'bread', 'bread-rolls']}
+              favCategory={favCategory}
+              unFavCategory={unFavCategory}
+              userCategories={userCategories}
+              centerTitle={true}
+            />
+            <SubCategoryList
+              subCategoryTitle='Chilled'
+              subCategoryNames={['milk', 'yogurt', 'cheese', 'salami']}
+              favCategory={favCategory}
+              unFavCategory={unFavCategory}
+              userCategories={userCategories}
+              centerTitle={true}
+            />
+            <SubCategoryList
+              subCategoryTitle='Meat'
+              subCategoryNames={[
+                'seafood',
+                'salmon',
+                'ham',
+                'bacon',
+                'beef-lamb',
+                'chicken',
+                'mince-patties',
+              ]}
+              favCategory={favCategory}
+              unFavCategory={unFavCategory}
+              userCategories={userCategories}
+              centerTitle={true}
+            />
+            <SubCategoryList
+              subCategoryTitle='Frozen'
+              subCategoryNames={[
+                'ice-cream',
+                'frozen-chips',
+                'frozen-vegetables',
+                'frozen-seafood',
+                'pies-sausage-rolls',
+              ]}
+              favCategory={favCategory}
+              unFavCategory={unFavCategory}
+              userCategories={userCategories}
+              centerTitle={true}
+            />
+            <SubCategoryList
+              subCategoryTitle='Pantry'
+              subCategoryNames={[
+                'rice',
+                'chocolate',
+                'cat-food',
+                'chips',
+                'corn-chips',
+                'biscuits',
+                'muesli-bars',
+              ]}
+              favCategory={favCategory}
+              unFavCategory={unFavCategory}
+              userCategories={userCategories}
+              centerTitle={true}
+            />
+            <SubCategoryList
+              subCategoryTitle='Drinks'
+              subCategoryNames={[
+                'black-tea',
+                'green-tea',
+                'herbal-tea',
+                'drinking-chocolate',
+                'coffee',
+                'soft-drinks',
+              ]}
+              favCategory={favCategory}
+              unFavCategory={unFavCategory}
+              userCategories={userCategories}
+              centerTitle={true}
+            />
+          </Dialog.Panel>
+        </div>
+      </Dialog>
+    </>
   );
 }
 
