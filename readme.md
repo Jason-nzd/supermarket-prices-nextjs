@@ -56,8 +56,6 @@ Example database document with dates in UTC format:
 
 ## Static Website Demo
 
-The website is hosted as a fully static website on AWS S3. AWS Cloudfront is used as the CDN.
-
 <https://kiwiprice.xyz>
 
 ![alt text](https://github.com/Jason-nzd/supermarket-prices-nextjs/blob/main/public/images/screenshot.png?raw=true "Screenshot of KiwiPrice.xyz")
