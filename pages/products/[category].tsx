@@ -63,6 +63,9 @@ export const categoryNames = [
   //'milk',
   'yoghurt',
   'cheese',
+  'cheese-slices',
+  'salami',
+
 
   //meat
   'seafood',
@@ -72,7 +75,7 @@ export const categoryNames = [
   'beef-lamb',
   'chicken',
   'mince-patties',
-  'salami',
+  'sausages',
 
   //frozen
   'ice-cream',
@@ -80,11 +83,11 @@ export const categoryNames = [
   'frozen-vegetables',
   'frozen-seafood',
   'pies-sausage-rolls',
+  'pizza',
 
   //pantry
   'rice',
   'chocolate',
-  'cat-food',
   'chips',
   'corn-chips',
   'biscuits',
@@ -97,8 +100,13 @@ export const categoryNames = [
   'drinking-chocolate',
   'coffee',
   'soft-drinks',
+  'energy-drinks',
 
-  //other
+  //pets
+  'cat-food',
+  'cat-treats',
+  'dog-food',
+  'dog-treats',
 ];
 
 // Takes an array of category search terms, and returns them in { path } format

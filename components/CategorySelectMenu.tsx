@@ -79,7 +79,7 @@ function CategorySelectMenu({ updateNavCategories }: Props) {
             />
             <SubCategoryList
               subCategoryTitle='Chilled'
-              subCategoryNames={['milk', 'yogurt', 'cheese', 'salami']}
+              subCategoryNames={['milk', 'yoghurt', 'cheese', 'cheese-slices', 'salami']}
               favCategory={favCategory}
               unFavCategory={unFavCategory}
               userCategories={userCategories}
@@ -95,6 +95,7 @@ function CategorySelectMenu({ updateNavCategories }: Props) {
                 'beef-lamb',
                 'chicken',
                 'mince-patties',
+                'sausages',
               ]}
               favCategory={favCategory}
               unFavCategory={unFavCategory}
@@ -109,6 +110,7 @@ function CategorySelectMenu({ updateNavCategories }: Props) {
                 'frozen-vegetables',
                 'frozen-seafood',
                 'pies-sausage-rolls',
+                'pizza',
               ]}
               favCategory={favCategory}
               unFavCategory={unFavCategory}
@@ -140,7 +142,16 @@ function CategorySelectMenu({ updateNavCategories }: Props) {
                 'drinking-chocolate',
                 'coffee',
                 'soft-drinks',
+                'energy-drinks',
               ]}
+              favCategory={favCategory}
+              unFavCategory={unFavCategory}
+              userCategories={userCategories}
+              centerTitle={true}
+            />
+            <SubCategoryList
+              subCategoryTitle='Pets'
+              subCategoryNames={['cat-food', 'cat-treats', 'dog-food', 'dog-treats']}
               favCategory={favCategory}
               unFavCategory={unFavCategory}
               userCategories={userCategories}
