@@ -6,23 +6,30 @@ import { createContext, useState } from 'react';
 
 const manropeFont = Manrope({ subsets: ['latin'] });
 
-type ThemeContextType = 'light' | 'dark';
+type DarkModeContextType = {
+  darkMode: boolean;
+  toggleDarkMode: () => void;
+};
 
-export const ThemeContext = createContext<ThemeContextType>('light');
+export const DarkModeContext = createContext<DarkModeContextType>({
+  darkMode: false,
+  toggleDarkMode: () => {},
+});
 
 export default function App({ Component, pageProps }: AppProps) {
-  const [theme, setTheme] = useState<ThemeContextType>('light');
+  const [darkMode, setDarkMode] = useState(false);
+  const toggleDarkMode = () => setDarkMode(!darkMode);
 
   return (
     <>
       <Head>
         <title>KiwiPrice.xyz</title>
       </Head>
-      <ThemeContext.Provider value={theme}>
+      <DarkModeContext.Provider value={{ darkMode, toggleDarkMode }}>
         <main className={manropeFont.className}>
           <Component {...pageProps} />
         </main>
-      </ThemeContext.Provider>
+      </DarkModeContext.Provider>
     </>
   );
 }
