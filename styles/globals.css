@@ -39,7 +39,7 @@
   }
   .size-tag {
     @apply z-20 absolute top-[7rem] left-[1rem] p-2 px-3 text-center text-lg lg:text-base
-    bg-black bg-opacity-[30%] dark:bg-opacity-[60%] backdrop-blur-sm text-white dark:text-zinc-300 font-semibold 
-    ring-1 ring-white rounded-2xl shadow-md;
+    bg-black bg-opacity-[30%] dark:bg-opacity-[60%] backdrop-blur-sm text-white dark:text-zinc-300
+    font-semibold ring-1 ring-white rounded-2xl shadow-md;
   }
 }
