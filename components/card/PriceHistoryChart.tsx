@@ -1,8 +1,9 @@
 import React from 'react';
 import { DatedPrice } from '../../typings';
 import { priceTrend, PriceTrend, printPrice, utcDateToShortDate } from '../../utilities/utilities';
-import { CategoryScale, Chart, LinearScale, PointElement, LineElement } from 'chart.js';
+import { CategoryScale, Chart, LinearScale, PointElement, LineElement, Tooltip } from 'chart.js';
 import { Line } from 'react-chartjs-2';
+import type { ChartData, ChartOptions } from 'chart.js';
 
 interface Props {
   priceHistory: DatedPrice[];
@@ -11,7 +12,7 @@ interface Props {
 
 function PriceHistoryChart({ priceHistory, lastChecked }: Props) {
   // Initialize chart.js line chart
-  Chart.register(CategoryScale, LinearScale, PointElement, LineElement);
+  Chart.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip);
 
   // Separate arrays for x and y chart axis
   let dateStringsOnly: string[] = [];
@@ -48,11 +49,10 @@ function PriceHistoryChart({ priceHistory, lastChecked }: Props) {
   }
 
   // Prepare chart data for chart.js line chart
-  const chartData = {
+  const chartData: ChartData<'line'> = {
     labels: dateStringsOnly,
     datasets: [
       {
-        label: 'Price History',
         data: priceDataOnly,
         borderColor: trendColour,
         pointBorderColor: trendColour,
@@ -64,54 +64,49 @@ function PriceHistoryChart({ priceHistory, lastChecked }: Props) {
         //backgroundColor: 'transparent',
         borderWidth: 3,
         tension: 0,
+        stepped: false,
       },
     ],
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      y: {
-        grid: {
-          color: 'black',
-          borderDash: [5, 2],
-          borderColor: 'black',
-          tickColor: 'red',
-          tickWidth: 2,
-        },
+  };
 
-        ticks: {
-          color: 'red',
-          font: {
-            weight: 'bold',
+  const options: ChartOptions<'line'> = {
+    responsive: true,
+    maintainAspectRatio: true,
+    resizeDelay: 200,
+    plugins: {
+      tooltip: {
+        callbacks: {
+          title: () => {
+            return '';
+          },
+          label: function (context: any) {
+            return ' ' + printPrice(context.parsed.y);
           },
         },
-
-        title: {
-          display: true,
-          text: 'Speed (in mph)',
-          font: {
-            weight: 'bold',
-            size: 22,
+        backgroundColor: 'white',
+        titleColor: 'black',
+        titleFont: { weight: 'normal' },
+        bodyColor: 'black',
+        footerColor: 'black',
+        borderColor: trendColour,
+        borderWidth: 1,
+        padding: 10,
+        cornerRadius: 14,
+      },
+    },
+    scales: {
+      y: {
+        // min: 0,
+        ticks: {
+          callback(tickValue, index, ticks) {
+            return printPrice(tickValue as number);
           },
         },
       },
-
-      // scales: {
-      //   yAxes: [
-      //     {
-      //       ticks: {
-      //         beginAtZero: true,
-      //         stepSize: 5,
-      //         callback: (value: number, index: number, values: number[]) => {
-      //           return value + 'k';
-      //         },
-      //       },
-      //     },
-      //   ],
-      // },
     },
   };
 
-  return <Line data={chartData} className='z-50' />;
+  return <Line data={chartData} options={options} className='z-40' />;
 }
 
 export default PriceHistoryChart;
