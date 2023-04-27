@@ -1,9 +1,6 @@
-import Image from 'next/image';
 import React, { useState } from 'react';
 import { Product } from '../typings';
-import { utcDateToShortDate } from '../utilities/utilities';
 import DatedPrice from './card/DatedPrice';
-import ImageWithFallback from './ImageWithFallback';
 import StoreIcon from './StoreIcon';
 
 interface Props {
@@ -22,16 +19,12 @@ function ProductEditRow({ product }: Props) {
     productHidden ? setProductHidden(false) : setProductHidden(true);
   }
 
-  const imageSrc = `${process.env.IMAGE_PATH}${product.id}.webp`;
-
   return (
-    <tr className='hover:bg-gray-50'>
-      {/* Thumbnail Image */}
+    <tr className='hover:bg-gray-50 dark:hover:bg-gray-800'>
+      {/* Store Icon */}
       <th className='pl-2 place-content-around gap-x-2'>
-        {/* <ImageWithFallback id={product.id} /> */}
         <div className='text-xs text-center font-light ml-4'>
           <StoreIcon sourceSite={product.sourceSite} width={30} />
-          {/* <Image src='../public/images/pk-logo-64.png' width={60} height={60} alt='' /> */}
         </div>
       </th>
 
@@ -47,7 +40,10 @@ function ProductEditRow({ product }: Props) {
         <div>
           {/* Render Product Name as either an editable text input or plain div */}
           {editMode && (
-            <div className='font-medium text-gray-700 py-0.5 px-2 mb-0.5 border-2 border-blue-300 rounded-lg'>
+            <div
+              className='font-medium text-gray-700 py-0.5 px-2 mb-0.5 border-2 border-blue-300
+             rounded-lg dark:text-zinc-300'
+            >
               <input
                 type='text'
                 title='Product Name'
@@ -58,11 +54,16 @@ function ProductEditRow({ product }: Props) {
               />
             </div>
           )}
-          {!editMode && <div className='font-medium text-gray-700'>{product.name}</div>}
+          {!editMode && (
+            <div className='font-medium text-gray-700 dark:text-zinc-300'>{product.name}</div>
+          )}
 
           {/* Product Size is also editable*/}
           {editMode && (
-            <div className='text-gray-400 py-0.5 px-2 border-2 border-blue-300 rounded-lg'>
+            <div
+              className='text-gray-400 py-0.5 px-2 border-2 border-blue-300 rounded-lg
+              dark:text-zinc-300'
+            >
               <input
                 type='text'
                 title='Product Size'
@@ -73,7 +74,7 @@ function ProductEditRow({ product }: Props) {
               />
             </div>
           )}
-          {!editMode && <div className='text-gray-400'>{product.size}</div>}
+          {!editMode && <div className='text-gray-400 dark:text-zinc-400'>{product.size}</div>}
         </div>
       </td>
 

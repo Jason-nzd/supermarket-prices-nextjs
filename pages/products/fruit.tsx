@@ -11,7 +11,7 @@ import {
   sortProductsByUnitPrice,
   utcDateToLongDate,
 } from '../../utilities/utilities';
-import { ThemeContext } from '../_app';
+import { DarkModeContext } from '../_app';
 import NavBar from '../../components/NavBar';
 import Footer from '../../components/Footer';
 import { orderBy } from 'lodash';
@@ -41,7 +41,7 @@ const Category = ({
   other,
   lastChecked,
 }: Props) => {
-  const theme = useContext(ThemeContext);
+  const theme = useContext(DarkModeContext).darkMode ? 'dark' : 'light';
 
   return (
     <main className={theme}>

@@ -4,8 +4,8 @@ import { Product } from '../../typings';
 import _ from 'lodash';
 import ProductsGrid from '../../components/ProductsGrid';
 import { DBFetchByCategory } from '../../utilities/cosmosdb';
-import { printPrice, utcDateToLongDate } from '../../utilities/utilities';
-import { ThemeContext } from '../_app';
+import { utcDateToLongDate } from '../../utilities/utilities';
+import { DarkModeContext } from '../_app';
 import NavBar from '../../components/NavBar';
 import Footer from '../../components/Footer';
 
@@ -17,7 +17,7 @@ interface Props {
 }
 
 const Category = ({ mixedGrade, size7, size8plus, lastChecked }: Props) => {
-  const theme = useContext(ThemeContext);
+  const theme = useContext(DarkModeContext).darkMode ? 'dark' : 'light';
 
   return (
     <main className={theme}>

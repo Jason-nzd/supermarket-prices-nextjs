@@ -4,7 +4,7 @@ import { Product } from '../../typings';
 import _ from 'lodash';
 import ProductsGrid from '../../components/ProductsGrid';
 import { DBFetchByCategory } from '../../utilities/cosmosdb';
-import { ThemeContext } from '../_app';
+import { DarkModeContext } from '../_app';
 import NavBar from '../../components/NavBar';
 import Footer from '../../components/Footer';
 import {
@@ -32,7 +32,7 @@ const Category = ({
   otherMilk,
   lastChecked,
 }: Props) => {
-  const theme = useContext(ThemeContext);
+  const theme = useContext(DarkModeContext).darkMode ? 'dark' : 'light';
 
   return (
     <main className={theme}>

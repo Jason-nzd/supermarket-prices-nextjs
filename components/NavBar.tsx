@@ -2,7 +2,7 @@ import _ from 'lodash';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useContext, useState } from 'react';
-import { ThemeContext } from '../pages/_app';
+import { DarkModeContext } from '../pages/_app';
 import kiwifruit from '../public/android-chrome-192x192.png';
 import CategorySelectMenu from './CategorySelectMenu';
 import SearchBar from './SearchBar';
@@ -15,7 +15,6 @@ interface Props {
 
 const NavBar = ({ lastUpdatedDate }: Props) => {
   const [userCategories, setUserCategories] = useState<string[]>();
-  const theme = useContext(ThemeContext);
   const [enabled, setEnabled] = useState(false);
 
   return (
@@ -89,23 +88,25 @@ const NavBar = ({ lastUpdatedDate }: Props) => {
 
         {/* Column 3 - Right Menu */}
         <div className='hidden lg:flex lg:flex-col items-center ml-auto w-fit h-full pr-2'>
+          {/* Last Updated Date */}
           <div className='h-1/2 pb-2 text-primary-colour text-sm select-none w-full pr-2'>
             Updated {lastUpdatedDate}
           </div>
 
+          {/* Dark Mode Toggle */}
           <div className='h-1/2 flex items-center ml-auto'>
             <div className='mt-1 hover:ring-2 rounded-xl ring-green-100 ml-auto'>
               <Switch
-                checked={enabled}
-                onChange={setEnabled}
+                checked={useContext(DarkModeContext).darkMode}
+                onChange={useContext(DarkModeContext).toggleDarkMode}
                 className={`${
-                  enabled ? 'bg-blue-600' : 'bg-green-700'
+                  useContext(DarkModeContext).darkMode ? 'bg-[#e7ca6a]' : 'bg-green-700'
                 } relative inline-flex h-6 w-9 items-center rounded-full`}
               >
                 <span className='sr-only'>Dark Theme</span>
                 <span
                   className={`${
-                    enabled ? 'translate-x-4' : 'translate-x-1'
+                    useContext(DarkModeContext).darkMode ? 'translate-x-4' : 'translate-x-1'
                   } inline-block h-4 w-4 transform rounded-full bg-green-100 hover:bg-white transition`}
                 />
               </Switch>

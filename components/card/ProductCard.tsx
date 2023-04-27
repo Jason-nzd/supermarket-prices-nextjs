@@ -1,8 +1,6 @@
 import _ from 'lodash';
-import Link from 'next/link';
 import React, { useState } from 'react';
 import { Product } from '../../typings';
-import { utcDateToShortDate } from '../../utilities/utilities';
 import ImageWithFallback from '../ImageWithFallback';
 import PriceHistoryChart from './PriceHistoryChart';
 import PriceHistoryTips from './PriceHistoryTips';
@@ -33,7 +31,7 @@ function ProductCard({ product }: Props) {
         {/* Title Div */}
         <div
           className='w-full h-12 pt-2 px-3 rounded-t-2xl text-[#3C8DA3] text-md lg:text-sm
-                text-center font-semibold leading-5 lg:leading-4 z-20'
+                text-center font-semibold leading-5 lg:leading-4 z-20 dark:text-zinc-300'
         >
           {product.name}
         </div>
@@ -81,19 +79,28 @@ function ProductCard({ product }: Props) {
         {/* Source Site Div */}
         <div className='text-sm text-center mt-2'>
           {product.sourceSite.includes('countdown.co.nz') && (
-            <div className='flex items-center justify-center gap-x-2 p-1 rounded-b-2xl text-white bg-[#007837]'>
+            <div
+              className='flex items-center justify-center gap-x-2 p-1 rounded-b-2xl text-white
+              bg-[#007837] dark:bg-transparent dark:text-zinc-300 dark:ring-[#007837] dark:ring-2'
+            >
               <StoreIcon sourceSite={product.sourceSite} width={20} />
               Countdown
             </div>
           )}
           {product.sourceSite === 'thewarehouse.co.nz' && (
-            <div className='flex items-center justify-center gap-x-2 p-1 rounded-b-2xl text-white bg-[#c00]'>
+            <div
+              className='flex items-center justify-center gap-x-2 p-1 rounded-b-2xl text-white
+              bg-[#c00] dark:bg-transparent dark:text-zinc-300 dark:ring-[#970d0d] dark:ring-2'
+            >
               <StoreIcon sourceSite={product.sourceSite} width={20} />
               The Warehouse
             </div>
           )}
           {product.sourceSite === 'paknsave.co.nz' && (
-            <div className='flex items-center justify-center gap-x-2 p-1 rounded-b-2xl text-black bg-[#ffd600]'>
+            <div
+              className='flex items-center justify-center gap-x-2 p-1 rounded-b-2xl text-black
+              bg-[#ffd600] dark:bg-transparent dark:text-zinc-300 dark:ring-[#ac910c] dark:ring-2'
+            >
               <StoreIcon sourceSite={product.sourceSite} width={20} />
               PAK'nSAVE
             </div>

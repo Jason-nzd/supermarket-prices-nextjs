@@ -13,7 +13,7 @@ import {
   sortProductsByUnitPrice,
   utcDateToLongDate,
 } from '../../utilities/utilities';
-import { ThemeContext } from '../_app';
+import { DarkModeContext } from '../_app';
 import NavBar from '../../components/NavBar';
 import Footer from '../../components/Footer';
 
@@ -26,7 +26,7 @@ interface Props {
 const Category = ({ products, hasMoreSearchResults, lastChecked }: Props) => {
   const router = useRouter();
   const { category } = router.query;
-  const theme = useContext(ThemeContext);
+  const theme = useContext(DarkModeContext).darkMode ? 'dark' : 'light';
 
   return (
     <main className={theme}>
@@ -65,7 +65,6 @@ export const categoryNames = [
   'cheese',
   'cheese-slices',
   'salami',
-
 
   //meat
   'seafood',

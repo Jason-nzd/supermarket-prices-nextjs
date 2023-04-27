@@ -4,19 +4,13 @@
 
 @layer components {
   body {
-    @apply light;
-  }
-  .light {
-    @apply bg-green-600;
-  }
-  .dark {
-    @apply bg-black;
+    @apply bg-green-600 dark:bg-red-500;
   }
   .central-responsive-div {
     @apply px-2 mx-auto w-[100%] 2xl:w-[90rem] 3xl:w-[110rem] transition-all duration-500;
   }
   .content-body {
-    @apply bg-zinc-100 pt-1 pb-12;
+    @apply bg-zinc-100 pt-1 pb-12 dark:bg-zinc-800;
   }
   .text-primary-colour {
     @apply text-green-200;
@@ -38,14 +32,14 @@
   .product-card {
     @apply bg-stone-50 m-1 rounded-2xl shadow-lg flex flex-col min-w-[18rem]
     hover:scale-[102%] hover:shadow-2xl duration-300 ease-in-out cursor-pointer hover:bg-white
-    dark:bg-slate-800 dark:text-slate-200 dark:ring-slate-700 dark:ring-2 dark:m-1.5;
+    dark:bg-zinc-800 dark:text-zinc-300 dark:ring-zinc-500 dark:ring-2;
   }
   .grid-title {
-    @apply my-4 pl-2 text-xl text-[#3C8DA3] font-bold text-center;
+    @apply my-4 pl-2 text-xl text-[#3C8DA3] font-bold text-center dark:text-zinc-300;
   }
   .size-tag {
     @apply z-20 absolute top-[7rem] left-[1rem] p-2 px-3 text-center text-lg lg:text-base
-    bg-black bg-opacity-[30%] backdrop-blur-sm text-white  font-semibold 
+    bg-black bg-opacity-[30%] dark:bg-opacity-[60%] backdrop-blur-sm text-white dark:text-zinc-300 font-semibold 
     ring-1 ring-white rounded-2xl shadow-md;
   }
 }

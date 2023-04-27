@@ -5,7 +5,7 @@ import ProductsGrid from '../components/ProductsGrid';
 import { Product } from '../typings';
 import { DBFetchAll } from '../utilities/cosmosdb';
 import { OrderByMode, PriceHistoryLimit, Store, utcDateToLongDate } from '../utilities/utilities';
-import { ThemeContext } from './_app';
+import { DarkModeContext } from './_app';
 
 interface Props {
   countdownProducts: Product[];
@@ -21,7 +21,7 @@ export default function Home({
   warehouseProducts,
   lastChecked,
 }: Props) {
-  const theme = useContext(ThemeContext);
+  const theme = useContext(DarkModeContext).darkMode ? 'dark' : 'light';
 
   return (
     <main className={theme}>

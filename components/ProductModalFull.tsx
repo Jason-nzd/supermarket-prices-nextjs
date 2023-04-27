@@ -19,7 +19,7 @@ function ProductModalFull({ product }: Props) {
   return (
     <div
       className='flex md:flex-col max-w-[90%] lg:max-w-[100%] w-fit h-fit bg-white 
-      absolute top-5 mx-auto rounded-3xl shadow-2xl z-50'
+      absolute top-5 mx-auto rounded-3xl shadow-2xl z-50 dark:bg-zinc-800 dark:text-zinc-300 '
     >
       <div className='flex flex-col md:flex-row'>
         {/* Image on left 2/3 */}

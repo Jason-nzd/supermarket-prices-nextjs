@@ -67,7 +67,8 @@ function CategorySelectMenu({ updateNavCategories }: Props) {
         <div className='fixed inset-0 z-50 mx-auto w-fit h-fit max-w-[95%] top-[5%] overflow-hidden'>
           <Dialog.Panel
             className='bg-white grid grid-flow-col grid-rows-3 md:grid-rows-2 lg:grid-rows-1 rounded-3xl
-           shadow-2xl p-2 xl:p-4 px-4 xl:px-8 gap-x-5 xl:gap-x-12 gap-y-2 md:gap-y-4 transition-all'
+            shadow-2xl p-2 xl:p-4 px-4 xl:px-8 gap-x-5 xl:gap-x-12 gap-y-2 md:gap-y-4 transition-all
+            dark:bg-zinc-800 dark:text-zinc-300'
           >
             <SubCategoryList
               subCategoryTitle='Fresh Foods'

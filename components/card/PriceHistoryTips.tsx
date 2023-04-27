@@ -12,7 +12,7 @@ function PriceHistoryTips({ priceHistory }: Props) {
   });
 
   return (
-    <div className='flex text-slate-600'>
+    <div className='flex text-slate-600 dark:text-zinc-300'>
       <div>Low:</div>
       <div className='font-semibold mr-4'>{printPrice(Math.min(...priceDataOnly))}</div>
       <div>High:</div>

@@ -11,9 +11,8 @@ import {
   Store,
   utcDateToLongDate,
 } from '../utilities/utilities';
-import { ThemeContext } from './_app';
+import { DarkModeContext } from './_app';
 import _ from 'lodash';
-import { spawn } from 'child_process';
 
 interface Props {
   lastChecked: string;
@@ -22,12 +21,12 @@ interface Props {
 type LoadState = 'start' | 'isLoading' | 'hasSearched';
 
 const AdminPanel = ({ lastChecked }: Props) => {
-  const theme = useContext(ThemeContext);
+  const theme = useContext(DarkModeContext).darkMode ? 'dark' : 'light';
   const [products, setProducts] = useState<Product[]>([]);
   const [loadState, setLoadState] = useState<LoadState>('start');
   const [searchQuery, setSearchQuery] = useState<string>('');
 
-  // Handle search formevent
+  // Handle search form event
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoadState('isLoading');
@@ -72,7 +71,8 @@ const AdminPanel = ({ lastChecked }: Props) => {
           {/* Search Bar */}
           <form onSubmit={handleSearch} className='flex mx-auto mt-4 max-w-xl'>
             <input
-              className='pl-3 focus:outline-none w-full rounded-l-xl text-sm p-2'
+              className='pl-3 focus:outline-none w-full rounded-l-xl text-sm p-2 
+              dark:border-2 dark:border-r-0 dark:border-zinc-500 dark:bg-transparent dark:text-gray-200'
               placeholder='Search'
               type='text'
               name='admin-search'
@@ -86,7 +86,8 @@ const AdminPanel = ({ lastChecked }: Props) => {
             />
             <button
               type='submit'
-              className='px-6 bg-green-200 hover:bg-green-100 rounded-r-xl text-sm'
+              className='px-6 bg-green-200 hover:bg-green-100 rounded-r-xl text-sm
+              dark:bg-green-900 dark:text-zinc-300 dark:border-2 dark:border-green-700'
             >
               Search
             </button>
@@ -131,33 +132,33 @@ const AdminPanel = ({ lastChecked }: Props) => {
           {/* Admin Table of Products */}
           {products.length > 0 && (
             <div className='overflow-hidden rounded-lg border border-gray-200 shadow-md m-3'>
-              <table className='w-full border-collapse bg-white text-left text-sm text-gray-500'>
-                <thead className='bg-gray-50'>
+              <table
+                className='w-full border-collapse bg-white text-left text-sm text-gray-500
+                dark:bg-zinc-800 dark:text-zinc-300'
+              >
+                <thead className='bg-gray-50 dark:bg-zinc-700 text-zinc-900 dark:text-zinc-300 font-medium'>
                   <tr>
-                    <th scope='col' className='pl-4 py-4 font-medium text-gray-900 w-50'></th>
-                    <th scope='col' className='pl-7 px-3 py-4 font-medium text-gray-900'>
+                    <th scope='col' className='pl-4 py-4 w-50'></th>
+                    <th scope='col' className='pl-7 px-3 py-4'>
                       ID
                     </th>
-                    <th scope='col' className='px-6 py-4 font-medium text-gray-900 min-w-[20rem]'>
+                    <th scope='col' className='px-6 py-4 min-w-[20rem]'>
                       Name & Size
                     </th>
-                    <th scope='col' className='px-6 py-4 font-medium text-gray-900 '>
+                    <th scope='col' className='px-6 py-4'>
                       Category
                     </th>
-                    <th scope='col' className='px-6 py-4 font-medium text-gray-900 '>
+                    <th scope='col' className='px-6 py-4'>
                       Unit Size
                     </th>
-                    <th scope='col' className='px-6 py-4 font-medium text-gray-900 '>
+                    <th scope='col' className='px-6 py-4'>
                       Per Unit Price
                     </th>
-                    <th scope='col' className='px-6 py-4 font-medium text-gray-900 '>
+                    <th scope='col' className='px-6 py-4'>
                       Price History
                     </th>
                     {/* Empty th for expanding icons panel */}
-                    <th
-                      scope='col'
-                      className='pr-4 py-4 font-medium text-gray-900 min-w-[8rem]'
-                    ></th>
+                    <th scope='col' className='pr-4 py-4 min-w-[8rem]'></th>
                   </tr>
                 </thead>
 

@@ -12,7 +12,7 @@ import {
   sortProductsByUnitPrice,
   utcDateToLongDate,
 } from '../utilities/utilities';
-import { ThemeContext } from './_app';
+import { DarkModeContext } from './_app';
 import { useRouter } from 'next/router';
 import _ from 'lodash';
 
@@ -22,7 +22,7 @@ interface Props {
 
 const ClientSearch = ({ lastChecked }: Props) => {
   const router = useRouter();
-  const theme = useContext(ThemeContext);
+  const theme = useContext(DarkModeContext).darkMode ? 'dark' : 'light';
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [searchTerm, setSearchTerm] = useState<string>();
