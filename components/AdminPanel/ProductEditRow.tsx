@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Product } from '../typings';
-import DatedPrice from './card/DatedPrice';
-import StoreIcon from './StoreIcon';
+import { Product } from '../../typings';
+import DatedPriceTag from './DatedPriceTag';
+import StoreIcon from '../StoreIcon';
 
 interface Props {
   product: Product;
@@ -97,7 +97,7 @@ function ProductEditRow({ product }: Props) {
       <td className='px-6'>
         <div className='flex gap-1'>
           {product.priceHistory.map((datedPrice) => {
-            return <DatedPrice datedPrice={datedPrice} key={datedPrice.date.toString()} />;
+            return <DatedPriceTag datedPrice={datedPrice} key={datedPrice.date.toString()} />;
           })}
         </div>
       </td>

@@ -12,9 +12,8 @@ import {
   utcDateToLongDate,
 } from '../../utilities/utilities';
 import { DarkModeContext } from '../_app';
-import NavBar from '../../components/NavBar';
+import NavBar from '../../components/NavBar/NavBar';
 import Footer from '../../components/Footer';
-import { orderBy } from 'lodash';
 
 interface Props {
   apples: Product[];

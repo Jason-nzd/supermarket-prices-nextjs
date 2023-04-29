@@ -6,7 +6,7 @@ import ProductsGrid from '../../components/ProductsGrid';
 import { DBFetchByCategory } from '../../utilities/cosmosdb';
 import { utcDateToLongDate } from '../../utilities/utilities';
 import { DarkModeContext } from '../_app';
-import NavBar from '../../components/NavBar';
+import NavBar from '../../components/NavBar/NavBar';
 import Footer from '../../components/Footer';
 
 interface Props {

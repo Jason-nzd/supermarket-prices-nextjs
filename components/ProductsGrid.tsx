@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useMediaQuery } from '../hooks/useMediaQuery';
 import { Product } from '../typings';
-import ProductCard from './card/ProductCard';
+import ProductCard from './Card/ProductCard';
 
 interface Props {
   products: Product[];
@@ -13,6 +13,7 @@ function ProductsGrid({ products, trimColumns = false }: Props) {
   let trimmedProducts: Product[] = [];
   if (trimColumns) {
     trimmedProducts = products;
+
     // Trim products to 3 columns
     if (useMediaQuery('980px')) {
       trimmedProducts = products.slice(0, nextMultipleDown(products.length, 3));
@@ -67,7 +68,7 @@ function ProductsGrid({ products, trimColumns = false }: Props) {
         L
       </button> */}
       <div
-        className='grid
+        className='grid w-full
             grid-cols-1
             md:grid-cols-2
             lg:grid-cols-3

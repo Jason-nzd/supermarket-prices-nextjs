@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import Footer from '../components/Footer';
-import NavBar from '../components/NavBar';
-import ProductEditRow from '../components/ProductEditRow';
+import NavBar from '../components/NavBar/NavBar';
+import ProductEditRow from '../components/AdminPanel/ProductEditRow';
 import { Product } from '../typings';
 import { DBFetchAll, DBFetchByName } from '../utilities/cosmosdb';
 import {
@@ -94,7 +94,7 @@ const AdminPanel = ({ lastChecked }: Props) => {
           </form>
 
           {/* Search Information */}
-          <div className='text-center pt-4 pb-1'>
+          <div className='text-center pt-4 pb-1 text-zinc-800 dark:text-zinc-300'>
             {loadState === 'isLoading' && (
               <>
                 <div className=''>Searching for {_.capitalize(searchQuery)}..</div>

@@ -14,7 +14,7 @@ import {
   utcDateToLongDate,
 } from '../../utilities/utilities';
 import { DarkModeContext } from '../_app';
-import NavBar from '../../components/NavBar';
+import NavBar from '../../components/NavBar/NavBar';
 import Footer from '../../components/Footer';
 
 interface Props {
@@ -137,7 +137,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     Store.Any,
     PriceHistoryLimit.Any,
     OrderByMode.None,
-    LastChecked.Within30Days
+    LastChecked.Within7Days
   );
 
   // Sort by unit price

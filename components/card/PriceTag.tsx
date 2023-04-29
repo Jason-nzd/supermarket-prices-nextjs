@@ -7,7 +7,7 @@ interface Props {
   product: Product;
 }
 
-function PriceTag({ product }: Props) {
+export default function PriceTag({ product }: Props) {
   let priceTagDivClass =
     'bg-white rounded-3xl border-2 shadow-md px-3 py-0.5 w-fit flex items-center dark:bg-zinc-800 dark:text-zinc-300 ';
   let icon;
@@ -131,5 +131,3 @@ const downIcon = (
     />
   </svg>
 );
-
-export default PriceTag;

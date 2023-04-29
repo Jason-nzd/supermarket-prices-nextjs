@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import Footer from '../components/Footer';
-import NavBar from '../components/NavBar';
+import NavBar from '../components/NavBar/NavBar';
 import ProductsGrid from '../components/ProductsGrid';
 import { Product } from '../typings';
 import { DBFetchAll } from '../utilities/cosmosdb';
