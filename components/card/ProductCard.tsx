@@ -2,12 +2,12 @@ import _ from 'lodash';
 import React, { useState } from 'react';
 import { Product } from '../../typings';
 import ImageWithFallback from '../ImageWithFallback';
-import PriceHistoryChart from './PriceHistoryChart';
-import PriceHistoryTips from './PriceHistoryTips';
-import PriceTag from './PriceTag';
 import { Dialog } from '@headlessui/react';
 import ProductModalFull from '../ProductModalFull';
 import StoreIcon from '../StoreIcon';
+import PriceHistoryChart from './PriceHistoryChart';
+import PriceTag from './PriceTag';
+import PriceHistoryTips from './PriceHistoryTips';
 
 interface Props {
   product: Product;
@@ -20,10 +20,10 @@ function ProductCard({ product }: Props) {
   function handleClick() {
     // Copy product id to clipboard when card is clicked
     navigator.clipboard.writeText(product.id);
-    setIsOpen(true);
+    setIsModalOpen(true);
   }
 
-  let [isOpen, setIsOpen] = useState(false);
+  let [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <>
@@ -111,8 +111,8 @@ function ProductCard({ product }: Props) {
         </div>
       </div>
 
-      <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
-        <div className='fixed mx-auto max-w-[58rem] inset-0 top-[10%] z-40'>
+      <Dialog open={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <div className='fixed mx-auto max-h-[80rem] max-w-[80rem] w-[90%] h-[90%] inset-0 top-[10%] z-40'>
           <Dialog.Panel className=''>
             <ProductModalFull product={product} key={product.id} />
           </Dialog.Panel>

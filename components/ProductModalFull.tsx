@@ -4,9 +4,9 @@ import React from 'react';
 import { Product } from '../typings';
 import { utcDateToLongDate } from '../utilities/utilities';
 import ImageWithFallback from './ImageWithFallback';
-import PriceHistoryChart from './card/PriceHistoryChart';
-import PriceHistoryTips from './card/PriceHistoryTips';
-import PriceTag from './card/PriceTag';
+import PriceHistoryChart from './Card/PriceHistoryChart';
+import PriceHistoryTips from './Card/PriceHistoryTips';
+import PriceTag from './Card/PriceTag';
 import StoreIcon from './StoreIcon';
 
 interface Props {
@@ -18,16 +18,16 @@ function ProductModalFull({ product }: Props) {
 
   return (
     <div
-      className='flex md:flex-col max-w-[90%] lg:max-w-[100%] w-fit h-fit bg-white 
-      absolute top-5 mx-auto rounded-3xl shadow-2xl z-50 dark:bg-zinc-800 dark:text-zinc-300 '
+      className='flex flex-col bg-white absolute top-5 mx-auto rounded-3xl shadow-2xl z-50
+      dark:bg-zinc-800 dark:text-zinc-300'
     >
-      <div className='flex flex-col md:flex-row'>
+      <div className='flex flex-col w-[90%] md:w-full md:flex-row mx-auto'>
         {/* Image on left 2/3 */}
-        <div className='relative w-full md:w-2/3'>
-          <div className='py-4 pl-4 pr-2 w-fit h-fit max-w-[600px]'>
+        <div className='relative'>
+          <div className='p-2 md:py-4 md:pl-4'>
             <ImageWithFallback
               id={product.id}
-              width={600}
+              width={900}
               src={'product-images/' + product.id + '.webp'}
             />
             {/* Optional Size div overlaid on top of image */}
@@ -36,7 +36,7 @@ function ProductModalFull({ product }: Props) {
         </div>
 
         {/* Title, price chart and other information on right 1/3 */}
-        <div className='flex flex-col w-full md:w-1/3 md:min-w-[20rem] h-full pr-8'>
+        <div className='flex flex-col w-full md:w-1/3 md:min-w-[20rem] md:pr-8'>
           {/* Title */}
           <div
             className='w-full h-12 pt-3 px-3 rounded-t-2xl text-[#3C8DA3] text-md
@@ -46,7 +46,7 @@ function ProductModalFull({ product }: Props) {
           </div>
 
           {/* Price Chart */}
-          <div className='w-[20rem] mt-6 pr-4'>
+          <div className='w-full md:w-[20rem] md:mt-6 md:pr-4 mx-auto'>
             <PriceHistoryChart
               priceHistory={product.priceHistory}
               lastChecked={product.lastChecked}
