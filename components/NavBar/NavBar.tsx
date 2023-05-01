@@ -37,7 +37,7 @@ const NavBar = ({ lastUpdatedDate }: Props) => {
         </div>
 
         {/* Column 2 - Title - Sub-title - Categories - Search */}
-        <div className='block w-full lg:w-[calc(100%-17rem)] h-[3.6rem] lg:h-[5rem]'>
+        <div className='block w-full lg:w-[calc(100%-18rem)] h-[3.6rem] lg:h-[5rem]'>
           {/* Row 1 - Title - Sub-title */}
           <div className='flex flex-wrap h-1/2 mx-auto w-full items-center lg:items-center ml-1'>
             {/* Mobile Icon */}
@@ -87,7 +87,7 @@ const NavBar = ({ lastUpdatedDate }: Props) => {
         {/* Column 3 - Right Menu */}
         <div className='hidden lg:flex lg:flex-col items-center ml-auto w-fit h-full pr-2'>
           {/* Last Updated Date */}
-          <div className='h-1/2 pb-2 text-primary-colour text-sm select-none w-full pr-2'>
+          <div className='pb-2 text-primary-colour text-sm select-none pr-2 w-fit ml-auto h-8'>
             Updated {lastUpdatedDate}
           </div>
 
