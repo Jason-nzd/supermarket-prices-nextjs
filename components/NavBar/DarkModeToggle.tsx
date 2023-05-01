@@ -9,12 +9,12 @@ export default function DarkModeToggle() {
       onChange={useContext(DarkModeContext).toggleDarkMode}
       className={`${
         useContext(DarkModeContext).darkMode ? 'bg-zinc-700' : 'bg-green-700'
-      } relative inline-flex h-9 w-12 items-center rounded-full`}
+      } relative inline-flex h-8 w-11 items-center rounded-full`}
     >
       <span className='sr-only'>Dark Theme</span>
       <span
         className={`${
-          useContext(DarkModeContext).darkMode ? 'translate-x-4' : 'translate-x-2'
+          useContext(DarkModeContext).darkMode ? 'translate-x-3.5' : 'translate-x-1.5'
         } inline-block h-6 w-6 transform text-green-200 hover:text-white transition`}
       >
         {useContext(DarkModeContext).darkMode ? moonFilled : moonEmpty}
