@@ -57,8 +57,8 @@ export function cleanProductFields(document: Product): Product {
     // Also check for valid date and category formats
     if (lastUpdated === undefined || lastUpdated === null) {
       console.log(name + ' has null date - ' + lastUpdated);
-    } else if (!lastUpdated.toString().endsWith('Z')) {
-      console.log(name + ' has non-utc date - ' + lastUpdated);
+      // } else if (!lastUpdated.toString().endsWith('Z')) {
+      //   console.log(name + ' has non-utc date - ' + lastUpdated);
     }
     if (!category) category = ['No Category'];
     if (!lastChecked) lastChecked = lastUpdated;
