@@ -1,15 +1,15 @@
 # NZ Supermarket Price History Website
 
-This is a static Next.js website that pulls product data from Azure CosmosDB and displays them in a responsive grid.
+This is a static next.js website that pulls product data from Azure CosmosDB and displays them in a responsive grid.
 
 - Long-term price history for each product is displayed using `chart.js` line charts.
-- Built with `react` and `Next.js` using fully static html export.
-- Client-side data fetching is used for searching.
-- Styling is handled with `Tailwind CSS`.
+- Built with `react` and `next.js` using fully static html export.
+- Client-side data fetching from an API is used for search functionality.
+- Styling is handled with `tailwind css`.
 
 ## Quick Setup
 
-First ensure `Node.js` is installed, clone this repo, and then run `npm install` to install dependencies.
+First ensure `node.js` is installed, clone or download this repo, and then run `npm install` to install dependencies.
 
 The website comes with some sample data built-in and can be launched as-is with `npm run dev`.
 
@@ -35,12 +35,18 @@ Example database document with dates in UTC format:
     size: '640g',
     sourceSite: 'supermarket.co.nz',
     priceHistory: [
-        { date: '2023-03-02T11:00:00Z', price: 13 },
-        { date: '2023-03-13T23:58:23.0847332Z', price: 15 },
+        { 
+            date: '2023-03-02T00:00:00Z',
+            price: 13 
+        },
+        { 
+            date: '2023-03-13T00:00:00Z', 
+            price: 15 
+        },
     ],
     category: ['chocolate', 'chocolate-packs'],
-    lastUpdated: '2023-03-13T23:58:23.0847332Z',
-    lastChecked: '2023-04-22T00:57:17.2967445Z',
+    lastUpdated: '2023-03-13T00:00:00Z',
+    lastChecked: '2023-04-22T00:00:00Z',
     unitPrice: 23.44,
     unitName: 'kg',
     originalUnitQuantity: 640,
