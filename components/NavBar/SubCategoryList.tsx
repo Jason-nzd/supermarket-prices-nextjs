@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import StarFavourite from './StarFavourite';
 import Link from 'next/link';
 import _ from 'lodash';
+import { DarkModeContext } from '../../pages/_app';
 
 interface Props {
   subCategoryTitle: string;
@@ -20,13 +21,12 @@ export default function SubCategoryList({
   centerTitle = false,
   subCategoryNames,
 }: Props) {
-  const titleDivClass = centerTitle ? 'text-center' : '';
+  let titleDivClass = centerTitle ? 'text-center' : '';
+  titleDivClass += useContext(DarkModeContext).darkMode ? ' text-green-300' : ' text-green-600';
 
   return (
     <div className='w-full h-fit'>
-      <h2 className={titleDivClass + ' whitespace-nowrap font-bold text-green-600'}>
-        {subCategoryTitle}
-      </h2>
+      <h2 className={titleDivClass + ' text-lg whitespace-nowrap font-bold'}>{subCategoryTitle}</h2>
       <hr className='mt-2 mb-1' />
       {subCategoryNames.map((categoryName) => {
         const href = '/products/' + categoryName;
@@ -41,8 +41,8 @@ export default function SubCategoryList({
               />
             )}
             <Link
-              className='text-zinc-500 ml-1 p-0.5 lg:py-1 px-1 lg:px-2 my-0.5 lg:my-1 rounded-2xl font-semibold
-                hover:bg-green-200 hover:shadow-sm whitespace-nowrap w-full'
+              className='ml-1 p-0.5 lg:py-1 px-1 lg:px-2 my-0.5 lg:my-1 rounded-2xl w-full
+              font-semibold hover:bg-green-200 hover:text-black hover:shadow-sm whitespace-nowrap'
               href={href}
             >
               {_.startCase(categoryName)}

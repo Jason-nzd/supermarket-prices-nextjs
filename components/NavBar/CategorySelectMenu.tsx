@@ -1,7 +1,8 @@
 import { Dialog } from '@headlessui/react';
 import _ from 'lodash';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import SubCategoryList from './SubCategoryList';
+import { DarkModeContext } from '../../pages/_app';
 
 interface Props {
   updateNavCategories: (arg: string[]) => void;
@@ -64,11 +65,16 @@ function CategorySelectMenu({ updateNavCategories }: Props) {
       </button>
 
       <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
-        <div className='fixed inset-0 z-50 mx-auto w-fit h-fit max-w-[95%] top-[5%] overflow-hidden'>
+        <div
+          className='fixed inset-0 z-50 mx-auto w-fit h-fit max-w-[95%] top-[7%] 
+          overflow-hidden shadow-2xl rounded-3xl'
+        >
           <Dialog.Panel
-            className='bg-white grid grid-flow-col grid-rows-3 md:grid-rows-2 lg:grid-rows-1 rounded-3xl
-            shadow-2xl p-2 xl:p-4 px-4 xl:px-8 gap-x-5 xl:gap-x-12 gap-y-2 md:gap-y-4 transition-all
-            dark:bg-zinc-800 dark:text-zinc-300'
+            className={
+              (useContext(DarkModeContext).darkMode ? 'bg-zinc-700 text-zinc-200' : 'bg-white') +
+              ' grid grid-flow-col grid-rows-3 md:grid-rows-2 lg:grid-rows-1 rounded-3xl ' +
+              ' p-2 xl:p-4 px-4 xl:px-8 gap-x-5 xl:gap-x-12 gap-y-2 md:gap-y-4 transition-all '
+            }
           >
             <SubCategoryList
               subCategoryTitle='Fresh Foods'
