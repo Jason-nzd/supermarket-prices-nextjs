@@ -117,8 +117,8 @@ let categoryNames = freshCategory.concat(
 );
 
 // Remove special sub-categories witch have custom made pages instead of generated pages
-categoryNames.filter((name) => {
-  return ['eggs', 'fruit', 'milk'].includes(name);
+categoryNames = categoryNames.filter((name) => {
+  return !['eggs', 'fruit', 'milk'].includes(name);
 });
 
 // Takes an array of categories, and returns them in { path } format
