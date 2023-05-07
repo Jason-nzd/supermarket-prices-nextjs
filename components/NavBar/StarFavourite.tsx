@@ -24,7 +24,7 @@ export default function StarFavourite({
   }
 
   return (
-    <div onClick={handleClick} className='hover:scale-110 cursor-pointer'>
+    <div onClick={handleClick} className='hover:scale-110 cursor-pointer mr-1'>
       {isFavourite ? starFilled : starEmpty}
     </div>
   );
