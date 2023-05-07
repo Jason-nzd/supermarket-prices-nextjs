@@ -3,10 +3,20 @@ import React from 'react';
 import _ from 'lodash';
 import { burgerIcon } from './NavBar';
 import SubCategoryList from './SubCategoryList';
+import {
+  chilledCategory,
+  drinksCategory,
+  freshCategory,
+  frozenCategory,
+  meatCategory,
+  pantryCategory,
+  petsCategory,
+  snacksCategory,
+} from '../../pages/products/[category]';
 
 export default function MobileBurgerMenu() {
   return (
-    <Popover className='text-xl'>
+    <Popover className='text-lg'>
       <Popover.Button className='left-1 top-1 text-primary-colour hover-to-white cursor-pointer'>
         {burgerIcon}
       </Popover.Button>
@@ -19,62 +29,17 @@ export default function MobileBurgerMenu() {
         leaveTo='transform scale-50 opacity-0'
       >
         <Popover.Panel
-          className='mt-1 bg-zinc-100 p-4 grid grid-cols-2 gap-x-2 gap-y-4 rounded-2xl 
+          className='mt-1 bg-zinc-100 p-4 grid grid-cols-2 md:grid-cols-3 gap-x-2 gap-y-4 rounded-2xl 
         shadow-2xl text-slate-800'
         >
-          <SubCategoryList
-            subCategoryTitle='Fresh Foods'
-            subCategoryNames={['eggs', 'fruit', 'fresh-vegetables', 'bread', 'bread-rolls']}
-          />
-          <SubCategoryList
-            subCategoryTitle='Chilled'
-            subCategoryNames={['milk', 'yogurt', 'cheese', 'salami']}
-          />
-          <SubCategoryList
-            subCategoryTitle='Meat'
-            subCategoryNames={[
-              'seafood',
-              'salmon',
-              'ham',
-              'bacon',
-              'beef-lamb',
-              'chicken',
-              'mince-patties',
-            ]}
-          />
-          <SubCategoryList
-            subCategoryTitle='Frozen'
-            subCategoryNames={[
-              'ice-cream',
-              'frozen-chips',
-              'frozen-vegetables',
-              'frozen-seafood',
-              'pies-sausage-rolls',
-            ]}
-          />
-          <SubCategoryList
-            subCategoryTitle='Pantry'
-            subCategoryNames={[
-              'rice',
-              'chocolate',
-              'cat-food',
-              'chips',
-              'corn-chips',
-              'biscuits',
-              'muesli-bars',
-            ]}
-          />
-          <SubCategoryList
-            subCategoryTitle='Drinks'
-            subCategoryNames={[
-              'black-tea',
-              'green-tea',
-              'herbal-tea',
-              'drinking-chocolate',
-              'coffee',
-              'soft-drinks',
-            ]}
-          />
+          <SubCategoryList subCategoryTitle='Fresh Foods' subCategoryNames={freshCategory} />
+          <SubCategoryList subCategoryTitle='Chilled' subCategoryNames={chilledCategory} />
+          <SubCategoryList subCategoryTitle='Meat' subCategoryNames={meatCategory} />
+          <SubCategoryList subCategoryTitle='Frozen' subCategoryNames={frozenCategory} />
+          <SubCategoryList subCategoryTitle='Pantry' subCategoryNames={pantryCategory} />
+          <SubCategoryList subCategoryTitle='Snacks' subCategoryNames={snacksCategory} />
+          <SubCategoryList subCategoryTitle='Drinks' subCategoryNames={drinksCategory} />
+          <SubCategoryList subCategoryTitle='Pets' subCategoryNames={petsCategory} />
         </Popover.Panel>
       </Transition>
     </Popover>

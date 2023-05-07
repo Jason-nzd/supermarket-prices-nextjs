@@ -41,7 +41,7 @@ export default function SubCategoryList({
               />
             )}
             <Link
-              className='ml-1 p-0.5 lg:py-1 px-1 lg:px-2 my-0.5 lg:my-1 rounded-2xl w-full
+              className='p-0.5 px-2 my-[0.1rem] rounded-2xl w-full overflow-hidden
               font-semibold hover:bg-green-200 hover:text-black hover:shadow-sm whitespace-nowrap'
               href={href}
             >

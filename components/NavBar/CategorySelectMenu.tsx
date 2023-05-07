@@ -3,6 +3,16 @@ import _ from 'lodash';
 import React, { useContext, useEffect, useState } from 'react';
 import SubCategoryList from './SubCategoryList';
 import { DarkModeContext } from '../../pages/_app';
+import {
+  chilledCategory,
+  drinksCategory,
+  freshCategory,
+  frozenCategory,
+  meatCategory,
+  pantryCategory,
+  petsCategory,
+  snacksCategory,
+} from '../../pages/products/[category]';
 
 interface Props {
   updateNavCategories: (arg: string[]) => void;
@@ -72,13 +82,13 @@ function CategorySelectMenu({ updateNavCategories }: Props) {
           <Dialog.Panel
             className={
               (useContext(DarkModeContext).darkMode ? 'bg-zinc-700 text-zinc-200' : 'bg-white') +
-              ' grid grid-flow-col grid-rows-3 md:grid-rows-2 lg:grid-rows-1 rounded-3xl ' +
-              ' p-2 xl:p-4 px-4 xl:px-8 gap-x-5 xl:gap-x-12 gap-y-2 md:gap-y-4 transition-all '
+              ' grid grid-flow-row grid-cols-4 xl:grid-cols-5 2xl:grid-cols-7 rounded-3xl ' +
+              ' p-2 xl:p-4 px-4 xl:px-8 gap-x-5 xl:gap-x-12 gap-y-2 md:gap-y-2 transition-all '
             }
           >
             <SubCategoryList
               subCategoryTitle='Fresh Foods'
-              subCategoryNames={['eggs', 'fruit', 'fresh-vegetables', 'bread', 'bread-rolls']}
+              subCategoryNames={freshCategory}
               favCategory={favCategory}
               unFavCategory={unFavCategory}
               userCategories={userCategories}
@@ -86,7 +96,7 @@ function CategorySelectMenu({ updateNavCategories }: Props) {
             />
             <SubCategoryList
               subCategoryTitle='Chilled'
-              subCategoryNames={['milk', 'yoghurt', 'cheese', 'cheese-slices', 'salami']}
+              subCategoryNames={chilledCategory}
               favCategory={favCategory}
               unFavCategory={unFavCategory}
               userCategories={userCategories}
@@ -94,16 +104,7 @@ function CategorySelectMenu({ updateNavCategories }: Props) {
             />
             <SubCategoryList
               subCategoryTitle='Meat'
-              subCategoryNames={[
-                'seafood',
-                'salmon',
-                'ham',
-                'bacon',
-                'beef-lamb',
-                'chicken',
-                'mince-patties',
-                'sausages',
-              ]}
+              subCategoryNames={meatCategory}
               favCategory={favCategory}
               unFavCategory={unFavCategory}
               userCategories={userCategories}
@@ -111,14 +112,7 @@ function CategorySelectMenu({ updateNavCategories }: Props) {
             />
             <SubCategoryList
               subCategoryTitle='Frozen'
-              subCategoryNames={[
-                'ice-cream',
-                'frozen-chips',
-                'frozen-vegetables',
-                'frozen-seafood',
-                'pies-sausage-rolls',
-                'pizza',
-              ]}
+              subCategoryNames={frozenCategory}
               favCategory={favCategory}
               unFavCategory={unFavCategory}
               userCategories={userCategories}
@@ -126,15 +120,15 @@ function CategorySelectMenu({ updateNavCategories }: Props) {
             />
             <SubCategoryList
               subCategoryTitle='Pantry'
-              subCategoryNames={[
-                'rice',
-                'chocolate',
-                'cat-food',
-                'chips',
-                'corn-chips',
-                'biscuits',
-                'muesli-bars',
-              ]}
+              subCategoryNames={pantryCategory}
+              favCategory={favCategory}
+              unFavCategory={unFavCategory}
+              userCategories={userCategories}
+              centerTitle={true}
+            />
+            <SubCategoryList
+              subCategoryTitle='Snacks'
+              subCategoryNames={snacksCategory}
               favCategory={favCategory}
               unFavCategory={unFavCategory}
               userCategories={userCategories}
@@ -142,15 +136,7 @@ function CategorySelectMenu({ updateNavCategories }: Props) {
             />
             <SubCategoryList
               subCategoryTitle='Drinks'
-              subCategoryNames={[
-                'black-tea',
-                'green-tea',
-                'herbal-tea',
-                'drinking-chocolate',
-                'coffee',
-                'soft-drinks',
-                'energy-drinks',
-              ]}
+              subCategoryNames={drinksCategory}
               favCategory={favCategory}
               unFavCategory={unFavCategory}
               userCategories={userCategories}
@@ -158,7 +144,7 @@ function CategorySelectMenu({ updateNavCategories }: Props) {
             />
             <SubCategoryList
               subCategoryTitle='Pets'
-              subCategoryNames={['cat-food', 'cat-treats', 'dog-food', 'dog-treats']}
+              subCategoryNames={petsCategory}
               favCategory={favCategory}
               unFavCategory={unFavCategory}
               userCategories={userCategories}
