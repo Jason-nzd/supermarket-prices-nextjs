@@ -53,46 +53,46 @@ const Category = ({ products, hasMoreSearchResults, lastChecked }: Props) => {
   );
 };
 
-export const categoryNames = [
-  //fresh
-  'fresh-vegetables',
-  'bread',
-  'bread-rolls',
-
-  //chilled
-  //'milk',
+// Define all sub categories into separate arrays
+export const freshCategory = ['eggs', 'fruit', 'fresh-vegetables', 'bread', 'bread-rolls'];
+export const chilledCategory = [
+  'milk',
+  'long-life-milk',
+  'sour-cream',
+  'cream',
   'yoghurt',
+  'butter-spreads',
   'cheese',
   'cheese-slices',
   'salami',
-
-  //meat
+  'vegan-vegetarian',
+];
+export const meatCategory = [
   'seafood',
   'salmon',
   'ham',
   'bacon',
+  'pork',
   'beef-lamb',
   'chicken',
   'mince-patties',
   'sausages',
-
-  //frozen
+  'deli-meats',
+];
+export const frozenCategory = [
   'ice-cream',
   'frozen-chips',
+  'hash-browns',
   'frozen-vegetables',
+  'frozen-fruit',
   'frozen-seafood',
   'pies-sausage-rolls',
   'pizza',
-
-  //pantry
-  'rice',
-  'chocolate',
-  'chips',
-  'corn-chips',
-  'biscuits',
-  'muesli-bars',
-
-  //drinks
+  'spring-rolls',
+];
+export const pantryCategory = ['rice', 'baked-beans-spaghetti', 'canned-fish', 'cereal', 'spreads'];
+export const snacksCategory = ['chocolate', 'chips', 'corn-chips', 'biscuits', 'muesli-bars'];
+export const drinksCategory = [
   'black-tea',
   'green-tea',
   'herbal-tea',
@@ -100,15 +100,28 @@ export const categoryNames = [
   'coffee',
   'soft-drinks',
   'energy-drinks',
-
-  //pets
-  'cat-food',
-  'cat-treats',
-  'dog-food',
-  'dog-treats',
+  'juice',
 ];
+export const petsCategory = ['cat-food', 'cat-treats', 'dog-food', 'dog-treats'];
 
-// Takes an array of category search terms, and returns them in { path } format
+// Combine all sub-category arrays into one array.
+// Each sub category will be built into fully static export pages
+let categoryNames = freshCategory.concat(
+  chilledCategory,
+  meatCategory,
+  frozenCategory,
+  pantryCategory,
+  snacksCategory,
+  drinksCategory,
+  petsCategory
+);
+
+// Remove special sub-categories witch have custom made pages instead of generated pages
+categoryNames.filter((name) => {
+  return ['eggs', 'fruit', 'milk'].includes(name);
+});
+
+// Takes an array of categories, and returns them in { path } format
 export function getAllStaticPaths() {
   return categoryNames.map((name) => {
     return {
