@@ -82,7 +82,7 @@ function CategorySelectMenu({ updateNavCategories }: Props) {
           <Dialog.Panel
             className={
               (useContext(DarkModeContext).darkMode ? 'bg-zinc-700 text-zinc-200' : 'bg-white') +
-              ' grid grid-flow-row grid-cols-4 xl:grid-cols-5 2xl:grid-cols-7 rounded-3xl ' +
+              ' grid grid-flow-row grid-cols-4 2xl:grid-cols-8 rounded-3xl ' +
               ' p-2 xl:p-4 px-4 xl:px-8 gap-x-5 xl:gap-x-12 gap-y-2 md:gap-y-2 transition-all '
             }
           >
