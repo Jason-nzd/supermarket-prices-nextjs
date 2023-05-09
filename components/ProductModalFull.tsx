@@ -5,7 +5,6 @@ import { Product } from '../typings';
 import { utcDateToLongDate } from '../utilities/utilities';
 import ImageWithFallback from './ImageWithFallback';
 import PriceHistoryChart from './Card/PriceHistoryChart';
-import PriceHistoryTips from './Card/PriceHistoryTips';
 import PriceTag from './Card/PriceTag';
 import StoreIcon from './StoreIcon';
 
@@ -15,6 +14,23 @@ interface Props {
 
 function ProductModalFull({ product }: Props) {
   const hasPriceHistory = product.priceHistory.length > 1;
+
+  // Additional price stats for full product page
+  let lowestPrice = 9999;
+  let highestPrice = 0;
+  let summedPrices = 0;
+  let avgPrice = 0;
+
+  // Loop through priceHistory array and generate price stats
+  product.priceHistory.forEach((datedPrice) => {
+    if (datedPrice.price < lowestPrice) lowestPrice = datedPrice.price;
+    if (datedPrice.price > highestPrice) highestPrice = datedPrice.price;
+    summedPrices += datedPrice.price;
+  });
+
+  // Calculate average price and differences
+  avgPrice = Math.round((summedPrices / product.priceHistory.length) * 100) / 100;
+  const avgPriceDiff = (product.currentPrice / avgPrice) * 100 - 100;
 
   return (
     <div
@@ -53,18 +69,24 @@ function ProductModalFull({ product }: Props) {
             />
           </div>
 
-          {/* Price Tag */}
-          <div className='mt-6 ml-4'>
-            <PriceTag product={product} />
-          </div>
+          <div className='flex'>
+            {/* Price Tag */}
+            <div className='mt-6 ml-4 w-1/3'>
+              <PriceTag product={product} />
+            </div>
 
-          {/* Price Highest/Lowest */}
-          <div className='mt-6 ml-4 text-sm'>
-            {product.priceHistory.length > 1 && (
-              <PriceHistoryTips priceHistory={product.priceHistory} />
-            )}
-          </div>
+            {/* Price Stats */}
+            <div className='mt-6 text-sm grid grid-cols-2 w-fit ml-auto'>
+              <div className='ml-auto px-2'>Lowest Price:</div>
+              <div>${lowestPrice}</div>
 
+              <div className='ml-auto px-2'>Highest Price:</div>
+              <div>${highestPrice}</div>
+
+              <div className='ml-auto px-2'>Average Price:</div>
+              <div>${avgPrice}</div>
+            </div>
+          </div>
           {/* Categories */}
           {product.category != null && product.category!.length > 0 && (
             <div className='flex pr-3 items-center text-slate-400 text-sm mt-6 ml-4'>

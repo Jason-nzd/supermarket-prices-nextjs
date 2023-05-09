@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import { Product } from '../../typings';
-import { PriceTrend, priceTrend } from '../../utilities/utilities';
+import { getLastPriceChangePercent, getPriceAvgDifference } from '../../utilities/utilities';
 
 interface Props {
   product: Product;
@@ -25,32 +25,39 @@ export default function PriceTag({ product }: Props) {
     }
   }
 
-  switch (priceTrend(product.priceHistory)) {
-    // If trending down, display in green and with down icon
-    case PriceTrend.Decreased:
-      priceTagDivClass += 'border-[#8DF500]';
-      icon = downIcon;
-      break;
+  const priceDiff = getPriceAvgDifference(product.priceHistory);
 
-    // If trending up, display in red and with up icon
-    case PriceTrend.Increased:
-      priceTagDivClass += 'border-[#DB260A]';
-      icon = upIcon;
-      break;
-
-    // Otherwise display in black with no icon
-    default:
-    case PriceTrend.Same:
-      priceTagDivClass += 'border-black';
-      break;
+  // If price difference from the average price is +/- 3%, print black border
+  if (Math.abs(priceDiff) < 3) priceTagDivClass += 'border-black';
+  // If price diff is +10%, print bold red border with up icon
+  else if (priceDiff > 10) {
+    priceTagDivClass += 'border-[#c91818]';
+    icon = upIcon;
+  }
+  // If price diff is +3-10%, print mild red border with up icon
+  else if (priceDiff > 3) {
+    priceTagDivClass += 'border-[#b67f7f]';
+    icon = upIcon;
+  }
+  // If price diff is +10%, print bold green border with up icon
+  else if (priceDiff < 10) {
+    priceTagDivClass += 'border-[#26df2f]';
+    icon = downIcon;
+  }
+  // If price diff is +3-10%, print mild green border with up icon
+  else if (priceDiff < 3) {
+    priceTagDivClass += 'border-[#9fe4a2]';
+    icon = downIcon;
   }
 
   return (
     <div className='z-50'>
       <div className={priceTagDivClass}>
         {/* Icon */}
-        <div className='pr-2 scale-[140%]'>{icon}</div>
-
+        <div className='px-1'>
+          <div className='pr-2 scale-[130%]'>{icon}</div>
+          {priceDiff != 0 && <div className='text-sm font-semibold'>{Math.abs(priceDiff)}%</div>}
+        </div>
         <div className='flex flex-col'>
           {/* Price */}
           <div className='flex'>
