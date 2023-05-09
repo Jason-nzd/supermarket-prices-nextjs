@@ -54,7 +54,14 @@ const Category = ({ products, hasMoreSearchResults, lastChecked }: Props) => {
 };
 
 // Define all sub categories into separate arrays
-export const freshCategory = ['eggs', 'fruit', 'fresh-vegetables', 'bread', 'bread-rolls'];
+export const freshCategory = [
+  'eggs',
+  'fruit',
+  'fresh-vegetables',
+  'salads-coleslaw',
+  'bread',
+  'bread-rolls',
+];
 export const chilledCategory = [
   'milk',
   'long-life-milk',
