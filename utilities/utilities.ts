@@ -167,6 +167,49 @@ export function deriveUnitPriceString(product: Product): string | undefined {
   return undefined;
 }
 
+// getPriceLowDifference()
+// ---------------------------
+// Gets the % difference in price between the current price and its historical lowest.
+export function getPriceLowDifference(priceHistory: DatedPrice[]) {
+  let lowestPrice = 9999,
+    highestPrice = 0;
+  priceHistory.forEach((datedPrice) => {
+    if (datedPrice.price < lowestPrice) lowestPrice = datedPrice.price;
+    if (datedPrice.price > highestPrice) highestPrice = datedPrice.price;
+  });
+
+  const currentPrice = priceHistory[priceHistory.length - 1].price;
+  return Math.round((currentPrice / lowestPrice) * 100 - 100);
+}
+
+// getPriceAvgDifference()
+// ---------------------------
+// Gets the % difference in price between the current price and its historical average.
+export function getPriceAvgDifference(priceHistory: DatedPrice[]) {
+  let pricesSummed = 0;
+  priceHistory.forEach((datedPrice) => {
+    pricesSummed += datedPrice.price;
+  });
+  const avgPrice = pricesSummed / priceHistory.length;
+
+  const currentPrice = priceHistory[priceHistory.length - 1].price;
+  return Math.round((currentPrice / avgPrice) * 100 - 100);
+}
+
+// getLastPriceChangePercent()
+// ---------------------------
+// Gets the % difference in price between the current and previous price.
+export function getLastPriceChangePercent(priceHistory: DatedPrice[]) {
+  // Return 0 if there are fewer than 2 price history entries
+  if (priceHistory.length < 2) return 0;
+
+  const currentPrice = priceHistory[priceHistory.length - 1].price;
+  const prevPrice = priceHistory[priceHistory.length - 2].price;
+  const priceChange = currentPrice / prevPrice;
+
+  return Math.round(priceChange * 100 - 100);
+}
+
 // utcDateToShortDate()
 // --------------------
 // Will take a UTC Date and return in format Mar 16, or 'Today'
