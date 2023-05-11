@@ -110,30 +110,36 @@ async function fetchProductsUsingAPI(
   const orderByIndex = querySpec.query.indexOf('ORDER BY');
   if (orderByIndex > 0) querySpec.query = querySpec.query.substring(0, orderByIndex);
 
-  // Fetch response using POST
-  const apiResponse = await fetch('https://api.kiwiprice.xyz/', {
-    method: 'POST',
-    body: JSON.stringify(querySpec),
-    mode: 'cors',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-ms-max-item-count': maxItems.toString(),
-    },
-    redirect: 'follow',
-    referrerPolicy: 'no-referrer',
-  });
-
-  // If successful, set resultingProducts to response json
-  if (apiResponse.status === 200) {
-    const apiJsonResponse = await apiResponse.json();
-    const apiProducts: Product[] = apiJsonResponse.Documents;
-
-    // Push products into array and clean unwanted fields from CosmosDB
-    apiProducts.map((productDocument) => {
-      resultingProducts.push(cleanProductFields(productDocument));
+  try {
+    // Fetch response using POST
+    const apiResponse = await fetch('https://api.kiwiprice.xyz/', {
+      method: 'POST',
+      body: JSON.stringify(querySpec),
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-ms-max-item-count': maxItems.toString(),
+      },
+      redirect: 'follow',
+      referrerPolicy: 'no-referrer',
+      signal: AbortSignal.timeout(8000),
     });
-  } else {
-    console.log(apiResponse.statusText);
+
+    // If successful, set resultingProducts to response json
+    if (apiResponse.status === 200) {
+      const apiJsonResponse = await apiResponse.json();
+      const apiProducts: Product[] = apiJsonResponse.Documents;
+
+      // Push products into array and clean unwanted fields from CosmosDB
+      apiProducts.map((productDocument) => {
+        resultingProducts.push(cleanProductFields(productDocument));
+      });
+    } else {
+      console.log(apiResponse.statusText);
+    }
+  } catch (error) {
+    console.error(error);
+    // Todo: show error on page
   }
   return resultingProducts;
 }
