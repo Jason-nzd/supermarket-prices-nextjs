@@ -102,19 +102,19 @@ function ProductModalFull({ product }: Props) {
           )}
 
           {/* Last Updated */}
-          <div className='text-slate-400 text-sm mt-6 ml-4'>
-            Price Last Updated: {utcDateToLongDate(product.lastChecked)}
+          <div className='text-slate-400 text-sm mt-6 ml-auto mr-10'>
+            Current Price Last Checked: {utcDateToLongDate(product.lastChecked)}
           </div>
 
           {/* Price Last Changed */}
           {hasPriceHistory && (
-            <div className='text-slate-400 text-sm mt-2 ml-4'>
-              Price Last Changed: {utcDateToLongDate(product.lastUpdated)}
+            <div className='text-slate-400 text-sm mt-2 ml-auto mr-10'>
+              Price Was Last Changed: {utcDateToLongDate(product.lastUpdated)}
             </div>
           )}
 
           {/* First Added */}
-          <div className='text-slate-400 text-sm mt-2 ml-4 mb-4'>
+          <div className='text-slate-400 text-sm mt-2 ml-auto mr-10 mb-4'>
             First Added to KiwiPrice: {utcDateToLongDate(product.priceHistory[0].date)}
           </div>
         </div>
