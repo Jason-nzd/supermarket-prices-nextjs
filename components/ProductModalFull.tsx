@@ -30,7 +30,7 @@ function ProductModalFull({ product }: Props) {
 
   // Calculate average price and differences
   avgPrice = Math.round((summedPrices / product.priceHistory.length) * 100) / 100;
-  const avgPriceDiff = (product.currentPrice / avgPrice) * 100 - 100;
+  //const avgPriceDiff = (product.currentPrice / avgPrice) * 100 - 100;
 
   return (
     <div
@@ -71,22 +71,27 @@ function ProductModalFull({ product }: Props) {
 
           <div className='flex'>
             {/* Price Tag */}
-            <div className='mt-6 ml-4 w-1/3'>
+            <div className='mt-6 ml-4 w-1/3 mr-2'>
               <PriceTag product={product} />
             </div>
 
             {/* Price Stats */}
-            <div className='mt-6 text-sm grid grid-cols-2 w-fit ml-auto'>
-              <div className='ml-auto px-2'>Lowest Price:</div>
-              <div>${lowestPrice}</div>
-
-              <div className='ml-auto px-2'>Highest Price:</div>
-              <div>${highestPrice}</div>
-
-              <div className='ml-auto px-2'>Average Price:</div>
-              <div>${avgPrice}</div>
+            <div className='mt-6 text-sm ml-auto '>
+              <div className='flex'>
+                <div className='pr-1 w-[6rem]'>Lowest Price:</div>
+                <div>${lowestPrice}</div>
+              </div>
+              <div className='flex'>
+                <div className='pr-1 w-[6rem]'>Highest Price:</div>
+                <div>${highestPrice}</div>
+              </div>
+              <div className='flex'>
+                <div className='pr-1 w-[6rem]'>Average Price:</div>
+                <div>${avgPrice}</div>
+              </div>
             </div>
           </div>
+
           {/* Categories */}
           {product.category != null && product.category!.length > 0 && (
             <div className='flex pr-3 items-center text-slate-400 text-sm mt-6 ml-4'>
@@ -101,21 +106,16 @@ function ProductModalFull({ product }: Props) {
             </div>
           )}
 
-          {/* Last Updated */}
-          <div className='text-slate-400 text-sm mt-6 ml-auto mr-10'>
-            Current Price Last Checked: {utcDateToLongDate(product.lastChecked)}
+          {/* First Added */}
+          <div className='text-slate-400 text-sm mt-2 ml-4 flex'>
+            <div className='pr-2'>First Added to KiwiPrice:</div>
+            <div>{utcDateToLongDate(product.priceHistory[0].date)}</div>
           </div>
 
-          {/* Price Last Changed */}
-          {hasPriceHistory && (
-            <div className='text-slate-400 text-sm mt-2 ml-auto mr-10'>
-              Price Was Last Changed: {utcDateToLongDate(product.lastUpdated)}
-            </div>
-          )}
-
-          {/* First Added */}
-          <div className='text-slate-400 text-sm mt-2 ml-auto mr-10 mb-4'>
-            First Added to KiwiPrice: {utcDateToLongDate(product.priceHistory[0].date)}
+          {/* Last Updated */}
+          <div className='text-slate-400 text-sm my-2 ml-4 flex'>
+            <div className='pr-2'>Price Up-to-Date As Of:</div>
+            <div>{utcDateToLongDate(product.lastChecked)}</div>
           </div>
         </div>
       </div>
