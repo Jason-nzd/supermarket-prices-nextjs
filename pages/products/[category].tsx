@@ -96,6 +96,7 @@ export const frozenCategory = [
   'pies-sausage-rolls',
   'pizza',
   'spring-rolls',
+  'other-savouries',
 ];
 export const pantryCategory = ['rice', 'baked-beans-spaghetti', 'canned-fish', 'cereal', 'spreads'];
 export const snacksCategory = ['chocolate', 'chips', 'corn-chips', 'biscuits', 'muesli-bars'];
