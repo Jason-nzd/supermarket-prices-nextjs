@@ -20,14 +20,14 @@ For use with Azure CosmosDB, a read-only or read-write connection string must be
 Example `.env`:
 
 ```shell
-COSMOS_CONSTRING=AccountEndpoint=https://<your-cosmos>.documents.azure.com:443/;AccountKey=asdf1234==
+COSMOS_CONSTRING=<your-cosmosdb-connection-string>
 COSMOS_DBNAME=<your-database-name>
 COSMOS_CONTAINER=<your-container-name>
 ```
 
 Example database document with dates in UTC format:
 
-```json
+```shell
 {
     id: '12345678',
     name: "Sample Milk Chocolate Bucket",
