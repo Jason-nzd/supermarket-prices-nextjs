@@ -54,21 +54,21 @@ export async function getStaticProps() {
     10,
     Store.Countdown,
     PriceHistoryLimit.FourOrMore,
-    OrderByMode.Latest
+    OrderByMode.LatestPriceChange
   );
 
   const paknsaveProducts = await DBFetchAll(
     10,
     Store.Paknsave,
-    PriceHistoryLimit.TwoOrMore,
-    OrderByMode.Latest
+    PriceHistoryLimit.FourOrMore,
+    OrderByMode.LatestPriceChange
   );
 
   const warehouseProducts = await DBFetchAll(
     10,
     Store.Warehouse,
-    PriceHistoryLimit.TwoOrMore,
-    OrderByMode.Latest
+    PriceHistoryLimit.FourOrMore,
+    OrderByMode.LatestPriceChange
   );
 
   const lastChecked = utcDateToLongDate(new Date());
