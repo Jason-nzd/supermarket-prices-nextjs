@@ -92,6 +92,7 @@ export async function DBFetchAll(
       'SELECT * FROM products p' +
       queryAddLimitStore(store, false) +
       queryAddPriceHistoryLimit(priceHistoryLimit) +
+      queryAddLastChecked(LastChecked.Within2Days) +
       queryAddOrderBy(orderBy),
   };
 
@@ -192,6 +193,12 @@ function queryAddOrderBy(orderBy: OrderByMode): string {
       break;
     case OrderByMode.Oldest:
       sqlQueryAddon = ' ORDER BY p.lastChecked';
+      break;
+    case OrderByMode.LatestPriceChange:
+      sqlQueryAddon = ' ORDER BY p.lastUpdated DESC';
+      break;
+    case OrderByMode.OldestPriceChange:
+      sqlQueryAddon = ' ORDER BY p.lastUpdated';
       break;
     case OrderByMode.PriceLowest:
       sqlQueryAddon = ' ORDER BY p.currentPrice';

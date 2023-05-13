@@ -18,6 +18,8 @@ export enum Store {
 export enum OrderByMode {
   Latest,
   Oldest,
+  LatestPriceChange,
+  OldestPriceChange,
   PriceLowest,
   PriceHighest,
   UnitPriceLowest,
@@ -171,27 +173,66 @@ export function deriveUnitPriceString(product: Product): string | undefined {
 // ---------------------------
 // Gets the % difference in price between the current price and its historical lowest.
 export function getPriceLowDifference(priceHistory: DatedPrice[]) {
-  let lowestPrice = 9999,
-    highestPrice = 0;
+  // Loop through the price history and find the lowest price
+  let lowestPrice = 9999;
   priceHistory.forEach((datedPrice) => {
     if (datedPrice.price < lowestPrice) lowestPrice = datedPrice.price;
-    if (datedPrice.price > highestPrice) highestPrice = datedPrice.price;
   });
 
+  // Return the difference in price between the current and lowest price
   const currentPrice = priceHistory[priceHistory.length - 1].price;
   return Math.round((currentPrice / lowestPrice) * 100 - 100);
+}
+
+// getLowerQuartilePriceDifference()
+// ---------------------------
+// Gets the % difference in price between the current and lower quartile average.
+export function getLowerQuartilePriceDifference(priceHistory: DatedPrice[]) {
+  // Extract only prices from the DatedPrice array
+  let pricesOnly: number[] = [];
+  priceHistory.forEach((datedPrice) => {
+    pricesOnly.push(datedPrice.price);
+  });
+
+  // Sort prices
+  pricesOnly.sort((a, b) => {
+    if (a < b) return -1;
+    if (a > b) return 1;
+    return 0;
+  });
+
+  // Select the index of the lower quartile
+  const quartileIndex = Math.ceil(pricesOnly.length / 4);
+
+  // Loop through the lower quartile and add up all the prices
+  let lowerQuartileSummed = 0;
+  for (let i = 0; i < quartileIndex; i++) {
+    lowerQuartileSummed += pricesOnly[i];
+    console.log(lowerQuartileSummed);
+  }
+
+  // Calculate the lower quartile price
+  const lowerQuartilePrice = lowerQuartileSummed / quartileIndex;
+
+  // Return the difference in price between the current and lower quartile price
+  const currentPrice = priceHistory[priceHistory.length - 1].price;
+  return Math.round((currentPrice / lowerQuartilePrice) * 100 - 100);
 }
 
 // getPriceAvgDifference()
 // ---------------------------
 // Gets the % difference in price between the current price and its historical average.
 export function getPriceAvgDifference(priceHistory: DatedPrice[]) {
+  // Loop through priceHistory array and sum up prices
   let pricesSummed = 0;
   priceHistory.forEach((datedPrice) => {
     pricesSummed += datedPrice.price;
   });
+
+  // Calculate the average price
   const avgPrice = pricesSummed / priceHistory.length;
 
+  // Return the difference in price between the current and average price
   const currentPrice = priceHistory[priceHistory.length - 1].price;
   return Math.round((currentPrice / avgPrice) * 100 - 100);
 }
