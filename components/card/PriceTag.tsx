@@ -1,7 +1,12 @@
 import _ from 'lodash';
 import React from 'react';
 import { Product } from '../../typings';
-import { getLastPriceChangePercent, getPriceAvgDifference } from '../../utilities/utilities';
+import {
+  getLastPriceChangePercent,
+  getLowerQuartilePriceDifference,
+  getPriceAvgDifference,
+  getPriceLowDifference,
+} from '../../utilities/utilities';
 
 interface Props {
   product: Product;
@@ -16,7 +21,7 @@ export default function PriceTag({ product }: Props) {
     if (
       product.originalUnitQuantity &&
       product.originalUnitQuantity < 500 &&
-      product.originalUnitQuantity > 10 &&
+      product.originalUnitQuantity > 40 &&
       product.unitName === 'kg'
     ) {
       // Convert from per /kg to per /100g
