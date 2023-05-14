@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useMediaQuery } from '../hooks/useMediaQuery';
 import { Product } from '../typings';
-import ProductCard from './Card/ProductCard';
+import ProductCard from './card/ProductCard';
 
 interface Props {
   products: Product[];

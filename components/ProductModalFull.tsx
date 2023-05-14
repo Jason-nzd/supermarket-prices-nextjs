@@ -4,8 +4,8 @@ import React from 'react';
 import { Product } from '../typings';
 import { utcDateToLongDate } from '../utilities/utilities';
 import ImageWithFallback from './ImageWithFallback';
-import PriceHistoryChart from './Card/PriceHistoryChart';
-import PriceTag from './Card/PriceTag';
+import PriceHistoryChart from './card/PriceHistoryChart';
+import PriceTag from './card/PriceTag';
 import StoreIcon from './StoreIcon';
 
 interface Props {
