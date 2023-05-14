@@ -29,10 +29,10 @@ jobs:
       - name: Create .env file
         run: |
           touch .env
-          echo COSMOS_CONSTRING=${{ secrets.COSMOS_CONSTRING }} >> .env
-          echo COSMOS_CONTAINER=${{ secrets.COSMOS_CONTAINER }} >> .env
-          echo COSMOS_DBNAME=${{ secrets.COSMOS_DBNAME }} >> .env
-          echo IMAGES_PATH=${{ secrets.IMAGES_PATH }} >> .env
+          echo "COSMOS_CONSTRING=${{ secrets.COSMOS_CONSTRING }}" >> .env
+          echo "COSMOS_CONTAINER=${{ secrets.COSMOS_CONTAINER }}" >> .env
+          echo "COSMOS_DBNAME=${{ secrets.COSMOS_DBNAME }}" >> .env
+          echo "IMAGES_PATH=${{ secrets.IMAGES_PATH }}" >> .env
 
       - run: npm run build
 
