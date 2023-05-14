@@ -14,9 +14,9 @@ jobs:
 
       - run: npm ci
 
-      - name: create env file
+      - name: Create .env file
         run: |
-          touch .env
+          touch .env.local
           echo COSMOS_CONSTRING=${{ secrets.COSMOS_CONSTRING }} >> .env
           echo COSMOS_CONTAINER=${{ secrets.COSMOS_CONTAINER }} >> .env
           echo COSMOS_DBNAME=${{ secrets.COSMOS_DBNAME }} >> .env
