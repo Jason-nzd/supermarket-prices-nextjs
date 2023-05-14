@@ -6,6 +6,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: production
+
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -14,13 +16,23 @@ jobs:
 
       - run: npm ci
 
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.npm${{ github.workspace }}/.next/cache
+          # Generate a new cache whenever packages or source files change.
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**.[jt]s', '**.[jt]sx') }}
+          # If source files changed but packages didn't, rebuild from a prior cache.
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
+
       - name: Create .env file
         run: |
-          touch .env.local
-          echo COSMOS_CONSTRING=${{ secrets.COSMOS_CONSTRING }} >> .env.local
-          echo COSMOS_CONTAINER=${{ secrets.COSMOS_CONTAINER }} >> .env.local
-          echo COSMOS_DBNAME=${{ secrets.COSMOS_DBNAME }} >> .env.local
-          echo IMAGES_PATH=${{ secrets.IMAGES_PATH }} >> .env.local
+          touch .env
+          echo COSMOS_CONSTRING=${{ secrets.COSMOS_CONSTRING }} >> .env
+          echo COSMOS_CONTAINER=${{ secrets.COSMOS_CONTAINER }} >> .env
+          echo COSMOS_DBNAME=${{ secrets.COSMOS_DBNAME }} >> .env
+          echo IMAGES_PATH=${{ secrets.IMAGES_PATH }} >> .env
 
       - run: npm run build
 
@@ -30,4 +42,4 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-southeast-2
 
-      - run: aws s3 sync ./out s3://${{ vars.S3_BUCKET }}
+      #- run: aws s3 sync ./out s3://${{ vars.S3_BUCKET }}
