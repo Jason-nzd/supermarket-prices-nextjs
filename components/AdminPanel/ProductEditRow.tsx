@@ -95,7 +95,7 @@ function ProductEditRow({ product }: Props) {
 
       {/* Price History */}
       <td className='px-6'>
-        <div className='flex gap-1'>
+        <div className='flex gap-1 max-w-[20rem] overflow-x-scroll'>
           {product.priceHistory.map((datedPrice) => {
             return <DatedPriceTag datedPrice={datedPrice} key={datedPrice.date.toString()} />;
           })}

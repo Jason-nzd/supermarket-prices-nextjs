@@ -154,7 +154,7 @@ const AdminPanel = ({ lastChecked }: Props) => {
                     <th scope='col' className='px-6 py-4'>
                       Per Unit Price
                     </th>
-                    <th scope='col' className='px-6 py-4'>
+                    <th scope='col' className='px-6 py-4 max-w-[20rem]'>
                       Price History
                     </th>
                     {/* Empty th for expanding icons panel */}
