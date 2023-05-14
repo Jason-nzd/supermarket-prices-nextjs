@@ -6,13 +6,22 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    environment: build
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: 18
+
       - run: npm ci
+
+      - name: create env file
+        run: |
+          touch .env
+          echo COSMOS_CONSTRING=${{ secrets.COSMOS_CONSTRING }} >> .env
+          echo COSMOS_CONTAINER=${{ secrets.COSMOS_CONTAINER }} >> .env
+          echo COSMOS_DBNAME=${{ secrets.COSMOS_DBNAME }} >> .env
+          echo IMAGES_PATH=${{ secrets.IMAGES_PATH }} >> .env
+
       - run: npm run build
 
       - uses: aws-actions/configure-aws-credentials@v2
