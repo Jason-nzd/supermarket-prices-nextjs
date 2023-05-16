@@ -34,13 +34,13 @@ function ProductModalFull({ product }: Props) {
 
   return (
     <div
-      className='flex flex-col bg-white absolute top-5 mx-auto rounded-3xl shadow-2xl z-50
-      dark:bg-zinc-800 dark:text-zinc-300'
+      className='flex flex-col bg-white absolute mx-auto rounded-3xl z-50
+      shadow-2xl dark:bg-zinc-800 dark:text-zinc-300 overflow-y-scroll max-h-[90%]'
     >
       <div className='flex flex-col w-[90%] md:w-full md:flex-row mx-auto'>
         {/* Image on left 2/3 */}
-        <div className='relative'>
-          <div className='p-2 md:py-4 md:pl-4'>
+        <div className='relative max-w-[calc(70vh)]'>
+          <div className='p-2 md:py-4 md:pl-4 w-fit h-fit'>
             <ImageWithFallback
               id={product.id}
               width={900}

@@ -112,7 +112,7 @@ function ProductCard({ product }: Props) {
       </div>
 
       <Dialog open={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <div className='fixed mx-auto max-h-[80rem] max-w-[80rem] w-[90%] h-[90%] inset-0 top-[10%] z-40'>
+        <div className='fixed mx-auto max-h-[80rem] max-w-[80rem] w-[90%] h-[95%] inset-0 top-[5%] z-40'>
           <Dialog.Panel className=''>
             <ProductModalFull product={product} key={product.id} />
           </Dialog.Panel>
