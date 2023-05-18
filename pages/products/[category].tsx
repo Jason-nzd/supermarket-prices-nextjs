@@ -61,6 +61,7 @@ export const freshCategory = [
   'salads-coleslaw',
   'bread',
   'bread-rolls',
+  'wraps-specialty-bread',
 ];
 export const chilledCategory = [
   'milk',
@@ -88,6 +89,8 @@ export const meatCategory = [
 ];
 export const frozenCategory = [
   'ice-cream',
+  'ice-blocks',
+  'cheesecake',
   'frozen-chips',
   'hash-browns',
   'frozen-vegetables',
@@ -95,11 +98,33 @@ export const frozenCategory = [
   'frozen-seafood',
   'pies-sausage-rolls',
   'pizza',
-  'spring-rolls',
   'other-savouries',
 ];
-export const pantryCategory = ['rice', 'baked-beans-spaghetti', 'canned-fish', 'cereal', 'spreads'];
-export const snacksCategory = ['chocolate', 'chips', 'corn-chips', 'biscuits', 'muesli-bars'];
+export const pantryCategory = [
+  'rice',
+  'beans-spaghetti',
+  'canned-fish',
+  'canned-meat',
+  'cereal',
+  'spreads',
+  'baking',
+  'sauces',
+  'oils-vinegars',
+  'world-foods',
+];
+export const snacksCategory = [
+  'chocolate',
+  'chocolate-packs',
+  'chips',
+  'corn-chips',
+  'crackers',
+  'biscuits',
+  'muesli-bars',
+  'nuts',
+  'nuts-fruit-mix',
+  'lollies-sweets',
+  'other-snacks',
+];
 export const drinksCategory = [
   'black-tea',
   'green-tea',
