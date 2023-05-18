@@ -55,7 +55,7 @@ function ProductModalFull({ product }: Props) {
         <div className='flex flex-col w-full md:w-1/3 md:min-w-[20rem] md:pr-8'>
           {/* Title */}
           <div
-            className='w-full h-12 pt-3 px-3 rounded-t-2xl text-[#3C8DA3] text-md
+            className='w-full h-12 pt-3 px-3 rounded-t-2xl text-[#3C8DA3] text-lg
               text-center font-semibold'
           >
             {product.name}
