@@ -61,7 +61,7 @@ export const freshCategory = [
   'salads-coleslaw',
   'bread',
   'bread-rolls',
-  'wraps-specialty-bread',
+  'specialty-bread',
 ];
 export const chilledCategory = [
   'milk',
@@ -69,7 +69,7 @@ export const chilledCategory = [
   'sour-cream',
   'cream',
   'yoghurt',
-  'butter-spreads',
+  'butter',
   'cheese',
   'cheese-slices',
   'salami',
@@ -120,9 +120,8 @@ export const snacksCategory = [
   'crackers',
   'biscuits',
   'muesli-bars',
-  'nuts',
-  'nuts-fruit-mix',
-  'lollies-sweets',
+  'nuts-bulk-mix',
+  'sweets-lollies',
   'other-snacks',
 ];
 export const drinksCategory = [
@@ -151,7 +150,7 @@ let categoryNames = freshCategory.concat(
 
 // Remove special sub-categories witch have custom made pages instead of generated pages
 categoryNames = categoryNames.filter((name) => {
-  return !['eggs', 'fruit', 'milk'].includes(name);
+  return !['eggs', 'fruit', 'milk', 'spreads'].includes(name);
 });
 
 // Takes an array of categories, and returns them in { path } format
