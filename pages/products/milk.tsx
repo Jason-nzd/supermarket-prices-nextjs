@@ -7,13 +7,7 @@ import { DBFetchByCategory } from '../../utilities/cosmosdb';
 import { DarkModeContext } from '../_app';
 import NavBar from '../../components/NavBar/NavBar';
 import Footer from '../../components/Footer';
-import {
-  OrderByMode,
-  PriceHistoryLimit,
-  Store,
-  sortProductsByUnitPrice,
-  utcDateToLongDate,
-} from '../../utilities/utilities';
+import { sortProductsByUnitPrice, utcDateToLongDate } from '../../utilities/utilities';
 
 interface Props {
   standardMilk: Product[];
