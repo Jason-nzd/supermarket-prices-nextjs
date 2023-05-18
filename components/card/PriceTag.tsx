@@ -1,12 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import { Product } from '../../typings';
-import {
-  getLastPriceChangePercent,
-  getLowerQuartilePriceDifference,
-  getPriceAvgDifference,
-  getPriceLowDifference,
-} from '../../utilities/utilities';
+import { getPriceAvgDifference } from '../../utilities/utilities';
 
 interface Props {
   product: Product;
@@ -81,7 +76,7 @@ export default function PriceTag({ product }: Props) {
           </div>
 
           {/* Unit Price */}
-          {product.unitPrice && product.unitName && (
+          {product.unitPrice && product.unitName && product.unitPrice != 9999 && (
             <div className='flex text-md items-center'>
               <div className='text-xs'>$</div>
               <div className='font-semibold text-lg lg:text-md'>
