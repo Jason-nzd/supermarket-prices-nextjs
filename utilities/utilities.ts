@@ -76,7 +76,7 @@ export function cleanProductFields(document: Product): Product {
         unitPrice = null;
         unitName = null;
       }
-    } else if (unitPrice < 0.2 || unitPrice > 200) {
+    } else if (unitPrice < 0.2 || unitPrice > 600) {
       console.log('[Unusual UnitPrice] = ' + name + ' - ' + unitPrice + '/' + unitName);
       unitPrice = null;
     }
