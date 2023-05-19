@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Product } from '../../typings';
 import DatedPriceTag from './DatedPriceTag';
 import StoreIcon from '../StoreIcon';
+import { utcDateToShortDate } from 'utilities/utilities';
 
 interface Props {
   product: Product;
@@ -85,12 +86,14 @@ function ProductEditRow({ product }: Props) {
 
       {/* Unit Size */}
       <td className='px-6 py-1'>
-        <div className='text-xs'>{product.originalUnitQuantity}</div>
+        <div className='text-xs'>
+          ${product.unitPrice}/{product.unitName}
+        </div>
       </td>
 
-      {/* Unit Price */}
+      {/* Last Checked */}
       <td className='px-6 py-1'>
-        <div className='text-xs'>{product.unitPrice}</div>
+        <div className='text-xs'>{utcDateToShortDate(product.lastChecked)}</div>
       </td>
 
       {/* Price History */}

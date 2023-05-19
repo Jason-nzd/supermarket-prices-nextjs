@@ -149,10 +149,10 @@ const AdminPanel = ({ lastChecked }: Props) => {
                       Category
                     </th>
                     <th scope='col' className='px-6 py-4'>
-                      Unit Size
+                      Unit Price
                     </th>
                     <th scope='col' className='px-6 py-4'>
-                      Per Unit Price
+                      Last Checked
                     </th>
                     <th scope='col' className='px-6 py-4 max-w-[20rem]'>
                       Price History
