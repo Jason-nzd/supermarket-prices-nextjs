@@ -17,11 +17,10 @@ function Footer() {
           icons.getbootstrap.com
         </Link>
       </div>
-      <div className='flex mx-auto gap-6 md:gap-14 pt-4 w-fit'>
+      <div className='flex mx-auto gap-6 md:gap-14 pt-4 w-fit px-2'>
         <div>©2023 jb</div>
-        <div>All Rights Reserved</div>
-        <Link href='#' className='hover-to-white'>
-          Privacy Policy
+        <Link href='./cookie-policy' className='hover-to-white'>
+          Privacy & Cookie Policy
         </Link>
         <Link
           className='flex gap-2 hover-to-white items-center'
