@@ -34,6 +34,7 @@ jobs:
           echo "COSMOS_CONTAINER=${{ secrets.COSMOS_CONTAINER }}" >> .env
           echo "COSMOS_DBNAME=${{ secrets.COSMOS_DBNAME }}" >> .env
           echo "IMAGES_PATH=${{ secrets.IMAGES_PATH }}" >> .env
+          echo "TZ=Pacific/Auckland" >> .env
 
       - run: npm run build
 
