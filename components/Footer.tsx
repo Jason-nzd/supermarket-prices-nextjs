@@ -19,8 +19,8 @@ function Footer() {
       </div>
       <div className='flex mx-auto gap-6 md:gap-14 pt-4 w-fit px-2'>
         <div>©2023 jb</div>
-        <Link href='./cookie-policy' className='hover-to-white'>
-          Privacy & Cookie Policy
+        <Link href='./privacy' className='hover-to-white'>
+          Privacy Policy
         </Link>
         <Link
           className='flex gap-2 hover-to-white items-center'

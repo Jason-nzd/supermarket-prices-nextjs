@@ -8,7 +8,7 @@ interface Props {
   lastChecked: string;
 }
 
-export default function CookiePolicy({ lastChecked }: Props) {
+export default function Privacy({ lastChecked }: Props) {
   const theme = useContext(DarkModeContext).darkMode ? 'dark' : 'light';
 
   return (
