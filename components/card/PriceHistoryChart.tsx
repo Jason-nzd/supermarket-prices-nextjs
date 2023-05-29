@@ -57,7 +57,7 @@ function PriceHistoryChart({ priceHistory, lastChecked }: Props) {
         borderColor: trendColour,
         pointBorderColor: trendColour,
         pointBackgroundColor: 'white',
-        pointRadius: 4,
+        pointRadius: 3,
         pointHoverRadius: 6,
         pointHitRadius: 30,
         pointBorderWidth: 3,
@@ -94,16 +94,16 @@ function PriceHistoryChart({ priceHistory, lastChecked }: Props) {
         cornerRadius: 14,
       },
     },
-    scales: {
-      y: {
-        // min: 0,
-        ticks: {
-          callback(tickValue, index, ticks) {
-            return printPrice(tickValue as number);
-          },
-        },
-      },
-    },
+    // scales: {
+    //   y: {
+    //     // min: 0,
+    //     ticks: {
+    //       callback(tickValue, index, ticks) {
+    //         return printPrice(tickValue as number);
+    //       },
+    //     },
+    //   },
+    // },
   };
 
   return <Line data={chartData} options={options} className='z-40' />;
