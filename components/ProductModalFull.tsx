@@ -114,7 +114,7 @@ function ProductModalFull({ product }: Props) {
 
           {/* Last Updated */}
           <div className='text-slate-400 text-sm my-2 ml-4 flex'>
-            <div className='pr-2'>Price Up-to-Date As Of:</div>
+            <div className='pr-2'>Price Current As Of:</div>
             <div>{utcDateToLongDate(product.lastChecked)}</div>
           </div>
         </div>
