@@ -117,6 +117,41 @@ function ProductModalFull({ product }: Props) {
             <div className='pr-2'>Price Current As Of:</div>
             <div>{utcDateToLongDate(product.lastChecked)}</div>
           </div>
+
+          {/* Original Site Search Link */}
+          <div className='text-slate-600 text-sm my-2 ml-4'>
+            <div className='pr-2'>Search for '{product.name}'' at</div>
+            {product.sourceSite.includes('countdown.co.nz') && (
+              <a
+                target='_blank'
+                className='external-link'
+                href={'https://www.countdown.co.nz/shop/searchproducts?search=' + product.name}
+                rel='noopener noreferrer'
+              >
+                {boxArrow} countdown.co.nz
+              </a>
+            )}
+            {product.sourceSite.includes('thewarehouse.co.nz') && (
+              <a
+                target='_blank'
+                className='external-link'
+                href={'https://www.thewarehouse.co.nz/search?q=' + product.name}
+                rel='noopener noreferrer'
+              >
+                {boxArrow} thewarehouse.co.nz
+              </a>
+            )}
+            {product.sourceSite.includes('paknsave.co.nz') && (
+              <a
+                target='_blank'
+                className='external-link'
+                href={'https://www.paknsave.co.nz/shop/Search?q=' + product.name}
+                rel='noopener noreferrer'
+              >
+                {boxArrow} paknsave.co.nz
+              </a>
+            )}
+          </div>
         </div>
       </div>
 
@@ -152,3 +187,23 @@ function ProductModalFull({ product }: Props) {
 }
 
 export default ProductModalFull;
+
+const boxArrow = (
+  <svg
+    xmlns='http://www.w3.org/2000/svg'
+    width='16'
+    height='16'
+    fill='currentColor'
+    className='bi bi-box-arrow-up-right'
+    viewBox='0 0 16 16'
+  >
+    <path
+      fill-rule='evenodd'
+      d='M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5z'
+    />
+    <path
+      fill-rule='evenodd'
+      d='M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z'
+    />
+  </svg>
+);
