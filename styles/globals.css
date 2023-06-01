@@ -42,4 +42,7 @@
     bg-black bg-opacity-[30%] dark:bg-opacity-[60%] backdrop-blur-sm text-white dark:text-zinc-300
     font-semibold ring-1 ring-white rounded-2xl shadow-md;
   }
+  .external-link {
+    @apply flex border-2 w-fit border-green-200 rounded-3xl p-1 px-2 items-center mt-2 hover:font-semibold;
+  }
 }
