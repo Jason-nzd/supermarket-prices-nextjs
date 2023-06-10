@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 module.exports = {
+  output: 'standalone',
   trailingSlash: true,
   reactStrictMode: true,
   images: {
