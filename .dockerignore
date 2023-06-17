@@ -10,3 +10,6 @@ README.md
 .vscode
 .terraform
 .husky
+.bat*
+**/out
+**/node_modules
