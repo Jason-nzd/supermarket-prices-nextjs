@@ -43,6 +43,15 @@
     font-semibold ring-1 ring-white rounded-2xl shadow-md;
   }
   .external-link {
-    @apply flex border-2 w-fit border-green-200 rounded-3xl p-1 px-2 items-center mt-2 hover:font-semibold;
+    @apply font-semibold ring-2 w-fit rounded-3xl p-2 shadow-md hover:shadow-lg transition;
+  }
+  .green-ring {
+    @apply ring-green-300  hover:ring-green-400;
+  }
+  .yellow-ring {
+    @apply ring-yellow-300 hover:ring-yellow-400;
+  }
+  .red-ring {
+    @apply ring-red-500 hover:ring-red-600;
   }
 }

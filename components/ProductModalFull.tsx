@@ -1,12 +1,13 @@
 import _ from 'lodash';
 import Link from 'next/link';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Product } from '../typings';
 import { utcDateToLongDate } from '../utilities/utilities';
 import ImageWithFallback from './ImageWithFallback';
 import PriceHistoryChart from './card/PriceHistoryChart';
 import PriceTag from './card/PriceTag';
 import StoreIcon from './StoreIcon';
+import { DarkModeContext } from 'pages/_app';
 
 interface Props {
   product: Product;
@@ -32,10 +33,14 @@ function ProductModalFull({ product }: Props) {
   avgPrice = Math.round((summedPrices / product.priceHistory.length) * 100) / 100;
   //const avgPriceDiff = (product.currentPrice / avgPrice) * 100 - 100;
 
+  const theme = useContext(DarkModeContext).darkMode ? 'dark' : 'light';
+
   return (
     <div
-      className='flex flex-col bg-white absolute mx-auto rounded-3xl z-50
-      shadow-2xl dark:bg-zinc-800 dark:text-zinc-300 overflow-y-scroll max-h-[90%]'
+      className={
+        (theme === 'dark' ? 'bg-zinc-800 text-zinc-300' : 'bg-white') +
+        ' flex flex-col absolute mx-auto rounded-3xl z-50 shadow-2xl overflow-y-scroll max-h-[90%]'
+      }
     >
       <div className='flex flex-col w-[90%] md:w-full md:flex-row mx-auto'>
         {/* Image on left 2/3 */}
@@ -108,48 +113,65 @@ function ProductModalFull({ product }: Props) {
 
           {/* First Added */}
           <div className='text-slate-400 text-sm mt-2 ml-4 flex'>
-            <div className='pr-2'>First Added to KiwiPrice:</div>
+            <div className='pr-2'>First added to KiwiPrice on</div>
             <div>{utcDateToLongDate(product.priceHistory[0].date)}</div>
           </div>
 
           {/* Last Updated */}
           <div className='text-slate-400 text-sm my-2 ml-4 flex'>
-            <div className='pr-2'>Price Current As Of:</div>
+            <div className='pr-2'>Price current as of</div>
             <div>{utcDateToLongDate(product.lastChecked)}</div>
           </div>
 
           {/* Original Site Search Link */}
-          <div className='text-slate-600 text-sm my-2 ml-4'>
-            <div className='pr-2'>Search for '{product.name}'' at</div>
+          <div
+            className={
+              (theme === 'dark' ? 'bg-zinc-800 text-zinc-300' : 'text-slate-600') +
+              ' text-sm my-2 ml-4'
+            }
+          >
             {product.sourceSite.includes('countdown.co.nz') && (
-              <a
-                target='_blank'
-                className='external-link'
-                href={'https://www.countdown.co.nz/shop/searchproducts?search=' + product.name}
-                rel='noopener noreferrer'
-              >
-                {boxArrow} countdown.co.nz
-              </a>
+              <div className='external-link green-ring'>
+                <a
+                  target='_blank'
+                  className='flex-col'
+                  href={'https://www.countdown.co.nz/shop/searchproducts?search=' + product.name}
+                  rel='noopener noreferrer'
+                >
+                  <div>'{product.name}'</div>
+                  <div className='flex gap-x-1 items-center mx-auto'>
+                    {boxArrow} countdown.co.nz
+                  </div>
+                </a>
+              </div>
             )}
             {product.sourceSite.includes('thewarehouse.co.nz') && (
-              <a
-                target='_blank'
-                className='external-link'
-                href={'https://www.thewarehouse.co.nz/search?q=' + product.name}
-                rel='noopener noreferrer'
-              >
-                {boxArrow} thewarehouse.co.nz
-              </a>
+              <div className='external-link red-ring'>
+                <a
+                  target='_blank'
+                  className='flex-col'
+                  href={'https://www.thewarehouse.co.nz/search?q=' + product.name}
+                  rel='noopener noreferrer'
+                >
+                  <div>'{product.name}'</div>
+                  <div className='flex gap-x-1 items-center mx-auto'>
+                    {boxArrow} thewarehouse.co.nz
+                  </div>
+                </a>
+              </div>
             )}
             {product.sourceSite.includes('paknsave.co.nz') && (
-              <a
-                target='_blank'
-                className='external-link'
-                href={'https://www.paknsave.co.nz/shop/Search?q=' + product.name}
-                rel='noopener noreferrer'
-              >
-                {boxArrow} paknsave.co.nz
-              </a>
+              <div className='external-link yellow-ring'>
+                <a
+                  target='_blank'
+                  className='flex-col'
+                  href={'https://www.paknsave.co.nz/shop/Search?q=' + product.name}
+                  rel='noopener noreferrer'
+                >
+                  <div>'{product.name}'</div>
+                  <div className='flex gap-x-1 items-center mx-auto'>{boxArrow} paknsave.co.nz</div>
+                </a>
+              </div>
             )}
           </div>
         </div>
