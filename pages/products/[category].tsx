@@ -90,7 +90,7 @@ export const meatCategory = [
 export const frozenCategory = [
   'ice-cream',
   'ice-blocks',
-  'cheesecake',
+  'pastries-cheesecake',
   'frozen-chips',
   'hash-browns',
   'frozen-vegetables',
