@@ -31,7 +31,6 @@ function CategorySelectMenu({ updateNavCategories }: Props) {
     'eggs',
     'fruit',
     'fresh-vegetables',
-    'frozen-chips',
   ]);
 
   // Try read and set user categories cookie
