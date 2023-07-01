@@ -30,32 +30,32 @@ function ProductsGrid({ products, trimColumns = false }: Props) {
     }
   }
 
-  const [scrollIndex, setScrollIndex] = useState(0);
-  const [productsWindow, setProductsWindow] = useState<Product[]>(
-    products.slice(0, numColumnsToShow)
-  );
+  // const [scrollIndex, setScrollIndex] = useState(0);
+  // const [productsWindow, setProductsWindow] = useState<Product[]>(
+  //   products.slice(0, numColumnsToShow)
+  // );
 
-  const scrollLeft = () => {
-    if (scrollIndex > 0) {
-      setScrollIndex(scrollIndex - 1);
-      const startIndex = (scrollIndex - 1) * numColumnsToShow;
-      const endIndex = scrollIndex * numColumnsToShow;
+  // const scrollLeft = () => {
+  //   if (scrollIndex > 0) {
+  //     setScrollIndex(scrollIndex - 1);
+  //     const startIndex = (scrollIndex - 1) * numColumnsToShow;
+  //     const endIndex = scrollIndex * numColumnsToShow;
 
-      setProductsWindow(products.slice(startIndex, endIndex));
-      console.log('window - [' + startIndex + ' - ' + endIndex + ']');
-    }
-  };
+  //     setProductsWindow(products.slice(startIndex, endIndex));
+  //     console.log('window - [' + startIndex + ' - ' + endIndex + ']');
+  //   }
+  // };
 
-  const scrollRight = () => {
-    if (numColumnsToShow * scrollIndex < products.length) {
-      setScrollIndex(scrollIndex + 1);
-      const startIndex = scrollIndex * numColumnsToShow;
-      const endIndex = (scrollIndex + 1) * numColumnsToShow;
+  // const scrollRight = () => {
+  //   if (numColumnsToShow * scrollIndex < products.length) {
+  //     setScrollIndex(scrollIndex + 1);
+  //     const startIndex = scrollIndex * numColumnsToShow;
+  //     const endIndex = (scrollIndex + 1) * numColumnsToShow;
 
-      setProductsWindow(products.slice(startIndex, endIndex));
-      console.log('window - [' + startIndex + ' - ' + endIndex + ']');
-    }
-  };
+  //     setProductsWindow(products.slice(startIndex, endIndex));
+  //     console.log('window - [' + startIndex + ' - ' + endIndex + ']');
+  //   }
+  // };
 
   return (
     <div className='flex items-center'>
