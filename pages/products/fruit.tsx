@@ -52,26 +52,66 @@ const Category = ({
         {/* Central Aligned Div */}
         <div className='central-responsive-div'>
           {/* Categorised Product Grids*/}
-          <div className='grid-title'>Apples</div>
-          <ProductsGrid products={apples} trimColumns={false} />
-          <div className='grid-title'>Bananas</div>
-          <ProductsGrid products={bananas} trimColumns={false} />
-          <div className='grid-title'>Citrus</div>
-          <ProductsGrid products={citrus} trimColumns={false} />
-          <div className='grid-title'>Pears</div>
-          <ProductsGrid products={pears} trimColumns={false} />
-          <div className='grid-title'>Kiwifruit & Feijoa</div>
-          <ProductsGrid products={kiwifruit} trimColumns={false} />
-          <div className='grid-title'>Peaches, Plums, & Nectarines</div>
-          <ProductsGrid products={peaches} trimColumns={false} />
-          <div className='grid-title'>Berries</div>
-          <ProductsGrid products={berries} trimColumns={false} />
-          <div className='grid-title'>Pineapple, Mango & Melon</div>
-          <ProductsGrid products={pineapple} trimColumns={false} />
-          <div className='grid-title'>Grapes</div>
-          <ProductsGrid products={grapes} trimColumns={false} />
-          <div className='grid-title'>Other Fruit</div>
-          <ProductsGrid products={other} trimColumns={true} />
+          {apples.length > 0 && (
+            <div>
+              <div className='grid-title'>Apples</div>
+              <ProductsGrid products={apples} trimColumns={false} />
+            </div>
+          )}
+          {bananas.length > 0 && (
+            <div>
+              <div className='grid-title'>Bananas</div>
+              <ProductsGrid products={bananas} trimColumns={false} />
+            </div>
+          )}
+          {citrus.length > 0 && (
+            <div>
+              <div className='grid-title'>Citrus</div>
+              <ProductsGrid products={citrus} trimColumns={false} />
+            </div>
+          )}
+          {pears.length > 0 && (
+            <div>
+              <div className='grid-title'>Pears</div>
+              <ProductsGrid products={pears} trimColumns={false} />
+            </div>
+          )}
+          {kiwifruit.length > 0 && (
+            <div>
+              <div className='grid-title'>Kiwifruit & Feijoa</div>
+              <ProductsGrid products={kiwifruit} trimColumns={false} />
+            </div>
+          )}
+          {peaches.length > 0 && (
+            <div>
+              <div className='grid-title'>Peaches, Plums, & Nectarines</div>
+              <ProductsGrid products={peaches} trimColumns={false} />
+            </div>
+          )}
+          {berries.length > 0 && (
+            <div>
+              <div className='grid-title'>Berries</div>
+              <ProductsGrid products={berries} trimColumns={false} />
+            </div>
+          )}
+          {pineapple.length > 0 && (
+            <div>
+              <div className='grid-title'>Pineapple, Mango & Melon</div>
+              <ProductsGrid products={pineapple} trimColumns={false} />
+            </div>
+          )}
+          {grapes.length > 0 && (
+            <div>
+              <div className='grid-title'>Grapes</div>
+              <ProductsGrid products={grapes} trimColumns={false} />
+            </div>
+          )}
+          {other.length > 0 && (
+            <div>
+              <div className='grid-title'>Other Fruit</div>
+              <ProductsGrid products={other} trimColumns={true} />
+            </div>
+          )}
         </div>
       </div>
       <Footer />
@@ -115,7 +155,6 @@ export const getStaticProps: GetStaticProps = async () => {
     else other.push(product);
   });
   other = other.slice(0, 20);
-  console.log(products.length + ' ' + peaches.length);
 
   // Sort all by unit price
   apples = sortProductsByUnitPrice(apples).slice(0, 15);
