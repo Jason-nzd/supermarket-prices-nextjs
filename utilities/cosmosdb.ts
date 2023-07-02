@@ -153,33 +153,32 @@ async function fetchProductsUsingSDK(
   let resultingProducts: Product[] = [];
 
   // Log query to console
-  // console.log('SDK: ' + querySpec.query);
-  if (querySpec.parameters !== undefined)
-    if (await connectToCosmosDB()) {
-      // console.log('\t' + querySpec.parameters[0].name + ' = ' + querySpec.parameters[0].value);
+  console.log('SDK: ' + querySpec.query);
+  // if (querySpec.parameters !== undefined)
+  if (await connectToCosmosDB()) {
+    //console.log('\t' + querySpec.parameters[0].name + ' = ' + querySpec.parameters[0].value);
+    // Access CosmosDB directly using the SDK
+    try {
+      // Set Cosmos Query options
+      const options: FeedOptions = {
+        maxItemCount: maxItems,
+      };
 
-      // Access CosmosDB directly using the SDK
-      try {
-        // Set Cosmos Query options
-        const options: FeedOptions = {
-          maxItemCount: maxItems,
-        };
+      // Perform DB Fetch
+      const dbResponse: FeedResponse<Product> = await container.items
+        .query(querySpec, options)
+        .fetchNext();
 
-        // Perform DB Fetch
-        const dbResponse: FeedResponse<Product> = await container.items
-          .query(querySpec, options)
-          .fetchNext();
-
-        if (dbResponse.resources !== undefined) {
-          // Push products into array and clean specific fields from CosmosDB
-          dbResponse.resources.map((productDocument, index) => {
-            resultingProducts.push(cleanProductFields(productDocument));
-          });
-        }
-      } catch (error) {
-        console.log('Error on fetchProductsUsingSDK()\n' + error);
+      if (dbResponse.resources !== undefined) {
+        // Push products into array and clean specific fields from CosmosDB
+        dbResponse.resources.map((productDocument, index) => {
+          resultingProducts.push(cleanProductFields(productDocument));
+        });
       }
-    } else return useSampleProductsInstead();
+    } catch (error) {
+      console.log('Error on fetchProductsUsingSDK()\n' + error);
+    }
+  } else return useSampleProductsInstead();
 
   return resultingProducts;
 }
