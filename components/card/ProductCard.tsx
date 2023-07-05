@@ -1,15 +1,27 @@
 import React, { useState } from 'react';
-import { Product } from '../../typings';
+import { DatedPrice, Product } from '../../typings';
 import ImageWithFallback from '../ImageWithFallback';
 import { Dialog } from '@headlessui/react';
 import ProductModalFull from '../ProductModalFull';
 import StoreIcon from '../StoreIcon';
-import PriceHistoryChart from './PriceHistoryChart';
 import PriceTag from './PriceTag';
 import PriceHistoryTips from './PriceHistoryTips';
+import dynamic from 'next/dynamic';
 
 interface Props {
   product: Product;
+}
+
+// Lazy/Dynamic load in heavy chart.js from PriceHistoryChart
+const DynamicChart = dynamic(() => import('./PriceHistoryChart'), {
+  loading: () => <p>Loading...</p>,
+});
+interface ChartProps {
+  priceHistory: DatedPrice[];
+  lastChecked: Date;
+}
+function DynamicChartCall({ priceHistory, lastChecked }: ChartProps) {
+  return <DynamicChart priceHistory={priceHistory} lastChecked={lastChecked} />;
 }
 
 function ProductCard({ product }: Props) {
@@ -51,21 +63,21 @@ function ProductCard({ product }: Props) {
             {product.size && <div className='size-tag'>{product.size}</div>}
           </div>
           <div className='w-3/6'>
-            {/* Price history chart Div */}
+            {/* Price History Chart */}
             <div className='pl-0 pr-0.5 z-30'>
-              <PriceHistoryChart
+              <DynamicChartCall
                 priceHistory={product.priceHistory}
                 lastChecked={product.lastChecked}
               />
             </div>
 
             <div className='flex flex-col items-center'>
-              {/* Price Tag Div */}
+              {/* Price Tag */}
               <div className='m-1 mr-2 ml-auto pr-1'>
                 <PriceTag product={product} />
               </div>
 
-              {/* Price Tips Highest/Lowest Div */}
+              {/* Price Tips Highest/Lowest */}
               <div className='ml-auto mt-2 pr-4 text-sm md:text-xs min-h-[1rem] pl-1'>
                 {product.priceHistory.length > 1 && (
                   <PriceHistoryTips priceHistory={product.priceHistory} />

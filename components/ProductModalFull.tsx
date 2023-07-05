@@ -1,16 +1,28 @@
 import startCase from 'lodash/startCase';
 import Link from 'next/link';
 import React, { useContext } from 'react';
-import { Product } from '../typings';
+import { DatedPrice, Product } from '../typings';
 import { utcDateToLongDate } from '../utilities/utilities';
 import ImageWithFallback from './ImageWithFallback';
-import PriceHistoryChart from './card/PriceHistoryChart';
 import PriceTag from './card/PriceTag';
 import StoreIcon from './StoreIcon';
 import { DarkModeContext } from 'pages/_app';
+import dynamic from 'next/dynamic';
 
 interface Props {
   product: Product;
+}
+
+// Lazy/Dynamic load in heavy chart.js from PriceHistoryChart
+const DynamicChart = dynamic(() => import('./card/PriceHistoryChart'), {
+  loading: () => <p>Loading...</p>,
+});
+interface ChartProps {
+  priceHistory: DatedPrice[];
+  lastChecked: Date;
+}
+function DynamicChartCall({ priceHistory, lastChecked }: ChartProps) {
+  return <DynamicChart priceHistory={priceHistory} lastChecked={lastChecked} />;
 }
 
 function ProductModalFull({ product }: Props) {
@@ -68,7 +80,7 @@ function ProductModalFull({ product }: Props) {
 
           {/* Price Chart */}
           <div className='w-full md:w-[20rem] md:mt-6 md:pr-4 mx-auto'>
-            <PriceHistoryChart
+            <DynamicChartCall
               priceHistory={product.priceHistory}
               lastChecked={product.lastChecked}
             />
