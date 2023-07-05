@@ -84,10 +84,10 @@ function ProductEditRow({ product }: Props) {
         <div className='text-xs'>{product.category?.join(', ')}</div>
       </td>
 
-      {/* Unit Size */}
+      {/* Unit Price */}
       <td className='px-6 py-1'>
         <div className='text-xs'>
-          ${product.unitPrice}/{product.unitName}
+          {product.unitPrice && `$${product.unitPrice}/${product.unitName}`}
         </div>
       </td>
 
