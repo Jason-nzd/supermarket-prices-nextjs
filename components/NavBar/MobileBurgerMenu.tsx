@@ -1,6 +1,5 @@
 import { Popover, Transition } from '@headlessui/react';
 import React from 'react';
-import _ from 'lodash';
 import { burgerIcon } from './NavBar';
 import SubCategoryList from './SubCategoryList';
 import {

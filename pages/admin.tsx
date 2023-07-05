@@ -12,7 +12,7 @@ import {
   utcDateToLongDate,
 } from '../utilities/utilities';
 import { DarkModeContext } from './_app';
-import _ from 'lodash';
+import startCase from 'lodash/startCase';
 
 interface Props {
   lastChecked: string;
@@ -97,7 +97,7 @@ const AdminPanel = ({ lastChecked }: Props) => {
           <div className='text-center pt-4 pb-1 text-zinc-800 dark:text-zinc-300'>
             {loadState === 'isLoading' && (
               <>
-                <div className=''>Searching for {_.capitalize(searchQuery)}..</div>
+                <div className=''>Searching for {startCase(searchQuery)}..</div>
                 <div className='w-fit mx-auto p-8'>
                   <svg
                     aria-hidden='true'
@@ -119,11 +119,11 @@ const AdminPanel = ({ lastChecked }: Props) => {
               </>
             )}
             {loadState === 'hasSearched' && products.length === 0 && (
-              <span>No results found for {_.capitalize(searchQuery)}</span>
+              <span>No results found for {startCase(searchQuery)}</span>
             )}
             {loadState === 'hasSearched' && products.length > 0 && (
               <span>
-                {products.length} results found for {_.capitalize(searchQuery)}
+                {products.length} results found for {startCase(searchQuery)}
               </span>
             )}
             {loadState === 'start' && <div className='min-h-[1rem]'></div>}

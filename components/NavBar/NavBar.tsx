@@ -1,6 +1,6 @@
-import _ from 'lodash';
 import Image from 'next/image';
 import Link from 'next/link';
+import startCase from 'lodash/startCase';
 import React, { useState } from 'react';
 import kiwifruit from '../../public/android-chrome-192x192.png';
 import CategorySelectMenu from './CategorySelectMenu';
@@ -68,7 +68,7 @@ const NavBar = ({ lastUpdatedDate }: Props) => {
                   const href = '/products/' + name;
                   return (
                     <Link className='nav-main-link' href={href} key={href}>
-                      {_.startCase(name)}
+                      {startCase(name)}
                     </Link>
                   );
                 })}

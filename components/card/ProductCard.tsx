@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import React, { useState } from 'react';
 import { Product } from '../../typings';
 import ImageWithFallback from '../ImageWithFallback';

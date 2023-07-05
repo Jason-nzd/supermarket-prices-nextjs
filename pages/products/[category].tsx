@@ -2,7 +2,7 @@ import { GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import React, { useContext } from 'react';
 import { Product } from '../../typings';
-import _ from 'lodash';
+import startCase from 'lodash/startCase';
 import ProductsGrid from '../../components/ProductsGrid';
 import { DBFetchByCategory } from '../../utilities/cosmosdb';
 import {
@@ -39,7 +39,7 @@ const Category = ({ products, hasMoreSearchResults, lastChecked }: Props) => {
           <div className='ml-20'>{/* <ResultsFilterPanel /> */}</div>
 
           {/* Products Grid */}
-          <ProductsGrid title={_.startCase(category?.toString())} products={products} />
+          <ProductsGrid title={startCase(category?.toString())} products={products} />
 
           {/* Pagination */}
           {hasMoreSearchResults && <div className='text-center m-4 text-lg'>Page 1 2 3 4 5</div>}

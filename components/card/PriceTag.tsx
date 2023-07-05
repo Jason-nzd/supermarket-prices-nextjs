@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import React from 'react';
 import { Product } from '../../typings';
 import { getPriceAvgDifference } from '../../utilities/utilities';

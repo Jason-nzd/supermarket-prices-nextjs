@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import StarFavourite from './StarFavourite';
 import Link from 'next/link';
-import _ from 'lodash';
+import startCase from 'lodash/startCase';
 import { DarkModeContext } from '../../pages/_app';
 
 interface Props {
@@ -45,7 +45,7 @@ export default function SubCategoryList({
               font-semibold hover:bg-green-200 hover:text-black hover:shadow-sm whitespace-nowrap'
               href={href}
             >
-              {_.startCase(categoryName)}
+              {startCase(categoryName)}
             </Link>
           </div>
         );

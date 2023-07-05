@@ -1,7 +1,7 @@
 import { GetStaticProps } from 'next';
 import React, { useContext } from 'react';
 import { Product } from '../../typings';
-import _ from 'lodash';
+
 import ProductsGrid from '../../components/ProductsGrid';
 import { DBFetchByCategory } from '../../utilities/cosmosdb';
 import { DarkModeContext } from '../_app';

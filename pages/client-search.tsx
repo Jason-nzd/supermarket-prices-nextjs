@@ -14,7 +14,7 @@ import {
 } from '../utilities/utilities';
 import { DarkModeContext } from './_app';
 import { useRouter } from 'next/router';
-import _ from 'lodash';
+import startCase from 'lodash/startCase';
 
 interface Props {
   lastChecked: string;
@@ -62,12 +62,12 @@ const ClientSearch = ({ lastChecked }: Props) => {
           <div className='grid-title'>
             {!isLoading && (
               <span>
-                {products.length} results found for '{_.capitalize(searchTerm)}'
+                {products.length} results found for '{startCase(searchTerm)}'
               </span>
             )}
             {isLoading && (
               <>
-                <div className=''>Searching for {_.capitalize(searchTerm)}..</div>
+                <div className=''>Searching for {startCase(searchTerm)}..</div>
                 <div className='w-fit mx-auto p-8'>
                   <svg
                     aria-hidden='true'

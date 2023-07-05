@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import startCase from 'lodash/startCase';
 import Link from 'next/link';
 import React, { useContext } from 'react';
 import { Product } from '../typings';
@@ -104,7 +104,7 @@ function ProductModalFull({ product }: Props) {
               {product.category!.map((category, index) => {
                 return (
                   <div className='px-1 hover:text-black' key={index}>
-                    <Link href={'products/' + category}>{_.startCase(_.toLower(category))}</Link>
+                    <Link href={'products/' + category}>{startCase(category.toLowerCase())}</Link>
                   </div>
                 );
               })}
