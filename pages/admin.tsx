@@ -3,16 +3,10 @@ import Footer from '../components/Footer';
 import NavBar from '../components/NavBar/NavBar';
 import ProductEditRow from '../components/AdminPanel/ProductEditRow';
 import { Product } from '../typings';
-import { DBFetchAll, DBFetchByName } from '../utilities/cosmosdb';
-import {
-  LastChecked,
-  OrderByMode,
-  PriceHistoryLimit,
-  Store,
-  utcDateToLongDate,
-} from '../utilities/utilities';
+import { LastChecked, PriceHistoryLimit, Store, utcDateToLongDate } from '../utilities/utilities';
 import { DarkModeContext } from './_app';
 import startCase from 'lodash/startCase';
+import { DBFetchAllAPI, DBFetchByNameAPI } from 'utilities/clientside-api';
 
 interface Props {
   lastChecked: string;
@@ -30,14 +24,12 @@ const AdminPanel = ({ lastChecked }: Props) => {
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoadState('isLoading');
-    const dbProducts = await DBFetchByName(
+    const dbProducts = await DBFetchByNameAPI(
       searchQuery,
       40,
       Store.Any,
       PriceHistoryLimit.Any,
-      OrderByMode.None,
-      LastChecked.Any,
-      true
+      LastChecked.Any
     );
     setProducts(dbProducts);
     setLoadState('hasSearched');
@@ -47,13 +39,7 @@ const AdminPanel = ({ lastChecked }: Props) => {
   useEffect(() => {
     (async () => {
       setLoadState('isLoading');
-      const dbProducts = await DBFetchAll(
-        20,
-        Store.Any,
-        PriceHistoryLimit.Any,
-        OrderByMode.None,
-        true
-      );
+      const dbProducts = await DBFetchAllAPI(20, Store.Any, PriceHistoryLimit.Any);
       setProducts(dbProducts);
       setLoadState('start');
     })();

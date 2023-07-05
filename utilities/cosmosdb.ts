@@ -83,8 +83,7 @@ export async function DBFetchAll(
   maxItems: number = 20,
   store: Store = Store.Any,
   priceHistoryLimit: PriceHistoryLimit = PriceHistoryLimit.Any,
-  orderBy: OrderByMode = OrderByMode.None,
-  useRestAPIInsteadOfSDK: boolean = false
+  orderBy: OrderByMode = OrderByMode.None
 ): Promise<Product[]> {
   // Query is built using the follow base, and adding on optional extra conditions
   const querySpec: SqlQuerySpec = {
@@ -96,56 +95,10 @@ export async function DBFetchAll(
       queryAddOrderBy(orderBy),
   };
 
-  if (useRestAPIInsteadOfSDK) return await fetchProductsUsingAPI(querySpec, maxItems);
-  else return await fetchProductsUsingSDK(querySpec, maxItems);
+  return await fetchProductsUsingSDK(querySpec, maxItems);
 }
 
-// When running on the client-side, fetches can be made to the REST API
-async function fetchProductsUsingAPI(
-  querySpec: SqlQuerySpec,
-  maxItems: number
-): Promise<Product[]> {
-  let resultingProducts: Product[] = [];
-
-  // CosmosDB Rest API doesn't support ORDER BY, so it needs to be removed
-  const orderByIndex = querySpec.query.indexOf('ORDER BY');
-  if (orderByIndex > 0) querySpec.query = querySpec.query.substring(0, orderByIndex);
-
-  try {
-    // Fetch response using POST
-    const apiResponse = await fetch('https://api.kiwiprice.xyz/', {
-      method: 'POST',
-      body: JSON.stringify(querySpec),
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-ms-max-item-count': maxItems.toString(),
-      },
-      redirect: 'follow',
-      referrerPolicy: 'no-referrer',
-      signal: AbortSignal.timeout(8000),
-    });
-
-    // If successful, set resultingProducts to response json
-    if (apiResponse.status === 200) {
-      const apiJsonResponse = await apiResponse.json();
-      const apiProducts: Product[] = apiJsonResponse.Documents;
-
-      // Push products into array and clean unwanted fields from CosmosDB
-      apiProducts.map((productDocument) => {
-        resultingProducts.push(cleanProductFields(productDocument));
-      });
-    } else {
-      console.log(apiResponse.statusText);
-    }
-  } catch (error) {
-    console.error(error);
-    // Todo: show error on page
-  }
-  return resultingProducts;
-}
-
-// Takes a completed query and performs the CosmosDB lookup
+// Takes an SDK querySpec and performs the actual CosmosDB lookup
 async function fetchProductsUsingSDK(
   querySpec: SqlQuerySpec,
   maxItems: number
@@ -183,8 +136,8 @@ async function fetchProductsUsingSDK(
   return resultingProducts;
 }
 
-// Takes an orderby enum and returns the corresponding SQL query add-on
-function queryAddOrderBy(orderBy: OrderByMode): string {
+// Takes an orderBy enum and returns the corresponding SQL query add-on
+export function queryAddOrderBy(orderBy: OrderByMode): string {
   let sqlQueryAddon = '';
   switch (orderBy) {
     case OrderByMode.Latest:
@@ -223,7 +176,7 @@ function queryAddOrderBy(orderBy: OrderByMode): string {
 
 // Takes a Store enum and returns a query string to be added onto an existing query
 //  useAND=true if adding onto other WHERE conditions, useAND=false if this is the only condition
-function queryAddLimitStore(store: Store, useAND: boolean = true): string {
+export function queryAddLimitStore(store: Store, useAND: boolean = true): string {
   let queryAddon = '';
   let optionalAND = useAND ? ' AND ' : ' WHERE ';
 
@@ -248,7 +201,7 @@ function queryAddLimitStore(store: Store, useAND: boolean = true): string {
 
 // Takes a PriceHistoryLimit enum and returns a query string add-on to be added onto an existing query
 //  can limit to products that have multiple price history elements to look at
-function queryAddPriceHistoryLimit(
+export function queryAddPriceHistoryLimit(
   priceHistoryLimit: PriceHistoryLimit,
   useAND: boolean = true
 ): string {
@@ -271,7 +224,7 @@ function queryAddPriceHistoryLimit(
 }
 
 // Limit to products that have been recently checked
-function queryAddLastChecked(lastChecked: LastChecked, useAND: boolean = true) {
+export function queryAddLastChecked(lastChecked: LastChecked, useAND: boolean = true) {
   let queryAddon = useAND ? ' AND ' : ' WHERE ';
   queryAddon += "p.lastChecked > '";
 
@@ -310,8 +263,7 @@ export async function DBFetchByCategory(
   store: Store = Store.Any,
   priceHistoryLimit: PriceHistoryLimit = PriceHistoryLimit.Any,
   orderBy: OrderByMode = OrderByMode.None,
-  lastChecked: LastChecked = LastChecked.Within7Days,
-  useRestAPIInsteadOfSDK: boolean = false
+  lastChecked: LastChecked = LastChecked.Within7Days
 ): Promise<Product[]> {
   const queryBase = 'SELECT * FROM products p WHERE ARRAY_CONTAINS(p.category, @name, true)';
   const querySpec: SqlQuerySpec = {
@@ -323,8 +275,7 @@ export async function DBFetchByCategory(
       queryAddOrderBy(orderBy),
     parameters: [{ name: '@name', value: searchTerm }],
   };
-  if (useRestAPIInsteadOfSDK) return await fetchProductsUsingAPI(querySpec, maxItems);
-  else return await fetchProductsUsingSDK(querySpec, maxItems);
+  return await fetchProductsUsingSDK(querySpec, maxItems);
 }
 
 // Fetch products by searching name, with optional store selection
@@ -334,8 +285,7 @@ export async function DBFetchByName(
   store: Store = Store.Any,
   priceHistoryLimit: PriceHistoryLimit = PriceHistoryLimit.Any,
   orderBy: OrderByMode = OrderByMode.None,
-  lastChecked: LastChecked = LastChecked.Within7Days,
-  useRestAPIInsteadOfSDK: boolean = false
+  lastChecked: LastChecked = LastChecked.Within7Days
 ): Promise<Product[]> {
   // Replace hyphens in search term
   searchTerm = searchTerm.replace('-', ' ');
@@ -351,21 +301,19 @@ export async function DBFetchByName(
     parameters: [{ name: '@name', value: searchTerm }],
   };
 
-  if (useRestAPIInsteadOfSDK) return await fetchProductsUsingAPI(querySpec, maxItems);
-  else return await fetchProductsUsingSDK(querySpec, maxItems);
+  return await fetchProductsUsingSDK(querySpec, maxItems);
 }
 
 // Fetch products by searching with custom query
 export async function DBFetchByQuery(
   sqlQuery: string,
   sqlParameters?: SqlParameter[],
-  maxItems: number = 60,
-  useRestAPIInsteadOfSDK: boolean = false
+  maxItems: number = 60
 ): Promise<Product[]> {
   const querySpec: SqlQuerySpec = {
     query: sqlQuery,
     parameters: sqlParameters,
   };
-  if (useRestAPIInsteadOfSDK) return await fetchProductsUsingAPI(querySpec, maxItems);
-  else return await fetchProductsUsingSDK(querySpec, maxItems);
+
+  return await fetchProductsUsingSDK(querySpec, maxItems);
 }

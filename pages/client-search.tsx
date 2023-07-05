@@ -3,10 +3,8 @@ import Footer from '../components/Footer';
 import NavBar from '../components/NavBar/NavBar';
 import ProductsGrid from '../components/ProductsGrid';
 import { Product } from '../typings';
-import { DBFetchByName } from '../utilities/cosmosdb';
 import {
   LastChecked,
-  OrderByMode,
   PriceHistoryLimit,
   Store,
   sortProductsByUnitPrice,
@@ -15,6 +13,7 @@ import {
 import { DarkModeContext } from './_app';
 import { useRouter } from 'next/router';
 import startCase from 'lodash/startCase';
+import { DBFetchByNameAPI } from 'utilities/clientside-api';
 
 interface Props {
   lastChecked: string;
@@ -33,14 +32,12 @@ const ClientSearch = ({ lastChecked }: Props) => {
     (async () => {
       if (searchTerm) {
         setIsLoading(true);
-        const dbProducts = await DBFetchByName(
+        const dbProducts = await DBFetchByNameAPI(
           searchTerm,
           60,
           Store.Any,
           PriceHistoryLimit.Any,
-          OrderByMode.None,
-          LastChecked.Within30Days,
-          true
+          LastChecked.Within30Days
         );
 
         setProducts(sortProductsByUnitPrice(dbProducts));
@@ -68,6 +65,8 @@ const ClientSearch = ({ lastChecked }: Props) => {
             {isLoading && (
               <>
                 <div className=''>Searching for {startCase(searchTerm)}..</div>
+
+                {/* Loading Spinner Icon */}
                 <div className='w-fit mx-auto p-8'>
                   <svg
                     aria-hidden='true'
