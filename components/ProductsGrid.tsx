@@ -4,11 +4,12 @@ import { Product } from '../typings';
 import ProductCard from './card/ProductCard';
 
 interface Props {
+  title?: string;
   products: Product[];
   trimColumns?: boolean;
 }
 
-function ProductsGrid({ products, trimColumns = false }: Props) {
+function ProductsGrid({ title = '', products, trimColumns = false }: Props) {
   let numColumnsToShow = 3;
   let trimmedProducts: Product[] = [];
   if (trimColumns) {
@@ -57,9 +58,13 @@ function ProductsGrid({ products, trimColumns = false }: Props) {
   //   }
   // };
 
-  return (
-    <div className='flex items-center'>
-      {/* {products.length +
+  if (products.length > 0)
+    return (
+      <div>
+        <div className='grid-title'>{title}</div>
+
+        <div className='flex items-center'>
+          {/* {products.length +
         ' total products, window = ' +
         productsWindow.length +
         ' scroll = ' +
@@ -67,28 +72,30 @@ function ProductsGrid({ products, trimColumns = false }: Props) {
       <button className='h-full border-2 rounded-xl p-2 hover:bg-white' onClick={scrollLeft}>
         L
       </button> */}
-      <div
-        className='grid w-full
+          <div
+            className='grid w-full
             grid-cols-1
             md:grid-cols-2
             lg:grid-cols-3
             xl:grid-cols-4
             2xl:grid-cols-4
             3xl:grid-cols-5'
-      >
-        {!trimColumns &&
-          products.map((product) => <ProductCard key={product.id} product={product} />)}
-        {trimColumns &&
-          trimmedProducts.map((product) => <ProductCard key={product.id} product={product} />)}
-        {/* {productsWindow.map((product) => (
+          >
+            {!trimColumns &&
+              products.map((product) => <ProductCard key={product.id} product={product} />)}
+            {trimColumns &&
+              trimmedProducts.map((product) => <ProductCard key={product.id} product={product} />)}
+            {/* {productsWindow.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))} */}
-      </div>
-      {/* <button className='h-full border-2 rounded-xl p-2 hover:bg-white' onClick={scrollRight}>
+          </div>
+          {/* <button className='h-full border-2 rounded-xl p-2 hover:bg-white' onClick={scrollRight}>
         R
       </button> */}
-    </div>
-  );
+        </div>
+      </div>
+    );
+  else return <div></div>;
 }
 
 export default ProductsGrid;

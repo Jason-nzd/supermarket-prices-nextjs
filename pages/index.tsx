@@ -33,13 +33,23 @@ export default function Home({
           {/* Page Title */}
           <div className='grid-title'>Today's Trending Products</div>
           {countdownProducts && (
-            <ProductsGrid products={countdownProducts} key='countdown' trimColumns={true} />
+            <ProductsGrid
+              title=''
+              products={countdownProducts}
+              key='countdown'
+              trimColumns={true}
+            />
           )}
           {paknsaveProducts && (
             <ProductsGrid products={paknsaveProducts} key='paknsave' trimColumns={true} />
           )}
           {warehouseProducts && (
-            <ProductsGrid products={warehouseProducts} key='warehouse' trimColumns={true} />
+            <ProductsGrid
+              title=''
+              products={warehouseProducts}
+              key='warehouse'
+              trimColumns={true}
+            />
           )}
         </div>
       </div>

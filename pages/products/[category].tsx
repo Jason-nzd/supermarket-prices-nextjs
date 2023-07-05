@@ -35,14 +35,11 @@ const Category = ({ products, hasMoreSearchResults, lastChecked }: Props) => {
       <div className='content-body'>
         {/* Central Aligned Div */}
         <div className='central-responsive-div min-h-[50rem]'>
-          {/* Page Title */}
-          <div className='grid-title'>{_.startCase(category?.toString())}</div>
-
           {/* Filter Selection */}
           <div className='ml-20'>{/* <ResultsFilterPanel /> */}</div>
 
           {/* Products Grid */}
-          <ProductsGrid products={products} />
+          <ProductsGrid title={_.startCase(category?.toString())} products={products} />
 
           {/* Pagination */}
           {hasMoreSearchResults && <div className='text-center m-4 text-lg'>Page 1 2 3 4 5</div>}

@@ -48,22 +48,14 @@ const Category = ({
         {/* Central Aligned Div */}
         <div className='central-responsive-div'>
           {/* Categorised Product Grids*/}
-          <div className='grid-title'>Value Nut Butters</div>
-          <ProductsGrid products={valueButters} trimColumns={false} />
-          <div className='grid-title'>Premium Nut Butters</div>
-          <ProductsGrid products={premiumButters} trimColumns={false} />
-          <div className='grid-title'>Jams</div>
-          <ProductsGrid products={jams} trimColumns={false} />
-          <div className='grid-title'>Honey</div>
-          <ProductsGrid products={honey} trimColumns={false} />
-          <div className='grid-title'>Vegemite & Marmite</div>
-          <ProductsGrid products={vegemite} trimColumns={false} />
-          <div className='grid-title'>Hazelnut</div>
-          <ProductsGrid products={hazelnut} trimColumns={false} />
-          <div className='grid-title'>Marmalade</div>
-          <ProductsGrid products={marmalade} trimColumns={false} />
-          <div className='grid-title'>Other Spreads</div>
-          <ProductsGrid products={other} trimColumns={false} />
+          <ProductsGrid title='Value Nut Butters' products={valueButters} />
+          <ProductsGrid title='Premium Nut Butters' products={premiumButters} />
+          <ProductsGrid title='Jams' products={jams} />
+          <ProductsGrid title='Honey' products={honey} />
+          <ProductsGrid title='Vegemite & Marmite' products={vegemite} />
+          <ProductsGrid title='Hazelnut' products={hazelnut} />
+          <ProductsGrid title='Marmalade' products={marmalade} />
+          <ProductsGrid title='Other Spreads' products={other} />
         </div>
       </div>
       <Footer />
@@ -103,14 +95,14 @@ export const getStaticProps: GetStaticProps = async () => {
   });
 
   // Sort all by unit price
-  valueButters = sortProductsByUnitPrice(valueButters).slice(0, 40);
-  premiumButters = sortProductsByUnitPrice(premiumButters).slice(0, 40);
-  jams = sortProductsByUnitPrice(jams).slice(0, 40);
-  honey = sortProductsByUnitPrice(honey).slice(0, 40);
-  vegemite = sortProductsByUnitPrice(vegemite).slice(0, 20);
-  hazelnut = sortProductsByUnitPrice(hazelnut).slice(0, 20);
-  marmalade = sortProductsByUnitPrice(marmalade).slice(0, 20);
-  other = sortProductsByUnitPrice(other).slice(0, 20);
+  valueButters = sortProductsByUnitPrice(valueButters).slice(0, 15);
+  premiumButters = sortProductsByUnitPrice(premiumButters).slice(0, 15);
+  jams = sortProductsByUnitPrice(jams).slice(0, 15);
+  honey = sortProductsByUnitPrice(honey).slice(0, 15);
+  vegemite = sortProductsByUnitPrice(vegemite).slice(0, 15);
+  hazelnut = sortProductsByUnitPrice(hazelnut).slice(0, 15);
+  marmalade = sortProductsByUnitPrice(marmalade).slice(0, 15);
+  other = sortProductsByUnitPrice(other).slice(0, 15);
 
   const lastChecked = utcDateToLongDate(new Date());
 

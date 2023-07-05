@@ -52,66 +52,20 @@ const Category = ({
         {/* Central Aligned Div */}
         <div className='central-responsive-div'>
           {/* Categorised Product Grids*/}
-          {apples.length > 0 && (
-            <div>
-              <div className='grid-title'>Apples</div>
-              <ProductsGrid products={apples} trimColumns={false} />
-            </div>
-          )}
-          {bananas.length > 0 && (
-            <div>
-              <div className='grid-title'>Bananas</div>
-              <ProductsGrid products={bananas} trimColumns={false} />
-            </div>
-          )}
-          {citrus.length > 0 && (
-            <div>
-              <div className='grid-title'>Citrus</div>
-              <ProductsGrid products={citrus} trimColumns={false} />
-            </div>
-          )}
-          {pears.length > 0 && (
-            <div>
-              <div className='grid-title'>Pears</div>
-              <ProductsGrid products={pears} trimColumns={false} />
-            </div>
-          )}
-          {kiwifruit.length > 0 && (
-            <div>
-              <div className='grid-title'>Kiwifruit & Feijoa</div>
-              <ProductsGrid products={kiwifruit} trimColumns={false} />
-            </div>
-          )}
-          {peaches.length > 0 && (
-            <div>
-              <div className='grid-title'>Peaches, Plums, & Nectarines</div>
-              <ProductsGrid products={peaches} trimColumns={false} />
-            </div>
-          )}
-          {berries.length > 0 && (
-            <div>
-              <div className='grid-title'>Berries</div>
-              <ProductsGrid products={berries} trimColumns={false} />
-            </div>
-          )}
-          {pineapple.length > 0 && (
-            <div>
-              <div className='grid-title'>Pineapple, Mango & Melon</div>
-              <ProductsGrid products={pineapple} trimColumns={false} />
-            </div>
-          )}
-          {grapes.length > 0 && (
-            <div>
-              <div className='grid-title'>Grapes</div>
-              <ProductsGrid products={grapes} trimColumns={false} />
-            </div>
-          )}
-          {other.length > 0 && (
-            <div>
-              <div className='grid-title'>Other Fruit</div>
-              <ProductsGrid products={other} trimColumns={true} />
-            </div>
-          )}
+          <ProductsGrid title='Apples' products={apples} trimColumns={false} />
+          <ProductsGrid title='Bananas' products={bananas} trimColumns={false} />
+          <ProductsGrid title='Citrus' products={citrus} trimColumns={false} />
+          <ProductsGrid title='Pears' products={pears} trimColumns={false} />
+          <ProductsGrid title='Kiwifruit & Feijoa' products={kiwifruit} trimColumns={false} />
+          <ProductsGrid
+            title='Peaches, Plums, & Nectarines'
+            products={peaches}
+            trimColumns={false}
+          />
+          <ProductsGrid title='Berries' products={berries} trimColumns={false} />
+          <ProductsGrid title='Pineapple, Mango & Melon' products={pineapple} trimColumns={false} />
+          <ProductsGrid title='Grapes' products={grapes} trimColumns={false} />
+          <ProductsGrid title='Other Fruit' products={other} trimColumns={true} />
         </div>
       </div>
       <Footer />

@@ -50,60 +50,27 @@ const Category = ({
         {/* Central Aligned Div */}
         <div className='central-responsive-div'>
           {/* Categorised Product Grids*/}
-          {potatoes.length > 0 && (
-            <div>
-              <div className='grid-title'>Potatoes & Kumara</div>
-              <ProductsGrid products={potatoes} trimColumns={false} />
-            </div>
-          )}
-          {broccoli.length > 0 && (
-            <div>
-              <div className='grid-title'>Broccoli, Cauliflower & Cabbage</div>
-              <ProductsGrid products={broccoli} trimColumns={false} />
-            </div>
-          )}
-          {carrots.length > 0 && (
-            <div>
-              <div className='grid-title'>Carrots & Yams</div>
-              <ProductsGrid products={carrots} trimColumns={false} />
-            </div>
-          )}
-          {saladKits.length > 0 && (
-            <div>
-              <div className='grid-title'>Lettuce & Salad Vegetables</div>
-              <ProductsGrid products={saladKits} trimColumns={false} />
-            </div>
-          )}
-          {mushrooms.length > 0 && (
-            <div>
-              <div className='grid-title'>Mushrooms</div>
-              <ProductsGrid products={mushrooms} trimColumns={false} />
-            </div>
-          )}
-          {tomatoes.length > 0 && (
-            <div>
-              <div className='grid-title'>Tomatoes, Cucumber & Capsicum</div>
-              <ProductsGrid products={tomatoes} trimColumns={false} />
-            </div>
-          )}
-          {onions.length > 0 && (
-            <div>
-              <div className='grid-title'>Onions, Shallots & Leek</div>
-              <ProductsGrid products={onions} trimColumns={false} />
-            </div>
-          )}
-          {chili.length > 0 && (
-            <div>
-              <div className='grid-title'>Chili, Garlic & Ginger</div>
-              <ProductsGrid products={chili} trimColumns={false} />
-            </div>
-          )}
-          {other.length > 0 && (
-            <div>
-              <div className='grid-title'>Other Vegetables</div>
-              <ProductsGrid products={other} trimColumns={true} />
-            </div>
-          )}
+          <ProductsGrid title='Potatoes & Kumara' products={potatoes} trimColumns={false} />
+          <ProductsGrid
+            title='Broccoli, Cauliflower & Cabbage'
+            products={broccoli}
+            trimColumns={false}
+          />
+          <ProductsGrid title='Carrots & Yams' products={carrots} trimColumns={false} />
+          <ProductsGrid
+            title='Lettuce & Salad Vegetables'
+            products={saladKits}
+            trimColumns={false}
+          />
+          <ProductsGrid title='Mushrooms' products={mushrooms} trimColumns={false} />
+          <ProductsGrid
+            title='Tomatoes, Cucumber & Capsicum'
+            products={tomatoes}
+            trimColumns={false}
+          />
+          <ProductsGrid title='Onions, Shallots & Leek' products={onions} trimColumns={false} />
+          <ProductsGrid title='Chili, Garlic & Ginger' products={chili} trimColumns={false} />
+          <ProductsGrid title='Other Vegetables' products={other} trimColumns={true} />
         </div>
       </div>
       <Footer />
