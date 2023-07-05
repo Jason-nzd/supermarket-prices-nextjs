@@ -12,6 +12,7 @@
   "dependencies": {
     "@azure/cosmos": "^3.17.3",
     "@headlessui/react": "^1.7.13",
+    "@next/bundle-analyzer": "^13.4.8",
     "@types/node": "^18.11.18",
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.10",
