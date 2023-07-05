@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import startCase from 'lodash/startCase';
 import React, { useState } from 'react';
-import kiwifruit from '../../public/android-chrome-192x192.png';
+import kiwifruit from '../../public/logo.webp';
 import CategorySelectMenu from './CategorySelectMenu';
 import SearchBar from '../SearchBar';
 import MobileBurgerMenu from './MobileBurgerMenu';
