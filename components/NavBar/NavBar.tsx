@@ -91,14 +91,18 @@ const NavBar = ({ lastUpdatedDate }: Props) => {
             Updated {lastUpdatedDate}
           </div>
 
-          {/* Dark Mode Toggle */}
           <div className='h-1/2 flex items-center ml-auto'>
+            {/* Dark Mode Toggle */}
             <div className='mt-1 ml-auto'>
               <DarkModeToggle />
             </div>
+
+            {/* User Profile */}
             <Link className='ml-2 xl:ml-3 text-primary-colour hover-to-white' href='#'>
               {userIcon}
             </Link>
+
+            {/* Admin */}
             <Link className='mx-2 xl:ml-3 text-primary-colour hover-to-white' href='/admin'>
               {tableIcon}
             </Link>
