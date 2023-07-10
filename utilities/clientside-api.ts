@@ -8,19 +8,20 @@ export async function DBFetchAllAPI(
   store: Store = Store.Any,
   priceHistoryLimit: PriceHistoryLimit = PriceHistoryLimit.Any
 ): Promise<Product[]> {
-  // Build the query as a string
-  const queryString =
-    'SELECT * FROM products p' +
-    queryAddLimitStore(store, false) +
-    queryAddPriceHistoryLimit(priceHistoryLimit) +
-    queryAddLastChecked(LastChecked.Within2Days);
+  const queryString = {
+    query:
+      'SELECT * FROM products p' +
+      queryAddLimitStore(store, false) +
+      queryAddPriceHistoryLimit(priceHistoryLimit) +
+      queryAddLastChecked(LastChecked.Within2Days),
+  };
   // Exclude ORDER_BY as the CosmosDB API doesn't support it
 
   return await fetchProductsUsingAPI(queryString, maxItems);
 }
 
 // When running on the client-side, fetches can be made to the REST API
-async function fetchProductsUsingAPI(queryString: string, maxItems: number): Promise<Product[]> {
+async function fetchProductsUsingAPI(queryString: object, maxItems: number): Promise<Product[]> {
   let resultingProducts: Product[] = [];
 
   try {
@@ -68,11 +69,15 @@ export async function DBFetchByNameAPI(
   // Replace hyphens in search term
   searchTerm = searchTerm.replace('-', ' ');
 
-  const queryString =
-    `SELECT * FROM products p WHERE CONTAINS(p.name, ${searchTerm}, true)` +
-    queryAddLimitStore(store, false) +
-    queryAddLastChecked(lastChecked) +
-    queryAddPriceHistoryLimit(priceHistoryLimit);
+  const queryString = {
+    query:
+      `SELECT * FROM products p WHERE CONTAINS(p.name, '${searchTerm}', true)` +
+      queryAddLimitStore(store, false) +
+      queryAddLastChecked(lastChecked) +
+      queryAddPriceHistoryLimit(priceHistoryLimit),
+  };
+
+  console.log(JSON.stringify(queryString));
 
   return await fetchProductsUsingAPI(queryString, maxItems);
 }
