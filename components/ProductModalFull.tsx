@@ -6,7 +6,7 @@ import { utcDateToLongDate } from '../utilities/utilities';
 import ImageWithFallback from './ImageWithFallback';
 import PriceTag from './card/PriceTag';
 import StoreIcon from './StoreIcon';
-import { DarkModeContext } from 'pages/_app';
+import { DarkModeContext } from '../pages/_app';
 import dynamic from 'next/dynamic';
 
 interface Props {
