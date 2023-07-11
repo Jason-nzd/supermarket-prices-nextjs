@@ -1,5 +1,4 @@
 import { Dialog } from '@headlessui/react';
-
 import React, { useContext, useEffect, useState } from 'react';
 import SubCategoryList from './SubCategoryList';
 import { DarkModeContext } from '../../pages/_app';
