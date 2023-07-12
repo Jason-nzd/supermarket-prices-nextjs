@@ -16,7 +16,10 @@ import {
 export default function MobileBurgerMenu() {
   return (
     <Popover className='text-lg'>
-      <Popover.Button className='left-1 top-1 text-primary-colour hover-to-white cursor-pointer'>
+      <Popover.Button
+        className='left-1 top-1 text-primary-colour hover-to-white cursor-pointer'
+        id='mobile-menu-button'
+      >
         {burgerIcon}
       </Popover.Button>
       <Transition

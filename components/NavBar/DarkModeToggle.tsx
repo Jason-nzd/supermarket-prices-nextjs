@@ -5,6 +5,7 @@ import { DarkModeContext } from '../../pages/_app';
 export default function DarkModeToggle() {
   return (
     <Switch
+      id='dark-mode-toggle'
       checked={useContext(DarkModeContext).darkMode}
       onChange={useContext(DarkModeContext).toggleDarkMode}
       className={`${

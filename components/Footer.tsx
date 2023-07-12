@@ -5,7 +5,8 @@ function Footer() {
   return (
     <footer className='py-6 w-full h-full text-green-200 text-sm'>
       <div className='flex mx-auto w-fit font-semibold px-4 text-center text-zinc-100'>
-        Prices are updated with best effort, but aren't guaranteed to be accurate for each store.
+        Prices are updated with best effort, but aren't guaranteed to be accurate. Each local store
+        may have slight differences in pricing.
       </div>
       <div className='flex mx-auto py-2 justify-center'></div>
       <div className='py-1 flex gap-6 mx-auto justify-center'>

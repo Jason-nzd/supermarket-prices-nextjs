@@ -17,13 +17,17 @@ const NavBar = ({ lastUpdatedDate }: Props) => {
 
   return (
     <nav className='w-full h-fit overflow-hidden'>
-      <div className='mx-auto w-[100%] 2xl:w-[90rem] 3xl:w-[110rem] transition-all duration-500 flex flex-nowrap items-center'>
+      <div
+        className='mx-auto w-[100%] 2xl:w-[90rem] 3xl:w-[110rem] transition-all duration-500
+        flex flex-nowrap items-center'
+      >
         {/* Column 1 - Logo*/}
         <Link href='/' className='ml-2'>
           <Image
             src={kiwifruit}
             alt=''
-            className='hidden lg:block w-[5rem] min-w-[5rem] pt-1 pb-2 duration-200 hover:rotate-12 hover:scale-[102%]'
+            className='hidden lg:block w-[5rem] min-w-[5rem] pt-1 pb-2 duration-200 
+              hover:rotate-12 hover:scale-[102%]'
           />
         </Link>
         {/* Mobile Burger Menu */}
@@ -44,7 +48,8 @@ const NavBar = ({ lastUpdatedDate }: Props) => {
             <Image
               src={kiwifruit}
               alt=''
-              className='ml-auto py-1 block lg:hidden w-[3rem] duration-200 hover:rotate-12 hover:scale-[102%]'
+              className='ml-auto py-1 block lg:hidden w-[3rem] duration-200 
+                hover:rotate-12 hover:scale-[102%]'
             />
             {/* Brand Title */}
             <Link href='/' className='mr-auto lg:mr-0'>
@@ -54,7 +59,10 @@ const NavBar = ({ lastUpdatedDate }: Props) => {
             </Link>
 
             {/* Sub Title */}
-            <h3 className='hidden lg:flex ml-6 pt-2 mr-auto text-sm select-none font-bold text-zinc-100'>
+            <h3
+              className='hidden lg:flex ml-6 pt-2 mr-auto text-sm select-none font-bold
+             text-zinc-100'
+            >
               Tracking the cost of food across New Zealand
             </h3>
           </div>
@@ -98,12 +106,20 @@ const NavBar = ({ lastUpdatedDate }: Props) => {
             </div>
 
             {/* User Profile */}
-            <Link className='ml-2 xl:ml-3 text-primary-colour hover-to-white' href='#'>
+            <Link
+              className='ml-2 xl:ml-3 text-primary-colour hover-to-white'
+              href='#'
+              id='user-profile-link'
+            >
               {userIcon}
             </Link>
 
             {/* Admin */}
-            <Link className='mx-2 xl:ml-3 text-primary-colour hover-to-white' href='/admin'>
+            <Link
+              className='mx-2 xl:ml-3 text-primary-colour hover-to-white'
+              href='/admin'
+              id='admin-link'
+            >
               {tableIcon}
             </Link>
           </div>

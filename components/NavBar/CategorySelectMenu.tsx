@@ -68,6 +68,7 @@ function CategorySelectMenu({ updateNavCategories }: Props) {
         onClick={() => {
           setIsOpen(true);
         }}
+        id='category-menu-button'
       >
         More
       </button>
