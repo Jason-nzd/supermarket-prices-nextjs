@@ -106,7 +106,7 @@ async function fetchProductsUsingSDK(
   let resultingProducts: Product[] = [];
 
   // Log query to console
-  console.log('SDK: ' + querySpec.query);
+  //console.log('SDK: ' + querySpec.query);
   // if (querySpec.parameters !== undefined)
   if (await connectToCosmosDB()) {
     //console.log('\t' + querySpec.parameters[0].name + ' = ' + querySpec.parameters[0].value);
