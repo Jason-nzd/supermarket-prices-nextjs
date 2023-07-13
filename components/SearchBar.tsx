@@ -15,7 +15,7 @@ export default function SearchBar({ iconSize = 6, iconHexColour = 'currentColor'
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
-    router.push('/client-search?query=' + searchQuery, undefined);
+    router.push(`/client-search?query=${searchQuery}`);
   };
 
   let bigSearchBar = useMediaQuery('1140px');
@@ -68,7 +68,7 @@ export default function SearchBar({ iconSize = 6, iconHexColour = 'currentColor'
               onChange={(e) => setSearchQuery(e.target.value)}
             />
             <div className='ml-auto hover-to-white text-green-200'>
-              <button type='submit' title='Search' className=''>
+              <button type='submit' title='Search' className='' id='search-button'>
                 {magnifyIcon}
               </button>
             </div>
@@ -76,7 +76,12 @@ export default function SearchBar({ iconSize = 6, iconHexColour = 'currentColor'
         )}
         {!bigSearchBar && (
           <div className='pl-2 cursor-pointer' onClick={handleMobileButton}>
-            <button type='button' title='Search' className='text-green-200'>
+            <button
+              type='button'
+              title='Search'
+              className='text-green-200'
+              id='mobile-search-button'
+            >
               {magnifyIcon}
             </button>
           </div>
