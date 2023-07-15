@@ -36,7 +36,7 @@ const NavBar = ({ lastUpdatedDate }: Props) => {
         </div>
 
         {/* Mobile Search Menu */}
-        <div className='block z-50 left-[3rem] lg:hidden ml-14 pb-1'>
+        <div className='z-50 left-[3rem] hidden md:block lg:hidden ml-14 pb-1'>
           <SearchBar iconSize={6} iconHexColour='#86efac' />
         </div>
 
@@ -126,7 +126,7 @@ const NavBar = ({ lastUpdatedDate }: Props) => {
         </div>
 
         {/* Column 3 - Mobile Theme Toggle */}
-        <div className='block h-full lg:hidden mx-2 items-center'>
+        <div className='h-full hidden md:block lg:hidden mx-2 items-center'>
           <DarkModeToggle />
         </div>
 
