@@ -70,7 +70,7 @@ export const getStaticProps: GetStaticProps = async () => {
     }
   });
 
-  console.log('Total Milk Fetched: ' + allMilk.length);
+  // console.log('Total Milk Fetched: ' + allMilk.length);
 
   // Sort all by unit price
   standardMilk = sortProductsByUnitPrice(standardMilk).slice(0, 15);
