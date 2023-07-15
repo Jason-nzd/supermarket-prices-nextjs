@@ -59,7 +59,7 @@ export default function PriceTag({ product }: Props) {
         </div>
         <div className='flex flex-col'>
           {/* Price */}
-          <div className='flex'>
+          <div className='flex' id='price'>
             {/* Dollar Symbol */}
             <div className='pt-[0.2rem] text-sm lg:text-md'>$</div>
 
