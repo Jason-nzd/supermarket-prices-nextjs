@@ -1,11 +1,10 @@
 {
   "name": "supermarket-prices",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "export": "next export",
     "start": "next start",
     "lint": "next lint",
     "cypress": "cypress open"

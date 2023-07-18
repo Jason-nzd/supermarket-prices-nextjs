@@ -6,7 +6,7 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 });
 
 const moduleExports = {
-  output: 'standalone',
+  output: 'export',
   trailingSlash: true,
   reactStrictMode: true,
   images: {
