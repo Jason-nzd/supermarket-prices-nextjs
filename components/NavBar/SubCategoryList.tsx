@@ -25,7 +25,7 @@ export default function SubCategoryList({
   titleDivClass += useContext(DarkModeContext).darkMode ? ' text-green-300' : ' text-green-600';
 
   return (
-    <div className='w-full h-fit'>
+    <div className='break-inside-avoid-column mb-2'>
       <h2 className={titleDivClass + ' text-lg whitespace-nowrap font-bold'}>{subCategoryTitle}</h2>
       <hr className='mt-2 mb-1' />
       {subCategoryNames.map((categoryName) => {
