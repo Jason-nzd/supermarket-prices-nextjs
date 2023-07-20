@@ -89,7 +89,6 @@ export const frozenCategory = [
   'ice-blocks',
   'pastries-cheesecake',
   'frozen-chips',
-  'hash-browns',
   'frozen-vegetables',
   'frozen-fruit',
   'frozen-seafood',
@@ -99,6 +98,8 @@ export const frozenCategory = [
 ];
 export const pantryCategory = [
   'rice',
+  'noodles',
+  'pasta',
   'beans-spaghetti',
   'canned-fish',
   'canned-meat',
