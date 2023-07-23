@@ -70,7 +70,7 @@ export const chilledCategory = [
   'cheese',
   'cheese-slices',
   'salami',
-  'vegan-vegetarian',
+  'other-deli-foods',
 ];
 export const meatCategory = [
   'seafood',
