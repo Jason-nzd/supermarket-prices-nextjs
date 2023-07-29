@@ -50,7 +50,7 @@ const Category = ({ products, hasMoreSearchResults, lastChecked }: Props) => {
   );
 };
 
-// Define all sub categories into separate arrays
+// Define all product categories into category groups
 export const freshCategory = [
   'eggs',
   'fruit',
@@ -132,8 +132,8 @@ export const drinksCategory = [
 ];
 export const petsCategory = ['cat-food', 'cat-treats', 'dog-food', 'dog-treats'];
 
-// Combine all sub-category arrays into one array.
-// Each sub category will be built into fully static export pages
+// Combine all category groups into one big array.
+// Each category will be built into fully static export pages
 let categoryNames = freshCategory.concat(
   chilledCategory,
   meatCategory,
@@ -149,7 +149,9 @@ categoryNames = categoryNames.filter((name) => {
   return !['eggs', 'fruit', 'milk', 'fresh-vegetables', 'spreads'].includes(name);
 });
 
-// Takes an array of categories, and returns them in { path } format
+// getAllStaticPaths()
+// -------------------
+// Takes an array of categories, and returns them in { path } format needed for static generation
 export function getAllStaticPaths() {
   return categoryNames.map((name) => {
     return {
@@ -160,7 +162,7 @@ export function getAllStaticPaths() {
   });
 }
 
-// Builds static pages for dynamic routes such /products/milk
+// Build static pages for all paths such /products/cheese
 export const getStaticPaths: GetStaticPaths = async () => {
   return {
     paths: getAllStaticPaths(),
