@@ -8,9 +8,10 @@ import type { ChartData, ChartOptions } from 'chart.js';
 interface Props {
   priceHistory: DatedPrice[];
   lastChecked: Date;
+  useLargeVersion: boolean;
 }
 
-function PriceHistoryChart({ priceHistory, lastChecked }: Props) {
+function PriceHistoryChart({ priceHistory, lastChecked, useLargeVersion = false }: Props) {
   // Initialize chart.js line chart
   Chart.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip);
 
@@ -48,6 +49,11 @@ function PriceHistoryChart({ priceHistory, lastChecked }: Props) {
       break;
   }
 
+  // Use smaller point radius for denser charts
+  let relativePointRadius = 3;
+  if (priceHistory.length > 6 && !useLargeVersion) relativePointRadius = 2;
+  if (priceHistory.length > 10 && !useLargeVersion) relativePointRadius = 0;
+
   // Prepare chart data for chart.js line chart
   const chartData: ChartData<'line'> = {
     labels: dateStringsOnly,
@@ -57,13 +63,12 @@ function PriceHistoryChart({ priceHistory, lastChecked }: Props) {
         borderColor: trendColour,
         pointBorderColor: trendColour,
         pointBackgroundColor: 'white',
-        pointRadius: 3,
+        pointRadius: relativePointRadius,
         pointHoverRadius: 6,
         pointHitRadius: 30,
         pointBorderWidth: 3,
-        //backgroundColor: 'transparent',
         borderWidth: 3,
-        tension: 0,
+        tension: 0.2,
         stepped: false,
       },
     ],

@@ -20,9 +20,12 @@ const DynamicChart = dynamic(() => import('./card/PriceHistoryChart'), {
 interface ChartProps {
   priceHistory: DatedPrice[];
   lastChecked: Date;
+  useLargeVersion: boolean;
 }
 function DynamicChartCall({ priceHistory, lastChecked }: ChartProps) {
-  return <DynamicChart priceHistory={priceHistory} lastChecked={lastChecked} />;
+  return (
+    <DynamicChart priceHistory={priceHistory} lastChecked={lastChecked} useLargeVersion={true} />
+  );
 }
 
 function ProductModalFull({ product }: Props) {
@@ -83,6 +86,7 @@ function ProductModalFull({ product }: Props) {
             <DynamicChartCall
               priceHistory={product.priceHistory}
               lastChecked={product.lastChecked}
+              useLargeVersion={true}
             />
           </div>
 
