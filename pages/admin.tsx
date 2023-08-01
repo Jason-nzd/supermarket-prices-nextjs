@@ -14,6 +14,8 @@ interface Props {
 
 type LoadState = 'start' | 'isLoading' | 'hasSearched';
 
+const maxProductsToSearch = 40;
+
 const AdminPanel = ({ lastChecked }: Props) => {
   const theme = useContext(DarkModeContext).darkMode ? 'dark' : 'light';
   const [products, setProducts] = useState<Product[]>([]);
@@ -26,7 +28,7 @@ const AdminPanel = ({ lastChecked }: Props) => {
     setLoadState('isLoading');
     const dbProducts = await DBFetchByNameAPI(
       searchQuery,
-      40,
+      maxProductsToSearch,
       Store.Any,
       PriceHistoryLimit.Any,
       LastChecked.Any
@@ -107,9 +109,16 @@ const AdminPanel = ({ lastChecked }: Props) => {
             {loadState === 'hasSearched' && products.length === 0 && (
               <span>No results found for {startCase(searchQuery)}</span>
             )}
-            {loadState === 'hasSearched' && products.length > 0 && (
+            {loadState === 'hasSearched' &&
+              products.length > 0 &&
+              products.length < maxProductsToSearch && (
+                <span>
+                  {products.length} results found for {startCase(searchQuery)}
+                </span>
+              )}
+            {loadState === 'hasSearched' && maxProductsToSearch === products.length && (
               <span>
-                {products.length} results found for {startCase(searchQuery)}
+                {products.length}+ results found for {startCase(searchQuery)}
               </span>
             )}
             {loadState === 'start' && <div className='min-h-[1rem]'></div>}

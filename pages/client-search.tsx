@@ -19,6 +19,8 @@ interface Props {
   lastChecked: string;
 }
 
+const maxProductsToSearch = 60;
+
 const ClientSearch = ({ lastChecked }: Props) => {
   const router = useRouter();
   const theme = useContext(DarkModeContext).darkMode ? 'dark' : 'light';
@@ -34,7 +36,7 @@ const ClientSearch = ({ lastChecked }: Props) => {
         setIsLoading(true);
         const dbProducts = await DBFetchByNameAPI(
           searchTerm,
-          60,
+          maxProductsToSearch,
           Store.Any,
           PriceHistoryLimit.Any,
           LastChecked.Within30Days
@@ -57,7 +59,12 @@ const ClientSearch = ({ lastChecked }: Props) => {
         <div className='central-responsive-div min-h-[50rem]'>
           {/* Page Title */}
           <div className='grid-title'>
-            {!isLoading && (
+            {!isLoading && maxProductsToSearch === products.length && (
+              <span>
+                {products.length}+ results found for '{startCase(searchTerm)}'
+              </span>
+            )}
+            {!isLoading && products.length < maxProductsToSearch && (
               <span>
                 {products.length} results found for '{startCase(searchTerm)}'
               </span>
