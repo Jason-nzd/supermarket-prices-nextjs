@@ -75,13 +75,15 @@ const Category = ({
 
 export const getStaticProps: GetStaticProps = async () => {
   const products = await DBFetchByCategory(
-    'fresh-fruit',
+    'fruit',
     300,
     Store.Any,
     PriceHistoryLimit.Any,
     OrderByMode.None,
     LastChecked.Within7Days
   );
+
+  // console.log(products.length + ' total fruit found (last checked within 7 days)');
 
   let apples: Product[] = [];
   let bananas: Product[] = [];
