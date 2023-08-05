@@ -19,7 +19,7 @@ interface Props {
   lastChecked: string;
 }
 
-const maxProductsToSearch = 60;
+const maxProductsToSearch = 40;
 
 const ClientSearch = ({ lastChecked }: Props) => {
   const router = useRouter();
