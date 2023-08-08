@@ -21,9 +21,10 @@ interface Props {
   products: Product[];
   hasMoreSearchResults: boolean;
   lastChecked: string;
+  subTitle: string;
 }
 
-const Category = ({ products, hasMoreSearchResults, lastChecked }: Props) => {
+const Category = ({ products, hasMoreSearchResults, lastChecked, subTitle }: Props) => {
   const router = useRouter();
   const { category } = router.query;
   const theme = useContext(DarkModeContext).darkMode ? 'dark' : 'light';
@@ -39,7 +40,11 @@ const Category = ({ products, hasMoreSearchResults, lastChecked }: Props) => {
           <div className='ml-20'>{/* <ResultsFilterPanel /> */}</div>
 
           {/* Products Grid */}
-          <ProductsGrid title={startCase(category?.toString())} products={products} />
+          <ProductsGrid
+            title={startCase(category?.toString())}
+            subTitle={subTitle}
+            products={products}
+          />
 
           {/* Pagination */}
           {hasMoreSearchResults && <div className='text-center m-4 text-lg'>Page 1 2 3 4 5</div>}
@@ -176,7 +181,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   let products = await DBFetchByCategory(
     searchTerm,
-    100,
+    300,
     Store.Any,
     PriceHistoryLimit.Any,
     OrderByMode.None,
@@ -185,6 +190,14 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   // Sort by unit price
   products = sortProductsByUnitPrice(products);
+
+  // Log total product size
+  const subTitle = `Showing ${products.length < 40 ? products.length : 40}/${
+    products.length
+  } in-stock products.`;
+
+  // Trim array size
+  products = products.slice(0, 40);
 
   const hasMoreSearchResults = false;
 
@@ -195,6 +208,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       products,
       hasMoreSearchResults,
       lastChecked,
+      subTitle,
     },
   };
 };

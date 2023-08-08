@@ -5,11 +5,12 @@ import ProductCard from './card/ProductCard';
 
 interface Props {
   title?: string;
+  subTitle?: string;
   products: Product[];
   trimColumns?: boolean;
 }
 
-function ProductsGrid({ title = '', products, trimColumns = false }: Props) {
+function ProductsGrid({ title = '', subTitle = '', products, trimColumns = false }: Props) {
   let numColumnsToShow = 3;
   let trimmedProducts: Product[] = [];
   if (trimColumns) {
@@ -62,7 +63,7 @@ function ProductsGrid({ title = '', products, trimColumns = false }: Props) {
     return (
       <div>
         <div className='grid-title'>{title}</div>
-
+        <div className='mb-4 text-[#3C8DA3] text-center dark:text-zinc-300'>{subTitle}</div>
         <div className='flex items-center'>
           {/* {products.length +
         ' total products, window = ' +
