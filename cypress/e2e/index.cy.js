@@ -2,7 +2,7 @@ describe('Home Page', () => {
   context('1080p desktop resolution', () => {
     beforeEach(() => {
       cy.viewport(1920, 1080);
-      cy.visit('http://localhost:3000/');
+      cy.visit('/');
     });
 
     it('should display website title, page header, products', () => {
@@ -16,10 +16,10 @@ describe('Home Page', () => {
     });
   });
 
-  context('400p mobile resolution', () => {
+  context('400p small mobile resolution', () => {
     beforeEach(() => {
       cy.viewport('iphone-8');
-      cy.visit('http://localhost:3000/');
+      cy.visit('/');
     });
 
     it('should display website title, page header, products', () => {
@@ -33,10 +33,10 @@ describe('Home Page', () => {
     });
   });
 
-  context('600p mobile resolution', () => {
+  context('600p medium mobile resolution', () => {
     beforeEach(() => {
       cy.viewport('ipad-mini');
-      cy.visit('http://localhost:3000/');
+      cy.visit('/');
     });
 
     it('should display website title, page header, products', () => {

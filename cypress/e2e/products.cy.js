@@ -1,11 +1,11 @@
 describe('Milk', () => {
   beforeEach(() => {
-    cy.visit('http://localhost:3000/products/milk');
+    cy.visit('/products/milk');
   });
 
   it('should display website title, page header, products', () => {
     cy.get('h1').contains('KiwiPrice.xyz');
-    cy.get('.grid-title').contains('Trending Products');
+    cy.get('.grid-title').contains('Milk');
     cy.get('.product-card').should('have.length.greaterThan', 3);
   });
 
