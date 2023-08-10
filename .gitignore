@@ -43,3 +43,5 @@ next-env.d.ts
 .hintrc
 
 /analyze
+
+/cypress/videos
