@@ -1,4 +1,4 @@
-name: build-and-deploy-to-s3
+name: build-test-deploy-to-s3
 on:
   push:
     branches: [main]
@@ -9,7 +9,8 @@ jobs:
     environment: production
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
 
       # - name: Setup node.js
       #   uses: actions/setup-node@v3
@@ -33,7 +34,7 @@ jobs:
       #   if: steps.cache.outputs.cache-hit != 'true'
       #   run: npm ci
 
-      - name: Create .env file
+      - name: Create .env File
         run: |
           touch .env
           echo "COSMOS_CONSTRING=${{ secrets.COSMOS_CONSTRING }}" >> .env
@@ -42,17 +43,18 @@ jobs:
           echo "IMAGES_PATH=${{ secrets.IMAGES_PATH }}" >> .env
           echo "TZ=Pacific/Auckland" >> .env
 
-      - name: Cypress Build and Test
+      - name: NPM Build and Cypress E2E Tests
         uses: cypress-io/github-action@v5
         with:
           build: npm run build
           start: npm start
 
-      - uses: aws-actions/configure-aws-credentials@v2
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-southeast-2
 
-      # Sync files from /out to S3 bucket
-      - run: aws s3 sync ./out s3://${{ vars.S3_BUCKET }} --quiet --delete
+      - name: Deploy to AWS S3
+        run: aws s3 sync ./out s3://${{ vars.S3_BUCKET }} --quiet --delete
