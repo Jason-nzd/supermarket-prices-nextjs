@@ -264,9 +264,24 @@ export function utcDateToShortDate(utcDate: Date, returnTodayString: boolean = f
 
 // utcDateToLongDate
 // -----------------
-// Takes UTC Date and returns 'April 15 2023'
+// Takes UTC Date and returns 'Friday, 11 August 2023'
 export function utcDateToLongDate(utcDate: Date): string {
-  return new Date(utcDate).toDateString(); // Thu Mar 16 2023
+  return new Date(utcDate).toLocaleString('en-GB', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+}
+
+// utcDateToMonthYear
+// ------------------
+// Takes UTC Date and returns 'April 2023'
+export function utcDateToMonthYear(utcDate: Date): string {
+  return new Date(utcDate).toLocaleString('en-GB', {
+    month: 'long',
+    year: 'numeric',
+  });
 }
 
 // sortProductsByName()

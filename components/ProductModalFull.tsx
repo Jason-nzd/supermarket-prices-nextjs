@@ -2,7 +2,7 @@ import startCase from 'lodash/startCase';
 import Link from 'next/link';
 import React, { useContext } from 'react';
 import { DatedPrice, Product } from '../typings';
-import { utcDateToLongDate } from '../utilities/utilities';
+import { utcDateToLongDate, utcDateToMonthYear } from '../utilities/utilities';
 import ImageWithFallback from './ImageWithFallback';
 import PriceTag from './card/PriceTag';
 import StoreIcon from './StoreIcon';
@@ -115,8 +115,8 @@ function ProductModalFull({ product }: Props) {
 
           {/* Categories */}
           {product.category != null && product.category!.length > 0 && (
-            <div className='flex pr-3 items-center text-slate-400 text-sm mt-6 ml-4'>
-              Categories:
+            <div className='flex pr-3 items-center text-slate-400 text-sm mt-6 mx-auto'>
+              Category:
               {product.category!.map((category, index) => {
                 return (
                   <div className='px-1 hover:text-black' key={index}>
@@ -127,15 +127,9 @@ function ProductModalFull({ product }: Props) {
             </div>
           )}
 
-          {/* First Added */}
-          <div className='text-slate-400 text-sm mt-2 ml-4 flex'>
-            <div className='pr-2'>First added to KiwiPrice on</div>
-            <div>{utcDateToLongDate(product.priceHistory[0].date)}</div>
-          </div>
-
           {/* Last Updated */}
-          <div className='text-slate-400 text-sm my-2 ml-4 flex'>
-            <div className='pr-2'>Price current as of</div>
+          <div className='text-slate-400 text-sm my-2 mx-auto flex'>
+            <div className='pr-1'>Price current as of</div>
             <div>{utcDateToLongDate(product.lastChecked)}</div>
           </div>
 
@@ -143,7 +137,7 @@ function ProductModalFull({ product }: Props) {
           <div
             className={
               (theme === 'dark' ? 'bg-zinc-800 text-zinc-300' : 'text-slate-600') +
-              ' text-sm my-2 ml-4'
+              ' text-sm my-2 mx-auto'
             }
           >
             {product.sourceSite.includes('countdown.co.nz') && (
@@ -189,6 +183,12 @@ function ProductModalFull({ product }: Props) {
                 </a>
               </div>
             )}
+          </div>
+
+          {/* First Added */}
+          <div className='text-slate-400 text-sm mb-2 flex mt-auto mx-auto'>
+            <div className='pr-1'>First added to KiwiPrice on</div>
+            <div>{utcDateToMonthYear(product.priceHistory[0].date)}</div>
           </div>
         </div>
       </div>
