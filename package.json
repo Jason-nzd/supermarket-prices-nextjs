@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "npx serve@latest out",
+    "start": "npx serve@latest out --no-request-logging",
     "lint": "next lint",
     "cypress": "cypress open"
   },
