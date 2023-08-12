@@ -6,9 +6,14 @@ import { Dialog } from '@headlessui/react';
 interface Props {
   iconSize?: number;
   iconHexColour?: string;
+  mobileVersion?: boolean;
 }
 
-export default function SearchBar({ iconSize = 6, iconHexColour = 'currentColor' }: Props) {
+export default function SearchBar({
+  iconSize = 6,
+  iconHexColour = 'currentColor',
+  mobileVersion = false,
+}: Props) {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState<string>('');
   let [isModalOpen, setIsModalOpen] = useState(false);
@@ -58,7 +63,7 @@ export default function SearchBar({ iconSize = 6, iconHexColour = 'currentColor'
             <input
               type='text'
               name='search'
-              id='search'
+              id={mobileVersion ? 'mobile-search' : 'search'}
               required
               placeholder='Search'
               minLength={3}
@@ -68,7 +73,7 @@ export default function SearchBar({ iconSize = 6, iconHexColour = 'currentColor'
               onChange={(e) => setSearchQuery(e.target.value)}
             />
             <div className='ml-auto hover-to-white text-green-200'>
-              <button type='submit' title='Search' className='' id='search-button'>
+              <button type='submit' title='Search' id='search-button'>
                 {magnifyIcon}
               </button>
             </div>

@@ -37,7 +37,7 @@ const NavBar = ({ lastUpdatedDate }: Props) => {
 
         {/* Mobile Search Menu */}
         <div className='z-50 left-[3rem] hidden md:block lg:hidden ml-14 pb-1'>
-          <SearchBar iconSize={6} iconHexColour='#86efac' />
+          <SearchBar iconSize={6} iconHexColour='#86efac' mobileVersion={true} />
         </div>
 
         {/* Column 2 - Title - Sub-title - Categories - Search */}
