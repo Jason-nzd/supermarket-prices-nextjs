@@ -270,7 +270,6 @@ export function utcDateToLongDate(utcDate: Date): string {
     weekday: 'long',
     day: 'numeric',
     month: 'long',
-    year: 'numeric',
   });
 }
 
