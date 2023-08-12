@@ -57,8 +57,8 @@ Example database document with dates in UTC format:
 
 - `npm install` - to install dependencies
 - `npm run dev` - for testing as a dynamic website
-- `npm run start` - to run a dynamic site with next.js incremental static regeneration
 - `npm run build` - to build a fully static site into the `/out` directory
+- `npm run start` - to host the built static site from `/out`
 
 ## Static Website Demo
 
