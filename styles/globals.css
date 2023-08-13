@@ -6,6 +6,9 @@
   body {
     @apply bg-green-600 dark:bg-red-500 text-zinc-800 dark:text-zinc-300;
   }
+  p {
+    @apply text-zinc-800 dark:text-zinc-300;
+  }
   .central-responsive-div {
     @apply px-2 mx-auto w-[100%] 2xl:w-[90rem] 3xl:w-[110rem] transition-all duration-500;
   }
