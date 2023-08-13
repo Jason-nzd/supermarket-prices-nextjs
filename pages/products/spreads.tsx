@@ -9,7 +9,7 @@ import {
   PriceHistoryLimit,
   Store,
   sortProductsByUnitPrice,
-  utcDateToLongDate,
+  utcDateToMediumDate,
 } from '../../utilities/utilities';
 import { DarkModeContext } from '../_app';
 import Footer from '../../components/Footer';
@@ -104,7 +104,7 @@ export const getStaticProps: GetStaticProps = async () => {
   marmalade = sortProductsByUnitPrice(marmalade).slice(0, 15);
   other = sortProductsByUnitPrice(other).slice(0, 15);
 
-  const lastChecked = utcDateToLongDate(new Date());
+  const lastChecked = utcDateToMediumDate(new Date());
 
   return {
     props: {

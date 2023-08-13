@@ -3,7 +3,7 @@ import Footer from '../components/Footer';
 import NavBar from '../components/NavBar/NavBar';
 import ProductEditRow from '../components/AdminPanel/ProductEditRow';
 import { Product } from '../typings';
-import { LastChecked, PriceHistoryLimit, Store, utcDateToLongDate } from '../utilities/utilities';
+import { LastChecked, PriceHistoryLimit, Store, utcDateToMediumDate } from '../utilities/utilities';
 import { DarkModeContext } from './_app';
 import startCase from 'lodash/startCase';
 import { DBFetchAllAPI, DBFetchByNameAPI } from 'utilities/clientside-api';
@@ -174,7 +174,7 @@ const AdminPanel = ({ lastChecked }: Props) => {
 };
 
 export async function getStaticProps() {
-  const lastChecked = utcDateToLongDate(new Date());
+  const lastChecked = utcDateToMediumDate(new Date());
   return {
     props: {
       lastChecked,

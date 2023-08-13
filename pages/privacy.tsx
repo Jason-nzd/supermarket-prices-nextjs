@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import Footer from '../components/Footer';
 import NavBar from '../components/NavBar/NavBar';
-import { utcDateToLongDate } from '../utilities/utilities';
+import { utcDateToMediumDate } from '../utilities/utilities';
 import { DarkModeContext } from './_app';
 
 interface Props {
@@ -36,7 +36,7 @@ export default function Privacy({ lastChecked }: Props) {
 }
 
 export async function getStaticProps() {
-  const lastChecked = utcDateToLongDate(new Date());
+  const lastChecked = utcDateToMediumDate(new Date());
 
   return {
     props: {

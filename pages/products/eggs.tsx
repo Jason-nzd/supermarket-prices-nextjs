@@ -4,7 +4,7 @@ import { Product } from '../../typings';
 
 import ProductsGrid from '../../components/ProductsGrid';
 import { DBFetchByCategory } from '../../utilities/cosmosdb';
-import { utcDateToLongDate } from '../../utilities/utilities';
+import { utcDateToMediumDate } from '../../utilities/utilities';
 import { DarkModeContext } from '../_app';
 import NavBar from '../../components/NavBar/NavBar';
 import Footer from '../../components/Footer';
@@ -105,7 +105,7 @@ export const getStaticProps: GetStaticProps = async () => {
   size7 = size7.slice(0, 12);
   size8plus = size8plus.slice(0, 12);
 
-  const lastChecked = utcDateToLongDate(new Date());
+  const lastChecked = utcDateToMediumDate(new Date());
 
   return {
     props: {

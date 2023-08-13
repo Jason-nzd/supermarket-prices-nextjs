@@ -9,7 +9,7 @@ import {
   PriceHistoryLimit,
   Store,
   sortProductsByUnitPrice,
-  utcDateToLongDate,
+  utcDateToMediumDate,
 } from '../../utilities/utilities';
 import { DarkModeContext } from '../_app';
 import NavBar from '../../components/NavBar/NavBar';
@@ -123,7 +123,7 @@ export const getStaticProps: GetStaticProps = async () => {
   grapes = sortProductsByUnitPrice(grapes).slice(0, 15);
   other = other.slice(0, 30);
 
-  const lastChecked = utcDateToLongDate(new Date());
+  const lastChecked = utcDateToMediumDate(new Date());
 
   return {
     props: {

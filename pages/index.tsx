@@ -4,7 +4,7 @@ import NavBar from '../components/NavBar/NavBar';
 import ProductsGrid from '../components/ProductsGrid';
 import { Product } from '../typings';
 import { DBFetchAll } from '../utilities/cosmosdb';
-import { OrderByMode, PriceHistoryLimit, Store, utcDateToLongDate } from '../utilities/utilities';
+import { OrderByMode, PriceHistoryLimit, Store, utcDateToMediumDate } from '../utilities/utilities';
 import { DarkModeContext } from './_app';
 
 interface Props {
@@ -81,7 +81,7 @@ export async function getStaticProps() {
     OrderByMode.LatestPriceChange
   );
 
-  const lastChecked = utcDateToLongDate(new Date());
+  const lastChecked = utcDateToMediumDate(new Date());
 
   return {
     props: {

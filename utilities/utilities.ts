@@ -270,6 +270,18 @@ export function utcDateToLongDate(utcDate: Date): string {
     weekday: 'long',
     day: 'numeric',
     month: 'long',
+    year: 'numeric',
+  });
+}
+
+// utcDateToShortDate
+// -----------------
+// Takes UTC Date and returns 'Friday, 11 Aug'
+export function utcDateToMediumDate(utcDate: Date): string {
+  return new Date(utcDate).toLocaleString('en-GB', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'short',
   });
 }
 

@@ -1,13 +1,12 @@
 import { GetStaticProps } from 'next';
 import React, { useContext } from 'react';
 import { Product } from '../../typings';
-
 import ProductsGrid from '../../components/ProductsGrid';
 import { DBFetchByCategory } from '../../utilities/cosmosdb';
 import { DarkModeContext } from '../_app';
 import NavBar from '../../components/NavBar/NavBar';
 import Footer from '../../components/Footer';
-import { sortProductsByUnitPrice, utcDateToLongDate } from '../../utilities/utilities';
+import { sortProductsByUnitPrice, utcDateToMediumDate } from '../../utilities/utilities';
 
 interface Props {
   standardMilk: Product[];
@@ -79,7 +78,7 @@ export const getStaticProps: GetStaticProps = async () => {
   flavouredMilk = sortProductsByUnitPrice(flavouredMilk).slice(0, 15);
   otherMilk = sortProductsByUnitPrice(otherMilk).slice(0, 15);
 
-  const lastChecked = utcDateToLongDate(new Date());
+  const lastChecked = utcDateToMediumDate(new Date());
 
   return {
     props: {

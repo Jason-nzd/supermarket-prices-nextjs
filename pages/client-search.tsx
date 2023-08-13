@@ -8,7 +8,7 @@ import {
   PriceHistoryLimit,
   Store,
   sortProductsByUnitPrice,
-  utcDateToLongDate,
+  utcDateToMediumDate,
 } from '../utilities/utilities';
 import { DarkModeContext } from './_app';
 import { useRouter } from 'next/router';
@@ -104,7 +104,7 @@ const ClientSearch = ({ lastChecked }: Props) => {
 };
 
 export async function getStaticProps() {
-  const lastChecked = utcDateToLongDate(new Date());
+  const lastChecked = utcDateToMediumDate(new Date());
   return {
     props: {
       lastChecked,
