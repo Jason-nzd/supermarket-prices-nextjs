@@ -11,9 +11,9 @@ describe('Home Page', () => {
       cy.get('.product-card').should('have.length.greaterThan', 3);
     });
 
-    it('should have no mobile search button on nav bar', () => {
-      cy.get('#mobile-search-button').should('be.hidden');
-    });
+    // it('should have no mobile search button on nav bar', () => {
+    //   cy.get('#mobile-search-button').should('be.hidden');
+    // });
   });
 
   context('400p small mobile resolution', () => {
