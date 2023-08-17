@@ -13,7 +13,7 @@
     @apply px-2 mx-auto w-[100%] 2xl:w-[90rem] 3xl:w-[110rem] transition-all duration-500;
   }
   .content-body {
-    @apply bg-[url('/images/bg-gradient.png')] bg-cover bg-[#dee9ad] pt-1 pb-12 dark:bg-zinc-800 dark:bg-[url()];
+    @apply bg-[url('/images/bg-gradient.png')] bg-cover bg-[#dee9ad] pt-1 pb-12 dark:bg-zinc-800 dark:bg-none;
   }
   .text-primary-colour {
     @apply text-green-200;
