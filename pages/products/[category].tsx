@@ -64,6 +64,8 @@ export const freshCategory = [
   'bread',
   'bread-rolls',
   'specialty-bread',
+  'bakery-cakes',
+  'bakery-desserts',
 ];
 export const chilledCategory = [
   'milk',
@@ -88,6 +90,7 @@ export const meatCategory = [
   'mince-patties',
   'sausages',
   'deli-meats',
+  'meat-alternatives',
 ];
 export const frozenCategory = [
   'ice-cream',
