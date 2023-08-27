@@ -16,16 +16,16 @@ function ProductsGrid({ title = '', subTitle = '', products, trimColumns = false
   if (trimColumns) {
     trimmedProducts = products;
 
-    // Trim products to 3 columns
+    // For small viewports, trim products to 3 columns
     if (useMediaQuery('980px')) {
       trimmedProducts = products.slice(0, nextMultipleDown(products.length, 3));
     }
-    // Trim products to 4 columns
+    // For medium viewports, trim products to 4 columns
     if (useMediaQuery('1340px')) {
       trimmedProducts = products.slice(0, nextMultipleDown(products.length, 4));
       numColumnsToShow = 4;
     }
-    // Trim products to 5 columns
+    // For large viewports, trim products to 5 columns
     if (useMediaQuery('2100px')) {
       trimmedProducts = products.slice(0, nextMultipleDown(products.length, 5));
       numColumnsToShow = 5;

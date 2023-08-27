@@ -1,7 +1,6 @@
 import { GetStaticProps } from 'next';
 import React, { useContext } from 'react';
 import { Product } from '../../typings';
-
 import ProductsGrid from '../../components/ProductsGrid';
 import { DBFetchByCategory } from '../../utilities/cosmosdb';
 import { utcDateToMediumDate } from '../../utilities/utilities';
@@ -40,7 +39,7 @@ const Category = ({ mixedGrade, size7, size8plus, lastChecked }: Props) => {
 export const getStaticProps: GetStaticProps = async () => {
   let products = await DBFetchByCategory('eggs', 100);
 
-  // Sub-categories to display separately on page
+  // Sub-categories for each egg size
   let mixedGrade: Product[] = [];
   let size7: Product[] = [];
   let size8plus: Product[] = [];
