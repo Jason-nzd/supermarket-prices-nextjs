@@ -28,9 +28,6 @@ function DynamicChartCall({ priceHistory, lastChecked }: ChartProps) {
 }
 
 function ProductCard({ product }: Props) {
-  const showCategories = false;
-  const hasPriceHistory = product.priceHistory.length > 1;
-
   function handleClick() {
     // Copy product id to clipboard when card is clicked
     navigator.clipboard.writeText(product.id);
@@ -79,13 +76,6 @@ function ProductCard({ product }: Props) {
               {/* Price Tag */}
               <div className='m-1 mr-2 ml-auto pr-1'>
                 <PriceTag product={product} />
-              </div>
-
-              {/* Price Tips Highest/Lowest */}
-              <div className='ml-auto mt-2 pr-4 text-sm md:text-xs min-h-[1rem] pl-1'>
-                {product.priceHistory.length > 1 && (
-                  <PriceHistoryTips priceHistory={product.priceHistory} />
-                )}
               </div>
             </div>
           </div>
