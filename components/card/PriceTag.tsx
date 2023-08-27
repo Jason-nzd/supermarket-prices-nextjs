@@ -11,6 +11,7 @@ export default function PriceTag({ product }: Props) {
     'rounded-3xl border-2 shadow-md px-3 py-0.5 w-fit flex items-center dark:bg-zinc-800 dark:text-zinc-300 ';
   let icon;
 
+  // Convert product size in per/kg to per/100g if it will fit in a nicer range
   if (product.unitPrice) {
     if (
       product.originalUnitQuantity &&
@@ -18,7 +19,7 @@ export default function PriceTag({ product }: Props) {
       product.originalUnitQuantity > 40 &&
       product.unitName === 'kg'
     ) {
-      // Convert from per /kg to per /100g
+      // Convert from per kg to per 100g
       product.unitName = '100g';
       product.unitPrice = product.unitPrice / 10;
     }
@@ -79,7 +80,7 @@ export default function PriceTag({ product }: Props) {
             <div className='flex text-md items-center'>
               <div className='text-xs'>$</div>
               <div className='font-semibold text-lg lg:text-md'>
-                {product.unitPrice!.toFixed(1)}
+                {product.unitPrice!.toPrecision(2)}
               </div>
               <div>{'/' + product.unitName || 'Unit'}</div>
             </div>
