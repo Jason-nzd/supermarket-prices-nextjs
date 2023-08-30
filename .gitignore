@@ -45,3 +45,4 @@ next-env.d.ts
 /analyze
 
 /cypress/videos
+/cypress/screenshots
