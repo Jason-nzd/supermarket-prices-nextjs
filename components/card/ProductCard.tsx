@@ -64,7 +64,7 @@ function ProductCard({ product }: Props) {
           </div>
           <div className='w-3/6'>
             {/* Price History Chart */}
-            <div className='pl-0 pr-0.5 z-30'>
+            <div className='pl-0 pr-1 z-30 h-24 mb-4 mr-1'>
               <DynamicChartCall
                 priceHistory={product.priceHistory}
                 lastChecked={product.lastChecked}
