@@ -57,139 +57,142 @@ function ProductModalFull({ product }: Props) {
         ' flex flex-col absolute mx-auto rounded-3xl z-50 shadow-2xl overflow-y-scroll max-h-[90%]'
       }
     >
-      <div className='flex flex-col w-[90%] md:w-full md:flex-row mx-auto'>
-        {/* Image on left 2/3 */}
-        <div className='relative max-w-[calc(70vh)]'>
-          <div className='p-2 md:py-4 md:pl-4 w-fit h-fit'>
-            <ImageWithFallback
-              id={product.id}
-              width={900}
-              src={'product-images/' + product.id + '.webp'}
-            />
-            {/* Optional Size div overlaid on top of image */}
-            {product.size && <div className='size-tag'>{product.size}</div>}
+      <div className='flex flex-col w-[90%] mx-auto'>
+        <div className='block md:flex'>
+          {/* Image on left 2/3 */}
+          <div className='relative max-w-[calc(70vh)]'>
+            <div className='p-2 md:py-4 md:pl-4 w-fit h-fit'>
+              <ImageWithFallback
+                id={product.id}
+                width={900}
+                src={'product-images/' + product.id + '.webp'}
+              />
+              {/* Optional Size div overlaid on top of image */}
+              {product.size && <div className='size-tag'>{product.size}</div>}
+            </div>
+          </div>
+
+          {/* Title and other information on right 1/3 */}
+          <div className='flex flex-col w-full md:w-1/3 md:min-w-[20rem]'>
+            {/* Title */}
+            <div
+              className='w-full h-12 pt-3 px-3 rounded-t-2xl text-[#3C8DA3] text-lg
+              text-center font-semibold'
+            >
+              {product.name}
+            </div>
+
+            <div className='flex'>
+              {/* Price Tag */}
+              <div className='mt-6 ml-4 w-1/3 mr-2'>
+                <PriceTag product={product} />
+              </div>
+
+              {/* Price Stats */}
+              <div className='mt-6 text-sm ml-auto '>
+                <div className='flex'>
+                  <div className='text-right pr-1 w-[6rem]'>Lowest Price:</div>
+                  <div>${lowestPrice}</div>
+                </div>
+                <div className='flex'>
+                  <div className='text-right pr-1 w-[6rem]'>Highest Price:</div>
+                  <div>${highestPrice}</div>
+                </div>
+                <div className='flex'>
+                  <div className='text-right pr-1 w-[6rem]'>Average Price:</div>
+                  <div>${avgPrice}</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Categories */}
+            {product.category != null && product.category!.length > 0 && (
+              <div className='flex pr-3 items-center text-slate-400 text-sm mt-6 mx-auto'>
+                Category:
+                {product.category!.map((category, index) => {
+                  return (
+                    <div className='px-1 hover:text-black' key={index}>
+                      <Link href={'products/' + category}>{startCase(category.toLowerCase())}</Link>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+
+            {/* Last Updated */}
+            <div className='text-slate-400 text-sm my-2 mx-auto flex'>
+              Price current as of {utcDateToLongDate(product.lastChecked)}
+            </div>
+
+            {/* Original Site Search Link */}
+            <div
+              className={
+                (theme === 'dark' ? 'bg-zinc-800 text-zinc-300' : 'text-slate-600') +
+                ' text-sm my-2 mx-auto w-fit'
+              }
+            >
+              {product.sourceSite.includes('countdown.co.nz') && (
+                <div className='external-link green-ring px-4'>
+                  <a
+                    target='_blank'
+                    className='flex-col'
+                    href={'https://www.countdown.co.nz/shop/searchproducts?search=' + product.name}
+                    rel='noopener noreferrer'
+                  >
+                    <div>'{product.name}'</div>
+                    <div className='flex gap-x-1 items-center mx-auto w-fit'>
+                      {boxArrow} countdown.co.nz
+                    </div>
+                  </a>
+                </div>
+              )}
+              {product.sourceSite.includes('thewarehouse.co.nz') && (
+                <div className='external-link red-ring px-4'>
+                  <a
+                    target='_blank'
+                    className='flex-col'
+                    href={'https://www.thewarehouse.co.nz/search?q=' + product.name}
+                    rel='noopener noreferrer'
+                  >
+                    <div>'{product.name}'</div>
+                    <div className='flex gap-x-1 items-center mx-auto w-fit'>
+                      {boxArrow} thewarehouse.co.nz
+                    </div>
+                  </a>
+                </div>
+              )}
+              {product.sourceSite.includes('paknsave.co.nz') && (
+                <div className='external-link yellow-ring px-4'>
+                  <a
+                    target='_blank'
+                    className='flex-col'
+                    href={'https://www.paknsave.co.nz/shop/Search?q=' + product.name}
+                    rel='noopener noreferrer'
+                  >
+                    <div>'{product.name}'</div>
+                    <div className='flex gap-x-1 items-center mx-auto w-fit'>
+                      {boxArrow} paknsave.co.nz
+                    </div>
+                  </a>
+                </div>
+              )}
+            </div>
+
+            {/* First Added */}
+            <div className='text-slate-400 text-sm mb-2 flex mt-auto mx-auto'>
+              <div className='pr-1'>First added to KiwiPrice on</div>
+              <div>{utcDateToMonthYear(product.priceHistory[0].date)}</div>
+            </div>
           </div>
         </div>
 
-        {/* Title, price chart and other information on right 1/3 */}
-        <div className='flex flex-col w-full md:w-1/3 md:min-w-[20rem] md:pr-8'>
-          {/* Title */}
-          <div
-            className='w-full h-12 pt-3 px-3 rounded-t-2xl text-[#3C8DA3] text-lg
-              text-center font-semibold'
-          >
-            {product.name}
-          </div>
-
-          {/* Price Chart */}
-          <div className='w-full md:w-[20rem] md:mt-6 md:pr-4 mx-auto'>
-            <DynamicChartCall
-              priceHistory={product.priceHistory}
-              lastChecked={product.lastChecked}
-              useLargeVersion={true}
-            />
-          </div>
-
-          <div className='flex'>
-            {/* Price Tag */}
-            <div className='mt-6 ml-4 w-1/3 mr-2'>
-              <PriceTag product={product} />
-            </div>
-
-            {/* Price Stats */}
-            <div className='mt-6 text-sm ml-auto '>
-              <div className='flex'>
-                <div className='pr-1 w-[6rem]'>Lowest Price:</div>
-                <div>${lowestPrice}</div>
-              </div>
-              <div className='flex'>
-                <div className='pr-1 w-[6rem]'>Highest Price:</div>
-                <div>${highestPrice}</div>
-              </div>
-              <div className='flex'>
-                <div className='pr-1 w-[6rem]'>Average Price:</div>
-                <div>${avgPrice}</div>
-              </div>
-            </div>
-          </div>
-
-          {/* Categories */}
-          {product.category != null && product.category!.length > 0 && (
-            <div className='flex pr-3 items-center text-slate-400 text-sm mt-6 mx-auto'>
-              Category:
-              {product.category!.map((category, index) => {
-                return (
-                  <div className='px-1 hover:text-black' key={index}>
-                    <Link href={'products/' + category}>{startCase(category.toLowerCase())}</Link>
-                  </div>
-                );
-              })}
-            </div>
-          )}
-
-          {/* Last Updated */}
-          <div className='text-slate-400 text-sm my-2 mx-auto flex'>
-            <div className='pr-1'>Price current as of</div>
-            <div>{utcDateToLongDate(product.lastChecked)}</div>
-          </div>
-
-          {/* Original Site Search Link */}
-          <div
-            className={
-              (theme === 'dark' ? 'bg-zinc-800 text-zinc-300' : 'text-slate-600') +
-              ' text-sm my-2 mx-auto'
-            }
-          >
-            {product.sourceSite.includes('countdown.co.nz') && (
-              <div className='external-link green-ring'>
-                <a
-                  target='_blank'
-                  className='flex-col'
-                  href={'https://www.countdown.co.nz/shop/searchproducts?search=' + product.name}
-                  rel='noopener noreferrer'
-                >
-                  <div>'{product.name}'</div>
-                  <div className='flex gap-x-1 items-center mx-auto'>
-                    {boxArrow} countdown.co.nz
-                  </div>
-                </a>
-              </div>
-            )}
-            {product.sourceSite.includes('thewarehouse.co.nz') && (
-              <div className='external-link red-ring'>
-                <a
-                  target='_blank'
-                  className='flex-col'
-                  href={'https://www.thewarehouse.co.nz/search?q=' + product.name}
-                  rel='noopener noreferrer'
-                >
-                  <div>'{product.name}'</div>
-                  <div className='flex gap-x-1 items-center mx-auto'>
-                    {boxArrow} thewarehouse.co.nz
-                  </div>
-                </a>
-              </div>
-            )}
-            {product.sourceSite.includes('paknsave.co.nz') && (
-              <div className='external-link yellow-ring'>
-                <a
-                  target='_blank'
-                  className='flex-col'
-                  href={'https://www.paknsave.co.nz/shop/Search?q=' + product.name}
-                  rel='noopener noreferrer'
-                >
-                  <div>'{product.name}'</div>
-                  <div className='flex gap-x-1 items-center mx-auto'>{boxArrow} paknsave.co.nz</div>
-                </a>
-              </div>
-            )}
-          </div>
-
-          {/* First Added */}
-          <div className='text-slate-400 text-sm mb-2 flex mt-auto mx-auto'>
-            <div className='pr-1'>First added to KiwiPrice on</div>
-            <div>{utcDateToMonthYear(product.priceHistory[0].date)}</div>
-          </div>
+        {/* Price Chart */}
+        <div className='w-full mx-auto h-40'>
+          <DynamicChartCall
+            priceHistory={product.priceHistory}
+            lastChecked={product.lastChecked}
+            useLargeVersion={true}
+          />
         </div>
       </div>
 
