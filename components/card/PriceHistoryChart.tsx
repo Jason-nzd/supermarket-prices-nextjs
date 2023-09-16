@@ -76,7 +76,7 @@ function PriceHistoryChart({ priceHistory, lastChecked, useLargeVersion = false 
 
   const options: ChartOptions<'line'> = {
     responsive: true,
-    maintainAspectRatio: true,
+    maintainAspectRatio: false,
     resizeDelay: 200,
     plugins: {
       tooltip: {
