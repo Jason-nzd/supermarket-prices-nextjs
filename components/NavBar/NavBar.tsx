@@ -40,10 +40,10 @@ const NavBar = ({ lastUpdatedDate }: Props) => {
           <SearchBar iconSize={6} iconHexColour='#86efac' mobileVersion={true} />
         </div>
 
-        {/* Column 2 - Title - Sub-title - Categories - Search */}
-        <div className='block w-full lg:w-[calc(100%-18rem)] h-[3.6rem] lg:h-[5rem]'>
-          {/* Row 1 - Title - Sub-title */}
-          <div className='flex flex-wrap h-1/2 mx-auto w-full items-center lg:items-center ml-1'>
+        {/* Column 2 - Rest of nav bar */}
+        <div className='block w-full lg:w-[calc(100%-6rem)] h-[3.6rem] lg:h-[5rem]'>
+          {/* Row 1 - Title - Sub-title - Date */}
+          <div className='flex flex-wrap h-full lg:h-1/2 mx-auto w-full items-center lg:items-center ml-1'>
             {/* Mobile Icon */}
             <Image
               src={kiwifruit}
@@ -65,6 +65,23 @@ const NavBar = ({ lastUpdatedDate }: Props) => {
             >
               Tracking the cost of food across New Zealand
             </h3>
+
+            {/* Last Updated Date */}
+            <div className='hidden lg:block pb-2 text-primary-colour text-sm select-none pr-4 mt-2 w-fit ml-auto h-8'>
+              Updated {lastUpdatedDate}
+            </div>
+
+            {/* Column 3 - Mobile Theme Toggle */}
+            <div className='hidden md:block lg:hidden mx-2 items-center'>
+              <DarkModeToggle />
+            </div>
+
+            {/* Column 3 - Mobile User Menu */}
+            <div className='block lg:hidden mx-2 items-center'>
+              <Link className='text-primary-colour w-12 items-center' href='#'>
+                {userIcon}
+              </Link>
+            </div>
           </div>
 
           {/* Row 2 - Categories - Search Bar*/}
@@ -89,52 +106,35 @@ const NavBar = ({ lastUpdatedDate }: Props) => {
             <div className='w-fit ml-auto'>
               <SearchBar />
             </div>
-          </div>
-        </div>
 
-        {/* Column 3 - Right Menu */}
-        <div className='hidden lg:flex lg:flex-col items-center ml-auto w-fit h-full pr-2'>
-          {/* Last Updated Date */}
-          <div className='pb-2 text-primary-colour text-sm select-none pr-2 w-fit ml-auto h-8'>
-            Updated {lastUpdatedDate}
-          </div>
+            {/* Right Button Menu */}
+            <div className='hidden lg:flex lg:flex-col items-center ml-auto w-fit mt-3 h-full pr-2'>
+              <div className='h-1/2 flex items-center ml-auto pl-3'>
+                {/* Dark Mode Toggle */}
+                <div className='mt-1 ml-auto'>
+                  <DarkModeToggle />
+                </div>
 
-          <div className='h-1/2 flex items-center ml-auto'>
-            {/* Dark Mode Toggle */}
-            <div className='mt-1 ml-auto'>
-              <DarkModeToggle />
+                {/* User Profile */}
+                <Link
+                  className='ml-2 xl:ml-3 text-primary-colour hover-to-white'
+                  href='#'
+                  id='user-profile-link'
+                >
+                  {userIcon}
+                </Link>
+
+                {/* Admin */}
+                <Link
+                  className='mx-2 xl:ml-3 text-primary-colour hover-to-white'
+                  href='/admin'
+                  id='admin-link'
+                >
+                  {tableIcon}
+                </Link>
+              </div>
             </div>
-
-            {/* User Profile */}
-            <Link
-              className='ml-2 xl:ml-3 text-primary-colour hover-to-white'
-              href='#'
-              id='user-profile-link'
-            >
-              {userIcon}
-            </Link>
-
-            {/* Admin */}
-            <Link
-              className='mx-2 xl:ml-3 text-primary-colour hover-to-white'
-              href='/admin'
-              id='admin-link'
-            >
-              {tableIcon}
-            </Link>
           </div>
-        </div>
-
-        {/* Column 3 - Mobile Theme Toggle */}
-        <div className='h-full hidden md:block lg:hidden mx-2 items-center'>
-          <DarkModeToggle />
-        </div>
-
-        {/* Column 3 - Mobile User Menu */}
-        <div className='block h-full lg:hidden mx-2 items-center'>
-          <Link className='text-primary-colour w-12 items-center' href='#'>
-            {userIcon}
-          </Link>
         </div>
       </div>
     </nav>
