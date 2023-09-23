@@ -5,8 +5,8 @@ import { Dialog } from '@headlessui/react';
 import ProductModalFull from '../ProductModalFull';
 import StoreIcon from '../StoreIcon';
 import PriceTag from './PriceTag';
-import PriceHistoryTips from './PriceHistoryTips';
 import dynamic from 'next/dynamic';
+import { productIsCurrent } from 'utilities/utilities';
 
 interface Props {
   product: Product;
@@ -44,7 +44,7 @@ function ProductCard({ product }: Props) {
           className='w-full h-12 pt-2 px-3 rounded-t-2xl text-[#3C8DA3] text-md lg:text-sm
                 text-center font-semibold leading-5 lg:leading-4 z-20 dark:text-zinc-300'
         >
-          {product.name}
+          {product.name} {!productIsCurrent(product) && '(Out of Stock/Stale)'}
         </div>
 
         {/* Central Div containing image, chart, price info */}

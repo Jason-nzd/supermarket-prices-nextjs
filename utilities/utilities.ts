@@ -347,7 +347,7 @@ export function printPrice(price: number): string {
 
 // priceTrend()
 // ------------
-// Takes a DatedPrice[] object and returns if price is trending up/down
+// Takes a DatedPrice[] object and returns if price is trending up/down.
 export function priceTrend(priceHistory: DatedPrice[]): PriceTrend {
   if (priceHistory.length > 1) {
     const latestPrice = priceHistory[priceHistory.length - 1].price;
@@ -355,4 +355,16 @@ export function priceTrend(priceHistory: DatedPrice[]): PriceTrend {
     if (latestPrice < olderPrice) return PriceTrend.Decreased;
     else return PriceTrend.Increased;
   } else return PriceTrend.Same;
+}
+
+// productIsCurrent()
+// ------------------
+// Checks if product was recently scraped within a certain number of days.
+// Defaults to 5 days.
+export function productIsCurrent(product: Product, withinDays: number = 5): boolean {
+  const productDate = new Date(product.lastChecked);
+  const withinDate = new Date();
+  withinDate.setDate(withinDate.getDate() - withinDays);
+
+  return productDate >= withinDate;
 }
