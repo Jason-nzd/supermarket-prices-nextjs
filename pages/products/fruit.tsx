@@ -110,7 +110,7 @@ export const getStaticProps: GetStaticProps = async () => {
     else if (name.includes('grapes')) grapes.push(product);
     else other.push(product);
   });
-  other = other.slice(0, 20);
+  other = other.slice(0, 25);
 
   // Sort all by unit price
   apples = sortProductsByUnitPrice(apples).slice(0, 15);
