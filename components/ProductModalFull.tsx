@@ -121,7 +121,7 @@ function ProductModalFull({ product }: Props) {
 
             {/* Last Updated */}
             <div className='text-slate-400 text-sm my-2 mx-auto flex'>
-              Price current as of {utcDateToLongDate(product.lastChecked)}
+              Price last checked on {utcDateToLongDate(product.lastChecked)}
             </div>
 
             {/* Original Site Search Link */}
