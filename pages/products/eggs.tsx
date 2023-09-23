@@ -100,9 +100,9 @@ export const getStaticProps: GetStaticProps = async () => {
     else mixedGrade.push(product);
   });
 
-  mixedGrade = mixedGrade.slice(0, 12);
-  size7 = size7.slice(0, 12);
-  size8plus = size8plus.slice(0, 12);
+  mixedGrade = mixedGrade.slice(0, 15);
+  size7 = size7.slice(0, 15);
+  size8plus = size8plus.slice(0, 15);
 
   const lastChecked = utcDateToMediumDate(new Date());
 
