@@ -62,8 +62,8 @@ export const getStaticProps: GetStaticProps = async () => {
     const name = product.name.toLowerCase();
     if (!name.includes('powder')) {
       if (name.match('oat|almond|soy|lacto')) oatMilk.push(product);
-      else if (name.match('trim|lite|light.blue')) trimMilk.push(product);
-      else if (name.match('standard|original|blue')) standardMilk.push(product);
+      else if (name.match('trim|lite|light.blue|reduced')) trimMilk.push(product);
+      else if (name.match('standard|original|blue|gate.milk.2l')) standardMilk.push(product);
       else if (name.match('chocolate|caramel|flavoured')) flavouredMilk.push(product);
       else if (name.match('milk')) otherMilk.push(product);
     }
