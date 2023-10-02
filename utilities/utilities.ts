@@ -368,3 +368,14 @@ export function productIsCurrent(product: Product, withinDays: number = 5): bool
 
   return productDate >= withinDate;
 }
+
+// numToArrayOfNumbers()
+// ------------------
+// Takes a number and returns an array of numbers from 1 to that number.
+export function numToArrayOfNumbers(numPages: number) {
+  const arrayOfNumbers = [];
+  for (let index = 1; index <= numPages; index++) {
+    arrayOfNumbers.push(index);
+  }
+  return arrayOfNumbers;
+}

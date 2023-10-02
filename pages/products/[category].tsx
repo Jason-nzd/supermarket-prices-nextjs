@@ -10,6 +10,7 @@ import {
   OrderByMode,
   PriceHistoryLimit,
   Store,
+  numToArrayOfNumbers,
   sortProductsByUnitPrice,
   utcDateToMediumDate,
 } from '../../utilities/utilities';
@@ -19,12 +20,12 @@ import Footer from '../../components/Footer';
 
 interface Props {
   products: Product[];
-  hasMoreSearchResults: boolean;
+  numPagesOfSearchResults: number;
   lastChecked: string;
   subTitle: string;
 }
 
-const Category = ({ products, hasMoreSearchResults, lastChecked, subTitle }: Props) => {
+const Category = ({ products, numPagesOfSearchResults, lastChecked, subTitle }: Props) => {
   const router = useRouter();
   const { category } = router.query;
   const theme = useContext(DarkModeContext).darkMode ? 'dark' : 'light';
@@ -47,7 +48,18 @@ const Category = ({ products, hasMoreSearchResults, lastChecked, subTitle }: Pro
           />
 
           {/* Pagination */}
-          {hasMoreSearchResults && <div className='text-center m-4 text-lg'>Page 1 2 3 4 5</div>}
+          {/* {numPagesOfSearchResults > 1 && (
+            <div className='text-center m-4 text-lg flex mx-auto w-fit'>
+              Page
+              <ul className='flex ml-4'>
+                {numToArrayOfNumbers(numPagesOfSearchResults).map((pageNum) => (
+                  <li className='mx-4' key={pageNum}>
+                    {pageNum}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )} */}
         </div>
       </div>
       <Footer />
@@ -195,21 +207,24 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   products = sortProductsByUnitPrice(products);
 
   // Log total product size
-  const subTitle = `Showing ${products.length < 40 ? products.length : 40}/${
-    products.length
-  } in-stock products.`;
+  const foundItemsCount = products.length;
+  const subTitle = `Showing ${
+    foundItemsCount < 40 ? foundItemsCount : 40
+  }/${foundItemsCount} in-stock products.`;
 
-  // Trim array size
-  products = products.slice(0, 40);
+  // Trim array size for first page
+  const numProductsPerPage = 40;
+  products = products.slice(0, numProductsPerPage);
 
-  const hasMoreSearchResults = false;
+  // Calculate the number of pages of results to show
+  const numPagesOfSearchResults = Math.ceil(foundItemsCount / numProductsPerPage);
 
   const lastChecked = utcDateToMediumDate(new Date());
 
   return {
     props: {
       products,
-      hasMoreSearchResults,
+      numPagesOfSearchResults,
       lastChecked,
       subTitle,
     },
