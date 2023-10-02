@@ -60,12 +60,21 @@ export default function Home({
 
 // Perform a DB lookup for each store, so all stores get some coverage on the home page
 export async function getStaticProps() {
-  const countdownProducts = await DBFetchAll(
-    10,
+  const latestCountdownProducts = await DBFetchAll(
+    15,
     Store.Countdown,
     PriceHistoryLimit.FourOrMore,
     OrderByMode.LatestPriceChange
   );
+
+  // Filter out certain products which don't have interesting price fluctuations
+  const countdownProducts = latestCountdownProducts
+    .filter((product) => {
+      if (product.name.toLowerCase().includes('potato bake')) {
+        return false;
+      } else return true;
+    })
+    .slice(0, 10);
 
   const paknsaveProducts = await DBFetchAll(
     10,
