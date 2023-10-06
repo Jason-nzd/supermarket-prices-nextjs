@@ -2,7 +2,11 @@ import startCase from 'lodash/startCase';
 import Link from 'next/link';
 import React, { useContext } from 'react';
 import { DatedPrice, Product } from '../typings';
-import { utcDateToLongDate, utcDateToMonthYear } from '../utilities/utilities';
+import {
+  daysElapsedSinceDate,
+  utcDateToLongDate,
+  utcDateToMonthYear,
+} from '../utilities/utilities';
 import ImageWithFallback from './ImageWithFallback';
 import PriceTag from './card/PriceTag';
 import StoreIcon from './StoreIcon';
@@ -54,7 +58,7 @@ function ProductModalFull({ product }: Props) {
     <div
       className={
         (theme === 'dark' ? 'bg-zinc-800 text-zinc-300' : 'bg-white') +
-        ' flex flex-col absolute mx-auto rounded-3xl z-50 shadow-2xl overflow-y-scroll max-h-[90%]'
+        ' flex flex-col absolute mx-auto rounded-3xl z-50 shadow-2xl overflow-y-scroll'
       }
     >
       <div className='flex flex-col w-[90%] mx-auto'>
@@ -77,7 +81,7 @@ function ProductModalFull({ product }: Props) {
             {/* Title */}
             <div
               className='w-full h-12 pt-3 px-3 rounded-t-2xl text-[#3C8DA3] text-lg
-              text-center font-semibold'
+              text-center font-semibold mb-4'
             >
               {product.name}
             </div>
@@ -120,15 +124,20 @@ function ProductModalFull({ product }: Props) {
             )}
 
             {/* Last Updated */}
-            <div className='text-slate-400 text-sm my-2 mx-auto flex'>
-              Price last checked on {utcDateToLongDate(product.lastChecked)}
+            <div className='text-slate-400 text-sm mt-2 mx-auto flex'>
+              <div>Price last checked</div>
+              <div className='pl-1 font-semibold'>{daysElapsedSinceDate(product.lastChecked)}</div>
+            </div>
+            <div className='text-slate-400 text-sm mx-auto flex'>
+              <div>on</div>
+              <div className='pl-1 font-semibold'>{utcDateToLongDate(product.lastChecked)}</div>
             </div>
 
             {/* Original Site Search Link */}
             <div
               className={
                 (theme === 'dark' ? 'bg-zinc-800 text-zinc-300' : 'text-slate-600') +
-                ' text-sm my-2 mx-auto w-fit'
+                ' text-sm my-2 mx-auto w-fit mt-6'
               }
             >
               {product.sourceSite.includes('countdown.co.nz') && (
