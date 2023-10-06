@@ -61,7 +61,7 @@ export default function Home({
 // Perform a DB lookup for each store, so all stores get some coverage on the home page
 export async function getStaticProps() {
   const latestCountdownProducts = await DBFetchAll(
-    15,
+    40,
     Store.Countdown,
     PriceHistoryLimit.FourOrMore,
     OrderByMode.LatestPriceChange
@@ -70,9 +70,7 @@ export async function getStaticProps() {
   // Filter out certain products which don't have interesting price fluctuations
   const countdownProducts = latestCountdownProducts
     .filter((product) => {
-      if (product.name.toLowerCase().includes('potato bake')) {
-        return false;
-      } else return true;
+      return !product.name.toLowerCase().match('harris|bake');
     })
     .slice(0, 10);
 
