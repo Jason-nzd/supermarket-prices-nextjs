@@ -123,6 +123,7 @@ export const pantryCategory = [
   'beans-spaghetti',
   'canned-fish',
   'canned-meat',
+  'soup',
   'cereal',
   'spreads',
   'baking',
