@@ -197,11 +197,11 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   let products = await DBFetchByCategory(
     searchTerm,
-    300,
+    400,
     Store.Any,
     PriceHistoryLimit.Any,
     OrderByMode.None,
-    LastChecked.Within7Days
+    LastChecked.Within2Days
   );
 
   // Sort by unit price
