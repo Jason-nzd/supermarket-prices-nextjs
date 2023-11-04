@@ -80,7 +80,7 @@ export const getStaticProps: GetStaticProps = async () => {
     Store.Any,
     PriceHistoryLimit.Any,
     OrderByMode.None,
-    LastChecked.Within7Days
+    LastChecked.Within3Days
   );
 
   // console.log(products.length + ' total fruit found (last checked within 7 days)');

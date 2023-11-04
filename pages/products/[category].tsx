@@ -201,7 +201,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     Store.Any,
     PriceHistoryLimit.Any,
     OrderByMode.None,
-    LastChecked.Within2Days
+    LastChecked.Within3Days
   );
 
   // Sort by unit price

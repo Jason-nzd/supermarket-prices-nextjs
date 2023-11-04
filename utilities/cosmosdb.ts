@@ -91,7 +91,7 @@ export async function DBFetchAll(
       'SELECT * FROM products p' +
       queryAddLimitStore(store, false) +
       queryAddPriceHistoryLimit(priceHistoryLimit) +
-      queryAddLastChecked(LastChecked.Within2Days) +
+      queryAddLastChecked(LastChecked.Within3Days) +
       queryAddOrderBy(orderBy),
   };
 
@@ -230,8 +230,8 @@ export function queryAddLastChecked(lastChecked: LastChecked, useAND: boolean = 
 
   let todayModified = new Date();
   switch (lastChecked) {
-    case LastChecked.Within2Days:
-      todayModified.setDate(todayModified.getDate() - 2);
+    case LastChecked.Within3Days:
+      todayModified.setDate(todayModified.getDate() - 3);
       break;
 
     case LastChecked.Within7Days:

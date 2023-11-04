@@ -13,7 +13,7 @@ export async function DBFetchAllAPI(
       'SELECT * FROM products p' +
       queryAddLimitStore(store, false) +
       queryAddPriceHistoryLimit(priceHistoryLimit) +
-      queryAddLastChecked(LastChecked.Within2Days, false),
+      queryAddLastChecked(LastChecked.Within3Days, false),
   };
   // Exclude ORDER_BY as the CosmosDB API doesn't support it
 

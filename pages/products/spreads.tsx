@@ -70,7 +70,7 @@ export const getStaticProps: GetStaticProps = async () => {
     Store.Any,
     PriceHistoryLimit.Any,
     OrderByMode.None,
-    LastChecked.Within2Days
+    LastChecked.Within3Days
   );
 
   let valueButters: Product[] = [];

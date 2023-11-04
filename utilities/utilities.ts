@@ -33,7 +33,7 @@ export enum PriceHistoryLimit {
   FourOrMore,
 }
 export enum LastChecked {
-  Within2Days,
+  Within3Days,
   Within7Days,
   Within30Days,
   Any,

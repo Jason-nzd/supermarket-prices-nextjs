@@ -3,7 +3,13 @@ import React, { useContext } from 'react';
 import { Product } from '../../typings';
 import ProductsGrid from '../../components/ProductsGrid';
 import { DBFetchByCategory } from '../../utilities/cosmosdb';
-import { utcDateToMediumDate } from '../../utilities/utilities';
+import {
+  LastChecked,
+  OrderByMode,
+  PriceHistoryLimit,
+  Store,
+  utcDateToMediumDate,
+} from '../../utilities/utilities';
 import { DarkModeContext } from '../_app';
 import NavBar from '../../components/NavBar/NavBar';
 import Footer from '../../components/Footer';
@@ -37,7 +43,14 @@ const Category = ({ mixedGrade, size7, size8plus, lastChecked }: Props) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  let products = await DBFetchByCategory('eggs', 100);
+  let products = await DBFetchByCategory(
+    'eggs',
+    300,
+    Store.Any,
+    PriceHistoryLimit.Any,
+    OrderByMode.None,
+    LastChecked.Within3Days
+  );
 
   // Sub-categories for each egg size
   let mixedGrade: Product[] = [];

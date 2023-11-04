@@ -6,7 +6,14 @@ import { DBFetchByCategory } from '../../utilities/cosmosdb';
 import { DarkModeContext } from '../_app';
 import NavBar from '../../components/NavBar/NavBar';
 import Footer from '../../components/Footer';
-import { sortProductsByUnitPrice, utcDateToMediumDate } from '../../utilities/utilities';
+import {
+  LastChecked,
+  OrderByMode,
+  PriceHistoryLimit,
+  Store,
+  sortProductsByUnitPrice,
+  utcDateToMediumDate,
+} from '../../utilities/utilities';
 
 interface Props {
   standardMilk: Product[];
@@ -49,7 +56,14 @@ const Category = ({
 
 export const getStaticProps: GetStaticProps = async () => {
   // Fetch all milk from DB
-  let allMilk = await DBFetchByCategory('milk', 300);
+  let allMilk = await DBFetchByCategory(
+    'milk',
+    300,
+    Store.Any,
+    PriceHistoryLimit.Any,
+    OrderByMode.None,
+    LastChecked.Within3Days
+  );
 
   let standardMilk: Product[] = [];
   let trimMilk: Product[] = [];
