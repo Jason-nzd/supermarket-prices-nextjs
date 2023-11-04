@@ -116,11 +116,11 @@ export const getStaticProps: GetStaticProps = async () => {
   potatoes = sortProductsByUnitPrice(potatoes).slice(0, 15);
   broccoli = sortProductsByUnitPrice(broccoli).slice(0, 15);
   carrots = sortProductsByUnitPrice(carrots).slice(0, 15);
-  mushrooms = sortProductsByUnitPrice(mushrooms).slice(0, 15);
+  mushrooms = sortProductsByUnitPrice(mushrooms).slice(0, 10);
   onions = sortProductsByUnitPrice(onions).slice(0, 15);
   tomatoes = sortProductsByUnitPrice(tomatoes).slice(0, 15);
-  chili = sortProductsByUnitPrice(chili).slice(0, 15);
-  other = other.slice(0, 30);
+  chili = sortProductsByUnitPrice(chili).slice(0, 10);
+  other = other.slice(0, 15);
 
   const lastChecked = utcDateToMediumDate(new Date());
 
