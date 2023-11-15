@@ -70,7 +70,7 @@ export async function getStaticProps() {
   // Filter out certain products which don't have interesting price fluctuations
   const countdownProducts = latestCountdownProducts
     .filter((product) => {
-      return !product.name.toLowerCase().match('harris|bake|granola|cola');
+      return !product.name.toLowerCase().match('harris|bake|granola|cola|whiskas');
     })
     .slice(0, 10);
 
