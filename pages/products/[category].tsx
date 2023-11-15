@@ -197,7 +197,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   let products = await DBFetchByCategory(
     searchTerm,
-    400,
+    500,
     Store.Any,
     PriceHistoryLimit.Any,
     OrderByMode.None,
