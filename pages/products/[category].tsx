@@ -133,6 +133,7 @@ export const pantryCategory = [
 ];
 export const snacksCategory = [
   'chocolate',
+  'boxed-chocolate',
   'chips',
   'crackers',
   'biscuits',
