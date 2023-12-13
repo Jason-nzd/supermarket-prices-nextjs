@@ -3,7 +3,7 @@ import Link from 'next/link';
 import React, { useContext } from 'react';
 import { DatedPrice, Product } from '../typings';
 import {
-  daysElapsedSinceDate,
+  daysElapsedSinceDateFormatted,
   utcDateToLongDate,
   utcDateToMonthYear,
 } from '../utilities/utilities';
@@ -51,6 +51,20 @@ function ProductModalFull({ product }: Props) {
   // Calculate average price and differences
   avgPrice = Math.round((summedPrices / product.priceHistory.length) * 100) / 100;
   //const avgPriceDiff = (product.currentPrice / avgPrice) * 100 - 100;
+
+  // Create a cleaned product name used for searching on the original store website
+  let cleanedSearchName = product.name.split(' ').splice(0, 4).join(' ').replace('%', '');
+
+  // Get the last checked date from the product object
+  const lastChecked = product.priceHistory[product.priceHistory.length - 1].date;
+
+  // Get the number of days since the last checked date
+  const daysSinceLastChecked = daysElapsedSinceDateFormatted(lastChecked);
+
+  // Get the number of days since the first checked date
+  const daysSinceFirstChecked = daysElapsedSinceDateFormatted(product.priceHistory[0].date);
+
+  // Get the number of days since the last checked date
 
   const theme = useContext(DarkModeContext).darkMode ? 'dark' : 'light';
 
@@ -126,7 +140,7 @@ function ProductModalFull({ product }: Props) {
             {/* Last Updated */}
             <div className='text-slate-400 text-sm mt-2 mx-auto flex'>
               <div>Price last checked</div>
-              <div className='pl-1 font-semibold'>{daysElapsedSinceDate(product.lastChecked)}</div>
+              <div className='pl-1 font-semibold'>{daysSinceLastChecked}</div>
             </div>
             <div className='text-slate-400 text-sm mx-auto flex'>
               <div>on</div>
@@ -145,7 +159,9 @@ function ProductModalFull({ product }: Props) {
                   <a
                     target='_blank'
                     className='flex-col'
-                    href={'https://www.countdown.co.nz/shop/searchproducts?search=' + product.name}
+                    href={
+                      'https://www.countdown.co.nz/shop/searchproducts?search=' + cleanedSearchName
+                    }
                     rel='noopener noreferrer'
                   >
                     <div>'{product.name}'</div>
@@ -160,7 +176,7 @@ function ProductModalFull({ product }: Props) {
                   <a
                     target='_blank'
                     className='flex-col'
-                    href={'https://www.thewarehouse.co.nz/search?q=' + product.name}
+                    href={'https://www.thewarehouse.co.nz/search?q=' + cleanedSearchName}
                     rel='noopener noreferrer'
                   >
                     <div>'{product.name}'</div>
@@ -175,7 +191,7 @@ function ProductModalFull({ product }: Props) {
                   <a
                     target='_blank'
                     className='flex-col'
-                    href={'https://www.paknsave.co.nz/shop/Search?q=' + product.name}
+                    href={'https://www.paknsave.co.nz/shop/Search?q=' + cleanedSearchName}
                     rel='noopener noreferrer'
                   >
                     <div>'{product.name}'</div>

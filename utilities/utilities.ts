@@ -285,11 +285,11 @@ export function utcDateToMediumDate(utcDate: Date): string {
   });
 }
 
-// daysElapsedSinceDate()
+// daysElapsedSinceDateFormatted()
 // ----------------------
 // Takes UTC Date and returns number of days elapsed since.
-// Can also return the string 'today' if 0 days of difference.
-export function daysElapsedSinceDate(utcDate: Date): string {
+// Can also return easier to read strings such as 'today' if 0 days of difference.
+export function daysElapsedSinceDateFormatted(utcDate: Date): string {
   const now = new Date();
   const then = new Date(utcDate);
   const elapsedDays = Math.floor((now.getTime() - then.getTime()) / (1000 * 3600 * 24));
@@ -298,6 +298,15 @@ export function daysElapsedSinceDate(utcDate: Date): string {
   else if (elapsedDays == 1) return 'Yesterday';
   else if (elapsedDays < 7) return elapsedDays.toString() + ' days ago';
   else return Math.floor(elapsedDays / 7).toString() + ' weeks ago';
+}
+
+// numDaysElapsedSinceDate()
+// ----------------------
+// Takes UTC Date and returns number of days elapsed since.
+export function numDaysElapsedSinceDate(utcDate: Date): number {
+  const now = new Date();
+  const then = new Date(utcDate);
+  return Math.floor((now.getTime() - then.getTime()) / (1000 * 3600 * 24));
 }
 
 // utcDateToMonthYear
