@@ -168,7 +168,7 @@ let categoryNames = freshCategory.concat(
 
 // Remove special sub-categories which have custom made pages instead of generated pages
 categoryNames = categoryNames.filter((name) => {
-  return !['eggs', 'fruit', 'milk', 'fresh-vegetables', 'spreads'].includes(name);
+  return !['eggs', 'fruit', 'milk', 'fresh-vegetables', 'spreads', 'soft-drinks'].includes(name);
 });
 
 // getAllStaticPaths()
