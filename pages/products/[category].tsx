@@ -218,6 +218,11 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const numProductsPerPage = 40;
   products = products.slice(0, numProductsPerPage);
 
+  // Debug log
+  // products.forEach((product) => {
+  //   console.log(product.name + ' - ' + product.lastChecked);
+  // });
+
   // Calculate the number of pages of results to show
   const numPagesOfSearchResults = Math.ceil(foundItemsCount / numProductsPerPage);
 
