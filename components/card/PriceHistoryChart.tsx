@@ -27,13 +27,13 @@ function PriceHistoryChart({ priceHistory, lastChecked, useLargeVersion = false 
 
   // Duplicate the most recent price point onto another price point when the product was last checked
   //  this emphasises that the most recent price point is still valid when last checked
-  const mostRecentDate = new Date(priceHistory[priceHistory.length - 1].date).toDateString();
-  const today = new Date().toDateString();
+  // const mostRecentDate = new Date(priceHistory[priceHistory.length - 1].date).toDateString();
+  // const today = new Date().toDateString();
 
-  if (mostRecentDate !== today) {
-    dateStringsOnly.push(utcDateToShortDate(lastChecked, true));
-    priceDataOnly.push(priceHistory[priceHistory.length - 1].price);
-  }
+  // if (mostRecentDate !== today) {
+  //   dateStringsOnly.push(utcDateToShortDate(lastChecked, true));
+  //   priceDataOnly.push(priceHistory[priceHistory.length - 1].price);
+  // }
 
   // Set line colour to green or red depending on price trend
   let trendColour = '';
