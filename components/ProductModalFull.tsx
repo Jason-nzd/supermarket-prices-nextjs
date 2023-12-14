@@ -55,17 +55,11 @@ function ProductModalFull({ product }: Props) {
   // Create a cleaned product name used for searching on the original store website
   let cleanedSearchName = product.name.split(' ').splice(0, 4).join(' ').replace('%', '');
 
-  // Get the last checked date from the product object
-  const lastChecked = product.priceHistory[product.priceHistory.length - 1].date;
+  // Get the number of days since the last checked and last updated
+  const daysSinceLastChecked = daysElapsedSinceDateFormatted(product.lastChecked);
+  const daysSinceLastUpdated = daysElapsedSinceDateFormatted(product.lastUpdated);
 
-  // Get the number of days since the last checked date
-  const daysSinceLastChecked = daysElapsedSinceDateFormatted(lastChecked);
-
-  // Get the number of days since the first checked date
-  const daysSinceFirstChecked = daysElapsedSinceDateFormatted(product.priceHistory[0].date);
-
-  // Get the number of days since the last checked date
-
+  // Set dark mode theme from useContext
   const theme = useContext(DarkModeContext).darkMode ? 'dark' : 'light';
 
   return (
@@ -137,14 +131,20 @@ function ProductModalFull({ product }: Props) {
               </div>
             )}
 
+            {/* Last Checked */}
+            <div className='text-slate-400 text-sm mt-2 mx-auto flex'>
+              <div>Price Last Checked </div>
+              <div className='pl-1 font-semibold'>{daysSinceLastChecked}</div>
+            </div>
+
             {/* Last Updated */}
             <div className='text-slate-400 text-sm mt-2 mx-auto flex'>
-              <div>Price last checked</div>
-              <div className='pl-1 font-semibold'>{daysSinceLastChecked}</div>
+              <div>Price Last Changed</div>
+              <div className='pl-1 font-semibold'>{daysSinceLastUpdated}</div>
             </div>
             <div className='text-slate-400 text-sm mx-auto flex'>
               <div>on</div>
-              <div className='pl-1 font-semibold'>{utcDateToLongDate(product.lastChecked)}</div>
+              <div className='pl-1 font-semibold'>{utcDateToLongDate(product.lastUpdated)}</div>
             </div>
 
             {/* Original Site Search Link */}
