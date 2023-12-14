@@ -39,7 +39,7 @@ const ClientSearch = ({ lastChecked }: Props) => {
           maxProductsToSearch,
           Store.Any,
           PriceHistoryLimit.Any,
-          LastChecked.Within30Days
+          LastChecked.Any
         );
 
         setProducts(sortProductsByUnitPrice(dbProducts));
