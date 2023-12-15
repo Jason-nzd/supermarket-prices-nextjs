@@ -262,8 +262,8 @@ export function utcDateToShortDate(utcDate: Date, returnTodayString: boolean = f
   else return date.substring(4, 10); // Mar 16
 }
 
-// utcDateToLongDate
-// -----------------
+// utcDateToLongDate()
+// -------------------
 // Takes UTC Date and returns 'Friday, 11 August 2023'
 export function utcDateToLongDate(utcDate: Date): string {
   return new Date(utcDate).toLocaleString('en-GB', {
@@ -274,8 +274,8 @@ export function utcDateToLongDate(utcDate: Date): string {
   });
 }
 
-// utcDateToShortDate
-// -----------------
+// utcDateToShortDate()
+// --------------------
 // Takes UTC Date and returns 'Friday, 11 Aug'
 export function utcDateToMediumDate(utcDate: Date): string {
   return new Date(utcDate).toLocaleString('en-GB', {
@@ -285,8 +285,16 @@ export function utcDateToMediumDate(utcDate: Date): string {
   });
 }
 
+// cleanDate()
+// -----------
+// Clean any hours, seconds, etc, from date.
+// (converts '2023-06-18T23:46:27.222Z' to '2023-06-18')
+export function cleanDate(utcDate: Date): Date {
+  return new Date(utcDate.toString().split('T')[0]);
+}
+
 // daysElapsedSinceDateFormatted()
-// ----------------------
+// -------------------------------
 // Takes UTC Date and returns number of days elapsed since.
 // Can also return easier to read strings such as 'today' if 0 days of difference.
 export function daysElapsedSinceDateFormatted(utcDate: Date): string {
@@ -301,7 +309,7 @@ export function daysElapsedSinceDateFormatted(utcDate: Date): string {
 }
 
 // numDaysElapsedSinceDate()
-// ----------------------
+// -------------------------
 // Takes UTC Date and returns number of days elapsed since.
 export function numDaysElapsedSinceDate(utcDate: Date): number {
   const now = new Date();
