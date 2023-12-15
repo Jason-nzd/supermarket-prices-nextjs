@@ -8,6 +8,7 @@ describe('Search', () => {
     it('search should allow typing and enter key, then show results', () => {
       cy.get('#search').should('be.visible');
       cy.get('#search').click();
+      cy.get('#search').should('be.focused');
       cy.get('#search').type('orange{enter}');
       cy.get('.product-card').should('have.length.greaterThan', 3);
     });
