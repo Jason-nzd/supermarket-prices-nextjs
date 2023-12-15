@@ -7,6 +7,7 @@ import { LastChecked, PriceHistoryLimit, Store, utcDateToMediumDate } from '../u
 import { DarkModeContext } from './_app';
 import startCase from 'lodash/startCase';
 import { DBFetchAllAPI, DBFetchByNameAPI } from 'utilities/clientside-api';
+import Link from 'next/link';
 
 interface Props {
   lastChecked: string;
@@ -56,6 +57,16 @@ const AdminPanel = ({ lastChecked }: Props) => {
       <div className='content-body'>
         {/* Central Aligned Div */}
         <div className='central-responsive-div min-h-[50rem]'>
+          <h1 className='grid-title'>Admin Tools (Demo Mode)</h1>
+          <div className='mx-auto w-fit p-2'>
+            <ul>
+              <li>
+                <Link className='btn-primary' href='/test-features/multi-store-products'>
+                  Multi Store Price Demo
+                </Link>
+              </li>
+            </ul>
+          </div>
           {/* Search Bar */}
           <form onSubmit={handleSearch} className='flex mx-auto mt-4 max-w-xl'>
             <input

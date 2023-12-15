@@ -11,7 +11,7 @@ interface Props {
   useLargeVersion: boolean;
 }
 
-function PriceHistoryChart({ priceHistory, lastChecked, useLargeVersion = false }: Props) {
+function PriceHistoryChart({ priceHistory, useLargeVersion = false }: Props) {
   // Initialize chart.js line chart
   Chart.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip);
 
