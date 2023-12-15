@@ -54,7 +54,6 @@ function ProductCard({ product }: Props) {
             <div className='pl-2'>
               <ImageWithFallback
                 id={product.id}
-                width={200}
                 src={'product-images/200/' + product.id + '.webp'}
               />
             </div>

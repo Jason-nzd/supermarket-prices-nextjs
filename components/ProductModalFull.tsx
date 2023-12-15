@@ -69,23 +69,21 @@ function ProductModalFull({ product }: Props) {
         ' flex flex-col absolute mx-auto rounded-3xl z-50 shadow-2xl overflow-y-scroll'
       }
     >
-      <div className='flex flex-col w-[90%] mx-auto'>
-        <div className='block md:flex'>
-          {/* Image on left 2/3 */}
-          <div className='relative max-w-[calc(70vh)]'>
-            <div className='p-2 md:py-4 md:pl-4 w-fit h-fit'>
-              <ImageWithFallback
-                id={product.id}
-                width={900}
-                src={'product-images/' + product.id + '.webp'}
-              />
-              {/* Optional Size div overlaid on top of image */}
+      <div className='flex flex-col mx-auto w-[calc(90vw)] lg:w-[calc(60vw)] h-full lg:h-[calc(60vh)]'>
+        {/* Image and info upper div */}
+        <div className='block md:flex h-full'>
+          {/* Image with size tag - On left 2/3 for desktop, full width for mobile */}
+          <div className='relative w-full md:w-2/3 m-1 mt-2 md:m-2'>
+            {/* Image div - has min-h for mobile */}
+            <div className='p-2 md:py-4 md:pl-4 w-max h-max min-h-[400px]'>
+              <ImageWithFallback id={product.id} src={'product-images/' + product.id + '.webp'} />
+              {/* Size div overlaid on top of image */}
               {product.size && <div className='size-tag'>{product.size}</div>}
             </div>
           </div>
 
-          {/* Title and other information on right 1/3 */}
-          <div className='flex flex-col w-full md:w-1/3 md:min-w-[20rem]'>
+          {/* Title and other information on right side, full width for mobile */}
+          <div className='flex flex-col w-full md:w-1/2 md:min-w-[20rem] pr-2'>
             {/* Title */}
             <div
               className='w-full h-12 pt-3 px-3 rounded-t-2xl text-[#3C8DA3] text-lg
@@ -94,14 +92,15 @@ function ProductModalFull({ product }: Props) {
               {product.name}
             </div>
 
-            <div className='flex'>
+            {/* Div for price tag and stats sharing the same row */}
+            <div className='flex w-full lg:w-[90%] xl:w-[80%] mx-auto'>
               {/* Price Tag */}
               <div className='mt-6 ml-4 w-1/3 mr-2'>
                 <PriceTag product={product} />
               </div>
 
               {/* Price Stats */}
-              <div className='mt-6 text-sm ml-auto '>
+              <div className='mt-6 text-sm ml-auto'>
                 <div className='flex'>
                   <div className='text-right pr-1 w-[6rem]'>Lowest Price:</div>
                   <div>${lowestPrice}</div>
@@ -151,7 +150,7 @@ function ProductModalFull({ product }: Props) {
             <div
               className={
                 (theme === 'dark' ? 'bg-zinc-800 text-zinc-300' : 'text-slate-600') +
-                ' text-sm my-2 mx-auto w-fit mt-6'
+                ' text-sm my-2 mx-auto w-fit mt-6 pl-2'
               }
             >
               {product.sourceSite.includes('countdown.co.nz') && (
@@ -212,7 +211,7 @@ function ProductModalFull({ product }: Props) {
         </div>
 
         {/* Price Chart */}
-        <div className='w-full mx-auto h-40'>
+        <div className='w-full mx-auto h-40 px-2'>
           <DynamicChartCall
             priceHistory={product.priceHistory}
             lastChecked={product.lastChecked}
