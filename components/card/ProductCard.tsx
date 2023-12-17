@@ -44,19 +44,18 @@ function ProductCard({ product }: Props) {
           className='w-full h-12 pt-2 px-3 rounded-t-2xl text-[#3C8DA3] text-md lg:text-sm
                 text-center font-semibold leading-5 lg:leading-4 z-20 dark:text-zinc-300'
         >
-          {product.name} {!productIsCurrent(product) && '(Out of Stock/Stale)'}
+          {product.name} {!productIsCurrent(product) && '(Stale Data/Out of Stock)'}
         </div>
 
         {/* Central Div containing image, chart, price info */}
         <div className='flex flex-auto w-full'>
           {/* Image Div */}
-          <div className='relative w-full'>
-            <div className='pl-2'>
-              <ImageWithFallback
-                id={product.id}
-                src={'product-images/200/' + product.id + '.webp'}
-              />
-            </div>
+          <div className='relative w-full ml-2'>
+            <ImageWithFallback
+              id={product.id}
+              src={'product-images/200/' + product.id + '.webp'}
+              desaturate={!productIsCurrent(product)}
+            />
 
             {/* Optional Size div overlaid on top of image */}
             {product.size && <div className='size-tag'>{product.size}</div>}
