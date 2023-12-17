@@ -25,6 +25,7 @@ const ClientSearch = ({ lastChecked }: Props) => {
   const router = useRouter();
   const theme = useContext(DarkModeContext).darkMode ? 'dark' : 'light';
   const [products, setProducts] = useState<Product[]>([]);
+  const [outOfStockProducts, setOutOfStockProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [searchTerm, setSearchTerm] = useState<string>();
 
@@ -33,16 +34,50 @@ const ClientSearch = ({ lastChecked }: Props) => {
   useEffect(() => {
     (async () => {
       if (searchTerm) {
+        // setIsLoading(true) will show loading spinner
         setIsLoading(true);
-        const dbProducts = await DBFetchByNameAPI(
+
+        // Fetch all products matching search that have been checked within 7 days
+        const currentProducts = await DBFetchByNameAPI(
           searchTerm,
           maxProductsToSearch,
           Store.Any,
           PriceHistoryLimit.Any,
-          LastChecked.Any
+          LastChecked.Within7Days
         );
 
-        setProducts(sortProductsByUnitPrice(dbProducts));
+        // Clear out of stock products array every search
+        setOutOfStockProducts([]);
+
+        // If in-stock product search produced few results, supplement with out-of-stock search
+        if (currentProducts.length < 20) {
+          let oldProducts = await DBFetchByNameAPI(
+            searchTerm,
+            maxProductsToSearch,
+            Store.Any,
+            PriceHistoryLimit.Any,
+            LastChecked.Any
+          );
+
+          // Filter to only show old products as a separate results section
+          oldProducts = oldProducts.filter((potentialOldProduct) => {
+            const daysSinceLastChecked =
+              (Date.now() - new Date(potentialOldProduct.lastChecked).getTime()) /
+              1000 /
+              60 /
+              60 /
+              24;
+            return daysSinceLastChecked > 7;
+          });
+
+          // Sort out of stock products by unit price, and set react state
+          setOutOfStockProducts(sortProductsByUnitPrice(oldProducts));
+        }
+
+        // Sort in-stock products by unit price, and set react state
+        setProducts(sortProductsByUnitPrice(currentProducts));
+
+        // Disable loading spinner animation and reveal search results
         setIsLoading(false);
       }
     })();
@@ -60,13 +95,16 @@ const ClientSearch = ({ lastChecked }: Props) => {
           {/* Page Title */}
           <div className='grid-title'>
             {!isLoading && maxProductsToSearch === products.length && (
-              <span>
-                {products.length}+ results found for '{startCase(searchTerm)}'
-              </span>
+              <div>
+                <div className='grid-title'>
+                  {products.length}+ results found for '{startCase(searchTerm)}'
+                </div>
+                <div className='text-sm'>Sorted by unit price</div>
+              </div>
             )}
             {!isLoading && products.length < maxProductsToSearch && (
               <span>
-                {products.length} results found for '{startCase(searchTerm)}'
+                {products.length} in-stock results found for '{startCase(searchTerm)}'
               </span>
             )}
             {isLoading && (
@@ -96,6 +134,13 @@ const ClientSearch = ({ lastChecked }: Props) => {
             )}
           </div>
           {products && <ProductsGrid products={products} />}
+          {outOfStockProducts && (
+            <ProductsGrid
+              products={outOfStockProducts}
+              title='Products with old data or are out of stock'
+              subTitle='Limited to 40 search results'
+            />
+          )}
         </div>
       </div>
       <Footer />
