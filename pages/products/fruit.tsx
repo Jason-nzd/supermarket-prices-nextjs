@@ -52,19 +52,60 @@ const Category = ({
         {/* Central Aligned Div */}
         <div className='central-responsive-div'>
           {/* Categorised Product Grids*/}
-          <ProductsGrid title='Apples' products={apples} trimColumns={false} />
-          <ProductsGrid title='Bananas' products={bananas} trimColumns={false} />
-          <ProductsGrid title='Citrus' products={citrus} trimColumns={false} />
-          <ProductsGrid title='Pears' products={pears} trimColumns={false} />
-          <ProductsGrid title='Kiwifruit & Feijoa' products={kiwifruit} trimColumns={false} />
+          <ProductsGrid
+            title='Apples'
+            products={apples}
+            trimColumns={false}
+            createLinksFromTitleWords={true}
+          />
+          <ProductsGrid
+            title='Bananas'
+            products={bananas}
+            trimColumns={false}
+            createLinksFromTitleWords={true}
+          />
+          <ProductsGrid
+            title='Citrus'
+            products={citrus}
+            trimColumns={false}
+            createLinksFromTitleWords={true}
+          />
+          <ProductsGrid
+            title='Pears'
+            products={pears}
+            trimColumns={false}
+            createLinksFromTitleWords={true}
+          />
+          <ProductsGrid
+            title='Kiwifruit & Feijoa'
+            products={kiwifruit}
+            trimColumns={false}
+            createLinksFromTitleWords={true}
+          />
           <ProductsGrid
             title='Peaches, Plums, & Nectarines'
             products={peaches}
             trimColumns={false}
+            createLinksFromTitleWords={true}
           />
-          <ProductsGrid title='Berries' products={berries} trimColumns={false} />
-          <ProductsGrid title='Pineapple, Mango & Melon' products={pineapple} trimColumns={false} />
-          <ProductsGrid title='Grapes' products={grapes} trimColumns={false} />
+          <ProductsGrid
+            title='Berries'
+            products={berries}
+            trimColumns={false}
+            createLinksFromTitleWords={true}
+          />
+          <ProductsGrid
+            title='Pineapple, Mango & Melon'
+            products={pineapple}
+            createLinksFromTitleWords={true}
+            trimColumns={false}
+          />
+          <ProductsGrid
+            title='Grapes'
+            products={grapes}
+            trimColumns={false}
+            createLinksFromTitleWords={true}
+          />
           <ProductsGrid title='Other Fruit' products={other} trimColumns={true} />
         </div>
       </div>

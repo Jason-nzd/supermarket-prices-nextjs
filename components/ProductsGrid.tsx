@@ -2,15 +2,23 @@ import { useState } from 'react';
 import { useMediaQuery } from '../hooks/useMediaQuery';
 import { Product } from '../typings';
 import ProductCard from './card/ProductCard';
+import Link from 'next/link';
 
 interface Props {
   title?: string;
   subTitle?: string;
   products: Product[];
   trimColumns?: boolean;
+  createLinksFromTitleWords?: boolean;
 }
 
-function ProductsGrid({ title = '', subTitle = '', products, trimColumns = false }: Props) {
+function ProductsGrid({
+  title = '',
+  subTitle = '',
+  products,
+  trimColumns = false,
+  createLinksFromTitleWords = false,
+}: Props) {
   let numColumnsToShow = 3;
   let trimmedProducts: Product[] = [];
   if (trimColumns) {
@@ -59,10 +67,34 @@ function ProductsGrid({ title = '', subTitle = '', products, trimColumns = false
   //   }
   // };
 
+  // Split title into separate words
+  const titleWords = title.split(' ');
+
   if (products.length > 0)
     return (
       <div>
-        <div className='grid-title'>{title}</div>
+        {/* Display grid title as-is if no createLinksFromTitleWords option is set */}
+        {!createLinksFromTitleWords && <div className='grid-title'>{title}</div>}
+
+        {/* Else the grid title is split into individual search links for each word */}
+        <div className='flex w-fit mx-auto grid-title'>
+          {createLinksFromTitleWords &&
+            titleWords.map(
+              (word) => (
+                // {word.length > 0 && (
+                <Link
+                  href={`/client-search/?query=${word.replace(',', '')}`}
+                  key={word.replace(',', '')}
+                  className='hover-to-white ml-2'
+                >
+                  {word}
+                </Link>
+              )
+
+              // )(word.length === 0 && { word })
+            )}
+        </div>
+
         <div className='mb-4 text-[#3C8DA3] text-center dark:text-zinc-300'>{subTitle}</div>
         <div className='flex items-center'>
           {/* {products.length +
