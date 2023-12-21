@@ -33,11 +33,17 @@ const Category = ({ cans, large, lastChecked }: Props) => {
         <div className='central-responsive-div min-h-[50rem]'>
           {/* Categorised Product Grids*/}
           <ProductsGrid
-            title='Soft Drinks (Cans & Small Bottles)'
+            titles={['Soft Drinks (Cans & Small Bottles)']}
             products={cans}
             trimColumns={true}
+            createSearchLink={false}
           />
-          <ProductsGrid title='Soft Drinks (Large Bottles)' products={large} trimColumns={true} />
+          <ProductsGrid
+            titles={['Soft Drinks (Large Bottles)']}
+            products={large}
+            trimColumns={true}
+            createSearchLink={false}
+          />
         </div>
       </div>
       <Footer />

@@ -32,9 +32,17 @@ const Category = ({ mixedGrade, size7, size8plus, lastChecked }: Props) => {
         {/* Central Aligned Div */}
         <div className='central-responsive-div'>
           {/* Categorised Product Grids*/}
-          <ProductsGrid title='Size 6 and Mixed Range Eggs' products={mixedGrade} />
-          <ProductsGrid title='Size 7 Eggs' products={size7} />
-          <ProductsGrid title='Size 8 and Jumbo Eggs' products={size8plus} />
+          <ProductsGrid
+            titles={['Size 6 and Mixed Range Eggs']}
+            products={mixedGrade}
+            createSearchLink={false}
+          />
+          <ProductsGrid titles={['Size 7 Eggs']} products={size7} createSearchLink={false} />
+          <ProductsGrid
+            titles={['Size 8 and Jumbo Eggs']}
+            products={size8plus}
+            createSearchLink={false}
+          />
         </div>
       </div>
       <Footer />

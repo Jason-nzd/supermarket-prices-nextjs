@@ -137,8 +137,9 @@ const ClientSearch = ({ lastChecked }: Props) => {
           {outOfStockProducts && (
             <ProductsGrid
               products={outOfStockProducts}
-              title='Products with old data or are out of stock'
+              titles={['Products with old data or are out of stock']}
               subTitle='Limited to 40 search results'
+              createSearchLink={false}
             />
           )}
         </div>

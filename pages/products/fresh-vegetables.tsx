@@ -50,27 +50,40 @@ const Category = ({
         {/* Central Aligned Div */}
         <div className='central-responsive-div'>
           {/* Categorised Product Grids*/}
-          <ProductsGrid title='Potatoes & Kumara' products={potatoes} trimColumns={false} />
+          <ProductsGrid titles={['Potatoes', 'Kumara']} products={potatoes} trimColumns={false} />
           <ProductsGrid
-            title='Broccoli, Cauliflower & Cabbage'
+            titles={['Broccoli', 'Cauliflower', 'Cabbage']}
             products={broccoli}
             trimColumns={false}
           />
-          <ProductsGrid title='Carrots & Yams' products={carrots} trimColumns={false} />
+          <ProductsGrid titles={['Carrots', 'Yams']} products={carrots} trimColumns={false} />
           <ProductsGrid
-            title='Lettuce & Salad Vegetables'
+            titles={['Lettuce', 'Salad Vegetables']}
             products={saladKits}
             trimColumns={false}
           />
-          <ProductsGrid title='Mushrooms' products={mushrooms} trimColumns={false} />
+          <ProductsGrid titles={['Mushrooms']} products={mushrooms} trimColumns={false} />
           <ProductsGrid
-            title='Tomatoes, Cucumber & Capsicum'
+            titles={['Tomatoes', 'Cucumber', 'Capsicum']}
             products={tomatoes}
             trimColumns={false}
           />
-          <ProductsGrid title='Onions, Shallots & Leek' products={onions} trimColumns={false} />
-          <ProductsGrid title='Chili, Garlic & Ginger' products={chili} trimColumns={false} />
-          <ProductsGrid title='Other Vegetables' products={other} trimColumns={true} />
+          <ProductsGrid
+            titles={['Onions', 'Shallots', 'Leek']}
+            products={onions}
+            trimColumns={false}
+          />
+          <ProductsGrid
+            titles={['Chili', 'Garlic', 'Ginger']}
+            products={chili}
+            trimColumns={false}
+          />
+          <ProductsGrid
+            titles={['Other Vegetables']}
+            products={other}
+            trimColumns={true}
+            createSearchLink={false}
+          />
         </div>
       </div>
       <Footer />

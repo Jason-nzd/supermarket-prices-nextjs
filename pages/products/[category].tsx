@@ -42,9 +42,10 @@ const Category = ({ products, numPagesOfSearchResults, lastChecked, subTitle }: 
 
           {/* Products Grid */}
           <ProductsGrid
-            title={startCase(category?.toString())}
+            titles={[startCase(category?.toString())]}
             subTitle={subTitle}
             products={products}
+            createSearchLink={false}
           />
 
           {/* Pagination */}

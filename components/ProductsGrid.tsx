@@ -5,19 +5,19 @@ import ProductCard from './card/ProductCard';
 import Link from 'next/link';
 
 interface Props {
-  title?: string;
+  titles?: string[];
   subTitle?: string;
   products: Product[];
   trimColumns?: boolean;
-  createLinksFromTitleWords?: boolean;
+  createSearchLink?: boolean;
 }
 
 function ProductsGrid({
-  title = '',
+  titles = [],
   subTitle = '',
   products,
   trimColumns = false,
-  createLinksFromTitleWords = false,
+  createSearchLink = true,
 }: Props) {
   let numColumnsToShow = 3;
   let trimmedProducts: Product[] = [];
@@ -67,32 +67,24 @@ function ProductsGrid({
   //   }
   // };
 
-  // Split title into separate words
-  const titleWords = title.split(' ');
-
   if (products.length > 0)
     return (
       <div>
-        {/* Display grid title as-is if no createLinksFromTitleWords option is set */}
-        {!createLinksFromTitleWords && <div className='grid-title'>{title}</div>}
+        {/* Display grid title as-is if no createSearchLink option is set */}
+        {!createSearchLink && <div className='grid-title'>{titles[0]}</div>}
 
         {/* Else the grid title is split into individual search links for each word */}
         <div className='flex w-fit mx-auto grid-title'>
-          {createLinksFromTitleWords &&
-            titleWords.map(
-              (word) => (
-                // {word.length > 0 && (
-                <Link
-                  href={`/client-search/?query=${word.replace(',', '')}`}
-                  key={word.replace(',', '')}
-                  className='hover-to-white ml-2'
-                >
-                  {word}
-                </Link>
-              )
-
-              // )(word.length === 0 && { word })
-            )}
+          {createSearchLink &&
+            titles.map((word) => (
+              <Link
+                href={`/client-search/?query=${word}`}
+                key={word}
+                className='hover-to-white ml-3'
+              >
+                {word}
+              </Link>
+            ))}
         </div>
 
         <div className='mb-4 text-[#3C8DA3] text-center dark:text-zinc-300'>{subTitle}</div>

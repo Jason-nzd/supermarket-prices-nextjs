@@ -42,11 +42,11 @@ const Category = ({
         {/* Central Aligned Div */}
         <div className='central-responsive-div'>
           {/* Categorised Product Grids*/}
-          <ProductsGrid title='Standard Milk' products={standardMilk} />
-          <ProductsGrid title='Trim Milk' products={trimMilk} />
-          <ProductsGrid title='Oat Almond & Soy Milk' products={oatMilk} />
-          <ProductsGrid title='Flavoured Milk' products={flavouredMilk} />
-          <ProductsGrid title='Other Milk' products={otherMilk} />
+          <ProductsGrid titles={['Standard Milk']} products={standardMilk} />
+          <ProductsGrid titles={['Trim Milk']} products={trimMilk} />
+          <ProductsGrid titles={['Oat Milk', 'Almond Milk', 'Soy Milk']} products={oatMilk} />
+          <ProductsGrid titles={['Flavoured Milk']} products={flavouredMilk} />
+          <ProductsGrid titles={['Other Milk']} products={otherMilk} />
         </div>
       </div>
       <Footer />

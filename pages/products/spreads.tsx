@@ -48,14 +48,22 @@ const Category = ({
         {/* Central Aligned Div */}
         <div className='central-responsive-div'>
           {/* Categorised Product Grids*/}
-          <ProductsGrid title='Value Nut Butters' products={valueButters} />
-          <ProductsGrid title='Premium Nut Butters' products={premiumButters} />
-          <ProductsGrid title='Jams' products={jams} />
-          <ProductsGrid title='Honey' products={honey} />
-          <ProductsGrid title='Vegemite & Marmite' products={vegemite} />
-          <ProductsGrid title='Hazelnut' products={hazelnut} />
-          <ProductsGrid title='Marmalade' products={marmalade} />
-          <ProductsGrid title='Other Spreads' products={other} />
+          <ProductsGrid
+            titles={['Value Nut Butters']}
+            products={valueButters}
+            createSearchLink={false}
+          />
+          <ProductsGrid
+            titles={['Premium Nut Butters']}
+            products={premiumButters}
+            createSearchLink={false}
+          />
+          <ProductsGrid titles={['Jams']} products={jams} />
+          <ProductsGrid titles={['Honey']} products={honey} />
+          <ProductsGrid titles={['Vegemite', 'Marmite']} products={vegemite} />
+          <ProductsGrid titles={['Hazelnut', 'Nutella']} products={hazelnut} />
+          <ProductsGrid titles={['Marmalade']} products={marmalade} />
+          <ProductsGrid titles={['Other Spreads']} products={other} createSearchLink={false} />
         </div>
       </div>
       <Footer />
