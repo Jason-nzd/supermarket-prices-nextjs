@@ -64,7 +64,7 @@ export const getStaticProps: GetStaticProps = async () => {
     if (size === '250g' && product.sourceSite === 'paknsave.co.nz') paknsaveProduct = product;
     if (size === '250g' && product.sourceSite === 'thewarehouse.co.nz') warehouseProduct = product;
 
-    console.log(product.sourceSite + ' - ' + product.size + ' - ' + product.name);
+    // console.log(product.sourceSite + ' - ' + product.size + ' - ' + product.name);
   });
 
   const lastChecked = utcDateToMediumDate(new Date());

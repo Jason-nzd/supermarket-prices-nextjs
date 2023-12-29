@@ -136,7 +136,7 @@ function MultiStorePriceHistoryChart({
         pointBorderWidth: 3,
         borderWidth: 3,
         tension: 0.2,
-        stepped: false,
+        stepped: 'before',
         spanGaps: true,
       },
 
@@ -151,7 +151,7 @@ function MultiStorePriceHistoryChart({
         pointBorderWidth: 3,
         borderWidth: 3,
         tension: 0.2,
-        stepped: false,
+        stepped: 'before',
         spanGaps: true,
       },
 
@@ -166,7 +166,7 @@ function MultiStorePriceHistoryChart({
         pointBorderWidth: 3,
         borderWidth: 3,
         tension: 0.2,
-        stepped: false,
+        stepped: 'before',
         spanGaps: true,
       },
     ],
