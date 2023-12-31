@@ -46,7 +46,7 @@ const Category = ({
           <ProductsGrid titles={['Trim Milk']} products={trimMilk} />
           <ProductsGrid titles={['Oat Milk', 'Almond Milk', 'Soy Milk']} products={oatMilk} />
           <ProductsGrid titles={['Flavoured Milk']} products={flavouredMilk} />
-          <ProductsGrid titles={['Other Milk']} products={otherMilk} />
+          <ProductsGrid titles={['Other Milk']} products={otherMilk} createSearchLink={false} />
         </div>
       </div>
       <Footer />
@@ -55,7 +55,7 @@ const Category = ({
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  // Fetch all milk from DB
+  // Fetch milk from DB
   let allMilk = await DBFetchByCategory(
     'milk',
     300,
@@ -65,13 +65,26 @@ export const getStaticProps: GetStaticProps = async () => {
     LastChecked.Within3Days
   );
 
+  // Append long life milk
+  allMilk = allMilk.concat(
+    await DBFetchByCategory(
+      'long-life-milk',
+      300,
+      Store.Any,
+      PriceHistoryLimit.Any,
+      OrderByMode.None,
+      LastChecked.Within3Days
+    )
+  );
+
+  // Create sub categories of milk
   let standardMilk: Product[] = [];
   let trimMilk: Product[] = [];
   let oatMilk: Product[] = [];
   let flavouredMilk: Product[] = [];
   let otherMilk: Product[] = [];
 
-  // Filter into sub categories
+  // Filter milk into sub categories based on product name keywords
   allMilk.forEach((product) => {
     const name = product.name.toLowerCase();
     if (!name.includes('powder')) {
@@ -83,8 +96,6 @@ export const getStaticProps: GetStaticProps = async () => {
     }
   });
 
-  // console.log('Total Milk Fetched: ' + allMilk.length);
-
   // Sort all by unit price
   standardMilk = sortProductsByUnitPrice(standardMilk).slice(0, 15);
   trimMilk = sortProductsByUnitPrice(trimMilk).slice(0, 15);
@@ -92,6 +103,7 @@ export const getStaticProps: GetStaticProps = async () => {
   flavouredMilk = sortProductsByUnitPrice(flavouredMilk).slice(0, 15);
   otherMilk = sortProductsByUnitPrice(otherMilk).slice(0, 15);
 
+  // Store date, to be displayed in static page title bar
   const lastChecked = utcDateToMediumDate(new Date());
 
   return {
