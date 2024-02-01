@@ -225,7 +225,7 @@ function ProductModalFull({ product }: Props) {
         {product.sourceSite.includes('countdown.co.nz') && (
           <div className='flex items-center justify-center gap-x-2 p-2 rounded-b-3xl text-white bg-[#007837]'>
             <StoreIcon sourceSite={product.sourceSite} width={20} />
-            Countdown
+            Woolworths
           </div>
         )}
         {product.sourceSite === 'thewarehouse.co.nz' && (

@@ -87,7 +87,7 @@ function ProductCard({ product }: Props) {
               bg-[#007837] dark:bg-transparent dark:text-zinc-300 dark:ring-[#007837] dark:ring-2'
             >
               <StoreIcon sourceSite={product.sourceSite} width={20} />
-              Countdown
+              Woolworths
             </div>
           )}
           {product.sourceSite === 'thewarehouse.co.nz' && (
