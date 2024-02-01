@@ -135,12 +135,14 @@ const ClientSearch = ({ lastChecked }: Props) => {
           </div>
           {products && <ProductsGrid products={products} />}
           {outOfStockProducts && (
-            <ProductsGrid
-              products={outOfStockProducts}
-              titles={['Products with old data or are out of stock']}
-              subTitle='Limited to 40 search results'
-              createSearchLink={false}
-            />
+            <div className='mt-8'>
+              <ProductsGrid
+                products={outOfStockProducts}
+                titles={['Products with old data or are out of stock']}
+                subTitle='Limited to 40 search results'
+                createSearchLink={false}
+              />
+            </div>
           )}
         </div>
       </div>
