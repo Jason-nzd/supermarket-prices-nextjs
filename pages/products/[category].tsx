@@ -100,7 +100,7 @@ export const meatCategory = [
   'pork',
   'beef-lamb',
   'chicken',
-  'mince-patties',
+  'patties-meatballs',
   'sausages',
   'deli-meats',
   'meat-alternatives',
