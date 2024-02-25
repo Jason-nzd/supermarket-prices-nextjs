@@ -51,7 +51,7 @@ export default function PriceTag({ product }: Props) {
   }
 
   return (
-    <div className='z-50'>
+    <div className='z-50 min-w-[8rem]'>
       <div className={priceTagDivClass}>
         {/* Icon */}
         <div className='px-1'>
