@@ -17,11 +17,12 @@ const NavBar = ({ lastUpdatedDate }: Props) => {
 
   return (
     <nav className='w-full h-fit overflow-hidden'>
+      {/* Desktop Navbar */}
       <div
-        className='mx-auto w-[100%] 2xl:w-[90rem] 3xl:w-[110rem] transition-all duration-500
-        flex flex-nowrap items-center'
+        className='hidden lg:flex mx-auto w-[100%] 2xl:w-[90rem] 3xl:w-[110rem] 
+        transition-all duration-500 flex-nowrap items-center'
       >
-        {/* Column 1 - Logo*/}
+        {/* Website Logo */}
         <Link href='/' className='ml-2'>
           <Image
             src={kiwifruit}
@@ -30,28 +31,14 @@ const NavBar = ({ lastUpdatedDate }: Props) => {
               hover:rotate-12 hover:scale-[102%]'
           />
         </Link>
-        {/* Mobile Burger Menu */}
-        <div className='absolute z-50 justify-start lg:hidden left-1 top-1'>
-          <MobileBurgerMenu />
-        </div>
 
-        {/* Mobile Search Menu */}
-        <div className='z-50 left-[3rem] hidden md:block lg:hidden ml-14 pb-1'>
-          <SearchBar iconSize={6} iconHexColour='#86efac' mobileVersion={true} />
-        </div>
-
-        {/* Column 2 - Rest of nav bar */}
         <div className='block w-full lg:w-[calc(100%-6rem)] h-[3.6rem] lg:h-[5rem]'>
           {/* Row 1 - Title - Sub-title - Date */}
-          <div className='flex flex-wrap h-full lg:h-1/2 mx-auto w-full items-center lg:items-center ml-1'>
-            {/* Mobile Icon */}
-            <Image
-              src={kiwifruit}
-              alt=''
-              className='ml-auto py-1 block lg:hidden w-[3rem] duration-200 
-                hover:rotate-12 hover:scale-[102%]'
-            />
-            {/* Brand Title */}
+          <div
+            className='flex flex-wrap h-full lg:h-1/2 mx-auto w-full items-center 
+            lg:items-center ml-1'
+          >
+            {/* Title */}
             <Link href='/' className='mr-auto lg:mr-0'>
               <h1 className='ml-2 text-2xl font-bold text-stone-100 hover-to-white'>
                 KiwiPrice.xyz
@@ -67,20 +54,11 @@ const NavBar = ({ lastUpdatedDate }: Props) => {
             </h3>
 
             {/* Last Updated Date */}
-            <div className='hidden lg:block pb-2 text-primary-colour text-sm select-none pr-4 mt-2 w-fit ml-auto h-8'>
+            <div
+              className='hidden lg:block pb-2 text-primary-colour text-sm select-none 
+              pr-4 mt-2 w-fit ml-auto h-8'
+            >
               Updated {lastUpdatedDate}
-            </div>
-
-            {/* Column 3 - Mobile Theme Toggle */}
-            <div className='hidden md:block lg:hidden mx-2 items-center'>
-              <DarkModeToggle />
-            </div>
-
-            {/* Column 3 - Mobile User Menu */}
-            <div className='block lg:hidden mx-2 items-center'>
-              <Link className='text-primary-colour w-12 items-center' href='#'>
-                {userIcon}
-              </Link>
             </div>
           </div>
 
@@ -108,7 +86,10 @@ const NavBar = ({ lastUpdatedDate }: Props) => {
             </div>
 
             {/* Right Button Menu */}
-            <div className='hidden lg:flex lg:flex-col items-center ml-auto w-fit mt-3 h-full pr-2'>
+            <div
+              className='hidden lg:flex lg:flex-col items-center ml-auto w-fit mt-3 
+              h-full pr-2'
+            >
               <div className='h-1/2 flex items-center ml-auto pl-3'>
                 {/* Dark Mode Toggle */}
                 <div className='mt-1 ml-auto'>
@@ -135,6 +116,29 @@ const NavBar = ({ lastUpdatedDate }: Props) => {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Mobile Navbar */}
+      <div className='flex h-14 lg:hidden mx-auto w-[100%] transition-all duration-500 items-center'>
+        {/* Burger Menu */}
+        <div className='absolute z-50 justify-start left-1 top-1 ml-2 my-auto'>
+          <MobileBurgerMenu />
+        </div>
+
+        {/* Logo and Title */}
+        <Link href='/' className='flex items-center mx-auto'>
+          <Image
+            src={kiwifruit}
+            alt=''
+            className='w-[2.5rem] duration-200 hover:rotate-12 hover:scale-[102%]'
+          />
+          <h1 className='ml-2 text-2xl font-bold text-stone-100 hover-to-white'>KiwiPrice.xyz</h1>
+        </Link>
+
+        {/* Search Menu */}
+        <div className='mr-1'>
+          <SearchBar iconSize={8} iconHexColour='#86efac' mobileVersion={true} />
         </div>
       </div>
     </nav>
