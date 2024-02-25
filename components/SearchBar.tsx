@@ -57,8 +57,8 @@ export default function SearchBar({
 
   return (
     <>
-      <div className='flex rounded-3xl border-2 border-green-300 h-8 w-fit transition-all duration-500'>
-        {bigSearchBar && (
+      {!mobileVersion && (
+        <div className='flex rounded-3xl border-2 border-green-300 h-8 w-fit transition-all duration-500'>
           <form onSubmit={handleSearch} className='flex'>
             <input
               type='text'
@@ -69,7 +69,7 @@ export default function SearchBar({
               minLength={3}
               maxLength={26}
               className='bg-transparent w-[8rem] xl:w-[16rem] focus:outline-none text-white
-             pl-3 placeholder-[#75F3A3] align-center transition-all duration-500'
+               pl-3 placeholder-[#75F3A3] align-center transition-all duration-500'
               onChange={(e) => setSearchQuery(e.target.value)}
             />
             <div className='ml-auto hover-to-white text-green-200'>
@@ -78,20 +78,17 @@ export default function SearchBar({
               </button>
             </div>
           </form>
-        )}
-        {!bigSearchBar && (
-          <div className='pl-2 cursor-pointer' onClick={handleMobileButton}>
-            <button
-              type='button'
-              title='Search'
-              className='text-green-200'
-              id='mobile-search-button'
-            >
-              {magnifyIcon}
-            </button>
-          </div>
-        )}
-      </div>
+        </div>
+      )}
+
+      {mobileVersion && (
+        <div className='pl-2 cursor-pointer' onClick={handleMobileButton}>
+          <button type='button' title='Search' className='text-green-200' id='mobile-search-button'>
+            {magnifyIcon}
+          </button>
+        </div>
+      )}
+
       <Dialog open={isModalOpen} onClose={() => setIsModalOpen(false)} className='relative z-50'>
         <div
           className='fixed inset-0 flex items-center justify-center p-2 bg-zinc-100 
