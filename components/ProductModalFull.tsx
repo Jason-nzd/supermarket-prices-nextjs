@@ -75,7 +75,7 @@ function ProductModalFull({ product }: Props) {
           {/* Image with size tag - On left 2/3 for desktop, full width for mobile */}
           <div className='relative w-full md:w-2/3 m-1 mt-2 md:m-2'>
             {/* Image div - has min-h for mobile */}
-            <div className='p-2 md:py-4 md:pl-4 w-max h-max min-h-[400px]'>
+            <div className='p-2 md:py-4 md:pl-4 w-max h-max min-h-[250px]'>
               <ImageWithFallback id={product.id} src={'product-images/' + product.id + '.webp'} />
               {/* Size div overlaid on top of image */}
               {product.size && <div className='size-tag'>{product.size}</div>}
@@ -86,8 +86,8 @@ function ProductModalFull({ product }: Props) {
           <div className='flex flex-col w-full md:w-1/2 md:min-w-[20rem] pr-2'>
             {/* Title */}
             <div
-              className='w-full h-12 pt-3 px-3 rounded-t-2xl text-[#3C8DA3] text-lg
-              text-center font-semibold mb-4'
+              className='w-full h-8 lg:h-12 pt-1 lg:pt-3 px-3 rounded-t-2xl text-[#3C8DA3] text-lg
+              text-center font-semibold mb-0 lg:mb-4'
             >
               {product.name}
             </div>
@@ -95,22 +95,22 @@ function ProductModalFull({ product }: Props) {
             {/* Div for price tag and stats sharing the same row */}
             <div className='flex w-full lg:w-[90%] xl:w-[80%] mx-auto'>
               {/* Price Tag */}
-              <div className='mt-6 ml-4 w-1/3 mr-2'>
+              <div className='mt-2 lg:mt-6 ml-4 w-1/3 mr-2'>
                 <PriceTag product={product} />
               </div>
 
               {/* Price Stats */}
-              <div className='mt-6 text-sm ml-auto'>
+              <div className='mt-2 lg:mt-6 mr-4 text-sm font-semibold ml-auto'>
                 <div className='flex'>
-                  <div className='text-right pr-1 w-[6rem]'>Lowest Price:</div>
+                  <div className='text-right pr-1 w-[6rem]'>Lowest:</div>
                   <div>${lowestPrice}</div>
                 </div>
                 <div className='flex'>
-                  <div className='text-right pr-1 w-[6rem]'>Highest Price:</div>
+                  <div className='text-right pr-1 w-[6rem]'>Highest:</div>
                   <div>${highestPrice}</div>
                 </div>
                 <div className='flex'>
-                  <div className='text-right pr-1 w-[6rem]'>Average Price:</div>
+                  <div className='text-right pr-1 w-[6rem]'>Average:</div>
                   <div>${avgPrice}</div>
                 </div>
               </div>
@@ -122,7 +122,7 @@ function ProductModalFull({ product }: Props) {
                 Category:
                 {product.category!.map((category, index) => {
                   return (
-                    <div className='px-1 hover:text-black' key={index}>
+                    <div className='px-1' key={index}>
                       <Link href={'products/' + category}>{startCase(category.toLowerCase())}</Link>
                     </div>
                   );

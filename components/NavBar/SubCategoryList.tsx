@@ -26,7 +26,9 @@ export default function SubCategoryList({
 
   return (
     <div className='break-inside-avoid-column mb-2'>
-      <h2 className={titleDivClass + ' text-lg whitespace-nowrap font-bold'}>{subCategoryTitle}</h2>
+      <h2 className={titleDivClass + ' text-lg whitespace-nowrap font-bold ml-2'}>
+        {subCategoryTitle}
+      </h2>
       <hr className='mt-2 mb-1' />
       {subCategoryNames.map((categoryName) => {
         const href = '/products/' + categoryName;

@@ -15,13 +15,15 @@ import {
 
 export default function MobileBurgerMenu() {
   return (
-    <Popover className='text-lg'>
+    <Popover className='text-md'>
+      {/* Burger Button */}
       <Popover.Button
         className='left-1 top-1 text-primary-colour hover-to-white cursor-pointer'
         id='mobile-menu-button'
       >
         {burgerIcon}
       </Popover.Button>
+
       <Transition
         enter='transition duration-100 ease-out'
         enterFrom='transform scale-50 opacity-0'
@@ -29,10 +31,11 @@ export default function MobileBurgerMenu() {
         leave='transition duration-75 ease-out'
         leaveFrom='transform scale-100 opacity-100'
         leaveTo='transform scale-50 opacity-0'
+        className='mx-auto w-fit'
       >
         <Popover.Panel
-          className='mt-1 bg-zinc-100 p-4 grid grid-cols-2 md:grid-cols-3 gap-x-2 gap-y-4 rounded-2xl 
-        shadow-2xl text-slate-800'
+          className='z-50 bg-zinc-100 p-3 grid grid-cols-2 md:grid-cols-3 gap-x-2 gap-y-4
+           rounded-xl shadow-2xl text-slate-800 w-[95vw]'
         >
           <SubCategoryList subCategoryTitle='Fresh Foods' subCategoryNames={freshCategory} />
           <SubCategoryList subCategoryTitle='Chilled' subCategoryNames={chilledCategory} />
