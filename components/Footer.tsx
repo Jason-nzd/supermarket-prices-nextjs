@@ -3,26 +3,34 @@ import React from 'react';
 
 function Footer() {
   return (
-    <footer className='py-6 w-full h-full text-green-200 text-sm'>
+    <footer className='w-4/5 mx-auto h-full text-green-200 text-sm m-4'>
+      {/* Disclaimer */}
       <div className='flex mx-auto w-fit font-semibold px-4 text-center text-zinc-100'>
-        Prices are updated with best effort, but aren't guaranteed to be accurate. Each local store
-        may have slight differences in pricing.
+        Prices are updated daily, but aren't guaranteed to be accurate. Each local store will have
+        slight differences in pricing.
       </div>
-      <div className='flex mx-auto py-2 justify-center'></div>
-      <div className='py-1 flex gap-6 mx-auto justify-center'>
-        Icons licensed from:
-        <Link href='https://icon-icons.com' className='hover-to-white'>
-          icon-icons.com
-        </Link>
-        <Link href='https://icons.getbootstrap.com/' className='hover-to-white'>
-          icons.getbootstrap.com
-        </Link>
+
+      {/* Licenses and Credits */}
+      <div className='mx-auto my-3 justify-center w-[10rem] md:w-fit'>
+        <div className='flex flex-wrap mx-auto justify-center md:flex-nowrap gap-x-8'>
+          <div>Icons licensed from:</div>
+          <Link href='https://icon-icons.com' className='hover-to-white'>
+            icon-icons.com
+          </Link>
+          <Link href='https://icons.getbootstrap.com/' className='hover-to-white'>
+            icons.getbootstrap.com
+          </Link>
+        </div>
       </div>
-      <div className='flex mx-auto gap-6 md:gap-14 pt-4 w-fit px-2'>
+
+      {/* Copyright, Privacy Policy Link, Github Link */}
+      <div className='flex mx-auto gap-6 md:gap-14 p-1 w-fit'>
         <div>©2023 jb</div>
+
         <Link href='../privacy' className='hover-to-white'>
           Privacy Policy
         </Link>
+
         <Link
           className='flex gap-2 hover-to-white items-center'
           href='https://github.com/jason-nzd/supermarket-prices'
