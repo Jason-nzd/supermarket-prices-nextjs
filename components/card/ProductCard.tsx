@@ -30,7 +30,7 @@ function DynamicChartCall({ priceHistory, lastChecked }: ChartProps) {
 function ProductCard({ product }: Props) {
   function handleClick() {
     // Copy product id to clipboard when card is clicked
-    navigator.clipboard.writeText(product.id);
+    // navigator.clipboard.writeText(product.id);
     setIsModalOpen(true);
   }
 
