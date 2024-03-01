@@ -15,6 +15,7 @@ import dynamic from 'next/dynamic';
 
 interface Props {
   product: Product;
+  setIsModalOpen: (isOpen: boolean) => void;
 }
 
 // Lazy/Dynamic load in heavy chart.js from PriceHistoryChart
@@ -32,7 +33,7 @@ function DynamicChartCall({ priceHistory, lastChecked }: ChartProps) {
   );
 }
 
-function ProductModalFull({ product }: Props) {
+function ProductModalFull({ product, setIsModalOpen }: Props) {
   const hasPriceHistory = product.priceHistory.length > 1;
 
   // Additional price stats for full product page
@@ -62,6 +63,10 @@ function ProductModalFull({ product }: Props) {
   // Set dark mode theme from useContext
   const theme = useContext(DarkModeContext).darkMode ? 'dark' : 'light';
 
+  const closeModal = (): void => {
+    setIsModalOpen(false);
+  };
+
   return (
     <div
       className={
@@ -80,16 +85,33 @@ function ProductModalFull({ product }: Props) {
               {/* Size div overlaid on top of image */}
               {product.size && <div className='size-tag'>{product.size}</div>}
             </div>
+            {/* X Close button
+            <div
+              onClick={closeModal}
+              className='w-fit ml-auto mb-auto m-1 mr-0 text-primary-colour bg-green-50 rounded-full p-2 cursor-pointer hover:shadow-md hover:bg-white'
+            >
+              {closeX}
+            </div> */}
           </div>
 
           {/* Title and other information on right side, full width for mobile */}
           <div className='flex flex-col w-full md:w-1/2 md:min-w-[20rem] pr-2'>
-            {/* Title */}
-            <div
-              className='w-full h-8 lg:h-12 pt-1 lg:pt-3 px-3 rounded-t-2xl text-[#3C8DA3] text-lg
+            <div className='flex items-center'>
+              {/* Title */}
+              <div
+                className='w-full h-8 lg:h-12 pt-1 lg:pt-3 px-3 rounded-t-2xl text-[#3C8DA3] text-lg
               text-center font-semibold mb-0 lg:mb-4'
-            >
-              {product.name}
+              >
+                {product.name}
+              </div>
+
+              {/* X Close button */}
+              <div
+                onClick={closeModal}
+                className='ml-auto m-1 mr-0 text-primary-colour bg-green-50 rounded-full p-2 cursor-pointer hover:shadow-md hover:bg-white'
+              >
+                {closeX}
+              </div>
             </div>
 
             {/* Div for price tag and stats sharing the same row */}
@@ -270,5 +292,18 @@ const boxArrow = (
       fillRule='evenodd'
       d='M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z'
     />
+  </svg>
+);
+
+const closeX = (
+  <svg
+    xmlns='http://www.w3.org/2000/svg'
+    width='24'
+    height='24'
+    fill='currentColor'
+    className='bi bi-x'
+    viewBox='0 0 16 16'
+  >
+    <path d='M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708' />
   </svg>
 );
