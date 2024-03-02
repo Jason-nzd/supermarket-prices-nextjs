@@ -8,7 +8,7 @@ interface Props {
 
 export default function PriceTag({ product }: Props) {
   let priceTagDivClass =
-    'rounded-3xl border-2 shadow-md px-3 py-0.5 w-fit flex items-center dark:bg-zinc-800 dark:text-zinc-300 ';
+    'h-16 md:h-20 w-30 rounded-3xl border-2 shadow-md px-3 py-0.5 flex items-center hover-panel dark:bg-zinc-800 dark:text-zinc-300 ';
   let icon;
 
   // Convert product size in per/kg to per/100g if it will fit in a nicer range
@@ -51,7 +51,7 @@ export default function PriceTag({ product }: Props) {
   }
 
   return (
-    <div className='z-50 min-w-[8rem]'>
+    <div className='z-50 min-w-[9rem]'>
       <div className={priceTagDivClass}>
         {/* Icon */}
         <div className='px-1'>
