@@ -25,6 +25,9 @@
     @apply text-primary-colour px-3 py-1 rounded-3xl 
     hover:bg-green-300 hover:text-black hover:shadow-md transition-all;
   }
+  .small-link {
+    @apply ring-green-300 ring-2 px-2 py-1 rounded-3xl font-semibold hover-panel;
+  }
   .btn-primary {
     @apply py-2 px-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700
      focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75;
@@ -46,15 +49,21 @@
     font-semibold ring-1 ring-white rounded-2xl shadow-md;
   }
   .external-link {
-    @apply font-semibold ring-2 w-fit rounded-3xl p-2 shadow-md hover:shadow-lg transition;
+    @apply font-semibold ring-2 w-fit rounded-3xl p-2;
   }
   .green-ring {
-    @apply ring-green-300  hover:ring-green-400;
+    @apply ring-green-300  hover:ring-green-400 hover-panel;
   }
   .yellow-ring {
-    @apply ring-yellow-300 hover:ring-yellow-400;
+    @apply ring-yellow-300 hover:ring-yellow-400 hover-panel;
   }
   .red-ring {
-    @apply ring-red-500 hover:ring-red-600;
+    @apply ring-red-500 hover:ring-red-600 hover-panel;
+  }
+  .gray-ring {
+    @apply ring-gray-400 ring-2 rounded-3xl px-4 hover:ring-gray-600 hover-panel;
+  }
+  .hover-panel {
+    @apply bg-zinc-50 hover:bg-white shadow-md hover:shadow-lg transition-shadow;
   }
 }
