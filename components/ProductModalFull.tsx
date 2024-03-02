@@ -68,111 +68,120 @@ function ProductModalFull({ product, setIsModalOpen }: Props) {
   };
 
   return (
+    // Main modal div requires absolute and high z-index
     <div
       className={
         (theme === 'dark' ? 'bg-zinc-800 text-zinc-300' : 'bg-white') +
-        ' flex flex-col absolute mx-auto rounded-3xl z-50 shadow-2xl overflow-y-scroll'
+        ' flex flex-col absolute mx-auto rounded-3xl z-50 shadow-2xl h-full ' +
+        '  overflow-y-scroll overflow-x-hidden max-h-[90vh]'
       }
     >
-      <div className='flex flex-col mx-auto w-[calc(90vw)] lg:w-[calc(60vw)] h-full lg:h-[calc(60vh)]'>
+      {/* Top Title Div */}
+      <div className='flex w-full mt-1 lg:mt-2 px-3'>
+        {/* Title */}
+        <div className='w-full'>
+          <div className='w-fit mx-auto text-[#3C8DA3] text-lg font-semibold mb-0 lg:mb-4'>
+            {product.name}
+          </div>
+        </div>
+
+        {/* X Close Button */}
+        <div className='ml-auto'>
+          <div
+            onClick={closeModal}
+            className='absolute right-2 m-1 text-green-400 bg-green-50 rounded-full p-2
+           cursor-pointer hover:shadow-md hover:bg-white'
+          >
+            {xIcon}
+          </div>
+        </div>
+      </div>
+
+      {/* Central Content Div */}
+      <div className='flex flex-col mx-auto w-[calc(90vw)] lg:w-[calc(60vw)] h-full'>
         {/* Image and info upper div */}
-        <div className='block md:flex h-full'>
+        <div className='block md:flex h-2/3'>
           {/* Image with size tag - On left 2/3 for desktop, full width for mobile */}
           <div className='relative w-full md:w-2/3 m-1 mt-2 md:m-2'>
-            {/* Image div - has min-h for mobile */}
-            <div className='p-2 md:py-4 md:pl-4 w-max h-max min-h-[250px]'>
+            {/* Image div - has min-h for mobile spacing */}
+            <div className='p-1 md:py-4 md:pl-4 min-h-[230px]'>
               <ImageWithFallback id={product.id} src={'product-images/' + product.id + '.webp'} />
               {/* Size div overlaid on top of image */}
               {product.size && <div className='size-tag'>{product.size}</div>}
             </div>
-            {/* X Close button
-            <div
-              onClick={closeModal}
-              className='w-fit ml-auto mb-auto m-1 mr-0 text-primary-colour bg-green-50 rounded-full p-2 cursor-pointer hover:shadow-md hover:bg-white'
-            >
-              {closeX}
-            </div> */}
           </div>
 
-          {/* Title and other information on right side, full width for mobile */}
-          <div className='flex flex-col w-full md:w-1/2 md:min-w-[20rem] pr-2'>
-            <div className='flex items-center'>
-              {/* Title */}
-              <div
-                className='w-full h-8 lg:h-12 pt-1 lg:pt-3 px-3 rounded-t-2xl text-[#3C8DA3] text-lg
-              text-center font-semibold mb-0 lg:mb-4'
-              >
-                {product.name}
-              </div>
-
-              {/* X Close button */}
-              <div
-                onClick={closeModal}
-                className='ml-auto m-1 mr-0 text-primary-colour bg-green-50 rounded-full p-2 cursor-pointer hover:shadow-md hover:bg-white'
-              >
-                {closeX}
-              </div>
-            </div>
-
+          {/* Other information on right 1/3 for desktop, full width for mobile */}
+          <div className='flex flex-col w-full md:w-1/2 md:min-w-[20rem] p-2 h-fit my-auto'>
             {/* Div for price tag and stats sharing the same row */}
-            <div className='flex w-full lg:w-[90%] xl:w-[80%] mx-auto'>
+            <div className='flex w-fit mx-auto'>
               {/* Price Tag */}
-              <div className='mt-2 lg:mt-6 ml-4 w-1/3 mr-2'>
+              <div className='mt-2 lg:mt-6 ml-4 w-fit mr-2'>
                 <PriceTag product={product} />
               </div>
 
               {/* Price Stats */}
-              <div className='mt-2 lg:mt-6 mr-4 text-sm font-semibold ml-auto'>
-                <div className='flex'>
-                  <div className='text-right pr-1 w-[6rem]'>Lowest:</div>
-                  <div>${lowestPrice}</div>
-                </div>
-                <div className='flex'>
-                  <div className='text-right pr-1 w-[6rem]'>Highest:</div>
-                  <div>${highestPrice}</div>
-                </div>
-                <div className='flex'>
-                  <div className='text-right pr-1 w-[6rem]'>Average:</div>
-                  <div>${avgPrice}</div>
+              <div
+                className='h-16 md:h-20 w-30 mt-2 lg:mt-6 mr-4 text-sm gray-ring
+                  flex flex-wrap py-1 items-center'
+              >
+                <div className='mx-auto leading-tight md:leading-normal'>
+                  <div className='flex'>
+                    <div className='text-right pr-1 min-w-[4rem]'>Lowest:</div>
+                    <div>${lowestPrice}</div>
+                  </div>
+                  <div className='flex'>
+                    <div className='text-right pr-1 min-w-[4rem]'>Highest:</div>
+                    <div>${highestPrice}</div>
+                  </div>
+                  <div className='flex'>
+                    <div className='text-right pr-1 min-w-[4rem]'>Average:</div>
+                    <div>${avgPrice}</div>
+                  </div>
                 </div>
               </div>
             </div>
 
             {/* Categories */}
             {product.category != null && product.category!.length > 0 && (
-              <div className='flex pr-3 items-center text-slate-400 text-sm mt-6 mx-auto'>
+              <div className='flex items-center text-slate-400 text-sm mt-5 mb-4 mx-auto'>
                 Category:
                 {product.category!.map((category, index) => {
                   return (
                     <div className='px-1' key={index}>
-                      <Link href={'products/' + category}>{startCase(category.toLowerCase())}</Link>
+                      <Link href={'products/' + category} className='small-link'>
+                        {startCase(category.toLowerCase())}
+                      </Link>
                     </div>
                   );
                 })}
               </div>
             )}
 
-            {/* Last Checked */}
-            <div className='text-slate-400 text-sm mt-2 mx-auto flex'>
-              <div>Price Last Checked </div>
-              <div className='pl-1 font-semibold'>{daysSinceLastChecked}</div>
-            </div>
+            {/* Various advanced stats are hidden on mobile to save screen space */}
+            <div className='hidden md:flex flex-col mx-auto'>
+              {/* Last Checked */}
+              <div className='text-slate-400 text-sm mt-2 mx-auto flex w-full'>
+                <div>Price Last Checked </div>
+                <div className='pl-1 font-semibold'>{daysSinceLastChecked}</div>
+              </div>
 
-            {/* Last Updated */}
-            <div className='text-slate-400 text-sm mt-2 mx-auto flex'>
-              <div>Price Last Changed</div>
-              <div className='pl-1 font-semibold'>{daysSinceLastUpdated}</div>
-            </div>
-            <div className='text-slate-400 text-sm mx-auto flex'>
-              <div>on</div>
-              <div className='pl-1 font-semibold'>{utcDateToLongDate(product.lastUpdated)}</div>
+              {/* Last Updated */}
+              <div className='text-slate-400 text-sm mt-2 mx-auto flex w-full'>
+                <div>Price Last Changed</div>
+                <div className='pl-1 font-semibold'>{daysSinceLastUpdated}</div>
+              </div>
+              <div className='text-slate-400 text-sm mx-auto flex w-full'>
+                <div>on</div>
+                <div className='pl-1 font-semibold'>{utcDateToLongDate(product.lastUpdated)}</div>
+              </div>
             </div>
 
             {/* Original Site Search Link */}
             <div
               className={
                 (theme === 'dark' ? 'bg-zinc-800 text-zinc-300' : 'text-slate-600') +
-                ' text-sm my-2 mx-auto w-fit mt-6 pl-2'
+                ' text-sm my-2 mx-auto w-fit mb-4 mt-2 md:mt-6 pl-2'
               }
             >
               {product.sourceSite.includes('countdown.co.nz') && (
@@ -225,7 +234,7 @@ function ProductModalFull({ product, setIsModalOpen }: Props) {
             </div>
 
             {/* First Added */}
-            <div className='text-slate-400 text-sm mb-2 flex mt-auto mx-auto'>
+            <div className='text-slate-400 text-sm mb-2 mt-auto mx-auto hidden md:flex'>
               <div className='pr-1'>First added to KiwiPrice on</div>
               <div>{utcDateToMonthYear(product.priceHistory[0].date)}</div>
             </div>
@@ -233,7 +242,7 @@ function ProductModalFull({ product, setIsModalOpen }: Props) {
         </div>
 
         {/* Price Chart */}
-        <div className='w-full mx-auto h-40 px-2'>
+        <div className='flex w-full mx-auto h-25 md:h-1/3 px-2 lg:mb-2'>
           <DynamicChartCall
             priceHistory={product.priceHistory}
             lastChecked={product.lastChecked}
@@ -242,8 +251,8 @@ function ProductModalFull({ product, setIsModalOpen }: Props) {
         </div>
       </div>
 
-      {/* Source Site Div */}
-      <div className='text-sm text-center mt-1'>
+      {/* Bottom Source Site Div */}
+      <div className='text-sm text-center mt-auto'>
         {product.sourceSite.includes('countdown.co.nz') && (
           <div className='flex items-center justify-center gap-x-2 p-2 rounded-b-3xl text-white bg-[#007837]'>
             <StoreIcon sourceSite={product.sourceSite} width={20} />
@@ -295,7 +304,7 @@ const boxArrow = (
   </svg>
 );
 
-const closeX = (
+const xIcon = (
   <svg
     xmlns='http://www.w3.org/2000/svg'
     width='24'
