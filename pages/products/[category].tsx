@@ -83,7 +83,6 @@ export const freshCategory = [
 export const chilledCategory = [
   'milk',
   'long-life-milk',
-  'sour-cream',
   'cream',
   'yoghurt',
   'butter',
@@ -93,17 +92,17 @@ export const chilledCategory = [
   'other-deli-foods',
 ];
 export const meatCategory = [
-  'seafood',
-  'salmon',
+  'beef-lamb',
+  'chicken',
   'ham',
   'bacon',
   'pork',
-  'beef-lamb',
-  'chicken',
   'patties-meatballs',
   'sausages',
   'deli-meats',
   'meat-alternatives',
+  'seafood',
+  'salmon',
 ];
 export const frozenCategory = [
   'ice-cream',
