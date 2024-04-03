@@ -87,7 +87,6 @@ export const chilledCategory = [
   'yoghurt',
   'butter',
   'cheese',
-  'cheese-slices',
   'salami',
   'other-deli-foods',
 ];
