@@ -80,7 +80,7 @@ export default function PriceTag({ product }: Props) {
             <div className='flex text-md items-center'>
               <div className='text-xs'>$</div>
               <div className='font-semibold text-lg lg:text-md'>
-                {product.unitPrice!.toPrecision(2)}
+                {product.unitPrice!.toPrecision(3)}
               </div>
               <div>{'/' + product.unitName || 'Unit'}</div>
             </div>
