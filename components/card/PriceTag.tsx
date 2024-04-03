@@ -80,7 +80,11 @@ export default function PriceTag({ product }: Props) {
             <div className='flex text-md items-center'>
               <div className='text-xs'>$</div>
               <div className='font-semibold text-lg lg:text-md'>
-                {product.unitPrice!.toPrecision(3)}
+                {/* Display unit price with 2 decimal points, such as $5.50,
+                    unless it is a whole number such as $5 */}
+                {product.unitPrice! == Number(product.unitPrice!.toFixed(0))
+                  ? product.unitPrice!.toFixed(0)
+                  : product.unitPrice!.toFixed(2)}
               </div>
               <div>{'/' + product.unitName || 'Unit'}</div>
             </div>
