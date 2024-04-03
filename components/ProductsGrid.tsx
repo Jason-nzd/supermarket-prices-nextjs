@@ -74,20 +74,25 @@ function ProductsGrid({
         {!createSearchLink && <div className='grid-title'>{titles[0]}</div>}
 
         {/* Else the grid title is split into individual search links for each word */}
-        <div className='flex w-fit mx-auto grid-title'>
-          {createSearchLink &&
-            titles.map((word) => (
-              <Link
-                href={`/client-search/?query=${word}`}
-                key={word}
-                className='hover-to-white ml-3'
-              >
-                {word}
-              </Link>
-            ))}
-        </div>
+        {createSearchLink && titles.length >= 1 && (
+          <div className='flex w-fit mx-auto grid-title'>
+            {createSearchLink &&
+              titles.map((word) => (
+                <Link
+                  href={`/client-search/?query=${word}`}
+                  key={word}
+                  className='hover-to-white mx-4'
+                >
+                  {word}
+                </Link>
+              ))}
+          </div>
+        )}
 
-        <div className='mb-4 text-[#3C8DA3] text-center dark:text-zinc-300'>{subTitle}</div>
+        {/* Display sub-title only if it is non-blank */}
+        {subTitle != '' && (
+          <div className='mb-2 text-[#3C8DA3] text-center dark:text-zinc-300'>{subTitle}</div>
+        )}
         <div className='flex items-center'>
           {/* {products.length +
         ' total products, window = ' +
@@ -97,8 +102,10 @@ function ProductsGrid({
       <button className='h-full border-2 rounded-xl p-2 hover:bg-white' onClick={scrollLeft}>
         L
       </button> */}
+
+          {/* Div for products grid */}
           <div
-            className='grid w-full
+            className='grid w-full mb-2
             grid-cols-1
             md:grid-cols-2
             lg:grid-cols-3
@@ -111,12 +118,12 @@ function ProductsGrid({
             {trimColumns &&
               trimmedProducts.map((product) => <ProductCard key={product.id} product={product} />)}
             {/* {productsWindow.map((product) => (
-          <ProductCard key={product.id} product={product} />
-        ))} */}
+              <ProductCard key={product.id} product={product} />
+                ))} */}
           </div>
           {/* <button className='h-full border-2 rounded-xl p-2 hover:bg-white' onClick={scrollRight}>
-        R
-      </button> */}
+             R
+             </button> */}
         </div>
       </div>
     );
