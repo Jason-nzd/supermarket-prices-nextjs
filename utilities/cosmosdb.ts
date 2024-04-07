@@ -193,6 +193,10 @@ export function queryAddLimitStore(store: Store, useAND: boolean = true): string
       queryAddon = optionalAND + "p.sourceSite = 'thewarehouse.co.nz'";
       break;
 
+    case Store.NewWorld:
+      queryAddon = optionalAND + "p.sourceSite = 'newworld.co.nz'";
+      break;
+
     default:
       break;
   }

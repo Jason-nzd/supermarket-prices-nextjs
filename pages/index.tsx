@@ -11,6 +11,7 @@ interface Props {
   countdownProducts: Product[];
   paknsaveProducts: Product[];
   warehouseProducts: Product[];
+  newworldProducts: Product[];
   lastChecked: string;
 }
 
@@ -19,6 +20,7 @@ export default function Home({
   countdownProducts,
   paknsaveProducts,
   warehouseProducts,
+  newworldProducts,
   lastChecked,
 }: Props) {
   const theme = useContext(DarkModeContext).darkMode ? 'dark' : 'light';
@@ -41,6 +43,9 @@ export default function Home({
           {warehouseProducts && (
             <ProductsGrid products={warehouseProducts} key='warehouse' trimColumns={true} />
           )}
+          {newworldProducts && (
+            <ProductsGrid products={newworldProducts} key='newworld' trimColumns={true} />
+          )}
         </div>
       </div>
       <Footer />
@@ -50,19 +55,12 @@ export default function Home({
 
 // Perform a DB lookup for each store, so all stores get some coverage on the home page
 export async function getStaticProps() {
-  const latestCountdownProducts = await DBFetchAll(
-    40,
+  const countdownProducts = await DBFetchAll(
+    10,
     Store.Countdown,
     PriceHistoryLimit.FourOrMore,
     OrderByMode.LatestPriceChange
   );
-
-  // Filter out certain products which don't have interesting price fluctuations
-  const countdownProducts = latestCountdownProducts
-    .filter((product) => {
-      return !product.name.toLowerCase().match('harris|bake|granola|cola|whiskas');
-    })
-    .slice(0, 10);
 
   const paknsaveProducts = await DBFetchAll(
     10,
@@ -72,9 +70,16 @@ export async function getStaticProps() {
   );
 
   const warehouseProducts = await DBFetchAll(
-    10,
+    5,
     Store.Warehouse,
     PriceHistoryLimit.FourOrMore,
+    OrderByMode.LatestPriceChange
+  );
+
+  const newworldProducts = await DBFetchAll(
+    5,
+    Store.NewWorld,
+    PriceHistoryLimit.Any,
     OrderByMode.LatestPriceChange
   );
 
@@ -85,6 +90,7 @@ export async function getStaticProps() {
       countdownProducts,
       paknsaveProducts,
       warehouseProducts,
+      newworldProducts,
       lastChecked,
     },
   };

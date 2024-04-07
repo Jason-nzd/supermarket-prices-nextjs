@@ -29,8 +29,6 @@ function DynamicChartCall({ priceHistory, lastChecked }: ChartProps) {
 
 function ProductCard({ product }: Props) {
   function handleClick() {
-    // Copy product id to clipboard when card is clicked
-    // navigator.clipboard.writeText(product.id);
     setIsModalOpen(true);
   }
 
@@ -108,8 +106,20 @@ function ProductCard({ product }: Props) {
               PAK'nSAVE
             </div>
           )}
+          {product.sourceSite === 'newworld.co.nz' && (
+            <div
+              className='flex items-center justify-center gap-x-2 p-1 rounded-b-2xl text-white
+              bg-[#e11a2c] dark:bg-transparent dark:text-zinc-300 dark:ring-[#ac910c] dark:ring-2'
+            >
+              <StoreIcon sourceSite={product.sourceSite} width={20} />
+              New World
+            </div>
+          )}
+
+          {/* If sourceSite is not known, display as unstyled */}
           {!product.sourceSite.includes('countdown.co.nz') &&
             product.sourceSite !== 'thewarehouse.co.nz' &&
+            product.sourceSite !== 'newworld.co.nz' &&
             product.sourceSite !== 'paknsave.co.nz' && <div>{product.sourceSite}</div>}
         </div>
       </div>

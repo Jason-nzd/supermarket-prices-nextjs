@@ -3,6 +3,7 @@ import React from 'react';
 import cdlogo from '../public/images/cd-logo-64.png';
 import whlogo from '../public/images/wh-logo-64.png';
 import pklogo from '../public/images/pk-logo-64.png';
+import nwlogo from '../public/images/nw-logo-64-wide.png';
 
 interface Props {
   sourceSite: string;
@@ -19,6 +20,9 @@ export default function StoreIcon({ sourceSite, width = 60 }: Props) {
 
     case 'paknsave.co.nz':
       return <Image src={pklogo} width={width} alt='PaknSave Logo' />;
+
+    case 'newworld.co.nz':
+      return <Image src={nwlogo} width={width} alt='New World Logo' />;
 
     default:
       console.log('<StoreIcon /> not found for ' + sourceSite);

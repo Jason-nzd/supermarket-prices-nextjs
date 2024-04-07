@@ -10,6 +10,7 @@ export enum Store {
   Countdown,
   Paknsave,
   Warehouse,
+  NewWorld,
   CountdownPaknSave,
   CountdownWarehouse,
   PaknsaveWarehouse,

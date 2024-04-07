@@ -231,6 +231,21 @@ function ProductModalFull({ product, setIsModalOpen }: Props) {
                   </a>
                 </div>
               )}
+              {product.sourceSite.includes('newworld.co.nz') && (
+                <div className='external-link red-ring px-4'>
+                  <a
+                    target='_blank'
+                    className='flex-col'
+                    href={'https://www.newworld.co.nz/shop/search?q=' + cleanedSearchName}
+                    rel='noopener noreferrer'
+                  >
+                    <div>'{product.name}'</div>
+                    <div className='flex gap-x-1 items-center mx-auto w-fit'>
+                      {boxArrow} newworld.co.nz
+                    </div>
+                  </a>
+                </div>
+              )}
             </div>
 
             {/* First Added */}
@@ -271,9 +286,16 @@ function ProductModalFull({ product, setIsModalOpen }: Props) {
             PAK'nSAVE
           </div>
         )}
+        {product.sourceSite === 'newworld.co.nz' && (
+          <div className='flex items-center justify-center gap-x-2 p-2 rounded-b-3xl text-white bg-[#e11a2c]'>
+            <StoreIcon sourceSite={product.sourceSite} width={20} />
+            PAK'nSAVE
+          </div>
+        )}
         {/* Display unknown and future source sites using this temporary purple div */}
         {!product.sourceSite.includes('countdown.co.nz') &&
           product.sourceSite !== 'thewarehouse.co.nz' &&
+          product.sourceSite !== 'newworld.co.nz' &&
           product.sourceSite !== 'paknsave.co.nz' && (
             <div className='rounded-b-3xl text-white bg-[#7a1ba0]'>{product.sourceSite}</div>
           )}

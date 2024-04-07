@@ -9,12 +9,14 @@ interface Props {
   countdownProduct?: Product;
   paknsaveProduct?: Product;
   warehouseProduct?: Product;
+  newworldProduct?: Product;
 }
 
 function MultiStorePriceHistoryChart({
   countdownProduct,
   paknsaveProduct,
   warehouseProduct,
+  newworldProduct,
 }: Props) {
   // Initialize chart.js line chart
   Chart.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip);
@@ -46,6 +48,7 @@ function MultiStorePriceHistoryChart({
   let priceDataCountdown = new Array(sharedDates.length).fill(NaN);
   let priceDataPaknsave = new Array(sharedDates.length).fill(NaN);
   let priceDataWarehouse = new Array(sharedDates.length).fill(NaN);
+  let priceDataNewworld = new Array(sharedDates.length).fill(NaN);
 
   // Debug
   // if (countdownProduct) {
@@ -116,6 +119,19 @@ function MultiStorePriceHistoryChart({
     }
   });
 
+  // 2nd pass - loop through newworld price history and populate full length dataset
+  newworldProduct?.priceHistory.forEach((datedPrice) => {
+    const cleanedDate = cleanDate(datedPrice.date);
+
+    let matchedStoreToSharedIndex = sharedDates.findIndex((sharedDate) => {
+      return sharedDate.toString() == cleanedDate.toString();
+    });
+
+    if (matchedStoreToSharedIndex >= 0) {
+      priceDataNewworld[matchedStoreToSharedIndex] = datedPrice.price;
+    }
+  });
+
   // Create shorter labels for dates
   const dateStringsOnly: string[] = sharedDates.map((date) => {
     return utcDateToLongDate(date);
@@ -154,11 +170,24 @@ function MultiStorePriceHistoryChart({
         stepped: 'before',
         spanGaps: true,
       },
-
       {
         label: 'The Warehouse',
         data: priceDataWarehouse,
         borderColor: 'red',
+        pointBorderColor: 'red',
+        pointBackgroundColor: 'white',
+        pointHoverRadius: 6,
+        pointHitRadius: 30,
+        pointBorderWidth: 3,
+        borderWidth: 3,
+        tension: 0.2,
+        stepped: 'before',
+        spanGaps: true,
+      },
+      {
+        label: 'New World',
+        data: priceDataNewworld,
+        borderColor: 'orange',
         pointBorderColor: 'red',
         pointBackgroundColor: 'white',
         pointHoverRadius: 6,

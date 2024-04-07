@@ -20,10 +20,17 @@ interface Props {
   countdownProduct: Product | undefined;
   paknsaveProduct: Product | undefined;
   warehouseProduct: Product | undefined;
+  newworldProduct: Product | undefined;
   lastChecked: string;
 }
 
-const Category = ({ countdownProduct, paknsaveProduct, warehouseProduct, lastChecked }: Props) => {
+const Category = ({
+  countdownProduct,
+  paknsaveProduct,
+  warehouseProduct,
+  newworldProduct,
+  lastChecked,
+}: Props) => {
   const theme = useContext(DarkModeContext).darkMode ? 'dark' : 'light';
 
   return (
@@ -40,6 +47,7 @@ const Category = ({ countdownProduct, paknsaveProduct, warehouseProduct, lastChe
               countdownProduct={countdownProduct}
               paknsaveProduct={paknsaveProduct}
               warehouseProduct={warehouseProduct}
+              newworldProduct={newworldProduct}
             />
           </div>
         </div>
@@ -55,6 +63,7 @@ export const getStaticProps: GetStaticProps = async () => {
   let countdownProduct;
   let paknsaveProduct;
   let warehouseProduct;
+  let newworldProduct;
 
   products.forEach((product) => {
     const name = product.name.toLowerCase();
@@ -63,6 +72,7 @@ export const getStaticProps: GetStaticProps = async () => {
     if (size === '250g' && product.sourceSite === 'countdown.co.nz') countdownProduct = product;
     if (size === '250g' && product.sourceSite === 'paknsave.co.nz') paknsaveProduct = product;
     if (size === '250g' && product.sourceSite === 'thewarehouse.co.nz') warehouseProduct = product;
+    if (size === '250g' && product.sourceSite === 'newworld.co.nz') newworldProduct = product;
 
     // console.log(product.sourceSite + ' - ' + product.size + ' - ' + product.name);
   });
@@ -74,6 +84,7 @@ export const getStaticProps: GetStaticProps = async () => {
       countdownProduct,
       paknsaveProduct,
       warehouseProduct,
+      newworldProduct,
       lastChecked,
     },
   };
