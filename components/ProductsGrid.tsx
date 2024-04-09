@@ -10,6 +10,7 @@ interface Props {
   products: Product[];
   trimColumns?: boolean;
   createSearchLink?: boolean;
+  createDeepLink?: string;
 }
 
 function ProductsGrid({
@@ -18,6 +19,7 @@ function ProductsGrid({
   products,
   trimColumns = false,
   createSearchLink = true,
+  createDeepLink = '',
 }: Props) {
   let numColumnsToShow = 3;
   let trimmedProducts: Product[] = [];
@@ -71,21 +73,37 @@ function ProductsGrid({
     return (
       <div>
         {/* Display grid title as-is if no createSearchLink option is set */}
-        {!createSearchLink && <div className='grid-title'>{titles[0]}</div>}
+        {!createSearchLink && createDeepLink.length == 0 && (
+          <div className='grid-title'>{titles[0]}</div>
+        )}
 
-        {/* Else the grid title is split into individual search links for each word */}
-        {createSearchLink && titles.length >= 1 && (
+        {/* Create search links for each word */}
+        {createDeepLink.length == 0 && createSearchLink && titles.length >= 1 && (
           <div className='flex w-fit mx-auto grid-title'>
-            {createSearchLink &&
-              titles.map((word) => (
-                <Link
-                  href={`/client-search/?query=${word}`}
-                  key={word}
-                  className='hover-to-white mx-4'
-                >
-                  {word}
-                </Link>
-              ))}
+            {titles.map((word) => (
+              <Link
+                href={`/client-search/?query=${word}`}
+                key={word}
+                className='hover-to-white mx-4'
+              >
+                {word}
+              </Link>
+            ))}
+          </div>
+        )}
+
+        {/* Create deep category links for each word */}
+        {createDeepLink.length > 1 && !createSearchLink && titles.length >= 1 && (
+          <div className='flex w-fit mx-auto grid-title'>
+            {titles.map((word) => (
+              <Link
+                href={`${createDeepLink}${word.toLowerCase()}`}
+                key={word}
+                className='hover-to-white mx-4'
+              >
+                {word}
+              </Link>
+            ))}
           </div>
         )}
 

@@ -52,8 +52,20 @@ const Category = ({
         {/* Central Aligned Div */}
         <div className='central-responsive-div'>
           {/* Categorised Product Grids*/}
-          <ProductsGrid titles={['Apples']} products={apples} trimColumns={false} />
-          <ProductsGrid titles={['Bananas']} products={bananas} trimColumns={false} />
+          <ProductsGrid
+            titles={['Apples']}
+            products={apples}
+            trimColumns={false}
+            createSearchLink={false}
+            createDeepLink='/products/fruit/'
+          />
+          <ProductsGrid
+            titles={['Bananas']}
+            products={bananas}
+            trimColumns={false}
+            createSearchLink={false}
+            createDeepLink='/products/fruit/'
+          />
           <ProductsGrid
             titles={['Oranges', 'Lemons', 'Limes', 'Tangerines', 'Mandarins']}
             products={citrus}
@@ -93,7 +105,7 @@ const Category = ({
 export const getStaticProps: GetStaticProps = async () => {
   const products = await DBFetchByCategory(
     'fruit',
-    300,
+    200,
     Store.Any,
     PriceHistoryLimit.Any,
     OrderByMode.None,
@@ -127,18 +139,18 @@ export const getStaticProps: GetStaticProps = async () => {
     else if (name.includes('grapes')) grapes.push(product);
     else other.push(product);
   });
-  other = other.slice(0, 25);
 
   // Sort all by unit price
-  apples = sortProductsByUnitPrice(apples).slice(0, 15);
-  bananas = sortProductsByUnitPrice(bananas).slice(0, 15);
-  citrus = sortProductsByUnitPrice(citrus).slice(0, 15);
-  kiwifruit = sortProductsByUnitPrice(kiwifruit).slice(0, 15);
-  peaches = sortProductsByUnitPrice(peaches).slice(0, 15);
-  pineapple = sortProductsByUnitPrice(pineapple).slice(0, 15);
-  berries = sortProductsByUnitPrice(berries).slice(0, 15);
-  grapes = sortProductsByUnitPrice(grapes).slice(0, 15);
-  other = other.slice(0, 30);
+  apples = sortProductsByUnitPrice(apples).slice(0, 10);
+  bananas = sortProductsByUnitPrice(bananas).slice(0, 10);
+  citrus = sortProductsByUnitPrice(citrus).slice(0, 10);
+  pears = sortProductsByUnitPrice(pears).slice(0, 10);
+  kiwifruit = sortProductsByUnitPrice(kiwifruit).slice(0, 10);
+  peaches = sortProductsByUnitPrice(peaches).slice(0, 10);
+  pineapple = sortProductsByUnitPrice(pineapple).slice(0, 10);
+  berries = sortProductsByUnitPrice(berries).slice(0, 10);
+  grapes = sortProductsByUnitPrice(grapes).slice(0, 10);
+  other = other.slice(0, 10);
 
   const lastChecked = utcDateToMediumDate(new Date());
 

@@ -14,6 +14,7 @@ import {
   LastChecked,
   OrderByMode,
   PriceHistoryLimit,
+  sortProductsByUnitPrice,
   Store,
 } from './utilities';
 
@@ -76,6 +77,63 @@ export async function DBGetProduct(id: string, partitionKey?: string): Promise<P
   }
   // If no item is found, reject promise
   return Promise.reject();
+}
+
+// Search DB for products with a search term, optional category, and optional exclude terms
+// excludeRegex can be a single word, formatted as "(pineapple|mango|cheese)", or any similar regex
+export async function DBFetchByNameAndExcludeRegex(
+  includeTerm: string,
+  excludeRegex: string,
+  limitToCategory: string = ''
+) {
+  let unfilteredProducts: Product[] = [];
+  let filteredProducts: Product[] = [];
+
+  // If a category is specified, only fetch from that category
+  if (limitToCategory != '') {
+    unfilteredProducts = await DBFetchByCategory(
+      limitToCategory,
+      300,
+      Store.Any,
+      PriceHistoryLimit.Any,
+      OrderByMode.None,
+      LastChecked.Within7Days
+    );
+  } else {
+    unfilteredProducts = await DBFetchByName(
+      includeTerm,
+      300,
+      Store.Any,
+      PriceHistoryLimit.Any,
+      OrderByMode.None,
+      LastChecked.Within7Days
+    );
+  }
+
+  // Loop through products including only matching names,
+  // and excluding any names that match the exclude regex.
+  unfilteredProducts.forEach((product) => {
+    const name = product.name.toLowerCase();
+
+    // Use excludeRegex only if it is a valid length
+    if (excludeRegex.length > 2) {
+      if (name.match(includeTerm) && !name.match(excludeRegex)) {
+        filteredProducts.push(product);
+      }
+    } else {
+      if (name.match(includeTerm)) {
+        filteredProducts.push(product);
+      }
+    }
+  });
+
+  // Sort by unit price
+  filteredProducts = sortProductsByUnitPrice(filteredProducts);
+
+  // Limit number of results
+  filteredProducts = filteredProducts.slice(0, 30);
+
+  return filteredProducts;
 }
 
 // Fetch all products with optional parameters for customized queries
