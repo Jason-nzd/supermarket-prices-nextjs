@@ -70,7 +70,7 @@ function ProductCard({ product }: Props) {
 
             <div className='flex flex-col items-center'>
               {/* Price Tag */}
-              <div className='m-1 mr-2 ml-auto pr-1'>
+              <div className='mr-2 ml-auto'>
                 <PriceTag product={product} />
               </div>
             </div>

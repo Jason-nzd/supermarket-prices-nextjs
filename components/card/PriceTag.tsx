@@ -50,8 +50,19 @@ export default function PriceTag({ product }: Props) {
     icon = downIcon;
   }
 
+  // Simplify unit price for readability
+  if (product.unitPrice) {
+    // Display whole numbers as-is, without the .00
+    if (product.unitPrice == Number(product.unitPrice.toFixed(0)))
+      product.unitPrice = Number(product.unitPrice.toFixed(0));
+    // Display decimal numbers under $10 with 2 decimal points
+    else if (product.unitPrice < 10) product.unitPrice = Number(product.unitPrice.toFixed(2));
+    // Display numbers over 10 with 1 decimal point for readability
+    else product.unitPrice = Number(product.unitPrice.toFixed(1));
+  }
+
   return (
-    <div className='z-50 min-w-[9rem]'>
+    <div className='z-50 min-w-[9.5rem]'>
       <div className={priceTagDivClass}>
         {/* Icon */}
         <div className='px-1'>
@@ -79,13 +90,7 @@ export default function PriceTag({ product }: Props) {
           {product.unitPrice && product.unitName && product.unitPrice != 9999 && (
             <div className='flex text-md items-center'>
               <div className='text-xs'>$</div>
-              <div className='font-semibold text-lg lg:text-md'>
-                {/* Display unit price with 2 decimal points, such as $5.50,
-                    unless it is a whole number such as $5 */}
-                {product.unitPrice! == Number(product.unitPrice!.toFixed(0))
-                  ? product.unitPrice!.toFixed(0)
-                  : product.unitPrice!.toFixed(2)}
-              </div>
+              <div className='font-semibold text-lg lg:text-md'>{product.unitPrice}</div>
               <div>{'/' + product.unitName || 'Unit'}</div>
             </div>
           )}
