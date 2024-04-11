@@ -73,7 +73,7 @@ function ProductModalFull({ product, setIsModalOpen }: Props) {
       className={
         (theme === 'dark' ? 'bg-zinc-800 text-zinc-300' : 'bg-white') +
         ' flex flex-col absolute mx-auto rounded-3xl z-50 shadow-2xl h-full ' +
-        '  overflow-y-scroll overflow-x-hidden max-h-[90vh]'
+        '  overflow-y-scroll overflow-x-hidden max-h-[90vh] no-scrollbar'
       }
     >
       {/* Top Title Div */}
