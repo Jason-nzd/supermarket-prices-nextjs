@@ -26,6 +26,10 @@ function ProductsGrid({
   if (trimColumns) {
     trimmedProducts = products;
 
+    // For mobile viewports, trim products to 3 columns
+    if (useMediaQuery('600px')) {
+      trimmedProducts = products.slice(0, nextMultipleDown(products.length, 2));
+    }
     // For small viewports, trim products to 3 columns
     if (useMediaQuery('980px')) {
       trimmedProducts = products.slice(0, nextMultipleDown(products.length, 3));

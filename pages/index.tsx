@@ -79,7 +79,7 @@ export async function getStaticProps() {
   const newworldProducts = await DBFetchAll(
     5,
     Store.NewWorld,
-    PriceHistoryLimit.Any,
+    PriceHistoryLimit.TwoOrMore,
     OrderByMode.LatestPriceChange
   );
 
