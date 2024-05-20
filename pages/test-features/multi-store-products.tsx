@@ -66,13 +66,12 @@ export const getStaticProps: GetStaticProps = async () => {
   let newworldProduct;
 
   products.forEach((product) => {
-    const name = product.name.toLowerCase();
-    const size = product.size?.toLowerCase() || '';
+    const sizeIsValid = product.size?.toLowerCase().includes('250g')
 
-    if (size === '250g' && product.sourceSite === 'countdown.co.nz') countdownProduct = product;
-    if (size === '250g' && product.sourceSite === 'paknsave.co.nz') paknsaveProduct = product;
-    if (size === '250g' && product.sourceSite === 'thewarehouse.co.nz') warehouseProduct = product;
-    if (size === '250g' && product.sourceSite === 'newworld.co.nz') newworldProduct = product;
+    if (sizeIsValid && product.sourceSite === 'countdown.co.nz') countdownProduct = product;
+    if (sizeIsValid && product.sourceSite === 'paknsave.co.nz') paknsaveProduct = product;
+    if (sizeIsValid && product.sourceSite === 'thewarehouse.co.nz') warehouseProduct = product;
+    if (sizeIsValid && product.sourceSite === 'newworld.co.nz') newworldProduct = product;
 
     // console.log(product.sourceSite + ' - ' + product.size + ' - ' + product.name);
   });

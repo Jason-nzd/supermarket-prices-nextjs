@@ -6,10 +6,10 @@ import { Line } from 'react-chartjs-2';
 import type { ChartData, ChartOptions } from 'chart.js';
 
 interface Props {
-  countdownProduct?: Product;
-  paknsaveProduct?: Product;
-  warehouseProduct?: Product;
-  newworldProduct?: Product;
+  countdownProduct?: Product | undefined;
+  paknsaveProduct?: Product | undefined;
+  warehouseProduct?: Product | undefined;
+  newworldProduct?: Product | undefined;
 }
 
 function MultiStorePriceHistoryChart({
@@ -25,7 +25,7 @@ function MultiStorePriceHistoryChart({
   let sharedDates: Date[] = [];
 
   // 1st pass - loop through all store price histories to determine shared date array
-  [countdownProduct, paknsaveProduct, warehouseProduct]!.forEach((product) => {
+  [countdownProduct, paknsaveProduct, warehouseProduct, newworldProduct]!.forEach((product) => {
     product?.priceHistory.forEach((datedPrice) => {
       // Clean any hours, seconds from store dates (converts '2023-06-18T23:46:27.222Z' to '2023-06-18')
       const cleanedStoreDate = cleanDate(datedPrice.date);
