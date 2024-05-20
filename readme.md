@@ -9,15 +9,15 @@ This is a static next.js website that pulls product data from Azure CosmosDB and
 
 ## Quick Setup
 
-First ensure `node.js` is installed, clone or download this repo, and then run `npm install` to install dependencies.
+With `node.js` is installed, clone this repo, and then run `npm install` to install dependencies.
 
 The website comes with some sample data built-in and can be launched as-is with `npm run dev`.
 
-## Database Mode Setup
+## Database Mode Setup with .env
 
 For use with Azure CosmosDB, a read-only or read-write connection string must be set as an environment variable `COSMOS_CONSTRING`. Database and container names are also set here.
 
-Example `.env`:
+Create a `.env` file with the following variables set:
 
 ```shell
 COSMOS_CONSTRING=<your-cosmosdb-connection-string>
@@ -55,10 +55,10 @@ Example database document with dates in UTC format:
 
 ## Usage
 
-- `npm install` - to install dependencies
 - `npm run dev` - for testing as a dynamic website
 - `npm run build` - to build a fully static site into the `/out` directory
 - `npm run start` - to host the built static site from `/out`
+- `npm run cypress` - to open cypress for testing
 
 ## Static Website Demo
 
