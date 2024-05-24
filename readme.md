@@ -58,7 +58,7 @@ Example database document with dates in UTC format:
 - `npm run dev` - for testing as a dynamic website
 - `npm run build` - to build a fully static site into the `/out` directory
 - `npm run start` - to host the built static site from `/out`
-- `npm run cypress` - to open cypress for testing
+- `npx cypress run` - run cypress headless testing
 
 ## Static Website Demo
 
