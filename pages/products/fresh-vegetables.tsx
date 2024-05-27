@@ -50,33 +50,33 @@ const Category = ({
         {/* Central Aligned Div */}
         <div className='central-responsive-div'>
           {/* Categorised Product Grids*/}
-          <ProductsGrid titles={['Potatoes', 'Kumara']} products={potatoes} trimColumns={false} />
+          <ProductsGrid titles={['Potatoes', 'Kumara']} products={potatoes} trimColumns={true} />
           <ProductsGrid
             titles={['Broccoli', 'Cauliflower', 'Cabbage']}
             products={broccoli}
-            trimColumns={false}
+            trimColumns={true}
           />
-          <ProductsGrid titles={['Carrots', 'Yams']} products={carrots} trimColumns={false} />
+          <ProductsGrid titles={['Carrots', 'Yams']} products={carrots} trimColumns={true} />
           <ProductsGrid
             titles={['Lettuce', 'Salad Vegetables']}
             products={saladKits}
-            trimColumns={false}
+            trimColumns={true}
           />
-          <ProductsGrid titles={['Mushrooms']} products={mushrooms} trimColumns={false} />
+          <ProductsGrid titles={['Mushrooms']} products={mushrooms} trimColumns={true} />
           <ProductsGrid
             titles={['Tomatoes', 'Cucumber', 'Capsicum']}
             products={tomatoes}
-            trimColumns={false}
+            trimColumns={true}
           />
           <ProductsGrid
             titles={['Onions', 'Shallots', 'Leek']}
             products={onions}
-            trimColumns={false}
+            trimColumns={true}
           />
           <ProductsGrid
             titles={['Chili', 'Garlic', 'Ginger']}
             products={chili}
-            trimColumns={false}
+            trimColumns={true}
           />
           <ProductsGrid
             titles={['Other Vegetables']}
@@ -126,13 +126,14 @@ export const getStaticProps: GetStaticProps = async () => {
   other = other.slice(0, 30);
 
   // Sort all by unit price
-  potatoes = sortProductsByUnitPrice(potatoes).slice(0, 15);
-  broccoli = sortProductsByUnitPrice(broccoli).slice(0, 15);
-  carrots = sortProductsByUnitPrice(carrots).slice(0, 15);
-  mushrooms = sortProductsByUnitPrice(mushrooms).slice(0, 10);
-  onions = sortProductsByUnitPrice(onions).slice(0, 15);
-  tomatoes = sortProductsByUnitPrice(tomatoes).slice(0, 15);
-  chili = sortProductsByUnitPrice(chili).slice(0, 10);
+  potatoes = sortProductsByUnitPrice(potatoes).slice(0, 10);
+  broccoli = sortProductsByUnitPrice(broccoli).slice(0, 10);
+  carrots = sortProductsByUnitPrice(carrots).slice(0, 10);
+  saladKits = sortProductsByUnitPrice(saladKits).slice(0, 10);
+  mushrooms = sortProductsByUnitPrice(mushrooms).slice(0, 5);
+  tomatoes = sortProductsByUnitPrice(tomatoes).slice(0, 10);
+  onions = sortProductsByUnitPrice(onions).slice(0, 5);
+  chili = sortProductsByUnitPrice(chili).slice(0, 5);
   other = other.slice(0, 15);
 
   const lastChecked = utcDateToMediumDate(new Date());
