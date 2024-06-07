@@ -73,9 +73,6 @@ const NavBar = ({ lastUpdatedDate }: Props) => {
                 userCategories.map((name) => {
                   const href = '/products/' + name;
                   const isActive = currentPath.includes(href);
-                  console.log(href)
-                  console.log(currentPath)
-                  console.log(isActive)
                   return (
                     <Link className={`nav-main-link ${isActive ? 'nav-main-link-active' : ''}`} href={href} key={href}>
                       {startCase(name)}
