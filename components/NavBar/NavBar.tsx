@@ -7,6 +7,7 @@ import CategorySelectMenu from './CategorySelectMenu';
 import SearchBar from '../SearchBar';
 import MobileBurgerMenu from './MobileBurgerMenu';
 import DarkModeToggle from './DarkModeToggle';
+import { useRouter } from 'next/router';
 
 interface Props {
   lastUpdatedDate: string;
@@ -14,6 +15,8 @@ interface Props {
 
 const NavBar = ({ lastUpdatedDate }: Props) => {
   const [userCategories, setUserCategories] = useState<string[]>();
+  const router = useRouter();
+  const currentPath = router.asPath;
 
   return (
     <nav className='w-full h-fit overflow-hidden'>
@@ -69,8 +72,9 @@ const NavBar = ({ lastUpdatedDate }: Props) => {
               {userCategories &&
                 userCategories.map((name) => {
                   const href = '/products/' + name;
+                  const isActive = currentPath.includes(href);
                   return (
-                    <Link className='nav-main-link' href={href} key={href}>
+                    <Link className={`nav-main-link ${isActive ? 'nav-main-link-active' : ''}`} href={href} key={href}>
                       {startCase(name)}
                     </Link>
                   );
