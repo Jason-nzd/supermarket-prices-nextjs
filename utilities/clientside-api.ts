@@ -69,15 +69,19 @@ export async function DBFetchByNameAPI(
   // Replace hyphens in search term
   searchTerm = searchTerm.replace('-', ' ');
 
+
+  // Split search terms and build an SQL query using 'AND CONTAINS()' for each word
+  const searchTerms = searchTerm.split(' ');
+  const remainingSearchTerms = searchTerms.slice(1)
+
   const queryObject = {
     query:
-      `SELECT * FROM products p WHERE CONTAINS(p.name, '${searchTerm}', true)` +
+      `SELECT * FROM products p WHERE CONTAINS(p.name, '${searchTerms[0]}', true)` +
+      remainingSearchTerms.reduce((str, term) => str + ` AND CONTAINS(p.name, '${term}', true)`, "") +
       queryAddLimitStore(store, false) +
       queryAddLastChecked(lastChecked) +
       queryAddPriceHistoryLimit(priceHistoryLimit),
   };
-
-  console.log(JSON.stringify(queryObject));
 
   return await fetchProductsUsingAPI(queryObject, maxItems);
 }
