@@ -394,10 +394,6 @@ export function priceTrend(priceHistory: DatedPrice[]): PriceTrend {
     const averageRecentPrice =
       recentPrices.reduce((a, b) => a + b.price, 0) / recentPrices.length;
 
-    // const olderPrice = priceHistory[priceHistory.length - 2].price;
-
-    console.log("full prices = " + priceHistory.length + " avg prices = " + recentPrices.length + " avg = " + latestPrice / averageRecentPrice);
-
     // Return PriceTrend based on a threshold.
     // If the price difference is within this threshold, PriceTrend.Same enum is returned
     const trendThreshold = 0.05;
