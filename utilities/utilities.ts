@@ -380,14 +380,32 @@ export function printPrice(price: number): string {
 
 // priceTrend()
 // ------------
-// Takes a DatedPrice[] object and returns if price is trending up/down.
+// Takes a DatedPrice[] object and returns an enum whether price is trending up/down/same.
 export function priceTrend(priceHistory: DatedPrice[]): PriceTrend {
-  if (priceHistory.length > 1) {
+  if (priceHistory.length > 2) {
     const latestPrice = priceHistory[priceHistory.length - 1].price;
-    const olderPrice = priceHistory[priceHistory.length - 2].price;
-    if (latestPrice < olderPrice) return PriceTrend.Decreased;
-    else return PriceTrend.Increased;
-  } else return PriceTrend.Same;
+
+    // Determine 5 recent prices to average, or less if no data available
+    const numRecentPricesToAverage = Math.min(priceHistory.length - 1, 5);
+    const recentPricesIndexStart = priceHistory.length - 1 - numRecentPricesToAverage;
+
+    // Get the average price across the most recent prices
+    const recentPrices = priceHistory.slice(recentPricesIndexStart);
+    const averageRecentPrice =
+      recentPrices.reduce((a, b) => a + b.price, 0) / recentPrices.length;
+
+    // const olderPrice = priceHistory[priceHistory.length - 2].price;
+
+    console.log("full prices = " + priceHistory.length + " avg prices = " + recentPrices.length + " avg = " + latestPrice / averageRecentPrice);
+
+    // Return PriceTrend based on a threshold.
+    // If the price difference is within this threshold, PriceTrend.Same enum is returned
+    const trendThreshold = 0.05;
+
+    if ((latestPrice / averageRecentPrice) < 1 - trendThreshold) return PriceTrend.Decreased;
+    else if ((latestPrice / averageRecentPrice) > 1 - trendThreshold) return PriceTrend.Increased;
+  }
+  return PriceTrend.Same;
 }
 
 // productIsCurrent()
