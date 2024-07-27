@@ -25,6 +25,9 @@
     @apply text-primary-colour px-3 py-1 rounded-3xl 
     hover:bg-green-300 hover:text-black hover:shadow-md transition-all;
   }
+  .nav-main-link-active{
+    @apply bg-green-300 text-black transition-all;
+  }
   .small-link {
     @apply ring-green-300 ring-2 px-2 py-1 rounded-3xl font-semibold hover-panel;
   }
