@@ -1,15 +1,22 @@
-import React from 'react';
-import { Product } from '../../typings';
-import { cleanDate, utcDateToLongDate, utcDateToShortDate } from '../../utilities/utilities';
-import { CategoryScale, Chart, LinearScale, PointElement, LineElement, Tooltip } from 'chart.js';
-import { Line } from 'react-chartjs-2';
-import type { ChartData, ChartOptions } from 'chart.js';
+import React from "react";
+import { Product } from "../../typings";
+import { cleanDate, utcDateToLongDate } from "../../utilities/utilities";
+import {
+  CategoryScale,
+  Chart,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Tooltip,
+} from "chart.js";
+import { Line } from "react-chartjs-2";
+import type { ChartData, ChartOptions } from "chart.js";
 
 interface Props {
-  countdownProduct?: Product | undefined;
-  paknsaveProduct?: Product | undefined;
-  warehouseProduct?: Product | undefined;
-  newworldProduct?: Product | undefined;
+  countdownProduct?: Product | null;
+  paknsaveProduct?: Product | null;
+  warehouseProduct?: Product | null;
+  newworldProduct?: Product | null;
 }
 
 function MultiStorePriceHistoryChart({
@@ -19,13 +26,24 @@ function MultiStorePriceHistoryChart({
   newworldProduct,
 }: Props) {
   // Initialize chart.js line chart
-  Chart.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip);
+  Chart.register(
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Tooltip
+  );
 
   // Dates array will share dates from all stores on the X axis
   let sharedDates: Date[] = [];
 
   // 1st pass - loop through all store price histories to determine shared date array
-  [countdownProduct, paknsaveProduct, warehouseProduct, newworldProduct]!.forEach((product) => {
+  [
+    countdownProduct,
+    paknsaveProduct,
+    warehouseProduct,
+    newworldProduct,
+  ]!.forEach((product) => {
     product?.priceHistory.forEach((datedPrice) => {
       // Clean any hours, seconds from store dates (converts '2023-06-18T23:46:27.222Z' to '2023-06-18')
       const cleanedStoreDate = cleanDate(datedPrice.date);
@@ -138,70 +156,70 @@ function MultiStorePriceHistoryChart({
   });
 
   // Prepare chart data for chart.js line chart
-  const chartData: ChartData<'line'> = {
+  const chartData: ChartData<"line"> = {
     labels: dateStringsOnly,
     datasets: [
       {
-        label: 'Countdown',
+        label: "Countdown",
         data: priceDataCountdown,
-        borderColor: 'green',
-        pointBorderColor: 'green',
-        pointBackgroundColor: 'white',
+        borderColor: "green",
+        pointBorderColor: "green",
+        pointBackgroundColor: "white",
         pointHoverRadius: 6,
         pointHitRadius: 30,
         pointBorderWidth: 3,
         borderWidth: 3,
         tension: 0.2,
-        stepped: 'before',
+        stepped: "before",
         spanGaps: true,
       },
 
       {
-        label: 'PaknSave',
+        label: "PaknSave",
         data: priceDataPaknsave,
-        borderColor: 'yellow',
-        pointBorderColor: 'yellow',
-        pointBackgroundColor: 'white',
+        borderColor: "yellow",
+        pointBorderColor: "yellow",
+        pointBackgroundColor: "white",
         pointHoverRadius: 6,
         pointHitRadius: 30,
         pointBorderWidth: 3,
         borderWidth: 3,
         tension: 0.2,
-        stepped: 'before',
+        stepped: "before",
         spanGaps: true,
       },
       {
-        label: 'The Warehouse',
+        label: "The Warehouse",
         data: priceDataWarehouse,
-        borderColor: 'red',
-        pointBorderColor: 'red',
-        pointBackgroundColor: 'white',
+        borderColor: "red",
+        pointBorderColor: "red",
+        pointBackgroundColor: "white",
         pointHoverRadius: 6,
         pointHitRadius: 30,
         pointBorderWidth: 3,
         borderWidth: 3,
         tension: 0.2,
-        stepped: 'before',
+        stepped: "before",
         spanGaps: true,
       },
       {
-        label: 'New World',
+        label: "New World",
         data: priceDataNewworld,
-        borderColor: 'orange',
-        pointBorderColor: 'red',
-        pointBackgroundColor: 'white',
+        borderColor: "orange",
+        pointBorderColor: "red",
+        pointBackgroundColor: "white",
         pointHoverRadius: 6,
         pointHitRadius: 30,
         pointBorderWidth: 3,
         borderWidth: 3,
         tension: 0.2,
-        stepped: 'before',
+        stepped: "before",
         spanGaps: true,
       },
     ],
   };
 
-  const options: ChartOptions<'line'> = {
+  const options: ChartOptions<"line"> = {
     responsive: true,
     maintainAspectRatio: false,
     resizeDelay: 200,
@@ -215,11 +233,11 @@ function MultiStorePriceHistoryChart({
         //     return ' ' + printPrice(context.parsed.y);
         //   },
         // },
-        backgroundColor: 'white',
-        titleColor: 'black',
-        titleFont: { weight: 'normal' },
-        bodyColor: 'black',
-        footerColor: 'black',
+        backgroundColor: "white",
+        titleColor: "black",
+        titleFont: { weight: "normal" },
+        bodyColor: "black",
+        footerColor: "black",
         // borderColor: trendColour,
         borderWidth: 1,
         padding: 10,
@@ -238,7 +256,7 @@ function MultiStorePriceHistoryChart({
     // },
   };
 
-  return <Line data={chartData} options={options} className='z-40' />;
+  return <Line data={chartData} options={options} className="z-40" />;
 }
 
 export default MultiStorePriceHistoryChart;
