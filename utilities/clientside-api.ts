@@ -36,7 +36,7 @@ async function fetchProductsUsingAPI(queryObject: object, maxItems: number): Pro
       },
       redirect: 'follow',
       referrerPolicy: 'no-referrer',
-      signal: AbortSignal.timeout(8000),
+      signal: AbortSignal.timeout(30000),
     });
 
     // If successful, set resultingProducts to response json
@@ -68,7 +68,6 @@ export async function DBFetchByNameAPI(
 ): Promise<Product[]> {
   // Replace hyphens in search term
   searchTerm = searchTerm.replace('-', ' ');
-
 
   // Split search terms and build an SQL query using 'AND CONTAINS()' for each word
   const searchTerms = searchTerm.split(' ');
