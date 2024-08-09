@@ -1,5 +1,5 @@
 import { Dialog, DialogPanel } from "@headlessui/react";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import SubCategoryList from "./SubCategoryList";
 import { DarkModeContext } from "../../pages/_app";
 import {
@@ -13,54 +13,8 @@ import {
   snacksCategory,
 } from "../../pages/products/[category]";
 
-interface Props {
-  updateNavCategories: (arg: string[]) => void;
-}
-
-function CategorySelectMenu({ updateNavCategories }: Props) {
+function CategorySelectMenu() {
   let [isOpen, setIsOpen] = useState(false);
-
-  function setCategoriesCookie() {
-    document.cookie = `User_Categories=${JSON.stringify(
-      userCategories
-    )};path='/'`;
-  }
-
-  // Set default favourite categories
-  const [userCategories, setUserCategories] = useState<string[]>([
-    "milk",
-    "eggs",
-    "fruit",
-    "fresh-vegetables",
-  ]);
-
-  // Try read and set user categories cookie
-  useEffect(() => {
-    const readCookie = document.cookie
-      .split("; ")
-      .find((element) => element.startsWith("User_Categories="))
-      ?.split("=")[1];
-    if (readCookie) setUserCategories(JSON.parse(readCookie));
-  }, []);
-
-  // Send fav categories to parent navbar
-  updateNavCategories(userCategories);
-
-  // Functions favCategory and unFavCategory will be called by child components
-  const favCategory = (category: string): void => {
-    setUserCategories(userCategories.concat([category]));
-    updateNavCategories(userCategories);
-    setCategoriesCookie();
-  };
-  const unFavCategory = (category: string) => {
-    setUserCategories(
-      userCategories.filter((c) => {
-        return c !== category;
-      })
-    );
-    updateNavCategories(userCategories);
-    setCategoriesCookie();
-  };
 
   return (
     <>
@@ -92,65 +46,41 @@ function CategorySelectMenu({ updateNavCategories }: Props) {
             <SubCategoryList
               subCategoryTitle="Fresh Foods"
               subCategoryNames={freshCategory}
-              favCategory={favCategory}
-              unFavCategory={unFavCategory}
-              userCategories={userCategories}
               centerTitle={true}
             />
             <SubCategoryList
               subCategoryTitle="Chilled"
               subCategoryNames={chilledCategory}
-              favCategory={favCategory}
-              unFavCategory={unFavCategory}
-              userCategories={userCategories}
               centerTitle={true}
             />
             <SubCategoryList
               subCategoryTitle="Meat"
               subCategoryNames={meatCategory}
-              favCategory={favCategory}
-              unFavCategory={unFavCategory}
-              userCategories={userCategories}
               centerTitle={true}
             />
             <SubCategoryList
               subCategoryTitle="Frozen"
               subCategoryNames={frozenCategory}
-              favCategory={favCategory}
-              unFavCategory={unFavCategory}
-              userCategories={userCategories}
               centerTitle={true}
             />
             <SubCategoryList
               subCategoryTitle="Pantry"
               subCategoryNames={pantryCategory}
-              favCategory={favCategory}
-              unFavCategory={unFavCategory}
-              userCategories={userCategories}
               centerTitle={true}
             />
             <SubCategoryList
               subCategoryTitle="Snacks"
               subCategoryNames={snacksCategory}
-              favCategory={favCategory}
-              unFavCategory={unFavCategory}
-              userCategories={userCategories}
               centerTitle={true}
             />
             <SubCategoryList
               subCategoryTitle="Drinks"
               subCategoryNames={drinksCategory}
-              favCategory={favCategory}
-              unFavCategory={unFavCategory}
-              userCategories={userCategories}
               centerTitle={true}
             />
             <SubCategoryList
               subCategoryTitle="Pets"
               subCategoryNames={petsCategory}
-              favCategory={favCategory}
-              unFavCategory={unFavCategory}
-              userCategories={userCategories}
               centerTitle={true}
             />
           </DialogPanel>
