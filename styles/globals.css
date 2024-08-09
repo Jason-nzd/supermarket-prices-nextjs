@@ -22,7 +22,7 @@
     @apply px-2 my-0 py-0 rounded-md border border-stone-300;
   }
   .nav-main-link {
-    @apply text-primary-colour px-3 py-1 rounded-3xl 
+    @apply text-primary-colour px-2.5 py-1 rounded-3xl mx-0.5
     hover:bg-green-300 hover:text-black hover:shadow-md transition-all;
   }
   .nav-main-link-active{
