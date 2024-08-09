@@ -1,6 +1,6 @@
 import { Dialog, DialogPanel } from "@headlessui/react";
 import React, { useContext, useState } from "react";
-import SubCategoryList from "./SubCategoryList";
+import DepartmentSection from "./DepartmentSection";
 import { DarkModeContext } from "../../pages/_app";
 import {
   chilledCategory,
@@ -13,7 +13,11 @@ import {
   snacksCategory,
 } from "../../pages/products/[category]";
 
-function CategorySelectMenu() {
+// CategoryMenu
+// -------------
+// Shows a large list of CategoryLink items arranged into DepartmentSections
+
+export default function CategoryMenu() {
   let [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -43,45 +47,37 @@ function CategorySelectMenu() {
               " p-2 xl:p-4 px-4 xl:px-8 gap-x-5 xl:gap-x-12 gap-y-2 md:gap-y-2 transition-all "
             }
           >
-            <SubCategoryList
+            <DepartmentSection
               subCategoryTitle="Fresh Foods"
               subCategoryNames={freshCategory}
-              centerTitle={true}
             />
-            <SubCategoryList
+            <DepartmentSection
               subCategoryTitle="Chilled"
               subCategoryNames={chilledCategory}
-              centerTitle={true}
             />
-            <SubCategoryList
+            <DepartmentSection
               subCategoryTitle="Meat"
               subCategoryNames={meatCategory}
-              centerTitle={true}
             />
-            <SubCategoryList
+            <DepartmentSection
               subCategoryTitle="Frozen"
               subCategoryNames={frozenCategory}
-              centerTitle={true}
             />
-            <SubCategoryList
+            <DepartmentSection
               subCategoryTitle="Pantry"
               subCategoryNames={pantryCategory}
-              centerTitle={true}
             />
-            <SubCategoryList
+            <DepartmentSection
               subCategoryTitle="Snacks"
               subCategoryNames={snacksCategory}
-              centerTitle={true}
             />
-            <SubCategoryList
+            <DepartmentSection
               subCategoryTitle="Drinks"
               subCategoryNames={drinksCategory}
-              centerTitle={true}
             />
-            <SubCategoryList
+            <DepartmentSection
               subCategoryTitle="Pets"
               subCategoryNames={petsCategory}
-              centerTitle={true}
             />
           </DialogPanel>
         </div>
@@ -89,5 +85,3 @@ function CategorySelectMenu() {
     </>
   );
 }
-
-export default CategorySelectMenu;

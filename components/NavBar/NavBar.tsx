@@ -3,12 +3,17 @@ import Link from "next/link";
 import startCase from "lodash/startCase";
 import React, { useContext } from "react";
 import kiwifruit from "../../public/logo.webp";
-import CategorySelectMenu from "./CategorySelectMenu";
+import DepartmentCategoryMenu from "./CategoryMenu";
 import SearchBar from "../SearchBar";
 import MobileBurgerMenu from "./MobileBurgerMenu";
 import DarkModeToggle from "./DarkModeToggle";
 import { useRouter } from "next/router";
 import { FavouriteCategoriesContext } from "pages/_app";
+
+// NavBar
+// ------
+// Responsive NavBar containing logo, page title, user favourite categories,
+// many menu buttons, search bar, last updated date
 
 interface Props {
   lastUpdatedDate: string;
@@ -94,7 +99,7 @@ const NavBar = ({ lastUpdatedDate }: Props) => {
             </div>
 
             {/* More Categories Button */}
-            <CategorySelectMenu />
+            <DepartmentCategoryMenu />
 
             {/* Search Bar */}
             <div className="w-fit ml-auto">

@@ -1,8 +1,12 @@
 import React, { useContext } from "react";
-import StarFavourite from "./StarFavourite";
+import CategoryLink from "./CategoryLink";
 import Link from "next/link";
 import startCase from "lodash/startCase";
-import { DarkModeContext, FavouriteCategoriesContext } from "../../pages/_app";
+import { DarkModeContext } from "../../pages/_app";
+
+// DepartmentSection - child of CategoryMenu, parent of CategoryLink
+// ------------------------------------------------------------------
+// Within the CategoryMenu, this represents a department such as Pantry, Chilled, etc.
 
 interface Props {
   subCategoryTitle: string;
@@ -10,18 +14,11 @@ interface Props {
   subCategoryNames: string[];
 }
 
-export default function SubCategoryList({
+export default function DepartmentSection({
   subCategoryTitle,
   centerTitle = false,
   subCategoryNames,
 }: Props) {
-  // Get favourite categories context
-  const context = useContext(FavouriteCategoriesContext);
-  if (!context) {
-    throw new Error("Component must be wrapped with ContextProvider");
-  }
-  const { favouriteCategories, setFavouriteCategories } = context;
-
   // Set title css class based on dark mode
   let titleDivClass = centerTitle ? "text-center" : "";
   titleDivClass += useContext(DarkModeContext).darkMode
@@ -36,11 +33,13 @@ export default function SubCategoryList({
         {subCategoryTitle}
       </h2>
       <hr className="mt-2 mb-1" />
+
+      {/* Within each department are 4-20 CategoryLinks */}
       {subCategoryNames.map((categoryName) => {
         const href = "/products/" + categoryName;
         return (
           <div className="flex items-center w-full" key={categoryName}>
-            {<StarFavourite category={categoryName} />}
+            {<CategoryLink category={categoryName} />}
             <Link
               className="p-0.5 px-2 my-[0.1rem] rounded-2xl w-full overflow-hidden
               font-semibold hover:bg-green-200 hover:text-black hover:shadow-sm whitespace-nowrap"

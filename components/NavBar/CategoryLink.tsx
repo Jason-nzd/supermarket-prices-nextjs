@@ -1,11 +1,15 @@
 import { FavouriteCategoriesContext } from "pages/_app";
 import React, { useContext } from "react";
 
+// CategoryLink - child of DepartmentSection
+// -----------------------------------------
+// Features a link to a product category with a favourite/unfavourite star button
+
 interface Props {
   category: string;
 }
 
-export default function StarFavourite({ category }: Props) {
+export default function CategoryLink({ category }: Props) {
   // Get favourite categories context
   const context = useContext(FavouriteCategoriesContext);
   if (!context) {
