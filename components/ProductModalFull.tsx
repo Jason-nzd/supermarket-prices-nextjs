@@ -322,7 +322,7 @@ function ProductModalFull({ product, setIsModalOpen }: Props) {
         {product.sourceSite === "newworld.co.nz" && (
           <div className="flex items-center justify-center gap-x-2 p-2 rounded-b-3xl text-white bg-[#e11a2c]">
             <StoreIcon sourceSite={product.sourceSite} width={20} />
-            PAK'nSAVE
+            New World
           </div>
         )}
         {/* Display unknown and future source sites using this temporary purple div */}
