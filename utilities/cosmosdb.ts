@@ -50,10 +50,10 @@ export async function connectToCosmosDB(): Promise<boolean> {
   } catch (error) {
     console.log(
       'Invalid CosmosDB connection string, Database name, or Container name\n' +
-        'Check env variables for:\n' +
-        '\tCOSMOS_CONSTRING=<your CosmoDB read connection string>\n' +
-        '\tCOSMOS_DBNAME=<your-database-name>\n' +
-        '\tCOSMOS_CONTAINER=<your-container-name>\n'
+      'Check env variables for:\n' +
+      '\tCOSMOS_CONSTRING=<your CosmoDB read connection string>\n' +
+      '\tCOSMOS_DBNAME=<your-database-name>\n' +
+      '\tCOSMOS_CONTAINER=<your-container-name>\n'
     );
     return false;
   }
@@ -143,13 +143,13 @@ export async function DBFetchAll(
   priceHistoryLimit: PriceHistoryLimit = PriceHistoryLimit.Any,
   orderBy: OrderByMode = OrderByMode.None
 ): Promise<Product[]> {
-  // Query is built using the follow base, and adding on optional extra conditions
+  // SQL query is built using a base plus conditional WHERE clauses
   const querySpec: SqlQuerySpec = {
     query:
       'SELECT * FROM products p' +
       queryAddLimitStore(store, false) +
       queryAddPriceHistoryLimit(priceHistoryLimit) +
-      queryAddLastChecked(LastChecked.Within3Days) +
+      queryAddLastChecked(LastChecked.Within7Days) +
       queryAddOrderBy(orderBy),
   };
 
@@ -165,9 +165,8 @@ async function fetchProductsUsingSDK(
 
   // Log query to console
   //console.log('SDK: ' + querySpec.query);
-  // if (querySpec.parameters !== undefined)
+
   if (await connectToCosmosDB()) {
-    //console.log('\t' + querySpec.parameters[0].name + ' = ' + querySpec.parameters[0].value);
     // Access CosmosDB directly using the SDK
     try {
       // Set Cosmos Query options
@@ -182,7 +181,7 @@ async function fetchProductsUsingSDK(
 
       if (dbResponse.resources !== undefined) {
         // Push products into array and clean specific fields from CosmosDB
-        dbResponse.resources.map((productDocument, index) => {
+        dbResponse.resources.map((productDocument) => {
           resultingProducts.push(cleanProductFields(productDocument));
         });
       }
