@@ -6,7 +6,8 @@ import { DarkModeContext } from "../../pages/_app";
 
 // DepartmentSection - child of CategoryMenu, parent of CategoryLink
 // ------------------------------------------------------------------
-// Within the CategoryMenu, this represents a department such as Pantry, Chilled, etc.
+// Within the CategoryMenu there are many departments such as
+// Pantry, Chilled, etc.
 
 interface Props {
   subCategoryTitle: string;

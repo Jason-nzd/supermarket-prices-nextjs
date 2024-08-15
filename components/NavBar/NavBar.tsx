@@ -28,7 +28,7 @@ const NavBar = ({ lastUpdatedDate }: Props) => {
   if (!context) {
     throw new Error("Component must be wrapped with ContextProvider");
   }
-  const { favouriteCategories, setFavouriteCategories } = context;
+  const { favouriteCategories } = context;
 
   return (
     <nav className="w-full h-fit overflow-hidden">

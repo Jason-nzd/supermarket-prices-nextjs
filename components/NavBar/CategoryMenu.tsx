@@ -15,7 +15,7 @@ import {
 
 // CategoryMenu
 // -------------
-// Shows a large list of CategoryLink items arranged into DepartmentSections
+// Shows a vertical list of product category links, organized into departments
 
 export default function CategoryMenu() {
   let [isOpen, setIsOpen] = useState(false);
