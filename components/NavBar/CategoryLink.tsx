@@ -1,9 +1,12 @@
+import { setCookie } from "cookies-next";
 import { FavouriteCategoriesContext } from "pages/_app";
 import React, { useContext } from "react";
 
 // CategoryLink - child of DepartmentSection
 // -----------------------------------------
-// Features a link to a product category with a favourite/unfavourite star button
+// Features a clickable link to a product category such as Rice, Bread, etc.
+// A favourite/unfavourite toggle button is placed next to each category.
+// The user favourite categories are also written to a cookie here.
 
 interface Props {
   category: string;
@@ -20,9 +23,15 @@ export default function CategoryLink({ category }: Props) {
   // addFavouriteCategory - add to existing array, then store to cookie
   function addFavouriteCategory(category: string) {
     setFavouriteCategories([...favouriteCategories, category]);
-    document.cookie = `User_Categories=${JSON.stringify(
-      favouriteCategories
-    )};path='/';SameSite=Strict`;
+    setCookie(
+      "User_Categories",
+      JSON.stringify([...favouriteCategories, category]),
+      {
+        maxAge: 60 * 60 * 24 * 1000,
+        path: "/",
+        sameSite: "strict",
+      }
+    );
   }
 
   // removeFavouriteCategory - remove from existing array, then store to cookie
@@ -30,9 +39,15 @@ export default function CategoryLink({ category }: Props) {
     setFavouriteCategories(
       favouriteCategories.filter((cat) => cat !== category)
     );
-    document.cookie = `User_Categories=${JSON.stringify(
-      favouriteCategories
-    )};path='/';SameSite=Strict`;
+    setCookie(
+      "User_Categories",
+      JSON.stringify(favouriteCategories.filter((cat) => cat !== category)),
+      {
+        maxAge: 60 * 60 * 24 * 1000,
+        path: "/",
+        sameSite: "strict",
+      }
+    );
   }
 
   // Check if category is already selected as a favourite

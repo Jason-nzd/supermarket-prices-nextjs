@@ -1,3 +1,4 @@
+import { getCookie, hasCookie } from "cookies-next";
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import { Manrope } from "next/font/google";
@@ -22,36 +23,35 @@ type FavouriteCategoriesContextType = {
   setFavouriteCategories: (categories: string[]) => void;
 };
 export const FavouriteCategoriesContext =
-  createContext<FavouriteCategoriesContextType | null>(null);
+  createContext<FavouriteCategoriesContextType>({
+    favouriteCategories: [],
+    setFavouriteCategories: () => {},
+  });
 
 // App()
 export default function App({ Component, pageProps }: AppProps) {
+  // Set default dark mode
   const [darkMode, setDarkMode] = useState(false);
   const toggleDarkMode = () => setDarkMode(!darkMode);
 
   // Set default favourite categories
-  let defaultCategories: string[] = [
+  const [favouriteCategories, setFavouriteCategories] = useState<string[]>([
     "fruit",
     "fresh-vegetables",
     "milk",
     "butter",
-  ];
+  ]);
 
-  // Try read cookie of favourite categories if available
+  // Try override with a cookie of favourite categories
   useEffect(() => {
-    const readCategoriesCookie = document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("User_Categories="))
-      ?.split("=")[1];
-
-    // If not null, override defaultCategories array
-    if (readCategoriesCookie)
-      defaultCategories = JSON.parse(decodeURIComponent(readCategoriesCookie));
-  });
-
-  // Set categories state
-  const [favouriteCategories, setFavouriteCategories] =
-    useState<string[]>(defaultCategories);
+    if (hasCookie("User_Categories")) {
+      const categoriesCookie = getCookie("User_Categories");
+      const readCategories: string[] = categoriesCookie
+        ? (JSON.parse(categoriesCookie) as string[])
+        : [];
+      setFavouriteCategories(readCategories);
+    }
+  }, []);
 
   return (
     <>
