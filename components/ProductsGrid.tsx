@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { useMediaQuery } from '../hooks/useMediaQuery';
-import { Product } from '../typings';
-import ProductCard from './card/ProductCard';
-import Link from 'next/link';
+import { useState } from "react";
+import { useMediaQuery } from "../hooks/useMediaQuery";
+import { Product } from "../typings";
+import ProductCard from "./card/ProductCard";
+import Link from "next/link";
 
 interface Props {
   titles?: string[];
@@ -15,11 +15,11 @@ interface Props {
 
 function ProductsGrid({
   titles = [],
-  subTitle = '',
+  subTitle = "",
   products,
   trimColumns = false,
   createSearchLink = true,
-  createDeepLink = '',
+  createDeepLink = "",
 }: Props) {
   let numColumnsToShow = 3;
   let trimmedProducts: Product[] = [];
@@ -27,20 +27,20 @@ function ProductsGrid({
     trimmedProducts = products;
 
     // For mobile viewports, trim products to 3 columns
-    if (useMediaQuery('600px')) {
+    if (useMediaQuery("600px")) {
       trimmedProducts = products.slice(0, nextMultipleDown(products.length, 2));
     }
     // For small viewports, trim products to 3 columns
-    if (useMediaQuery('980px')) {
+    if (useMediaQuery("980px")) {
       trimmedProducts = products.slice(0, nextMultipleDown(products.length, 3));
     }
     // For medium viewports, trim products to 4 columns
-    if (useMediaQuery('1340px')) {
+    if (useMediaQuery("1340px")) {
       trimmedProducts = products.slice(0, nextMultipleDown(products.length, 4));
       numColumnsToShow = 4;
     }
     // For large viewports, trim products to 5 columns
-    if (useMediaQuery('2100px')) {
+    if (useMediaQuery("2100px")) {
       trimmedProducts = products.slice(0, nextMultipleDown(products.length, 5));
       numColumnsToShow = 5;
     }
@@ -78,44 +78,50 @@ function ProductsGrid({
       <div>
         {/* Display grid title as-is if no createSearchLink option is set */}
         {!createSearchLink && createDeepLink.length == 0 && (
-          <div className='grid-title'>{titles[0]}</div>
+          <div className="grid-title">{titles[0]}</div>
         )}
 
         {/* Create search links for each word */}
-        {createDeepLink.length == 0 && createSearchLink && titles.length >= 1 && (
-          <div className='flex w-fit mx-auto grid-title'>
-            {titles.map((word) => (
-              <Link
-                href={`/client-search/?query=${word}`}
-                key={word}
-                className='hover-to-white mx-4'
-              >
-                {word}
-              </Link>
-            ))}
-          </div>
-        )}
+        {createDeepLink.length == 0 &&
+          createSearchLink &&
+          titles.length >= 1 && (
+            <div className="flex w-fit mx-auto grid-title">
+              {titles.map((word) => (
+                <Link
+                  href={`/client-search/?query=${word}`}
+                  key={word}
+                  className="hover-to-white mx-4"
+                >
+                  {word}
+                </Link>
+              ))}
+            </div>
+          )}
 
         {/* Create deep category links for each word */}
-        {createDeepLink.length > 1 && !createSearchLink && titles.length >= 1 && (
-          <div className='flex w-fit mx-auto grid-title'>
-            {titles.map((word) => (
-              <Link
-                href={`${createDeepLink}${word.toLowerCase()}`}
-                key={word}
-                className='hover-to-white mx-4'
-              >
-                {word}
-              </Link>
-            ))}
-          </div>
-        )}
+        {createDeepLink.length > 1 &&
+          !createSearchLink &&
+          titles.length >= 1 && (
+            <div className="flex w-fit mx-auto grid-title">
+              {titles.map((word) => (
+                <Link
+                  href={`${createDeepLink}${word.toLowerCase()}`}
+                  key={word}
+                  className="hover-to-white mx-4"
+                >
+                  {word}
+                </Link>
+              ))}
+            </div>
+          )}
 
         {/* Display sub-title only if it is non-blank */}
-        {subTitle != '' && (
-          <div className='mb-2 text-[#3C8DA3] text-center dark:text-zinc-300'>{subTitle}</div>
+        {subTitle != "" && (
+          <div className="mb-2 text-[#3C8DA3] text-center dark:text-zinc-300">
+            {subTitle}
+          </div>
         )}
-        <div className='flex items-center'>
+        <div className="flex items-center">
           {/* {products.length +
         ' total products, window = ' +
         productsWindow.length +
@@ -127,18 +133,22 @@ function ProductsGrid({
 
           {/* Div for products grid */}
           <div
-            className='grid w-full mb-2
+            className="grid w-full
             grid-cols-1
             md:grid-cols-2
             lg:grid-cols-3
             xl:grid-cols-4
             2xl:grid-cols-4
-            3xl:grid-cols-5'
+            3xl:grid-cols-5"
           >
             {!trimColumns &&
-              products.map((product) => <ProductCard key={product.id} product={product} />)}
+              products.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
             {trimColumns &&
-              trimmedProducts.map((product) => <ProductCard key={product.id} product={product} />)}
+              trimmedProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
             {/* {productsWindow.map((product) => (
               <ProductCard key={product.id} product={product} />
                 ))} */}
