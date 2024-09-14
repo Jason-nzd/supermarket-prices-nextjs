@@ -22,40 +22,58 @@ export async function DBFetchAllAPI(
 
 // When running on the client-side, fetches can be made to the REST API
 async function fetchProductsUsingAPI(queryObject: object, maxItems: number): Promise<Product[]> {
-  let resultingProducts: Product[] = [];
+  const maxRetries = 5;
+  const retryDelay = 4000;
+  const timeout = 30000;
 
-  try {
-    // Fetch response using POST
-    const apiResponse = await fetch('https://api.kiwiprice.xyz/', {
-      method: 'POST',
-      body: JSON.stringify(queryObject),
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-ms-max-item-count': maxItems.toString(),
-      },
-      redirect: 'follow',
-      referrerPolicy: 'no-referrer',
-      signal: AbortSignal.timeout(30000),
-    });
+  let retries = 0;
 
-    // If successful, set resultingProducts to response json
-    if (apiResponse.status === 200) {
-      const apiJsonResponse = await apiResponse.json();
-      const apiProducts: Product[] = apiJsonResponse.Documents;
-
-      // Push products into array and clean unwanted fields from CosmosDB
-      apiProducts.map((productDocument) => {
-        resultingProducts.push(cleanProductFields(productDocument));
+  while (retries <= maxRetries) {
+    try {
+      // Fetch response using POST
+      const apiResponse = await fetch('https://api.kiwiprice.xyz/', {
+        method: 'POST',
+        body: JSON.stringify(queryObject),
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-ms-max-item-count': maxItems.toString(),
+        },
+        redirect: 'follow',
+        referrerPolicy: 'no-referrer',
+        signal: AbortSignal.timeout(timeout),
       });
-    } else {
-      console.log(apiResponse.statusText);
+
+      // If successful, set resultingProducts to response json
+      if (apiResponse.status === 200) {
+        const apiJsonResponse = await apiResponse.json();
+        const apiProducts: Product[] = apiJsonResponse.Documents;
+
+        // Push products into array and clean unwanted fields from CosmosDB
+        const resultingProducts: Product[] = apiProducts.map((productDocument) => {
+          return cleanProductFields(productDocument);
+        });
+
+        return resultingProducts;
+      } else {
+        console.log(apiResponse.statusText);
+        throw new Error(apiResponse.statusText);
+      }
+    } catch (error) {
+      console.error(`REST API Retrying ${retries + 1}/${maxRetries}:`, error);
+
+      // If all retries fail, rethrow the error
+      if (retries === maxRetries) {
+        throw error;
+      }
+
+      // Wait before retrying
+      await new Promise(resolve => setTimeout(resolve, retryDelay));
+      retries++;
     }
-  } catch (error) {
-    console.error(error);
-    // Todo: show error on page
   }
-  return resultingProducts;
+  // If unable to connect to API, return an empty array
+  return [];
 }
 
 // Fetch products by product name, with optional store selection
