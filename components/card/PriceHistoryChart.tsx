@@ -42,6 +42,16 @@ function PriceHistoryChart({
   const todayString = new Date().toDateString();
   const wasUpdatedToday = lastCheckedDateString == todayString;
 
+  // Limit small charts to five months ago for readability
+  const fiveMonthsAgo = new Date(
+    new Date().getTime() - 5 * 30 * 24 * 60 * 60 * 1000
+  );
+
+  // If any of prices are too high to warrant decimals, don't show decimals
+  const displayWithoutDecimals = priceHistory.some(
+    (datedPrice) => datedPrice.price > 9
+  );
+
   // If the price wasn't changed today, duplicate the most recent price point
   // This highlights the last checked price should still be valid today
   if (!wasUpdatedToday) {
@@ -84,8 +94,8 @@ function PriceHistoryChart({
         pointHoverRadius: 6,
         pointHitRadius: 30,
         pointBorderWidth: 3,
-        borderWidth: 3,
-        tension: 0.1,
+        borderWidth: useLargeVersion ? 3 : 2,
+        tension: 0.5,
         stepped: useSteppedLine ? "before" : false, // Toggle the stepped line graph
       },
     ],
@@ -134,25 +144,24 @@ function PriceHistoryChart({
       x: {
         type: "time",
         time: {
-          unit: "month",
+          unit: useLargeVersion ? "quarter" : "month",
           displayFormats: {
             month: "MMM",
-            week: "dd MMM",
+            quarter: "MMMM yyyy",
+          },
+        },
+        min: useLargeVersion ? "" : fiveMonthsAgo.getTime(),
+      },
+      y: {
+        ticks: {
+          callback(tickValue) {
+            return (
+              "$" +
+              (tickValue as number).toFixed(displayWithoutDecimals ? 0 : 2)
+            );
           },
         },
       },
-      y: {
-        // suggestedMin: 0,
-        // suggestedMax: 100,
-      },
-      // y: {
-      //   // min: 0,
-      //   ticks: {
-      //     callback(tickValue, index, ticks) {
-      //       return printPrice(tickValue as number);
-      //     },
-      //   },
-      // },
     },
   };
 
