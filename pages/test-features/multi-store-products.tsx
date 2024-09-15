@@ -1,16 +1,8 @@
 import { GetStaticProps } from "next";
 import React, { useContext } from "react";
 import { Product } from "../../typings";
-import ProductsGrid from "../../components/ProductsGrid";
-import { DBFetchByCategory, DBFetchByName } from "../../utilities/cosmosdb";
-import {
-  LastChecked,
-  OrderByMode,
-  PriceHistoryLimit,
-  Store,
-  sortProductsByUnitPrice,
-  utcDateToMediumDate,
-} from "../../utilities/utilities";
+import { DBFetchByName } from "../../utilities/cosmosdb";
+import { utcDateToMediumDate } from "../../utilities/utilities";
 import { DarkModeContext } from "../_app";
 import NavBar from "../../components/NavBar/NavBar";
 import Footer from "../../components/Footer";
@@ -42,7 +34,7 @@ const Category = ({
         <div className="central-responsive-div min-h-[50rem]">
           {/* Categorised Product Grids*/}
           <h1 className="grid-title">{countdownProduct?.name}</h1>
-          <div className="w-full h-[500px]">
+          <div className="flex mx-auto w-full max-w-[80rem] h-[500px]">
             <MultiStorePriceHistoryChart
               countdownProduct={countdownProduct}
               paknsaveProduct={paknsaveProduct}

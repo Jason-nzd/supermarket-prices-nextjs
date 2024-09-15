@@ -1,16 +1,18 @@
 import React from "react";
 import { Product } from "../../typings";
-import { cleanDate, utcDateToLongDate } from "../../utilities/utilities";
+import { cleanDate } from "../../utilities/utilities";
 import {
   CategoryScale,
   Chart,
   LinearScale,
   PointElement,
   LineElement,
+  TimeScale,
   Tooltip,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 import type { ChartData, ChartOptions } from "chart.js";
+import "chartjs-adapter-date-fns";
 
 interface Props {
   countdownProduct?: Product | null;
@@ -31,6 +33,7 @@ function MultiStorePriceHistoryChart({
     LinearScale,
     PointElement,
     LineElement,
+    TimeScale,
     Tooltip
   );
 
@@ -62,7 +65,6 @@ function MultiStorePriceHistoryChart({
   });
 
   // Each store will have it's own Y axis dataset, which is initialized to all zeroes
-  // let priceDataCountdown: number[] = new Array(sharedDates.length).fill(0);
   let priceDataCountdown = new Array(sharedDates.length).fill(NaN);
   let priceDataPaknsave = new Array(sharedDates.length).fill(NaN);
   let priceDataWarehouse = new Array(sharedDates.length).fill(NaN);
@@ -150,14 +152,9 @@ function MultiStorePriceHistoryChart({
     }
   });
 
-  // Create shorter labels for dates
-  const dateStringsOnly: string[] = sharedDates.map((date) => {
-    return utcDateToLongDate(date);
-  });
-
   // Prepare chart data for chart.js line chart
   const chartData: ChartData<"line"> = {
-    labels: dateStringsOnly,
+    labels: sharedDates.map((date) => date),
     datasets: [
       {
         label: "Countdown",
@@ -244,16 +241,24 @@ function MultiStorePriceHistoryChart({
         cornerRadius: 14,
       },
     },
-    // scales: {
-    //   y: {
-    //     // min: 0,
-    //     ticks: {
-    //       callback(tickValue, index, ticks) {
-    //         return printPrice(tickValue as number);
-    //       },
-    //     },
-    //   },
-    // },
+    scales: {
+      x: {
+        type: "time",
+        time: {
+          unit: "quarter",
+          displayFormats: {
+            quarter: "MMMM yyyy",
+          },
+        },
+      },
+      y: {
+        ticks: {
+          callback(tickValue) {
+            return "$" + (tickValue as number).toFixed(2);
+          },
+        },
+      },
+    },
   };
 
   return <Line data={chartData} options={options} className="z-40" />;
