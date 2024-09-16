@@ -62,14 +62,14 @@ function PriceHistoryChart({
     priceHistory.push(duplicatedDatedPrice);
   }
 
-  // Set line colour to green or red depending on price trend
+  // Set line colour to green, red, or gray depending on price trend
   let trendColour = "";
   switch (priceTrend(priceHistory)) {
     case PriceTrend.Decreased:
-      trendColour = "rgb(0, 255, 0)";
+      trendColour = "rgb(0, 200, 0)";
       break;
     case PriceTrend.Increased:
-      trendColour = "rgb(255, 0, 0)";
+      trendColour = "rgb(230, 0, 0)";
       break;
     case PriceTrend.Same:
     default:
@@ -94,7 +94,7 @@ function PriceHistoryChart({
         pointHoverRadius: 6,
         pointHitRadius: 30,
         pointBorderWidth: 3,
-        borderWidth: useLargeVersion ? 3 : 2,
+        borderWidth: useLargeVersion ? 3 : 2.5,
         tension: 0.5,
         stepped: useSteppedLine ? "before" : false, // Toggle the stepped line graph
       },
