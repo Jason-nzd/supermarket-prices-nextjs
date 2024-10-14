@@ -60,14 +60,10 @@ export function cleanProductFields(document: Product): Product {
     // Also check for valid date and category formats
     if (lastUpdated === undefined || lastUpdated === null) {
       console.log(name + ' has null date - ' + lastUpdated);
-      // } else if (!lastUpdated.toString().endsWith('Z')) {
-      //   console.log(name + ' has non-utc date - ' + lastUpdated);
     }
     if (!category) category = ['No Category'];
     if (!lastChecked) lastChecked = lastUpdated;
     if (!unitPrice) {
-      // unitPrice = null;
-      // unitName = null;
       const derivedUnitString = deriveUnitPriceString(document);
 
       if (derivedUnitString) {
@@ -77,7 +73,7 @@ export function cleanProductFields(document: Product): Product {
         unitPrice = null;
         unitName = null;
       }
-    } else if (unitPrice < 0.2 || unitPrice > 600) {
+    } else if (unitPrice < 0.01 || unitPrice > 400) {
       console.log('[Unusual UnitPrice] = ' + name + ' - ' + unitPrice + '/' + unitName);
       unitPrice = null;
     }
