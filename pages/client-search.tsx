@@ -38,49 +38,55 @@ const ClientSearch = ({ lastChecked }: Props) => {
         // setIsLoading(true) will show loading spinner
         setIsLoading(true);
 
-        // Fetch all products matching search that have been checked within 7 days
-        const currentProducts = await DBFetchByNameAPI(
-          searchTerm,
-          maxProductsToSearch,
-          Store.Any,
-          PriceHistoryLimit.Any,
-          LastChecked.Within7Days
-        );
-
-        // Clear out of stock products array every search
-        setOutOfStockProducts([]);
-
-        // If in-stock product search produced few results, supplement with out-of-stock search
-        if (currentProducts.length < 20) {
-          let oldProducts = await DBFetchByNameAPI(
+        try {
+          // Fetch all products matching search that have been checked within 7 days
+          const currentProducts = await DBFetchByNameAPI(
             searchTerm,
             maxProductsToSearch,
             Store.Any,
             PriceHistoryLimit.Any,
-            LastChecked.Any
+            LastChecked.Within7Days
           );
 
-          // Filter to only show old products as a separate results section
-          oldProducts = oldProducts.filter((potentialOldProduct) => {
-            const daysSinceLastChecked =
-              (Date.now() -
-                new Date(potentialOldProduct.lastChecked).getTime()) /
-              1000 /
-              60 /
-              60 /
-              24;
-            return daysSinceLastChecked > 7;
-          });
+          // Clear out of stock products array every search
+          setOutOfStockProducts([]);
 
-          // Sort out of stock products by unit price, and set react state
-          setOutOfStockProducts(sortProductsByUnitPrice(oldProducts));
+          // If in-stock product search produced few results, supplement with out-of-stock search
+          if (currentProducts.length < 20) {
+            let oldProducts = await DBFetchByNameAPI(
+              searchTerm,
+              maxProductsToSearch,
+              Store.Any,
+              PriceHistoryLimit.Any,
+              LastChecked.Any
+            );
+
+            // Filter to only show old products as a separate results section
+            oldProducts = oldProducts.filter((potentialOldProduct) => {
+              const daysSinceLastChecked =
+                (Date.now() -
+                  new Date(potentialOldProduct.lastChecked).getTime()) /
+                1000 /
+                60 /
+                60 /
+                24;
+              return daysSinceLastChecked > 7;
+            });
+
+            // Sort out of stock products by unit price, and set react state
+            setOutOfStockProducts(sortProductsByUnitPrice(oldProducts));
+          }
+
+          // Sort in-stock products by unit price, and set react state
+          setProducts(sortProductsByUnitPrice(currentProducts));
+
+          // Disable loading spinner animation and reveal search results
+          setIsLoading(false);
+        } catch (error) {
+          // Todo: add more error handling
+          console.error(error);
+          setIsLoading(false);
         }
-
-        // Sort in-stock products by unit price, and set react state
-        setProducts(sortProductsByUnitPrice(currentProducts));
-
-        // Disable loading spinner animation and reveal search results
-        setIsLoading(false);
       }
     })();
 
