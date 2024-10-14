@@ -18,7 +18,7 @@
     "@types/react-dom": "^18.3.0",
     "chart.js": "^4.4.3",
     "chartjs-adapter-date-fns": "^3.0.0",
-    "cookies-next": "^4.2.1",
+    "cookies-next": "^4.3.0",
     "date-fns": "^3.6.0",
     "dotenv": "^16.4.5",
     "lodash": "^4.17.21",
