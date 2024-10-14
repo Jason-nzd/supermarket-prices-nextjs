@@ -47,6 +47,14 @@ function PriceHistoryChart({
     new Date().getTime() - 5 * 30 * 24 * 60 * 60 * 1000
   );
 
+  // Find the min and max all time price
+  const minPrice = Math.min(
+    ...priceHistory.map((datedPrice) => datedPrice.price)
+  );
+  const maxPrice = Math.max(
+    ...priceHistory.map((datedPrice) => datedPrice.price)
+  );
+
   // If any of prices are too high to warrant decimals, don't show decimals
   const displayWithoutDecimals = priceHistory.some(
     (datedPrice) => datedPrice.price > 9
@@ -161,6 +169,8 @@ function PriceHistoryChart({
             );
           },
         },
+        suggestedMin: Math.floor(minPrice),
+        suggestedMax: Math.ceil(maxPrice),
       },
     },
   };
