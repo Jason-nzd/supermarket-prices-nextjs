@@ -219,19 +219,33 @@ export function getLowerQuartilePriceDifference(priceHistory: DatedPrice[]) {
 // getPriceAvgDifference()
 // ---------------------------
 // Gets the % difference in price between the current price and its historical average.
-export function getPriceAvgDifference(priceHistory: DatedPrice[]) {
-  // Loop through priceHistory array and sum up prices
+export function getPriceAvgDifference(
+  priceHistory: DatedPrice[],
+  daysOfPriceHistoryToCompare: number = 60
+) {
   let pricesSummed = 0;
-  priceHistory.forEach((datedPrice) => {
-    pricesSummed += datedPrice.price;
-  });
+  let avgHistoricalPrice = 0;
 
-  // Calculate the average price
-  const avgPrice = pricesSummed / priceHistory.length;
+  // Get the oldest date to stop comparing prices to
+  let comparisonDateCutoff =
+    new Date(Date.now() - daysOfPriceHistoryToCompare * 24 * 60 * 60 * 1000);
+
+  // Loop from most recent to oldest prices
+  for (let i = priceHistory.length - 1; i >= 0; i--) {
+
+    // Sum each price
+    pricesSummed += priceHistory[i].price;
+
+    // Once at the end of the historical range, calculate the avg price
+    if ((new Date(priceHistory[i].date) < comparisonDateCutoff) || (i == 0)) {
+      avgHistoricalPrice = pricesSummed / (priceHistory.length - i);
+      break;
+    }
+  }
 
   // Return the difference in price between the current and average price
   const currentPrice = priceHistory[priceHistory.length - 1].price;
-  return Math.round((currentPrice / avgPrice) * 100 - 100);
+  return Math.round((currentPrice / avgHistoricalPrice) * 100 - 100);
 }
 
 // getLastPriceChangePercent()

@@ -1,6 +1,6 @@
 import React from "react";
 import { DatedPrice } from "../../typings";
-import { priceTrend, PriceTrend, printPrice } from "../../utilities/utilities";
+import { getPriceAvgDifference, printPrice } from "../../utilities/utilities";
 import {
   CategoryScale,
   Chart,
@@ -70,19 +70,27 @@ function PriceHistoryChart({
     priceHistory.push(duplicatedDatedPrice);
   }
 
-  // Set line colour to green, red, or gray depending on price trend
+  // Set line colour to green, red or gray depending on price trend
   let trendColour = "";
-  switch (priceTrend(priceHistory)) {
-    case PriceTrend.Decreased:
-      trendColour = "rgb(0, 200, 0)";
-      break;
-    case PriceTrend.Increased:
-      trendColour = "rgb(230, 0, 0)";
-      break;
-    case PriceTrend.Same:
-    default:
-      trendColour = "rgb(120, 120, 120)";
-      break;
+  const priceDiff = getPriceAvgDifference(priceHistory);
+
+  // If price difference from the average price is +/- 3%, print black border
+  if (Math.abs(priceDiff) < 3) trendColour += "rgb(120, 120, 120)";
+  // If price diff is +10%, print bold red border with up icon
+  else if (priceDiff > 10) {
+    trendColour += "rgb(230, 0, 0)";
+  }
+  // If price diff is +3-10%, print mild red border with up icon
+  else if (priceDiff > 3) {
+    trendColour += "rgb(190, 30, 30)";
+  }
+  // If price diff is +10%, print bold green border with up icon
+  else if (priceDiff < 10) {
+    trendColour += "rgb(0, 200, 0)";
+  }
+  // If price diff is +3-10%, print mild green border with up icon
+  else if (priceDiff < 3) {
+    trendColour += "rgb(30, 170, 30)";
   }
 
   // Use smaller point radius for denser charts
