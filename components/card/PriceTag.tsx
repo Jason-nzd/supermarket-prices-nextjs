@@ -29,7 +29,10 @@ export default function PriceTag({ product }: Props) {
   const priceDiff = getPriceAvgDifference(product.priceHistory);
 
   // If price difference from the average price is +/- 3%, print black border
-  if (Math.abs(priceDiff) < 3) priceTagDivClass += "border-black";
+  if (Math.abs(priceDiff) < 3) {
+    priceTagDivClass += "border-black";
+    icon = <div className="p-1">-</div>;
+  }
   // If price diff is +10%, print bold red border with up icon
   else if (priceDiff > 10) {
     priceTagDivClass += "border-[#c91818]";
@@ -69,9 +72,7 @@ export default function PriceTag({ product }: Props) {
         {/* Icon */}
         <div className="px-1">
           <div className="pr-2 scale-[130%]">{icon}</div>
-          {priceDiff != 0 && (
-            <div className="text-sm font-semibold">{Math.abs(priceDiff)}%</div>
-          )}
+          <div className="text-sm font-semibold">{Math.abs(priceDiff)}%</div>
         </div>
         <div className="flex flex-col">
           {/* Price */}
