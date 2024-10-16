@@ -106,12 +106,6 @@ export const getStaticProps: GetStaticProps = async () => {
     }
   });
 
-  console.log(
-    standardMilk.map((p) => {
-      return p.name + " - " + p.size + " - $" + p.currentPrice;
-    })
-  );
-
   // Sort all by unit price
   standardMilk = sortProductsByUnitPrice(standardMilk).slice(0, 15);
   trimMilk = sortProductsByUnitPrice(trimMilk).slice(0, 15);
