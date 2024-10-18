@@ -28,30 +28,30 @@ export default function PriceTag({ product }: Props) {
 
   const priceDiff = getPriceAvgDifference(product.priceHistory);
 
-  // If price difference from the average price is +/- 3%, print black border
-  if (Math.abs(priceDiff) < 3) {
-    priceTagDivClass += "border-black";
-    icon = <div className="p-1">-</div>;
+  // Icon - Determine up, down, or blank icon depending on price trend
+  if (priceDiff >= 2) icon = upIcon;
+  else if (priceDiff <= -2) icon = downIcon;
+  else icon = <div className="p-1">-</div>;
+
+  // If price diff is too small, print a grey border
+  if (Math.abs(priceDiff) <= 2) {
+    priceTagDivClass += "border-[#644] text-[#644]";
   }
-  // If price diff is +10%, print bold red border with up icon
-  else if (priceDiff > 10) {
-    priceTagDivClass += "border-[#c91818]";
-    icon = upIcon;
+  // If price diff is +10%, print bold red border
+  else if (priceDiff >= 10) {
+    priceTagDivClass += "border-[#c00] text-[#c00]";
   }
-  // If price diff is +3-10%, print mild red border with up icon
-  else if (priceDiff > 3) {
-    priceTagDivClass += "border-[#b67f7f]";
-    icon = upIcon;
+  // If price diff is +2-10%, print mild red border
+  else if (priceDiff >= 2) {
+    priceTagDivClass += "border-[#a00] text-[#a00]";
   }
-  // If price diff is +10%, print bold green border with up icon
-  else if (priceDiff < 10) {
-    priceTagDivClass += "border-[#26df2f]";
-    icon = downIcon;
+  // If price diff is +10%, print bold green border
+  else if (priceDiff <= -10) {
+    priceTagDivClass += "border-[#0a0] text-[#0a0]";
   }
-  // If price diff is +3-10%, print mild green border with up icon
-  else if (priceDiff < 3) {
-    priceTagDivClass += "border-[#9fe4a2]";
-    icon = downIcon;
+  // If price diff is +2-10%, print mild green border
+  else if (priceDiff <= -2) {
+    priceTagDivClass += "border-[#282] text-[#282]";
   }
 
   // Simplify unit price for readability
@@ -127,7 +127,7 @@ const upIcon = (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 20 20"
-    fill="#DB260A"
+    fill="currentColor"
     width="4"
     height="4"
     className="w-4 h-4 xl:w-6 xl:h-6"
@@ -144,7 +144,7 @@ const downIcon = (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 20 20"
-    fill="#8DF500"
+    fill="currentColor"
     width="4"
     height="4"
     className="w-4 h-4 xl:w-6 xl:h-6"

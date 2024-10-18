@@ -75,21 +75,21 @@ function PriceHistoryChart({
   const priceDiff = getPriceAvgDifference(priceHistory);
 
   // If price difference from the average price is +/- 3%, print black border
-  if (Math.abs(priceDiff) < 3) trendColour += "rgb(120, 120, 120)";
-  // If price diff is +10%, print bold red border with up icon
+  if (Math.abs(priceDiff) <= 2) trendColour += "rgb(120, 120, 120)";
+  // If price diff is +10%, print bold red border
   else if (priceDiff > 10) {
     trendColour += "rgb(230, 0, 0)";
   }
-  // If price diff is +3-10%, print mild red border with up icon
-  else if (priceDiff > 3) {
+  // If price diff is +2-10%, print mild red border
+  else if (priceDiff > 2) {
     trendColour += "rgb(190, 30, 30)";
   }
-  // If price diff is +10%, print bold green border with up icon
-  else if (priceDiff < 10) {
+  // If price diff is +10%, print bold green border
+  else if (priceDiff < -10) {
     trendColour += "rgb(0, 200, 0)";
   }
-  // If price diff is +3-10%, print mild green border with up icon
-  else if (priceDiff < 3) {
+  // If price diff is +2-10%, print mild green border
+  else if (priceDiff < -2) {
     trendColour += "rgb(30, 170, 30)";
   }
 
