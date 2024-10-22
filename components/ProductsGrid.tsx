@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useMediaQuery } from "../hooks/useMediaQuery";
 import { Product } from "../typings";
 import ProductCard from "./card/ProductCard";
@@ -26,7 +25,7 @@ function ProductsGrid({
   if (trimColumns) {
     trimmedProducts = products;
 
-    // For mobile viewports, trim products to 3 columns
+    // For mobile viewports, trim products to 2 columns
     if (useMediaQuery("600px")) {
       trimmedProducts = products.slice(0, nextMultipleDown(products.length, 2));
     }
@@ -45,33 +44,6 @@ function ProductsGrid({
       numColumnsToShow = 5;
     }
   }
-
-  // const [scrollIndex, setScrollIndex] = useState(0);
-  // const [productsWindow, setProductsWindow] = useState<Product[]>(
-  //   products.slice(0, numColumnsToShow)
-  // );
-
-  // const scrollLeft = () => {
-  //   if (scrollIndex > 0) {
-  //     setScrollIndex(scrollIndex - 1);
-  //     const startIndex = (scrollIndex - 1) * numColumnsToShow;
-  //     const endIndex = scrollIndex * numColumnsToShow;
-
-  //     setProductsWindow(products.slice(startIndex, endIndex));
-  //     console.log('window - [' + startIndex + ' - ' + endIndex + ']');
-  //   }
-  // };
-
-  // const scrollRight = () => {
-  //   if (numColumnsToShow * scrollIndex < products.length) {
-  //     setScrollIndex(scrollIndex + 1);
-  //     const startIndex = scrollIndex * numColumnsToShow;
-  //     const endIndex = (scrollIndex + 1) * numColumnsToShow;
-
-  //     setProductsWindow(products.slice(startIndex, endIndex));
-  //     console.log('window - [' + startIndex + ' - ' + endIndex + ']');
-  //   }
-  // };
 
   if (products.length > 0)
     return (
@@ -122,15 +94,6 @@ function ProductsGrid({
           </div>
         )}
         <div className="flex items-center">
-          {/* {products.length +
-        ' total products, window = ' +
-        productsWindow.length +
-        ' scroll = ' +
-        scrollIndex}
-      <button className='h-full border-2 rounded-xl p-2 hover:bg-white' onClick={scrollLeft}>
-        L
-      </button> */}
-
           {/* Div for products grid */}
           <div
             className="grid w-full
@@ -149,13 +112,7 @@ function ProductsGrid({
               trimmedProducts.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
-            {/* {productsWindow.map((product) => (
-              <ProductCard key={product.id} product={product} />
-                ))} */}
           </div>
-          {/* <button className='h-full border-2 rounded-xl p-2 hover:bg-white' onClick={scrollRight}>
-             R
-             </button> */}
         </div>
       </div>
     );
