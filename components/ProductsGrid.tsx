@@ -2,6 +2,7 @@ import { useMediaQuery } from "../hooks/useMediaQuery";
 import { Product } from "../typings";
 import ProductCard from "./card/ProductCard";
 import Link from "next/link";
+import DOMPurify from "isomorphic-dompurify";
 
 interface Props {
   titles?: string[];
@@ -58,15 +59,19 @@ function ProductsGrid({
           createSearchLink &&
           titles.length >= 1 && (
             <div className="flex w-fit mx-auto grid-title">
-              {titles.map((word) => (
-                <Link
-                  href={`/client-search/?query=${word}`}
-                  key={word}
-                  className="hover-to-white mx-4"
-                >
-                  {word}
-                </Link>
-              ))}
+              {titles.map((word) => {
+                // Sanitize words to prevent XSS attacks
+                const sanitizedWord = DOMPurify.sanitize(word);
+                return (
+                  <Link
+                    href={`/client-search/?query=${sanitizedWord.toLowerCase()}`}
+                    key={sanitizedWord}
+                    className="hover-to-white mx-4"
+                  >
+                    {sanitizedWord}
+                  </Link>
+                );
+              })}
             </div>
           )}
 
@@ -75,15 +80,18 @@ function ProductsGrid({
           !createSearchLink &&
           titles.length >= 1 && (
             <div className="flex w-fit mx-auto grid-title">
-              {titles.map((word) => (
-                <Link
-                  href={`${createDeepLink}${word.toLowerCase()}`}
-                  key={word}
-                  className="hover-to-white mx-4"
-                >
-                  {word}
-                </Link>
-              ))}
+              {titles.map((word) => {
+                const sanitizedWord = DOMPurify.sanitize(word);
+                return (
+                  <Link
+                    href={`${createDeepLink}${sanitizedWord.toLowerCase()}`}
+                    key={sanitizedWord}
+                    className="hover-to-white mx-4"
+                  >
+                    {sanitizedWord}
+                  </Link>
+                );
+              })}
             </div>
           )}
 
