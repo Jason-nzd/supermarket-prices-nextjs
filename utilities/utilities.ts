@@ -243,8 +243,6 @@ export function getPriceAvgDifference(
     }
   }
 
-
-
   // Return the difference in price between the current and average price
   const currentPrice = priceHistory[priceHistory.length - 1].price;
   //console.log(currentPrice + " / " + avgHistoricalPrice + " = " + Math.round((currentPrice / avgHistoricalPrice) * 100 - 100))
@@ -430,7 +428,7 @@ export function productIsCurrent(product: Product, withinDays: number = 5): bool
 }
 
 // numToArrayOfNumbers()
-// ------------------
+// ---------------------
 // Takes a number and returns an array of numbers from 1 to that number.
 export function numToArrayOfNumbers(numPages: number) {
   const arrayOfNumbers = [];
@@ -439,3 +437,14 @@ export function numToArrayOfNumbers(numPages: number) {
   }
   return arrayOfNumbers;
 }
+
+// printProductCountSubTitle()
+// ---------------------------
+// Displays the number of products shown in the grid, and the total number of products in the database.
+// Example: "Showing cheapest 40/234 in-stock products"
+export function printProductCountSubTitle(numProductsShown: number, numProductsInDB: number): string {
+  return `Showing cheapest ${numProductsShown}/${numProductsInDB} in-stock products`;
+}
+
+
+
