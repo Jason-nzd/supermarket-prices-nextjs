@@ -1,12 +1,13 @@
 import { GetStaticProps } from "next";
 import React, { useContext } from "react";
-import { Product } from "../../typings";
+import { Product, ProductGridData } from "../../typings";
 import ProductsGrid from "../../components/ProductsGrid";
 import { DBFetchByCategory } from "../../utilities/cosmosdb";
 import {
   LastChecked,
   OrderByMode,
   PriceHistoryLimit,
+  printProductCountSubTitle,
   Store,
   utcDateToMediumDate,
 } from "../../utilities/utilities";
@@ -15,12 +16,11 @@ import NavBar from "../../components/NavBar/NavBar";
 import Footer from "../../components/Footer";
 
 interface Props {
-  products: Product[];
-  looseTea: Product[];
+  productGridDataAll: ProductGridData[];
   lastChecked: string;
 }
 
-const Category = ({ products, looseTea, lastChecked }: Props) => {
+const Category = ({ productGridDataAll, lastChecked }: Props) => {
   const theme = useContext(DarkModeContext).darkMode ? "dark" : "light";
 
   return (
@@ -31,16 +31,15 @@ const Category = ({ products, looseTea, lastChecked }: Props) => {
         {/* Central Aligned Div */}
         <div className="central-responsive-div">
           {/* Categorised Product Grids*/}
-          <ProductsGrid
-            titles={["Black Tea"]}
-            products={products}
-            createSearchLink={false}
-          />
-          <ProductsGrid
-            titles={["Black Tea - Loose"]}
-            products={looseTea}
-            createSearchLink={false}
-          />
+          {productGridDataAll.map((productGridData, index) => (
+            <ProductsGrid
+              key={index}
+              titles={productGridData.titles}
+              subTitle={productGridData.subTitle}
+              products={productGridData.products}
+              createSearchLink={productGridData.createSearchLink}
+            />
+          ))}
         </div>
       </div>
       <Footer />
@@ -108,15 +107,36 @@ export const getStaticProps: GetStaticProps = async () => {
     return 0;
   });
 
+  const teaDBCount = products.length;
+  const looseTeaDBCount = looseTea.length;
+
   products = products.slice(0, 20);
   looseTea = looseTea.slice(0, 10);
 
+  // Build ProductGridData objects
+  const teaData: ProductGridData = {
+    titles: ["Black Tea Bags"],
+    subTitle: printProductCountSubTitle(products.length, teaDBCount),
+    products: products,
+    createSearchLink: true,
+  };
+
+  const looseTeaData: ProductGridData = {
+    titles: ["Loose Tea"],
+    subTitle: printProductCountSubTitle(looseTea.length, looseTeaDBCount),
+    products: looseTea,
+    createSearchLink: false,
+  };
+
+  // Combine ProductGridData objects into array
+  const productGridDataAll: ProductGridData[] = [teaData, looseTeaData];
+
+  // Store date, to be displayed in static page title bar
   const lastChecked = utcDateToMediumDate(new Date());
 
   return {
     props: {
-      products,
-      looseTea,
+      productGridDataAll,
       lastChecked,
     },
   };

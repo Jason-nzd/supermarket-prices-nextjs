@@ -1,8 +1,7 @@
 import { GetStaticPaths, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import React, { useContext } from "react";
-import { Product } from "../../typings";
-import startCase from "lodash/startCase";
+import { ProductGridData } from "../../typings";
 import ProductsGrid from "../../components/ProductsGrid";
 import { DBFetchByCategory } from "../../utilities/cosmosdb";
 import {
@@ -10,27 +9,21 @@ import {
   OrderByMode,
   PriceHistoryLimit,
   Store,
-  numToArrayOfNumbers,
+  printProductCountSubTitle,
   sortProductsByUnitPrice,
   utcDateToMediumDate,
 } from "../../utilities/utilities";
 import { DarkModeContext } from "../_app";
 import NavBar from "../../components/NavBar/NavBar";
 import Footer from "../../components/Footer";
+import startCase from "lodash/startCase";
 
 interface Props {
-  products: Product[];
-  numPagesOfSearchResults: number;
+  productGridData: ProductGridData;
   lastChecked: string;
-  subTitle: string;
 }
 
-const Category = ({
-  products,
-  numPagesOfSearchResults,
-  lastChecked,
-  subTitle,
-}: Props) => {
+const Category = ({ productGridData, lastChecked }: Props) => {
   const router = useRouter();
   const { category } = router.query;
   const theme = useContext(DarkModeContext).darkMode ? "dark" : "light";
@@ -44,28 +37,12 @@ const Category = ({
         <div className="central-responsive-div min-h-[50rem]">
           {/* Filter Selection */}
           <div className="ml-20">{/* <ResultsFilterPanel /> */}</div>
-
-          {/* Products Grid */}
           <ProductsGrid
-            titles={[startCase(category?.toString())]}
-            subTitle={subTitle}
-            products={products}
-            createSearchLink={false}
+            titles={productGridData.titles}
+            subTitle={productGridData.subTitle}
+            products={productGridData.products}
+            createSearchLink={productGridData.createSearchLink}
           />
-
-          {/* Pagination */}
-          {/* {numPagesOfSearchResults > 1 && (
-            <div className='text-center m-4 text-lg flex mx-auto w-fit'>
-              Page
-              <ul className='flex ml-4'>
-                {numToArrayOfNumbers(numPagesOfSearchResults).map((pageNum) => (
-                  <li className='mx-4' key={pageNum}>
-                    {pageNum}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )} */}
         </div>
       </div>
       <Footer />
@@ -221,40 +198,33 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     Store.Any,
     PriceHistoryLimit.Any,
     OrderByMode.None,
-    LastChecked.Within3Days
+    LastChecked.Within7Days
   );
 
   // Sort by unit price
   products = sortProductsByUnitPrice(products);
 
-  // Log total product size
+  // Store total product size
   const foundItemsCount = products.length;
-  const subTitle = `Showing ${
-    foundItemsCount < 40 ? foundItemsCount : 40
-  }/${foundItemsCount} in-stock products.`;
 
   // Trim array size for first page
   const numProductsPerPage = 40;
   products = products.slice(0, numProductsPerPage);
 
-  // Debug log
-  // products.forEach((product) => {
-  //   console.log(product.name + ' - ' + product.lastChecked);
-  // });
-
-  // Calculate the number of pages of results to show
-  const numPagesOfSearchResults = Math.ceil(
-    foundItemsCount / numProductsPerPage
-  );
+  // Build ProductGridData object
+  const productGridData: ProductGridData = {
+    titles: [startCase(searchTerm)],
+    subTitle: printProductCountSubTitle(products.length, foundItemsCount),
+    products: products,
+    createSearchLink: false,
+  };
 
   const lastChecked = utcDateToMediumDate(new Date());
 
   return {
     props: {
-      products,
-      numPagesOfSearchResults,
+      productGridData,
       lastChecked,
-      subTitle,
     },
   };
 };

@@ -1,19 +1,20 @@
-import { GetStaticProps } from 'next';
-import React, { useContext } from 'react';
-import { Product } from '../../typings';
-import ProductsGrid from '../../components/ProductsGrid';
-import { DBFetchByCategory } from '../../utilities/cosmosdb';
+import { GetStaticProps } from "next";
+import React, { useContext } from "react";
+import { Product } from "../../typings";
+import ProductsGrid from "../../components/ProductsGrid";
+import { DBFetchByCategory } from "../../utilities/cosmosdb";
 import {
   LastChecked,
   OrderByMode,
   PriceHistoryLimit,
   Store,
+  printProductCountSubTitle,
   sortProductsByUnitPrice,
   utcDateToMediumDate,
-} from '../../utilities/utilities';
-import { DarkModeContext } from '../_app';
-import NavBar from '../../components/NavBar/NavBar';
-import Footer from '../../components/Footer';
+} from "../../utilities/utilities";
+import { DarkModeContext } from "../_app";
+import NavBar from "../../components/NavBar/NavBar";
+import Footer from "../../components/Footer";
 
 interface Props {
   apples: Product[];
@@ -26,6 +27,16 @@ interface Props {
   pineapple: Product[];
   grapes: Product[];
   other: Product[];
+  appleSubTitle: string;
+  bananaSubTitle: string;
+  citrusSubTitle: string;
+  pearSubTitle: string;
+  kiwifruitSubTitle: string;
+  peachSubTitle: string;
+  berrySubTitle: string;
+  pineappleSubTitle: string;
+  grapeSubTitle: string;
+  otherSubTitle: string;
   lastChecked: string;
 }
 
@@ -40,57 +51,89 @@ const Category = ({
   pineapple,
   grapes,
   other,
+  appleSubTitle,
+  bananaSubTitle,
+  citrusSubTitle,
+  pearSubTitle,
+  kiwifruitSubTitle,
+  peachSubTitle,
+  berrySubTitle,
+  pineappleSubTitle,
+  grapeSubTitle,
+  otherSubTitle,
   lastChecked,
 }: Props) => {
-  const theme = useContext(DarkModeContext).darkMode ? 'dark' : 'light';
+  const theme = useContext(DarkModeContext).darkMode ? "dark" : "light";
 
   return (
     <main className={theme}>
       <NavBar lastUpdatedDate={lastChecked} />
       {/* Background Div */}
-      <div className='content-body'>
+      <div className="content-body">
         {/* Central Aligned Div */}
-        <div className='central-responsive-div'>
+        <div className="central-responsive-div">
           {/* Categorised Product Grids*/}
           <ProductsGrid
-            titles={['Apples']}
+            titles={["Apples"]}
+            subTitle={appleSubTitle}
             products={apples}
             trimColumns={false}
             createSearchLink={false}
-            createDeepLink='/products/fruit/'
+            createDeepLink="/products/fruit/"
           />
           <ProductsGrid
-            titles={['Bananas']}
+            titles={["Bananas"]}
+            subTitle={bananaSubTitle}
             products={bananas}
             trimColumns={false}
             createSearchLink={false}
-            createDeepLink='/products/fruit/'
+            createDeepLink="/products/fruit/"
           />
           <ProductsGrid
-            titles={['Oranges', 'Lemons', 'Limes', 'Tangerines', 'Mandarins']}
+            titles={["Oranges", "Lemons", "Limes", "Tangerines", "Mandarins"]}
+            subTitle={citrusSubTitle}
             products={citrus}
             trimColumns={false}
           />
-          <ProductsGrid titles={['Pears']} products={pears} trimColumns={false} />
-          <ProductsGrid titles={['Kiwifruit', 'Feijoa']} products={kiwifruit} trimColumns={false} />
           <ProductsGrid
-            titles={['Peaches', 'Plums', 'Nectarines']}
+            titles={["Pears"]}
+            subTitle={pearSubTitle}
+            products={pears}
+            trimColumns={false}
+          />
+          <ProductsGrid
+            titles={["Kiwifruit", "Feijoa"]}
+            subTitle={kiwifruitSubTitle}
+            products={kiwifruit}
+            trimColumns={false}
+          />
+          <ProductsGrid
+            titles={["Peaches", "Plums", "Nectarines"]}
+            subTitle={peachSubTitle}
             products={peaches}
             trimColumns={false}
           />
           <ProductsGrid
-            titles={['Strawberries', 'Blueberries', 'Raspberries']}
+            titles={["Strawberries", "Blueberries", "Raspberries"]}
+            subTitle={berrySubTitle}
             products={berries}
             trimColumns={false}
           />
           <ProductsGrid
-            titles={['Pineapple', 'Mango', 'Melon']}
+            titles={["Pineapple", "Mango", "Melon"]}
+            subTitle={pineappleSubTitle}
             products={pineapple}
             trimColumns={false}
           />
-          <ProductsGrid titles={['Grapes']} products={grapes} trimColumns={false} />
           <ProductsGrid
-            titles={['Other Fruit']}
+            titles={["Grapes"]}
+            subTitle={grapeSubTitle}
+            products={grapes}
+            trimColumns={false}
+          />
+          <ProductsGrid
+            titles={["Other Fruit"]}
+            subTitle={otherSubTitle}
             products={other}
             trimColumns={true}
             createSearchLink={false}
@@ -104,15 +147,13 @@ const Category = ({
 
 export const getStaticProps: GetStaticProps = async () => {
   const products = await DBFetchByCategory(
-    'fruit',
-    200,
+    "fruit",
+    300,
     Store.Any,
     PriceHistoryLimit.Any,
     OrderByMode.None,
-    LastChecked.Within3Days
+    LastChecked.Within7Days
   );
-
-  // console.log(products.length + ' total fruit found (last checked within 7 days)');
 
   let apples: Product[] = [];
   let bananas: Product[] = [];
@@ -127,18 +168,34 @@ export const getStaticProps: GetStaticProps = async () => {
 
   products.forEach((product) => {
     const name = product.name.toLowerCase();
-    if (name.includes('apple') && !name.includes('pineapple')) apples.push(product);
-    else if (name.includes('banana')) bananas.push(product);
-    else if (name.match('orange|mandarin|lemon|lime') && !name.match('avocado|juice'))
+    if (name.includes("apple") && !name.includes("pineapple"))
+      apples.push(product);
+    else if (name.includes("banana")) bananas.push(product);
+    else if (
+      name.match("orange|mandarin|lemon|lime") &&
+      !name.match("avocado|juice")
+    )
       citrus.push(product);
-    else if (name.match('pears')) pears.push(product);
-    else if (name.match('feijoa|kiwifruit')) kiwifruit.push(product);
-    else if (name.match('peach|nectarine|plums')) peaches.push(product);
-    else if (name.match('berry|berries')) berries.push(product);
-    else if (name.match('pineapple|mango|melon')) pineapple.push(product);
-    else if (name.includes('grapes')) grapes.push(product);
+    else if (name.match("pears")) pears.push(product);
+    else if (name.match("feijoa|kiwifruit")) kiwifruit.push(product);
+    else if (name.match("peach|nectarine|plums")) peaches.push(product);
+    else if (name.match("berry|berries")) berries.push(product);
+    else if (name.match("pineapple|mango|melon")) pineapple.push(product);
+    else if (name.includes("grapes")) grapes.push(product);
     else other.push(product);
   });
+
+  // Store all product counts for subTitle
+  const appleCount = apples.length;
+  const bananaCount = bananas.length;
+  const citrusCount = citrus.length;
+  const pearCount = pears.length;
+  const kiwifruitCount = kiwifruit.length;
+  const peachCount = peaches.length;
+  const berryCount = berries.length;
+  const pineappleCount = pineapple.length;
+  const grapeCount = grapes.length;
+  const otherCount = other.length;
 
   // Sort all by unit price
   apples = sortProductsByUnitPrice(apples).slice(0, 10);
@@ -151,6 +208,24 @@ export const getStaticProps: GetStaticProps = async () => {
   berries = sortProductsByUnitPrice(berries).slice(0, 10);
   grapes = sortProductsByUnitPrice(grapes).slice(0, 10);
   other = other.slice(0, 10);
+
+  // Log product counts in grid subTitles
+  const appleSubTitle = printProductCountSubTitle(apples.length, appleCount);
+  const bananaSubTitle = printProductCountSubTitle(bananas.length, bananaCount);
+  const citrusSubTitle = printProductCountSubTitle(citrus.length, citrusCount);
+  const pearSubTitle = printProductCountSubTitle(pears.length, pearCount);
+  const kiwifruitSubTitle = printProductCountSubTitle(
+    kiwifruit.length,
+    kiwifruitCount
+  );
+  const peachSubTitle = printProductCountSubTitle(peaches.length, peachCount);
+  const berrySubTitle = printProductCountSubTitle(berries.length, berryCount);
+  const pineappleSubTitle = printProductCountSubTitle(
+    pineapple.length,
+    pineappleCount
+  );
+  const grapeSubTitle = printProductCountSubTitle(grapes.length, grapeCount);
+  const otherSubTitle = printProductCountSubTitle(other.length, otherCount);
 
   const lastChecked = utcDateToMediumDate(new Date());
 
@@ -166,6 +241,16 @@ export const getStaticProps: GetStaticProps = async () => {
       pineapple,
       grapes,
       other,
+      appleSubTitle,
+      bananaSubTitle,
+      citrusSubTitle,
+      pearSubTitle,
+      kiwifruitSubTitle,
+      peachSubTitle,
+      berrySubTitle,
+      pineappleSubTitle,
+      grapeSubTitle,
+      otherSubTitle,
       lastChecked,
     },
   };

@@ -1,48 +1,45 @@
-import { GetStaticProps } from 'next';
-import React, { useContext } from 'react';
-import { Product } from '../../typings';
-import ProductsGrid from '../../components/ProductsGrid';
-import { DBFetchByCategory } from '../../utilities/cosmosdb';
+import { GetStaticProps } from "next";
+import React, { useContext } from "react";
+import { Product, ProductGridData } from "../../typings";
+import ProductsGrid from "../../components/ProductsGrid";
+import { DBFetchByCategory } from "../../utilities/cosmosdb";
 import {
   LastChecked,
   OrderByMode,
   PriceHistoryLimit,
+  printProductCountSubTitle,
   Store,
   utcDateToMediumDate,
-} from '../../utilities/utilities';
-import { DarkModeContext } from '../_app';
-import NavBar from '../../components/NavBar/NavBar';
-import Footer from '../../components/Footer';
+} from "../../utilities/utilities";
+import { DarkModeContext } from "../_app";
+import NavBar from "../../components/NavBar/NavBar";
+import Footer from "../../components/Footer";
 
 interface Props {
-  mixedGrade: Product[];
-  size7: Product[];
-  size8plus: Product[];
+  productGridDataAll: ProductGridData[];
   lastChecked: string;
 }
 
-const Category = ({ mixedGrade, size7, size8plus, lastChecked }: Props) => {
-  const theme = useContext(DarkModeContext).darkMode ? 'dark' : 'light';
+const Category = ({ productGridDataAll, lastChecked }: Props) => {
+  const theme = useContext(DarkModeContext).darkMode ? "dark" : "light";
 
   return (
     <main className={theme}>
       <NavBar lastUpdatedDate={lastChecked} />
       {/* Background Div */}
-      <div className='content-body'>
+      <div className="content-body">
         {/* Central Aligned Div */}
-        <div className='central-responsive-div'>
+        <div className="central-responsive-div">
           {/* Categorised Product Grids*/}
-          <ProductsGrid
-            titles={['Size 6 and Mixed Range Eggs']}
-            products={mixedGrade}
-            createSearchLink={false}
-          />
-          <ProductsGrid titles={['Size 7 Eggs']} products={size7} createSearchLink={false} />
-          <ProductsGrid
-            titles={['Size 8 and Jumbo Eggs']}
-            products={size8plus}
-            createSearchLink={false}
-          />
+          {productGridDataAll.map((productGridData, index) => (
+            <ProductsGrid
+              key={index}
+              titles={productGridData.titles}
+              subTitle={productGridData.subTitle}
+              products={productGridData.products}
+              createSearchLink={productGridData.createSearchLink}
+            />
+          ))}
         </div>
       </div>
       <Footer />
@@ -52,7 +49,7 @@ const Category = ({ mixedGrade, size7, size8plus, lastChecked }: Props) => {
 
 export const getStaticProps: GetStaticProps = async () => {
   let products = await DBFetchByCategory(
-    'eggs',
+    "eggs",
     300,
     Store.Any,
     PriceHistoryLimit.Any,
@@ -68,14 +65,14 @@ export const getStaticProps: GetStaticProps = async () => {
   // Try derive per unit price of each product
   products.forEach((product) => {
     // Try grab product size if any, else try extract from name
-    let size = product.size?.toLowerCase().match(/\d/g)?.join('');
-    if (size === undefined || size === '') {
+    let size = product.size?.toLowerCase().match(/\d/g)?.join("");
+    if (size === undefined || size === "") {
       size = product.name
         .toLowerCase()
         .match(/\d*\spk|\d*\spack/g)
-        ?.join('')
+        ?.join("")
         .match(/\d/g)
-        ?.join('');
+        ?.join("");
     }
 
     // Parse to int and check is within valid range
@@ -86,14 +83,14 @@ export const getStaticProps: GetStaticProps = async () => {
       product.unitPrice = product.currentPrice / quantity;
 
       // Set size
-      product.size = quantity + ' Pack';
+      product.size = quantity + " Pack";
     }
     // If a unit price could not be derived,
     //  set unitPrice to 999 to force ordering to bottom
     else product.unitPrice = 999;
 
     // Set unit name
-    product.unitName = 'egg';
+    product.unitName = "egg";
   });
 
   // Sort by unit price
@@ -109,29 +106,57 @@ export const getStaticProps: GetStaticProps = async () => {
     if (product.unitPrice === 999) product.unitPrice = null;
 
     // Split each product into egg sizes
-    if (product.name.toLowerCase().includes('size 6')) mixedGrade.push(product);
-    else if (product.name.toLowerCase().includes('size 7')) size7.push(product);
+    if (product.name.toLowerCase().includes("size 6")) mixedGrade.push(product);
+    else if (product.name.toLowerCase().includes("size 7")) size7.push(product);
     else if (
-      product.name.toLowerCase().includes('size 8') ||
-      product.name.toLowerCase().includes('size 9') ||
-      product.name.toLowerCase().includes('size 10') ||
-      product.name.toLowerCase().includes('jumbo')
+      product.name.toLowerCase().includes("size 8") ||
+      product.name.toLowerCase().includes("size 9") ||
+      product.name.toLowerCase().includes("size 10") ||
+      product.name.toLowerCase().includes("jumbo")
     )
       size8plus.push(product);
     else mixedGrade.push(product);
   });
 
+  const mixedGradeCount = mixedGrade.length;
+  const size7Count = size7.length;
+  const size8plusCount = size8plus.length;
+
   mixedGrade = mixedGrade.slice(0, 15);
   size7 = size7.slice(0, 15);
   size8plus = size8plus.slice(0, 15);
+
+  const mixedGradeData: ProductGridData = {
+    titles: ["Size 5, 6 and Mixed Range Eggs"],
+    subTitle: printProductCountSubTitle(mixedGrade.length, mixedGradeCount),
+    products: mixedGrade,
+    createSearchLink: false,
+  };
+  const size7Data: ProductGridData = {
+    titles: ["Size 7 Eggs"],
+    subTitle: printProductCountSubTitle(size7.length, size7Count),
+    products: size7,
+    createSearchLink: false,
+  };
+  const size8plusData: ProductGridData = {
+    titles: ["Size 8+ and Jumbo Eggs"],
+    subTitle: printProductCountSubTitle(size8plus.length, size8plusCount),
+    products: size8plus,
+    createSearchLink: false,
+  };
+
+  // Combine ProductGridData objects into array
+  const productGridDataAll: ProductGridData[] = [
+    mixedGradeData,
+    size7Data,
+    size8plusData,
+  ];
 
   const lastChecked = utcDateToMediumDate(new Date());
 
   return {
     props: {
-      mixedGrade,
-      size7,
-      size8plus,
+      productGridDataAll,
       lastChecked,
     },
   };

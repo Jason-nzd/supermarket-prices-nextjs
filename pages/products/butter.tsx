@@ -1,6 +1,6 @@
 import { GetStaticProps } from "next";
 import React, { useContext } from "react";
-import { Product } from "../../typings";
+import { Product, ProductGridData } from "../../typings";
 import ProductsGrid from "../../components/ProductsGrid";
 import { DBFetchByCategory } from "../../utilities/cosmosdb";
 import {
@@ -8,6 +8,7 @@ import {
   OrderByMode,
   PriceHistoryLimit,
   Store,
+  printProductCountSubTitle,
   sortProductsByUnitPrice,
   utcDateToMediumDate,
 } from "../../utilities/utilities";
@@ -16,12 +17,11 @@ import NavBar from "../../components/NavBar/NavBar";
 import Footer from "../../components/Footer";
 
 interface Props {
-  butter: Product[];
-  spreads: Product[];
+  productGridDataAll: ProductGridData[];
   lastChecked: string;
 }
 
-const Category = ({ butter, spreads, lastChecked }: Props) => {
+const Category = ({ productGridDataAll, lastChecked }: Props) => {
   const theme = useContext(DarkModeContext).darkMode ? "dark" : "light";
 
   return (
@@ -32,16 +32,15 @@ const Category = ({ butter, spreads, lastChecked }: Props) => {
         {/* Central Aligned Div */}
         <div className="central-responsive-div">
           {/* Categorised Product Grids*/}
-          <ProductsGrid
-            titles={["Butter"]}
-            products={butter}
-            createSearchLink={false}
-          />
-          <ProductsGrid
-            titles={["Spreads"]}
-            products={spreads}
-            createSearchLink={false}
-          />
+          {productGridDataAll.map((productGridData, index) => (
+            <ProductsGrid
+              key={index}
+              titles={productGridData.titles}
+              subTitle={productGridData.subTitle}
+              products={productGridData.products}
+              createSearchLink={productGridData.createSearchLink}
+            />
+          ))}
         </div>
       </div>
       <Footer />
@@ -70,17 +69,38 @@ export const getStaticProps: GetStaticProps = async () => {
     else spreads.push(product);
   });
 
-  // Sort all by unit price
+  // Store found product counts
+  const butterDBCount = butter.length;
+  const spreadsDBCount = spreads.length;
+
+  // Sort all by unit price and slice into a smaller array
   butter = sortProductsByUnitPrice(butter).slice(0, 15);
   spreads = sortProductsByUnitPrice(spreads).slice(0, 15);
+
+  // Build ProductGridData objects
+  const butterData: ProductGridData = {
+    titles: ["Butter"],
+    subTitle: printProductCountSubTitle(butter.length, butterDBCount),
+    products: butter,
+    createSearchLink: true,
+  };
+
+  const spreadsData: ProductGridData = {
+    titles: ["Spreads"],
+    subTitle: printProductCountSubTitle(spreads.length, spreadsDBCount),
+    products: spreads,
+    createSearchLink: false,
+  };
+
+  // Combine ProductGridData objects into array
+  const productGridDataAll: ProductGridData[] = [butterData, spreadsData];
 
   // Store date, to be displayed in static page title bar
   const lastChecked = utcDateToMediumDate(new Date());
 
   return {
     props: {
-      butter,
-      spreads,
+      productGridDataAll,
       lastChecked,
     },
   };
