@@ -45,7 +45,7 @@ export default function App({ Component, pageProps }: AppProps) {
   // Try override with a cookie of favourite categories
   useEffect(() => {
     if (hasCookie("User_Categories")) {
-      const categoriesCookie = getCookie("User_Categories");
+      const categoriesCookie = getCookie("User_Categories") as string;
       const readCategories: string[] = categoriesCookie
         ? (JSON.parse(categoriesCookie) as string[])
         : [];
