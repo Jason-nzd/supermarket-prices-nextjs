@@ -61,12 +61,17 @@ export const getStaticProps: GetStaticProps = async () => {
 
   // Try derive per unit price of each product
   products.forEach((product) => {
-    // Treat loose tea as per gram
-    if (product.name.toLowerCase().includes("loose")) looseTea.push(product);
+    // Treat any products with names without bags, pk, pack as loose tea
+    if (!product.name.toLowerCase().match(/(bag|pk|pack|\d*'s)/g))
+      looseTea.push(product);
     // Treat teabag tea as per teabag
     else {
-      // Try grab product size if any, else try extract from name
-      let size = product.size?.toLowerCase().match(/\d/g)?.join("");
+      // Try parse size to get quantity while excluding grams per teabag, e.g. 100 x 2g
+      let size = product.size?.toLowerCase().split("x")[0];
+      // Get just the quantity
+      size = size ? size.match(/\d/g)?.join("") : "";
+
+      // If size is still undefined, try parse from name
       if (size === undefined || size === "") {
         size = product.name
           .toLowerCase()
@@ -77,7 +82,7 @@ export const getStaticProps: GetStaticProps = async () => {
       }
 
       // Parse to int and check is within valid range
-      if (size !== undefined && parseInt(size) < 1100) {
+      if (size !== undefined && parseInt(size) < 6000) {
         const quantity = parseInt(size);
 
         // Set per teabag unit price

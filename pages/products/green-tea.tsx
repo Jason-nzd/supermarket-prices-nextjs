@@ -65,8 +65,12 @@ export const getStaticProps: GetStaticProps = async () => {
     if (product.name.toLowerCase().includes("loose")) looseTea.push(product);
     // Treat teabag tea as per teabag
     else {
-      // Try grab product size if any, else try extract from name
-      let size = product.size?.toLowerCase().match(/\d/g)?.join("");
+      // Try parse size to get quantity while excluding grams per teabag, e.g. 100 x 2g
+      let size = product.size?.toLowerCase().split("x")[0];
+      // Get just the quantity
+      size = size ? size.match(/\d/g)?.join("") : "";
+
+      // If size is still undefined, try parse from name
       if (size === undefined || size === "") {
         size = product.name
           .toLowerCase()
