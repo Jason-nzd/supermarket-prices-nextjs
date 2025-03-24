@@ -71,7 +71,6 @@ export const getStaticProps: GetStaticProps = async () => {
       // Get just the quantity
       size = size ? size.match(/\d/g)?.join("") : "";
 
-      // If size is still undefined, try parse from name
       if (size === undefined || size === "") {
         size = product.name
           .toLowerCase()
