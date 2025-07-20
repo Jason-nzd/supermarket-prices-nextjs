@@ -62,7 +62,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
   // Split products into bulk powder and sachets
   products.forEach((product) => {
-    if (product.name.toLowerCase().match(/(sticks|sachet|bag)/g))
+    if (product.name.toLowerCase().match(/(sticks|sachet|bag|pack)/g))
       sachets.push(product);
     else if (product.size?.toLocaleLowerCase().match(/(pack|each|\wx\w)/g))
       sachets.push(product);
