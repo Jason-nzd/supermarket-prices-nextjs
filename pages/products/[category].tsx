@@ -165,6 +165,7 @@ categoryNames = categoryNames.filter((name) => {
     "butter",
     "green-tea",
     "coffee",
+    "drinking-chocolate",
   ].includes(name);
 });
 
