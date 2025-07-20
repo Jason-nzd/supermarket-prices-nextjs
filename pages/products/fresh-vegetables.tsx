@@ -103,7 +103,7 @@ export const getStaticProps: GetStaticProps = async () => {
   tomatoes = sortProductsByUnitPrice(tomatoes).slice(0, 10);
   onions = sortProductsByUnitPrice(onions).slice(0, 5);
   chili = sortProductsByUnitPrice(chili).slice(0, 5);
-  other = other.slice(0, 15);
+  other = other.slice(0, 10);
 
   const potatoData: ProductGridData = {
     titles: ["Potatoes", "Kumara"],
