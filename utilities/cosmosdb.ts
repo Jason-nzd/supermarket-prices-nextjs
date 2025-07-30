@@ -16,6 +16,7 @@ import {
   PriceHistoryLimit,
   sortProductsByUnitPrice,
   Store,
+  utcDateToMediumDate,
 } from './utilities';
 
 // CosmosDB Env Variables
@@ -377,4 +378,31 @@ export async function DBFetchByQuery(
   };
 
   return await fetchProductsUsingSDK(querySpec, maxItems);
+}
+
+export async function DBGetMostRecentDate(): Promise<string> {
+  const querySpec: SqlQuerySpec = {
+    query: 'SELECT * FROM products p ORDER BY p.lastChecked DESC',
+  };
+
+  // Access CosmosDB directly using the SDK
+  if (await connectToCosmosDB()) {
+
+    try {
+      // Perform DB Fetch
+      const dbResponse: FeedResponse<Product> = await container.items
+        .query(querySpec, { maxItemCount: 1 })
+        .fetchNext();
+
+
+      if (dbResponse.resources !== undefined) {
+        // Return the last checked date in medium date format
+        console.log('Last checked date: ' + utcDateToMediumDate(dbResponse.resources[0].lastChecked));
+        return utcDateToMediumDate(dbResponse.resources[0].lastChecked);
+      }
+    } catch (error) {
+      console.log('Error on DBMostRecentDate()\n' + error);
+    }
+  }
+  return '';
 }
