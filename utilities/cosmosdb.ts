@@ -380,6 +380,7 @@ export async function DBFetchByQuery(
   return await fetchProductsUsingSDK(querySpec, maxItems);
 }
 
+// Fetch the most recent date from the database
 export async function DBGetMostRecentDate(): Promise<string> {
   const querySpec: SqlQuerySpec = {
     query: 'SELECT * FROM products p ORDER BY p.lastChecked DESC',
@@ -394,10 +395,8 @@ export async function DBGetMostRecentDate(): Promise<string> {
         .query(querySpec, { maxItemCount: 1 })
         .fetchNext();
 
-
       if (dbResponse.resources !== undefined) {
         // Return the last checked date in medium date format
-        console.log('Last checked date: ' + utcDateToMediumDate(dbResponse.resources[0].lastChecked));
         return utcDateToMediumDate(dbResponse.resources[0].lastChecked);
       }
     } catch (error) {
