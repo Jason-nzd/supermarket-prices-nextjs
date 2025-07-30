@@ -1,4 +1,6 @@
 name: build-test-deploy-to-s3
+permissions:
+  contents: read
 on:
   push:
     branches: [main]
