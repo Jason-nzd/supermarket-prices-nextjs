@@ -1,8 +1,7 @@
 import { GetStaticProps } from "next";
 import React, { useContext } from "react";
 import { Product } from "../../typings";
-import { DBFetchByName } from "../../utilities/cosmosdb";
-import { utcDateToMediumDate } from "../../utilities/utilities";
+import { DBFetchByName, DBGetMostRecentDate } from "../../utilities/cosmosdb";
 import { DarkModeContext } from "../_app";
 import NavBar from "../../components/NavBar/NavBar";
 import Footer from "../../components/Footer";
@@ -72,7 +71,7 @@ export const getStaticProps: GetStaticProps = async () => {
     // console.log(product.sourceSite + ' - ' + product.size + ' - ' + product.name);
   });
 
-  const lastChecked = utcDateToMediumDate(new Date());
+  const lastChecked = await DBGetMostRecentDate();
 
   return {
     props: {

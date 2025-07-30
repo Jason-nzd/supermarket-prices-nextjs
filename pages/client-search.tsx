@@ -8,12 +8,12 @@ import {
   PriceHistoryLimit,
   Store,
   sortProductsByUnitPrice,
-  utcDateToMediumDate,
 } from "../utilities/utilities";
 import { DarkModeContext } from "./_app";
 import { useRouter } from "next/router";
 import startCase from "lodash/startCase";
 import { DBFetchByNameAPI } from "utilities/clientside-api";
+import { DBGetMostRecentDate } from "utilities/cosmosdb";
 
 interface Props {
   lastChecked: string;
@@ -160,7 +160,7 @@ const ClientSearch = ({ lastChecked }: Props) => {
 };
 
 export async function getStaticProps() {
-  const lastChecked = utcDateToMediumDate(new Date());
+  const lastChecked = await DBGetMostRecentDate();
   return {
     props: {
       lastChecked,

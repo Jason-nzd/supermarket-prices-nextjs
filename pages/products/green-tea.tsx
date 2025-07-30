@@ -2,14 +2,16 @@ import { GetStaticProps } from "next";
 import React, { useContext } from "react";
 import { Product, ProductGridData } from "../../typings";
 import ProductsGrid from "../../components/ProductsGrid";
-import { DBFetchByCategory } from "../../utilities/cosmosdb";
+import {
+  DBFetchByCategory,
+  DBGetMostRecentDate,
+} from "../../utilities/cosmosdb";
 import {
   LastChecked,
   OrderByMode,
   PriceHistoryLimit,
   printProductCountSubTitle,
   Store,
-  utcDateToMediumDate,
 } from "../../utilities/utilities";
 import { DarkModeContext } from "../_app";
 import NavBar from "../../components/NavBar/NavBar";
@@ -135,7 +137,7 @@ export const getStaticProps: GetStaticProps = async () => {
   // Combine ProductGridData objects into array
   const productGridDataAll: ProductGridData[] = [teaData, looseTeaData];
 
-  const lastChecked = utcDateToMediumDate(new Date());
+  const lastChecked = await DBGetMostRecentDate();
 
   return {
     props: {

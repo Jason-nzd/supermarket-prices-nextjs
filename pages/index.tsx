@@ -1,11 +1,11 @@
-import { useContext } from 'react';
-import Footer from '../components/Footer';
-import NavBar from '../components/NavBar/NavBar';
-import ProductsGrid from '../components/ProductsGrid';
-import { Product } from '../typings';
-import { DBFetchAll } from '../utilities/cosmosdb';
-import { OrderByMode, PriceHistoryLimit, Store, utcDateToMediumDate } from '../utilities/utilities';
-import { DarkModeContext } from './_app';
+import { useContext } from "react";
+import Footer from "../components/Footer";
+import NavBar from "../components/NavBar/NavBar";
+import ProductsGrid from "../components/ProductsGrid";
+import { Product } from "../typings";
+import { DBFetchAll, DBGetMostRecentDate } from "../utilities/cosmosdb";
+import { OrderByMode, PriceHistoryLimit, Store } from "../utilities/utilities";
+import { DarkModeContext } from "./_app";
 
 interface Props {
   countdownProducts: Product[];
@@ -23,28 +23,44 @@ export default function Home({
   newworldProducts,
   lastChecked,
 }: Props) {
-  const theme = useContext(DarkModeContext).darkMode ? 'dark' : 'light';
+  const theme = useContext(DarkModeContext).darkMode ? "dark" : "light";
 
   return (
     <main className={theme}>
       <NavBar lastUpdatedDate={lastChecked} />
       {/* Background Div */}
-      <div className='content-body'>
+      <div className="content-body">
         {/* Central Aligned Div */}
-        <div className='central-responsive-div'>
+        <div className="central-responsive-div">
           {/* Page Title */}
-          <div className='grid-title'>Today's Trending Products</div>
+          <div className="grid-title">Today's Trending Products</div>
           {countdownProducts && (
-            <ProductsGrid products={countdownProducts} key='countdown' trimColumns={true} />
+            <ProductsGrid
+              products={countdownProducts}
+              key="countdown"
+              trimColumns={true}
+            />
           )}
           {paknsaveProducts && (
-            <ProductsGrid products={paknsaveProducts} key='paknsave' trimColumns={true} />
+            <ProductsGrid
+              products={paknsaveProducts}
+              key="paknsave"
+              trimColumns={true}
+            />
           )}
           {warehouseProducts && (
-            <ProductsGrid products={warehouseProducts} key='warehouse' trimColumns={true} />
+            <ProductsGrid
+              products={warehouseProducts}
+              key="warehouse"
+              trimColumns={true}
+            />
           )}
           {newworldProducts && (
-            <ProductsGrid products={newworldProducts} key='newworld' trimColumns={true} />
+            <ProductsGrid
+              products={newworldProducts}
+              key="newworld"
+              trimColumns={true}
+            />
           )}
         </div>
       </div>
@@ -83,7 +99,7 @@ export async function getStaticProps() {
     OrderByMode.LatestPriceChange
   );
 
-  const lastChecked = utcDateToMediumDate(new Date());
+  const lastChecked = await DBGetMostRecentDate();
 
   return {
     props: {

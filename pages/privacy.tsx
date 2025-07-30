@@ -1,8 +1,8 @@
 import { useContext } from "react";
 import Footer from "../components/Footer";
 import NavBar from "../components/NavBar/NavBar";
-import { utcDateToMediumDate } from "../utilities/utilities";
 import { DarkModeContext } from "./_app";
+import { DBGetMostRecentDate } from "utilities/cosmosdb";
 
 interface Props {
   lastChecked: string;
@@ -36,7 +36,7 @@ export default function Privacy({ lastChecked }: Props) {
 }
 
 export async function getStaticProps() {
-  const lastChecked = utcDateToMediumDate(new Date());
+  const lastChecked = await DBGetMostRecentDate();
 
   return {
     props: {
