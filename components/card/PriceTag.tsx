@@ -1,4 +1,3 @@
-import React from "react";
 import { Product } from "../../typings";
 import { getPriceAvgDifference } from "../../utilities/utilities";
 
@@ -12,17 +11,21 @@ export default function PriceTag({ product }: Props) {
     "items-center hover-panel dark:bg-zinc-800 dark:text-zinc-300 ";
   let icon;
 
+  // Use local variables for unit display values so we don't mutate props
+  let displayUnitPrice = product.unitPrice;
+  let displayUnitName = product.unitName;
+
   // Convert product size in per/kg to per/100g if it will fit in a nicer range
-  if (product.unitPrice) {
+  if (displayUnitPrice) {
     if (
       product.originalUnitQuantity &&
       product.originalUnitQuantity < 500 &&
       product.originalUnitQuantity > 40 &&
       product.unitName === "kg"
     ) {
-      // Convert from per kg to per 100g
-      product.unitName = "100g";
-      product.unitPrice = product.unitPrice / 10;
+      // Convert from per kg to per 100g (update local copies only)
+      displayUnitName = "100g";
+      displayUnitPrice = displayUnitPrice / 10;
     }
   }
 
@@ -54,16 +57,16 @@ export default function PriceTag({ product }: Props) {
     priceTagDivClass += "border-[#282] text-[#282]";
   }
 
-  // Simplify unit price for readability
-  if (product.unitPrice) {
+  // Simplify unit price for readability (operate on local copy)
+  if (displayUnitPrice) {
     // Display whole numbers as-is, without the .00
-    if (product.unitPrice == Number(product.unitPrice.toFixed(0)))
-      product.unitPrice = Number(product.unitPrice.toFixed(0));
+    if (displayUnitPrice == Number(displayUnitPrice.toFixed(0)))
+      displayUnitPrice = Number(displayUnitPrice.toFixed(0));
     // Display decimal numbers under $10 with 2 decimal points
-    else if (product.unitPrice < 10)
-      product.unitPrice = Number(product.unitPrice.toFixed(2));
+    else if (displayUnitPrice < 10)
+      displayUnitPrice = Number(displayUnitPrice.toFixed(2));
     // Display numbers over 10 with 1 decimal point for readability
-    else product.unitPrice = Number(product.unitPrice.toFixed(1));
+    else displayUnitPrice = Number(displayUnitPrice.toFixed(1));
   }
 
   return (
@@ -92,17 +95,15 @@ export default function PriceTag({ product }: Props) {
           </div>
 
           {/* Unit Price */}
-          {product.unitPrice &&
-            product.unitName &&
-            product.unitPrice != 9999 && (
-              <div className="flex text-md items-center">
-                <div className="text-xs">$</div>
-                <div className="font-semibold text-lg lg:text-md">
-                  {product.unitPrice}
-                </div>
-                <div>{"/" + product.unitName || "Unit"}</div>
+          {displayUnitPrice && displayUnitName && displayUnitPrice != 9999 && (
+            <div className="flex text-md items-center">
+              <div className="text-xs">$</div>
+              <div className="font-semibold text-lg lg:text-md">
+                {displayUnitPrice}
               </div>
-            )}
+              <div>{displayUnitName ? "/" + displayUnitName : "/Unit"}</div>
+            </div>
+          )}
         </div>
       </div>
     </div>

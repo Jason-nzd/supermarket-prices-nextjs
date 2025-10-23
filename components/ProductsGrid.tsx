@@ -21,28 +21,32 @@ function ProductsGrid({
   createSearchLink = true,
   createDeepLink = "",
 }: Props) {
-  let numColumnsToShow = 3;
   let trimmedProducts: Product[] = [];
+
+  // Call hooks unconditionally so their order is stable across renders
+  const isMobile = useMediaQuery("600px");
+  const isSmall = useMediaQuery("980px");
+  const isMedium = useMediaQuery("1340px");
+  const isLarge = useMediaQuery("2100px");
+
   if (trimColumns) {
     trimmedProducts = products;
 
     // For mobile viewports, trim products to 2 columns
-    if (useMediaQuery("600px")) {
+    if (isMobile) {
       trimmedProducts = products.slice(0, nextMultipleDown(products.length, 2));
     }
     // For small viewports, trim products to 3 columns
-    if (useMediaQuery("980px")) {
+    if (isSmall) {
       trimmedProducts = products.slice(0, nextMultipleDown(products.length, 3));
     }
     // For medium viewports, trim products to 4 columns
-    if (useMediaQuery("1340px")) {
+    if (isMedium) {
       trimmedProducts = products.slice(0, nextMultipleDown(products.length, 4));
-      numColumnsToShow = 4;
     }
     // For large viewports, trim products to 5 columns
-    if (useMediaQuery("2100px")) {
+    if (isLarge) {
       trimmedProducts = products.slice(0, nextMultipleDown(products.length, 5));
-      numColumnsToShow = 5;
     }
   }
 

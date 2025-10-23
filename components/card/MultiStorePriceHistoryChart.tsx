@@ -38,7 +38,7 @@ function MultiStorePriceHistoryChart({
   );
 
   // Dates array will share dates from all stores on the X axis
-  let sharedDates: Date[] = [];
+  const sharedDates: Date[] = [];
 
   // 1st pass - loop through all store price histories to determine shared date array
   [
@@ -53,7 +53,7 @@ function MultiStorePriceHistoryChart({
 
       // Check if store date has already been pushed into the shared date array
       // Use string comparison for better reliability
-      let dateAlreadyExists = sharedDates.find((sharedDate) => {
+      const dateAlreadyExists = sharedDates.find((sharedDate) => {
         return sharedDate.toString() == cleanedStoreDate.toString();
       });
 
@@ -65,10 +65,10 @@ function MultiStorePriceHistoryChart({
   });
 
   // Each store will have it's own Y axis dataset, which is initialized to all zeroes
-  let priceDataCountdown = new Array(sharedDates.length).fill(NaN);
-  let priceDataPaknsave = new Array(sharedDates.length).fill(NaN);
-  let priceDataWarehouse = new Array(sharedDates.length).fill(NaN);
-  let priceDataNewworld = new Array(sharedDates.length).fill(NaN);
+  const priceDataCountdown = new Array(sharedDates.length).fill(NaN);
+  const priceDataPaknsave = new Array(sharedDates.length).fill(NaN);
+  const priceDataWarehouse = new Array(sharedDates.length).fill(NaN);
+  const priceDataNewworld = new Array(sharedDates.length).fill(NaN);
 
   // Debug
   // if (countdownProduct) {
@@ -104,7 +104,7 @@ function MultiStorePriceHistoryChart({
     //     ']'
     // );
 
-    let matchedStoreToSharedIndex = sharedDates.findIndex((sharedDate) => {
+    const matchedStoreToSharedIndex = sharedDates.findIndex((sharedDate) => {
       return sharedDate.toString() == cleanedDate.toString();
     });
 
@@ -117,7 +117,7 @@ function MultiStorePriceHistoryChart({
   paknsaveProduct?.priceHistory.forEach((datedPrice) => {
     const cleanedDate = cleanDate(datedPrice.date);
 
-    let matchedStoreToSharedIndex = sharedDates.findIndex((sharedDate) => {
+    const matchedStoreToSharedIndex = sharedDates.findIndex((sharedDate) => {
       return sharedDate.toString() == cleanedDate.toString();
     });
 
@@ -130,7 +130,7 @@ function MultiStorePriceHistoryChart({
   warehouseProduct?.priceHistory.forEach((datedPrice) => {
     const cleanedDate = cleanDate(datedPrice.date);
 
-    let matchedStoreToSharedIndex = sharedDates.findIndex((sharedDate) => {
+    const matchedStoreToSharedIndex = sharedDates.findIndex((sharedDate) => {
       return sharedDate.toString() == cleanedDate.toString();
     });
 
@@ -143,7 +143,7 @@ function MultiStorePriceHistoryChart({
   newworldProduct?.priceHistory.forEach((datedPrice) => {
     const cleanedDate = cleanDate(datedPrice.date);
 
-    let matchedStoreToSharedIndex = sharedDates.findIndex((sharedDate) => {
+    const matchedStoreToSharedIndex = sharedDates.findIndex((sharedDate) => {
       return sharedDate.toString() == cleanedDate.toString();
     });
 

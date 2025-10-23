@@ -51,15 +51,13 @@ export default function CategoryLink({ category }: Props) {
   }
 
   // Check if category is already selected as a favourite
-  let isFavourite = favouriteCategories.includes(category);
+  const isFavourite = favouriteCategories.includes(category);
 
   function handleClick() {
     if (isFavourite) {
       removeFavouriteCategory(category);
-      isFavourite = false;
     } else {
       addFavouriteCategory(category);
-      isFavourite = true;
     }
   }
 

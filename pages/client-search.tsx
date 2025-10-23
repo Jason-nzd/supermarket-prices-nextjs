@@ -105,14 +105,14 @@ const ClientSearch = ({ lastChecked }: Props) => {
             {!isLoading && products.length >= 1 && (
               <div>
                 <div className="grid-title">
-                  {products.length}+ results found for '{startCase(searchTerm)}'
+                  {products.length}+ results found for `{startCase(searchTerm)}`
                 </div>
                 <div className="text-sm">Sorted by unit price</div>
               </div>
             )}
             {!isLoading && products.length < 1 && (
               <span>
-                No in-stock results found for '{startCase(searchTerm)}.'
+                No in-stock results found for `{startCase(searchTerm)}.`
               </span>
             )}
             {isLoading && (

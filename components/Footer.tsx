@@ -1,13 +1,12 @@
 import Link from "next/link";
-import React from "react";
 
 function Footer() {
   return (
     <footer className="w-4/5 mx-auto h-full text-green-200 text-sm m-4">
       {/* Disclaimer */}
       <div className="flex mx-auto w-fit font-semibold px-4 text-center text-zinc-100">
-        Prices are updated daily, but aren't guaranteed to be accurate. Each
-        local store will have slight differences in pricing.
+        {`Prices are updated on weekdays, but aren't always guaranteed to be accurate. Each
+        local store will likely have slight differences in pricing.`}
       </div>
 
       {/* Licenses and Credits */}
@@ -28,7 +27,7 @@ function Footer() {
 
       {/* Copyright, Privacy Policy Link, Github Link */}
       <div className="flex mx-auto gap-6 md:gap-14 p-1 w-fit">
-        <div>©2024</div>
+        <div>©2025</div>
 
         <Link href="../privacy" className="hover-to-white">
           Privacy Policy
