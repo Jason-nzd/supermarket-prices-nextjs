@@ -6,16 +6,16 @@
     "dev": "next dev",
     "build": "next build",
     "start": "npx serve@latest out --no-request-logging",
-    "lint": "next lint",
+    "lint": "eslint .",
     "cypress": "cypress open"
   },
   "dependencies": {
     "@azure/cosmos": "^4.3.0",
     "@headlessui/react": "^2.0.3",
-    "@next/bundle-analyzer": "^14.2.26",
+    "@next/bundle-analyzer": "16.0.0",
     "@types/node": "^20.17.27",
-    "@types/react": "^18.3.20",
-    "@types/react-dom": "^18.3.0",
+    "@types/react": "19.2.2",
+    "@types/react-dom": "19.2.2",
     "chart.js": "^4.4.3",
     "chartjs-adapter-date-fns": "^3.0.0",
     "cookies-next": "^4.3.0",
@@ -23,10 +23,10 @@
     "dotenv": "^16.4.5",
     "isomorphic-dompurify": "^2.16.0",
     "lodash": "^4.17.21",
-    "next": "^14.2.32",
-    "react": "^18.3.1",
+    "next": "16.0.0",
+    "react": "19.2.0",
     "react-chartjs-2": "^5.2.0",
-    "react-dom": "^18.3.1",
+    "react-dom": "19.2.0",
     "sharp": "^0.33.4",
     "typescript": "^5.4.5"
   },
@@ -34,7 +34,13 @@
     "@types/lodash": "^4.17.4",
     "autoprefixer": "^10.4.21",
     "cypress": "^14.5.2",
+    "eslint": "^9.38.0",
+    "eslint-config-next": "^16.0.0",
     "postcss": "^8.4.38",
     "tailwindcss": "^3.4.3"
+  },
+  "overrides": {
+    "@types/react": "19.2.2",
+    "@types/react-dom": "19.2.2"
   }
 }
