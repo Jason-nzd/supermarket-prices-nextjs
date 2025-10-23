@@ -166,7 +166,7 @@ function ProductModalFull({ product, setIsModalOpen }: Props) {
                   return (
                     <div className="px-1" key={index}>
                       <Link
-                        href={"products/" + category}
+                        href={"/products/" + category}
                         className="small-link"
                       >
                         {startCase(category.toLowerCase())}
