@@ -1,5 +1,5 @@
 import { GetStaticPaths, GetStaticProps } from "next";
-import { useRouter } from "next/router";
+//import { useRouter } from "next/router";
 import React, { useContext } from "react";
 import { ProductGridData } from "../../typings";
 import ProductsGrid from "../../components/ProductsGrid";
@@ -26,8 +26,8 @@ interface Props {
 }
 
 const Category = ({ productGridData, lastChecked }: Props) => {
-  const router = useRouter();
-  const { category } = router.query;
+  //const router = useRouter();
+  //const { category } = router.query;
   const theme = useContext(DarkModeContext).darkMode ? "dark" : "light";
 
   return (
