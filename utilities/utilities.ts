@@ -42,22 +42,25 @@ export enum LastChecked {
 
 // Removes undesired fields that CosmosDB creates
 export function cleanProductFields(document: Product): Product {
-  let {
+  const {
     id,
     name,
     currentPrice,
     size,
     sourceSite,
     priceHistory,
+    lastUpdated
+  } = document;
+  let {
     category,
-    lastUpdated,
     lastChecked,
     unitPrice,
     unitName,
     originalUnitQuantity,
   } = document;
+
   try {
-    // Also check for valid date and category formats
+    // Check for valid date and category formats
     if (lastUpdated === undefined || lastUpdated === null) {
       console.log(name + ' has null date - ' + lastUpdated);
     }
@@ -117,7 +120,7 @@ export function deriveUnitPriceString(product: Product): string | undefined {
 
   if (matchedUnit) {
     // Get any digits or decimals from size or name, then parse to a float
-    let regexSizeOnlyDigits = deriveUnitPriceFromName
+    const regexSizeOnlyDigits = deriveUnitPriceFromName
       ? product.name?.match(/\d|\./g)?.join('')
       : product.size?.match(/\d|\./g)?.join('');
     if (regexSizeOnlyDigits) quantity = parseFloat(regexSizeOnlyDigits);
@@ -126,7 +129,7 @@ export function deriveUnitPriceString(product: Product): string | undefined {
     product.unitName = matchedUnit.match(/(g|kg|l|ml)/g)?.join('');
 
     // Handle edge case where size contains a 'multiplier x sub-unit' - eg. 4 x 107mL
-    let matchMultipliedSizeString = product.size?.match(/\d+\sx\s\d+mL$/g)?.join('');
+    const matchMultipliedSizeString = product.size?.match(/\d+\sx\s\d+mL$/g)?.join('');
     if (matchMultipliedSizeString) {
       const splitMultipliedSize = matchMultipliedSizeString.split('x');
       const multiplier = parseInt(splitMultipliedSize[0].trim());
@@ -186,7 +189,7 @@ export function getPriceLowDifference(priceHistory: DatedPrice[]) {
 // Gets the % difference in price between the current and lower quartile average.
 export function getLowerQuartilePriceDifference(priceHistory: DatedPrice[]) {
   // Extract only prices from the DatedPrice array
-  let pricesOnly: number[] = [];
+  const pricesOnly: number[] = [];
   priceHistory.forEach((datedPrice) => {
     pricesOnly.push(datedPrice.price);
   });
@@ -227,7 +230,7 @@ export function getPriceAvgDifference(
   let avgHistoricalPrice = 0;
 
   // Get the oldest date to stop comparing prices to
-  let comparisonDateCutoff =
+  const comparisonDateCutoff =
     new Date(Date.now() - daysOfPriceHistoryToCompare * 24 * 60 * 60 * 1000);
 
   // Loop from most recent to oldest prices
@@ -267,8 +270,8 @@ export function getLastPriceChangePercent(priceHistory: DatedPrice[]) {
 // --------------------
 // Will take a UTC Date and return in format Mar 16, or 'Today'
 export function utcDateToShortDate(utcDate: Date, returnTodayString: boolean = false): string {
-  var date = new Date(utcDate).toDateString(); // Thu Mar 16 2023
-  var now = new Date().toDateString();
+  const date = new Date(utcDate).toDateString(); // Thu Mar 16 2023
+  const now = new Date().toDateString();
 
   if (date === now && returnTodayString) return 'Today';
   else return date.substring(4, 10); // Mar 16
@@ -445,6 +448,3 @@ export function numToArrayOfNumbers(numPages: number) {
 export function printProductCountSubTitle(numProductsShown: number, numProductsInDB: number): string {
   return `Showing cheapest ${numProductsShown}/${numProductsInDB} in-stock products`;
 }
-
-
-

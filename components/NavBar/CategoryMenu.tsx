@@ -18,7 +18,7 @@ import {
 // Shows a vertical list of product category links, organized into departments
 
 export default function CategoryMenu() {
-  let [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>

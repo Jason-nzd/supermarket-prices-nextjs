@@ -1,5 +1,5 @@
 import { GetStaticProps } from "next";
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { Product, ProductGridData } from "../../typings";
 import ProductsGrid from "../../components/ProductsGrid";
 import {
@@ -51,7 +51,7 @@ const Category = ({ productGridDataAll, lastChecked }: Props) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  let products = await DBFetchByCategory(
+  const products = await DBFetchByCategory(
     "butter",
     300,
     Store.Any,

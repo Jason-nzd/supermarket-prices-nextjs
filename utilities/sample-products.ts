@@ -1,19 +1,19 @@
 import { DatedPrice, Product } from '../typings';
 
-export function useSampleProductsInstead(): Product[] {
+export function getSampleProductsInstead(): Product[] {
   console.warn('Using sample products in place of CosmosDB connection');
   const sampleProducts: Product[] = [];
 
   // Loop through all found sample products
   sample.products.forEach((product) => {
     // Fix each DatedPrice date object
-    let fixedPriceHistory: DatedPrice[] = [];
+    const fixedPriceHistory: DatedPrice[] = [];
     product.priceHistory.forEach((datedPrice) => {
       fixedPriceHistory.push({ date: datedPrice.date as unknown as Date, price: datedPrice.price });
     });
 
     // Build new product object
-    let fixedProduct: Product = {
+    const fixedProduct: Product = {
       id: product.id,
       name: product.name,
       currentPrice: product.currentPrice,

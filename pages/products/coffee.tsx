@@ -51,7 +51,7 @@ const Category = ({ productGridDataAll, lastChecked }: Props) => {
 };
 
 export const getStaticProps: GetStaticProps = async () => {
-  let products = await DBFetchByCategory(
+  const products = await DBFetchByCategory(
     "coffee",
     300,
     Store.Any,

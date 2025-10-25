@@ -33,7 +33,7 @@ export default function Home({
         {/* Central Aligned Div */}
         <div className="central-responsive-div">
           {/* Page Title */}
-          <div className="grid-title">Today's Trending Products</div>
+          <div className="grid-title">{"Today's Trending Products"}</div>
           {countdownProducts && (
             <ProductsGrid
               products={countdownProducts}

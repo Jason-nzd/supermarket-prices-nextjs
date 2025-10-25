@@ -63,7 +63,7 @@ function PriceHistoryChart({
   // If the price wasn't changed today, duplicate the most recent price point
   // This highlights the last checked price should still be valid today
   if (!wasUpdatedToday) {
-    let duplicatedDatedPrice: DatedPrice = {
+    const duplicatedDatedPrice: DatedPrice = {
       date: new Date(),
       price: priceHistory[priceHistory.length - 1].price,
     };
@@ -129,10 +129,10 @@ function PriceHistoryChart({
             return "";
           },
 
-          label: function (context: any) {
+          label: function (context: import("chart.js").TooltipItem<"line">) {
             // Tooltip body - show the date and price
             const date = new Date();
-            date.setTime(context.parsed.x);
+            date.setTime(context.parsed.x as number);
             return (
               date.toLocaleDateString("en-NZ", {
                 day: "numeric",

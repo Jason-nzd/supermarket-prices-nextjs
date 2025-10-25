@@ -7,7 +7,7 @@ import {
   SqlParameter,
   SqlQuerySpec,
 } from '@azure/cosmos';
-import { useSampleProductsInstead } from './sample-products';
+import { getSampleProductsInstead } from './sample-products';
 import { Product } from '../typings';
 import {
   cleanProductFields,
@@ -48,7 +48,7 @@ export async function connectToCosmosDB(): Promise<boolean> {
     container = await database.container(COSMOS_CONTAINER!);
 
     return true;
-  } catch (error) {
+  } catch {
     console.log(
       'Invalid CosmosDB connection string, Database name, or Container name\n' +
       'Check env variables for:\n' +
@@ -71,7 +71,7 @@ export async function DBGetProduct(id: string, partitionKey?: string): Promise<P
       else response = await container.item(id).read();
 
       if (response.statusCode === 200) return response.resource as Product;
-    } catch (error) {
+    } catch {
       // If an error occurs during lookup, reject promise
       return Promise.reject();
     }
@@ -162,7 +162,7 @@ async function fetchProductsUsingSDK(
   querySpec: SqlQuerySpec,
   maxItems: number
 ): Promise<Product[]> {
-  let resultingProducts: Product[] = [];
+  const resultingProducts: Product[] = [];
 
   // Log query to console
   //console.log('SDK: ' + querySpec.query);
@@ -189,7 +189,7 @@ async function fetchProductsUsingSDK(
     } catch (error) {
       console.log('Error on fetchProductsUsingSDK()\n' + error);
     }
-  } else return useSampleProductsInstead();
+  } else return getSampleProductsInstead();
 
   return resultingProducts;
 }
@@ -236,7 +236,7 @@ export function queryAddOrderBy(orderBy: OrderByMode): string {
 //  useAND=true if adding onto other WHERE conditions, useAND=false if this is the only condition
 export function queryAddLimitStore(store: Store, useAND: boolean = true): string {
   let queryAddon = '';
-  let optionalAND = useAND ? ' AND ' : ' WHERE ';
+  const optionalAND = useAND ? ' AND ' : ' WHERE ';
 
   switch (store) {
     case Store.Countdown:
@@ -290,7 +290,7 @@ export function queryAddLastChecked(lastChecked: LastChecked, useAND: boolean = 
   let queryAddon = useAND ? ' AND ' : ' WHERE ';
   queryAddon += "p.lastChecked > '";
 
-  let todayModified = new Date();
+  const todayModified = new Date();
   switch (lastChecked) {
     case LastChecked.Within3Days:
       todayModified.setDate(todayModified.getDate() - 3);

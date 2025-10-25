@@ -36,7 +36,7 @@ function ProductCard({ product }: Props) {
     setIsModalOpen(true);
   }
 
-  let [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <>
@@ -108,7 +108,7 @@ function ProductCard({ product }: Props) {
               bg-[#ffd600] dark:bg-transparent dark:text-zinc-300 dark:ring-[#ac910c] dark:ring-2"
             >
               <StoreIcon sourceSite={product.sourceSite} width={20} />
-              PAK'nSAVE
+              {"PAK'nSAVE"}
             </div>
           )}
           {product.sourceSite === "newworld.co.nz" && (
