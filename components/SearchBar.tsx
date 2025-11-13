@@ -1,6 +1,5 @@
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-//import { useMediaQuery } from "../hooks/useMediaQuery";
 import { Dialog } from "@headlessui/react";
 
 interface Props {
@@ -20,10 +19,8 @@ export default function SearchBar({
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
-    router.push(`/client-search?query=${searchQuery}`);
+    router.push(`/client-search?query=${encodeURIComponent(searchQuery)}`);
   };
-
-  //const bigSearchBar = useMediaQuery("1140px");
 
   const handleMobileButton = () => {
     setIsModalOpen((prev) => !prev);
