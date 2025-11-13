@@ -1,4 +1,3 @@
-import React from "react";
 import { DatedPrice } from "../../typings";
 import { getPriceAvgDifference, printPrice } from "../../utilities/utilities";
 import {

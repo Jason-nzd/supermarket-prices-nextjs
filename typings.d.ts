@@ -2,12 +2,14 @@ export interface Product {
   id: string;
   name: string;
   currentPrice: number;
-  priceHistory: DatedPrice[];
+  priceHistory: DatedPrice[] | null;
+  packedPriceHistoryDates?: string[] | Date[]; // optional pre-packed date strings for price history
+  packedPriceHistoryPrices?: number[]; // optional pre-packed prices for price history
   size?: string;
   sourceSite: string;
   category?: string[];
-  lastUpdated: Date;
-  lastChecked: Date;
+  lastUpdated: string | Date;
+  lastChecked: string | Date;
   unitPrice?: number | null;
   unitName?: string | null;
   originalUnitQuantity?: number | null;
@@ -21,7 +23,7 @@ export interface ProductGridData {
 }
 
 export interface DatedPrice {
-  date: Date;
+  date: string | Date;
   price: number;
 }
 

@@ -448,3 +448,14 @@ export function numToArrayOfNumbers(numPages: number) {
 export function printProductCountSubTitle(numProductsShown: number, numProductsInDB: number): string {
   return `Showing cheapest ${numProductsShown}/${numProductsInDB} in-stock products`;
 }
+
+// toShortDateString()
+// ---------------------
+// Convert dates or date strings to a shortened string "YYYY-MM-DD"
+export function toShortDateString(longDate: string | Date): string {
+  const s = String(longDate);
+  if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
+  const d = longDate instanceof Date ? longDate : new Date(s);
+  if (isNaN(d.getTime())) return s.includes("T") ? s.split("T")[0] : s;
+  return d.toISOString().split("T")[0];
+};

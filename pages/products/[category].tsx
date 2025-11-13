@@ -1,7 +1,6 @@
 import { GetStaticPaths, GetStaticProps } from "next";
-//import { useRouter } from "next/router";
-import React, { useContext } from "react";
-import { ProductGridData } from "../../typings";
+import { useContext } from "react";
+import { DatedPrice, Product, ProductGridData } from "../../typings";
 import ProductsGrid from "../../components/ProductsGrid";
 import {
   DBFetchByCategory,
@@ -14,6 +13,7 @@ import {
   Store,
   printProductCountSubTitle,
   sortProductsByUnitPrice,
+  toShortDateString,
 } from "../../utilities/utilities";
 import { DarkModeContext } from "../_app";
 import NavBar from "../../components/NavBar/NavBar";
@@ -26,9 +26,28 @@ interface Props {
 }
 
 const Category = ({ productGridData, lastChecked }: Props) => {
-  //const router = useRouter();
-  //const { category } = router.query;
   const theme = useContext(DarkModeContext).darkMode ? "dark" : "light";
+
+  // Reconstruct priceHistory from packed arrays
+  const reconstructedProducts: Product[] = [];
+
+  productGridData.products.map((p) => {
+    // Rehydrate priceHistory from packed arrays if present
+    const reconstructedPriceHistory: DatedPrice[] = [];
+
+    const dates = p.packedPriceHistoryDates;
+    const prices = p.packedPriceHistoryPrices;
+
+    if (dates && prices && dates.length === prices.length) {
+      dates.map((date, index) => {
+        const dp: DatedPrice = { date: date, price: prices[index] };
+        reconstructedPriceHistory.push(dp);
+      });
+    }
+
+    p.priceHistory = reconstructedPriceHistory;
+    reconstructedProducts.push(p);
+  });
 
   return (
     <main className={theme}>
@@ -42,7 +61,7 @@ const Category = ({ productGridData, lastChecked }: Props) => {
           <ProductsGrid
             titles={productGridData.titles}
             subTitle={productGridData.subTitle}
-            products={productGridData.products}
+            products={reconstructedProducts}
             createSearchLink={productGridData.createSearchLink}
           />
         </div>
@@ -215,11 +234,27 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const numProductsPerPage = 40;
   products = products.slice(0, numProductsPerPage);
 
+  // Trim data size by converting dates to short strings and packing price history
+  const dataTrimmedProducts = products.map((p) => ({
+    ...p,
+    lastChecked: toShortDateString(p.lastChecked),
+    lastUpdated: toShortDateString(p.lastUpdated),
+
+    // Pre-pack price history into two arrays for smaller data size
+    packedPriceHistoryDates: p.priceHistory!.map((ph) =>
+      toShortDateString(ph.date)
+    ),
+    packedPriceHistoryPrices: p.priceHistory!.map((ph) => ph.price),
+
+    // Clear out original price history to reduce data size
+    priceHistory: null,
+  }));
+
   // Build ProductGridData object
   const productGridData: ProductGridData = {
     titles: [startCase(searchTerm)],
     subTitle: printProductCountSubTitle(products.length, foundItemsCount),
-    products: products,
+    products: dataTrimmedProducts,
     createSearchLink: false,
   };
 
