@@ -22,7 +22,7 @@
     "date-fns": "^3.6.0",
     "dotenv": "^16.4.5",
     "isomorphic-dompurify": "^2.16.0",
-    "lodash": "^4.17.21",
+    "lodash": "^4.17.23",
     "next": "^16.0.7",
     "react": "19.2.0",
     "react-chartjs-2": "^5.2.0",
