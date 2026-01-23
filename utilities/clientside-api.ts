@@ -21,15 +21,17 @@ export async function DBFetchAllAPI(
 }
 
 // When running on the client-side, fetches can be made to the REST API
-async function fetchProductsUsingAPI(queryObject: object, maxItems: number): Promise<Product[]> {
-  const maxRetries = 5;
-  const retryDelay = 4000;
-  const timeout = 30000;
+async function fetchProductsUsingAPI(queryObject: { query: string }, maxItems: number): Promise<Product[]> {
+  const maxRetries = 10;
+  const retryDelay = 1000;
+  const timeout = 6000;
 
   let retries = 0;
 
   while (retries <= maxRetries) {
+
     try {
+      console.log(`Attempting to fetch products from API (Attempt ${retries + 1}/${maxRetries})...`);
       // Fetch response using POST
       const apiResponse = await fetch('https://api.kiwiprice.xyz/', {
         method: 'POST',
@@ -53,14 +55,13 @@ async function fetchProductsUsingAPI(queryObject: object, maxItems: number): Pro
         const resultingProducts: Product[] = apiProducts.map((productDocument) => {
           return cleanProductFields(productDocument);
         });
-
+        console.log(`Fetched ${resultingProducts.length} products from API.`);
         return resultingProducts;
       } else {
-        console.log(apiResponse.statusText);
-        throw new Error(apiResponse.statusText);
+        console.log("Response status:", apiResponse.statusText);
       }
     } catch (error) {
-      console.error(`REST API Retrying ${retries + 1}/${maxRetries}:`, error);
+      console.error(`Error: Retrying ${retries + 1}/${maxRetries}:`, error);
 
       // If all retries fail, rethrow the error
       if (retries === maxRetries) {
@@ -72,7 +73,7 @@ async function fetchProductsUsingAPI(queryObject: object, maxItems: number): Pro
       retries++;
     }
   }
-  // If unable to connect to API, return an empty array
+  // After exhausting retries, return an empty array
   return [];
 }
 
