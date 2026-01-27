@@ -23,7 +23,7 @@
     "dotenv": "^16.4.5",
     "isomorphic-dompurify": "^2.16.0",
     "lodash": "^4.17.21",
-    "next": "^16.0.7",
+    "next": "^16.1.5",
     "react": "19.2.0",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "19.2.0",
