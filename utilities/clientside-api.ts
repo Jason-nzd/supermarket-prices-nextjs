@@ -31,7 +31,6 @@ async function fetchProductsUsingAPI(queryObject: { query: string }, maxItems: n
   while (retries <= maxRetries) {
 
     try {
-      console.log(`Attempting to fetch products from API (Attempt ${retries + 1}/${maxRetries})...`);
       // Fetch response using POST
       const apiResponse = await fetch('https://api.kiwiprice.xyz/', {
         method: 'POST',
@@ -55,20 +54,24 @@ async function fetchProductsUsingAPI(queryObject: { query: string }, maxItems: n
         const resultingProducts: Product[] = apiProducts.map((productDocument) => {
           return cleanProductFields(productDocument);
         });
+
+        // Log to console for debugging
         console.log(`Fetched ${resultingProducts.length} products from API.`);
         return resultingProducts;
+
       } else {
-        console.log("Response status:", apiResponse.statusText);
+        // Throw error for non-200 responses
+        throw new Error(`API returned status ${apiResponse.status}: ${apiResponse.statusText}`);
       }
     } catch (error) {
-      console.error(`Error: Retrying ${retries + 1}/${maxRetries}:`, error);
+      console.error(`Retrying ${retries + 1}/${maxRetries}:`, error);
 
       // If all retries fail, rethrow the error
       if (retries === maxRetries) {
         throw error;
       }
 
-      // Wait before retrying
+      // Retry after a delay
       await new Promise(resolve => setTimeout(resolve, retryDelay));
       retries++;
     }

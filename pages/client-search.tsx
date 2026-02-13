@@ -40,12 +40,13 @@ const ClientSearch = ({ lastChecked }: Props) => {
 
         try {
           // Fetch all products matching search that have been checked within 7 days
+          console.log(`Fetching in-stock products matching "${searchTerm}"...`);
           const currentProducts = await DBFetchByNameAPI(
             searchTerm,
             maxProductsToSearch,
             Store.Any,
             PriceHistoryLimit.Any,
-            LastChecked.Within7Days
+            LastChecked.Within7Days,
           );
 
           // Clear out of stock products array every search
@@ -53,12 +54,15 @@ const ClientSearch = ({ lastChecked }: Props) => {
 
           // If in-stock product search produced few results, supplement with out-of-stock search
           if (currentProducts.length < 20) {
+            console.log(
+              `Only found ${currentProducts.length} in-stock products for ${searchTerm}, supplementing with out-of-stock products.`,
+            );
             let oldProducts = await DBFetchByNameAPI(
               searchTerm,
               maxProductsToSearch,
               Store.Any,
               PriceHistoryLimit.Any,
-              LastChecked.Any
+              LastChecked.Any,
             );
 
             // Filter to only show old products as a separate results section
@@ -105,7 +109,9 @@ const ClientSearch = ({ lastChecked }: Props) => {
             {!isLoading && products.length >= 1 && (
               <div>
                 <div className="grid-title">
-                  {products.length}+ results found for `{startCase(searchTerm)}`
+                  {products.length}
+                  {products.length > 40 ? "+" : ""} products found for `
+                  {startCase(searchTerm)}`
                 </div>
                 <div className="text-sm">Sorted by unit price</div>
               </div>
@@ -142,12 +148,13 @@ const ClientSearch = ({ lastChecked }: Props) => {
             )}
           </div>
           {products && <ProductsGrid products={products} />}
-          {outOfStockProducts && (
+          {outOfStockProducts.length > 0 && (
             <div className="mt-8">
+              <div className="grid-title">
+                {outOfStockProducts.length} old/out of stock products found
+              </div>
               <ProductsGrid
                 products={outOfStockProducts}
-                titles={["Products with old data or are out of stock"]}
-                subTitle="Limited to 40 search results"
                 createSearchLink={false}
               />
             </div>
