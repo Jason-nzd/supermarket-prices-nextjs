@@ -222,39 +222,39 @@ function ProductModalFull({ product, setIsModalOpen }: Props) {
             {/* Original Site Search Link */}
             <a
               target="_blank"
-              className="flex-col h-18 w-full"
+              className="max-h-18 w-full"
               href={originalProductURLBase + "/" + cleanedSearchName}
               rel="noopener noreferrer"
             >
-              <div className={"text-md my-4"}>
+              <div className={"text-md my-3"}>
                 {getStoreEnum(product) == Store.Countdown && (
-                  <div className="glass-capsule green-ring py-1 px-8">
+                  <div className="glass-capsule green-ring py-1 px-8 flex-col">
                     <div>&apos;{product.name}&apos;</div>
-                    <div className="flex gap-x-1 items-center mx-auto w-fit">
+                    <div className="text-sm flex gap-x-1 items-center mx-auto w-fit">
                       {boxArrow} woolworths.co.nz
                     </div>
                   </div>
                 )}
                 {getStoreEnum(product) == Store.Warehouse && (
-                  <div className="glass-capsule red-ring py-1 px-8">
+                  <div className="glass-capsule red-ring py-1 px-8 flex-col">
                     <div>&apos;{product.name}&apos;</div>
-                    <div className="flex gap-x-1 items-center mx-auto w-fit">
+                    <div className="text-sm flex gap-x-1 items-center mx-auto w-fit">
                       {boxArrow} thewarehouse.co.nz
                     </div>
                   </div>
                 )}
                 {getStoreEnum(product) == Store.Paknsave && (
-                  <div className="glass-capsule yellow-ring py-1 px-8">
+                  <div className="glass-capsule yellow-ring py-1 px-8 flex-col">
                     <div>&apos;{product.name}&apos;</div>
-                    <div className="flex gap-x-1 items-center mx-auto w-fit">
+                    <div className="text-sm flex gap-x-1 items-center mx-auto w-fit">
                       {boxArrow} paknsave.co.nz
                     </div>
                   </div>
                 )}
                 {getStoreEnum(product) == Store.NewWorld && (
-                  <div className="glass-capsule red-ring py-1 px-8">
+                  <div className="glass-capsule red-ring py-1 px-8 flex-col">
                     <div>&apos;{product.name}&apos;</div>
-                    <div className="flex gap-x-1 items-center mx-auto w-fit">
+                    <div className="text-sm flex gap-x-1 items-center mx-auto w-fit">
                       {boxArrow} newworld.co.nz
                     </div>
                   </div>
@@ -263,7 +263,7 @@ function ProductModalFull({ product, setIsModalOpen }: Props) {
             </a>
 
             {/* First Added  - hidden on mobile*/}
-            <div className="glass-capsule text-sm hidden md:flex">
+            <div className="glass-capsule text-sm my-1 hidden md:flex">
               <div className="p-1">First added to KiwiPrice on</div>
               <div>{utcDateToMonthYear(product.priceHistory[0].date)}</div>
             </div>

@@ -1,19 +1,94 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+/* Theme color variables */
+:root {
+  --color-ww-green: #589d7b;
+  --color-pak-yellow: #ffd600;
+  --color-warehouse-red: #c00;
+  --color-newworld: #555;
+}
+
+@theme {
+  --breakpoint-sm: 400px;
+  --breakpoint-md: 600px;
+  --breakpoint-lg: 1030px;
+  --breakpoint-xl: 1340px;
+  --breakpoint-2xl: 1700px;
+  --breakpoint-3xl: 2100px;
+}
+
+@variant dark (&:where(.dark, .dark *));
+
+@layer utilities {
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+}
 
 @layer components {
   body {
-    @apply bg-green-600 dark:bg-red-500 text-zinc-800 dark:text-zinc-300;
+    @apply bg-green-600 text-zinc-800;
+    @variant dark {
+      @apply bg-red-500 text-zinc-100;
+    }
   }
   p {
-    @apply text-zinc-800 dark:text-zinc-300;
+    @apply text-zinc-800;
+    @variant dark {
+      @apply text-zinc-100;
+    }
   }
   .central-responsive-div {
-    @apply px-2 mx-auto w-[100%] 2xl:w-[90rem] 3xl:w-[110rem] transition-all duration-500;
+    @apply px-2 mx-auto w-full 2xl:w-[90rem] 3xl:w-[110rem] transition-all duration-400;
   }
   .content-body {
-    @apply bg-[url('/images/bg-gradient.png')] bg-cover bg-[#dee9ad] pt-1 pb-12 dark:bg-zinc-800 dark:bg-none;
+    background:
+      radial-gradient(
+        ellipse at 20% 40%,
+        rgba(90, 150, 80, 0.5) 22%,
+        transparent 50%
+      ),
+      radial-gradient(
+        ellipse at 80% 60%,
+        rgba(100, 140, 150, 0.15) 22%,
+        transparent 40%
+      ),
+      linear-gradient(to bottom, #eeeeee 0%, #d6e789 100%);
+    background-size:
+      100% 100%,
+      100% 100%,
+      100% 100%;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    @apply pt-1 pb-12;
+
+    @variant dark {
+      background:
+        radial-gradient(
+          ellipse at 20% 40%,
+          rgba(110, 150, 30, 0.2) 11%,
+          transparent 50%
+        ),
+        radial-gradient(
+          ellipse at 80% 60%,
+          rgba(100, 140, 150, 0.15) 22%,
+          transparent 40%
+        ),
+        linear-gradient(to bottom, #111 0%, #000 100%);
+      background-size:
+        100% 100%,
+        100% 100%,
+        100% 100%;
+      background-repeat: no-repeat;
+      background-attachment: scroll;
+    }
   }
   .text-primary-colour {
     @apply text-green-200;
@@ -22,51 +97,71 @@
     @apply px-2 my-0 py-0 rounded-md border border-stone-300;
   }
   .nav-main-link {
-    @apply text-primary-colour px-2.5 py-1 rounded-3xl mx-0.5
+    @apply text-green-200 px-2.5 py-1 rounded-3xl mx-0.5
     hover:bg-green-300 hover:text-black hover:shadow-md transition-all;
   }
-  .nav-main-link-active{
+  .nav-main-link-active {
     @apply bg-green-300 text-black transition-all;
   }
   .small-link {
-    @apply ring-green-300 ring-2 px-2 py-1 rounded-3xl font-semibold hover-panel;
+    @apply ring-green-300 ring-2 px-2 py-1 rounded-3xl font-semibold bg-zinc-50 hover:bg-white shadow-md hover:shadow-lg transition-shadow;
   }
   .btn-primary {
     @apply py-2 px-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700
-     focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75;
+     focus:outline-none focus:ring-2 focus:ring-blue-400/75;
   }
   .hover-to-white {
-    @apply transition-colors duration-300 hover:text-white;
+    @apply transition-colors duration-200 hover:text-white;
   }
   .product-card {
-    @apply bg-stone-50 bg-opacity-80 m-1 rounded-2xl shadow-lg flex flex-col min-w-[18rem]
-    hover:scale-[102%] hover:shadow-2xl duration-300 ease-in-out cursor-pointer hover:bg-white
-    dark:bg-zinc-800 dark:text-zinc-300 dark:ring-zinc-500 dark:ring-2;
+    @apply bg-stone-50/80 m-1 rounded-2xl shadow-lg flex flex-col min-w-[18rem]
+    hover:scale-[102%] hover:shadow-2xl duration-200 ease-in-out cursor-pointer hover:bg-white;
+
+    @variant dark {
+      @apply bg-zinc-800/30 text-zinc-100 ring-zinc-500 ring-2
+       hover:bg-white/10 hover:ring-green-800;
+    }
   }
   .grid-title {
-    @apply mt-6 mb-2 text-xl text-[#3C8DA3] font-bold text-center dark:text-zinc-300;
+    @apply mt-6 mb-2 text-xl text-[#3C8DA3] font-bold text-center;
+    @variant dark {
+      @apply text-zinc-300;
+    }
   }
   .size-tag {
     @apply z-20 absolute top-[7rem] left-[1rem] p-2 px-3 text-center text-lg lg:text-base
-    bg-black bg-opacity-[30%] dark:bg-opacity-[60%] backdrop-blur-sm text-white dark:text-zinc-300
+    bg-black/30 backdrop-blur-sm text-white
     font-semibold ring-1 ring-white rounded-2xl shadow-md;
+    @variant dark {
+      @apply bg-black/60 text-zinc-300;
+    }
   }
   .external-link {
     @apply font-semibold ring-2 w-fit rounded-3xl p-2;
   }
   .green-ring {
-    @apply ring-green-300  hover:ring-green-400 hover-panel;
+    @apply ring-green-400 hover:ring-green-300 hover:bg-white/20 shadow-md hover:shadow-lg transition-shadow;
   }
   .yellow-ring {
-    @apply ring-yellow-300 hover:ring-yellow-400 hover-panel;
+    @apply ring-yellow-400 hover:ring-yellow-300 hover:bg-white/20  shadow-md hover:shadow-lg transition-shadow;
   }
   .red-ring {
-    @apply ring-red-500 hover:ring-red-600 hover-panel;
+    @apply ring-red-500 hover:ring-red-400 hover:bg-white/20  shadow-md hover:shadow-lg transition-shadow;
   }
   .gray-ring {
-    @apply ring-gray-400 ring-2 rounded-3xl px-4 hover:ring-gray-600 hover-panel;
+    @apply ring-gray-400 ring-2 rounded-3xl px-4 hover:bg-white/20  shadow-md hover:shadow-lg transition-shadow;
   }
   .hover-panel {
     @apply bg-zinc-50 hover:bg-white shadow-md hover:shadow-lg transition-shadow;
+  }
+  .source-site-footer {
+    @apply flex items-center justify-center gap-x-2 p-1 rounded-b-2xl;
+  }
+  .glass-capsule {
+    @apply w-full flex items-center justify-center bg-gray-50/20 shadow-none ring-2 ring-white/60 backdrop-blur-sm rounded-3xl;
+
+    @variant dark {
+      @apply bg-transparent;
+    }
   }
 }
