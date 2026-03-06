@@ -1,4 +1,3 @@
-import React from "react";
 import { DatedPrice } from "../../typings";
 import { getPriceAvgDifference, printPrice } from "../../utilities/utilities";
 import {
@@ -33,7 +32,7 @@ function PriceHistoryChart({
     PointElement,
     LineElement,
     TimeScale,
-    Tooltip
+    Tooltip,
   );
 
   // Check if the price was updated today or not
@@ -44,20 +43,20 @@ function PriceHistoryChart({
 
   // Limit small charts to five months ago for readability
   const fiveMonthsAgo = new Date(
-    new Date().getTime() - 5 * 30 * 24 * 60 * 60 * 1000
+    new Date().getTime() - 5 * 30 * 24 * 60 * 60 * 1000,
   );
 
   // Find the min and max all time price
   const minPrice = Math.min(
-    ...priceHistory.map((datedPrice) => datedPrice.price)
+    ...priceHistory.map((datedPrice) => datedPrice.price),
   );
   const maxPrice = Math.max(
-    ...priceHistory.map((datedPrice) => datedPrice.price)
+    ...priceHistory.map((datedPrice) => datedPrice.price),
   );
 
   // If any of prices are too high to warrant decimals, don't show decimals
   const displayWithoutDecimals = priceHistory.some(
-    (datedPrice) => datedPrice.price > 9
+    (datedPrice) => datedPrice.price > 9,
   );
 
   // If the price wasn't changed today, duplicate the most recent price point

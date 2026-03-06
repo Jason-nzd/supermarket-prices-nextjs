@@ -103,9 +103,10 @@ function ProductModalFull({ product, setIsModalOpen }: Props) {
     // Main modal div requires absolute and high z-index
     <div
       className={
+        (theme === "dark" ? "dark " : "") +
         (theme === "dark"
-          ? "bg-zinc-800 text-zinc-300"
-          : "text-green-800 bg-white/60 backdrop-blur-lg") +
+          ? "bg-zinc-900/50 text-zinc-100 backdrop-blur-2xl"
+          : "bg-white/60 text-green-800 backdrop-blur-lg") +
         " flex flex-col absolute mx-auto rounded-3xl z-50 shadow-2xl" +
         " overflow-y-scroll overflow-x-hidden max-h-[90vh] no-scrollbar"
       }
@@ -154,14 +155,14 @@ function ProductModalFull({ product, setIsModalOpen }: Props) {
           {/* Other information on right 1/3 for desktop, full width for mobile */}
           <div className="flex flex-col w-full md:w-1/2 md:min-w-[20rem] p-2 h-fit my-auto">
             {/* Div for price tag and stats sharing the same row */}
-            <div className="flex mx-auto w-full">
+            <div className="flex w-full">
               {/* Price Tag */}
-              <div className="w-1/2">
+              <div className="w-1/2 mr-8">
                 <PriceTag product={product} />
               </div>
 
               {/* Price Stats */}
-              <div className="glass-capsule text-sm">
+              <div className="glass-capsule text-sm w-1/2">
                 <div className="mx-auto leading-tight md:leading-normal">
                   <div className="flex">
                     <div className="text-right pr-1 min-w-12">Low</div>
@@ -187,7 +188,7 @@ function ProductModalFull({ product, setIsModalOpen }: Props) {
                     <div key={index}>
                       <Link
                         href={"/products/" + category}
-                        className="py-1 px-10 hover:bg-white rounded-full"
+                        className="py-1 px-10 hover:bg-white dark:hover:bg-green-200/20 dark:hover:text-white rounded-full"
                       >
                         {startCase(category.toLowerCase())}
                       </Link>
@@ -221,18 +222,13 @@ function ProductModalFull({ product, setIsModalOpen }: Props) {
             {/* Original Site Search Link */}
             <a
               target="_blank"
-              className="flex-col h-18"
+              className="flex-col h-18 w-full"
               href={originalProductURLBase + "/" + cleanedSearchName}
               rel="noopener noreferrer"
             >
-              <div
-                className={
-                  (theme === "dark" ? "bg-zinc-800 text-zinc-300" : "") +
-                  "text-sm my-4"
-                }
-              >
+              <div className={"text-md my-4"}>
                 {getStoreEnum(product) == Store.Countdown && (
-                  <div className="glass-capsule green-ring py-1 px-3">
+                  <div className="glass-capsule green-ring py-1 px-8">
                     <div>&apos;{product.name}&apos;</div>
                     <div className="flex gap-x-1 items-center mx-auto w-fit">
                       {boxArrow} woolworths.co.nz
@@ -240,7 +236,7 @@ function ProductModalFull({ product, setIsModalOpen }: Props) {
                   </div>
                 )}
                 {getStoreEnum(product) == Store.Warehouse && (
-                  <div className="glass-capsule red-ring py-1 px-3">
+                  <div className="glass-capsule red-ring py-1 px-8">
                     <div>&apos;{product.name}&apos;</div>
                     <div className="flex gap-x-1 items-center mx-auto w-fit">
                       {boxArrow} thewarehouse.co.nz
@@ -248,7 +244,7 @@ function ProductModalFull({ product, setIsModalOpen }: Props) {
                   </div>
                 )}
                 {getStoreEnum(product) == Store.Paknsave && (
-                  <div className="glass-capsule yellow-ring py-1 px-3">
+                  <div className="glass-capsule yellow-ring py-1 px-8">
                     <div>&apos;{product.name}&apos;</div>
                     <div className="flex gap-x-1 items-center mx-auto w-fit">
                       {boxArrow} paknsave.co.nz
@@ -256,7 +252,7 @@ function ProductModalFull({ product, setIsModalOpen }: Props) {
                   </div>
                 )}
                 {getStoreEnum(product) == Store.NewWorld && (
-                  <div className="glass-capsule red-ring py-1 px-3">
+                  <div className="glass-capsule red-ring py-1 px-8">
                     <div>&apos;{product.name}&apos;</div>
                     <div className="flex gap-x-1 items-center mx-auto w-fit">
                       {boxArrow} newworld.co.nz
