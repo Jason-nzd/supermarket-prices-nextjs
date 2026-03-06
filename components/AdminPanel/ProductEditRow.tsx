@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Product } from "../../typings";
 import DatedPriceTag from "./DatedPriceTag";
 import StoreIcon from "../StoreIcon";
-import { utcDateToShortDate } from "utilities/utilities";
+import { getStoreEnum, utcDateToShortDate } from "utilities/utilities";
 
 interface Props {
   product: Product;
@@ -25,7 +25,7 @@ function ProductEditRow({ product }: Props) {
       {/* Store Icon */}
       <th className="pl-2 place-content-around gap-x-2">
         <div className="text-xs text-center font-light ml-4">
-          <StoreIcon sourceSite={product.sourceSite} width={30} />
+          <StoreIcon store={getStoreEnum(product)} width={30} />
         </div>
       </th>
 
