@@ -1,6 +1,6 @@
 import { useMediaQuery } from "../hooks/useMediaQuery";
 import { Product } from "../typings";
-import ProductCard from "./card/ProductCard";
+import ProductCard from "./ProductCard/ProductCard";
 import Link from "next/link";
 import DOMPurify from "isomorphic-dompurify";
 

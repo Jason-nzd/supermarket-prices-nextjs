@@ -10,7 +10,7 @@ function Footer() {
       </div>
 
       {/* Licenses and Credits */}
-      <div className="mx-auto my-3 justify-center w-[10rem] md:w-fit">
+      <div className="mx-auto my-3 justify-center w-40 md:w-fit">
         <div className="flex flex-wrap mx-auto justify-center md:flex-nowrap gap-x-8">
           <div>Icons licensed from:</div>
           <Link href="https://icon-icons.com" className="hover-to-white">

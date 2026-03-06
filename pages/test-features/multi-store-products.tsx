@@ -1,11 +1,11 @@
 import { GetStaticProps } from "next";
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { Product } from "../../typings";
 import { DBFetchByName, DBGetMostRecentDate } from "../../utilities/cosmosdb";
 import { DarkModeContext } from "../_app";
 import NavBar from "../../components/NavBar/NavBar";
 import Footer from "../../components/Footer";
-import MultiStorePriceHistoryChart from "components/card/MultiStorePriceHistoryChart";
+import MultiStorePriceHistoryChart from "components/ProductCard/MultiStorePriceHistoryChart";
 
 interface Props {
   countdownProduct: Product | null;
@@ -30,10 +30,10 @@ const Category = ({
       {/* Background Div */}
       <div className="content-body">
         {/* Central Aligned Div */}
-        <div className="central-responsive-div min-h-[50rem]">
+        <div className="central-responsive-div min-h-200">
           {/* Categorised Product Grids*/}
           <h1 className="grid-title">{countdownProduct?.name}</h1>
-          <div className="flex mx-auto w-full max-w-[80rem] h-[500px]">
+          <div className="flex mx-auto w-full max-w-7xl h-125">
             <MultiStorePriceHistoryChart
               countdownProduct={countdownProduct}
               paknsaveProduct={paknsaveProduct}
@@ -67,8 +67,6 @@ export const getStaticProps: GetStaticProps = async () => {
       warehouseProduct = product;
     if (sizeIsValid && product.sourceSite === "newworld.co.nz")
       newworldProduct = product;
-
-    // console.log(product.sourceSite + ' - ' + product.size + ' - ' + product.name);
   });
 
   const lastChecked = await DBGetMostRecentDate();

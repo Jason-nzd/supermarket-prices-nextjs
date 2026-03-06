@@ -40,6 +40,15 @@ export enum LastChecked {
   Any,
 }
 
+export function getStoreEnum(product: Product): Store {
+  if (product.sourceSite.includes("countdown") || product.sourceSite.includes("woolworths"))
+    return Store.Countdown
+  else if (product.sourceSite.includes("thewarehouse")) return Store.Warehouse
+  else if (product.sourceSite.includes("paknsave")) return Store.Paknsave;
+  else if (product.sourceSite.includes("newworld")) return Store.NewWorld;
+  else return Store.Any;
+}
+
 // Removes undesired fields that CosmosDB creates
 export function cleanProductFields(document: Product): Product {
   const {

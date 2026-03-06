@@ -14,7 +14,7 @@ export default function DarkModeToggle() {
       onChange={useContext(DarkModeContext).toggleDarkMode}
       className={`${
         useContext(DarkModeContext).darkMode ? "bg-zinc-700" : "bg-green-700"
-      } relative inline-flex h-8 w-11 items-center rounded-full`}
+      } relative inline-flex h-8 w-11 items-center rounded-full cursor-pointer`}
     >
       <span className="sr-only">Dark Theme</span>
       <span
