@@ -457,3 +457,19 @@ export function numToArrayOfNumbers(numPages: number) {
 export function printProductCountSubTitle(numProductsShown: number, numProductsInDB: number): string {
   return `Showing cheapest ${numProductsShown}/${numProductsInDB} in-stock products`;
 }
+
+// getLargestMultiplication()
+// --------------------------
+// Get the largest multiplication that fits within the range of inputNum
+// eg. inputNum = 45, multiplier = 6, returns 42 (7 multiples of 6)
+export function getLargestMultiplication(inputNum: number, multiplier: number): number {
+  let currentMultiple = multiplier;
+  let largestMultiplication = multiplier;
+  while (true) {
+    currentMultiple += multiplier;
+    if (currentMultiple === inputNum) return inputNum;
+    if (currentMultiple > inputNum) return largestMultiplication;
+
+    largestMultiplication = currentMultiple;
+  }
+}

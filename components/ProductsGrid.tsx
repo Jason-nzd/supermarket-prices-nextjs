@@ -132,17 +132,3 @@ function ProductsGrid({
 }
 
 export default ProductsGrid;
-
-// Get the final multiplier that fits within the range of inputNum
-// eg. inputNum = 45, multiplier = 6, returns 42 (7 multiples of 6)
-function nextMultipleDown(inputNum: number, multiplier: number): number {
-  let currentMultiple = multiplier;
-  let lastMultiple = multiplier;
-  while (true) {
-    currentMultiple += multiplier;
-    if (currentMultiple === inputNum) return inputNum;
-    if (currentMultiple > inputNum) return lastMultiple;
-
-    lastMultiple = currentMultiple;
-  }
-}
