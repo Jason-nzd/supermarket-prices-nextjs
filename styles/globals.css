@@ -142,7 +142,7 @@
     @apply flex items-center justify-center gap-x-2 p-1 rounded-b-2xl h-full;
   }
   .glass-capsule {
-    @apply w-full flex items-center justify-center bg-gray-50/10 backdrop-blur-xs rounded-3xl;
+    @apply w-full flex items-center justify-center bg-white/10 backdrop-blur-xs rounded-3xl;
 
     @variant dark {
       @apply bg-transparent;
@@ -155,5 +155,8 @@
 
   #mobile-menu-button {
     @apply text-white/90 hover:text-white focus:outline-0 cursor-pointer;
+  }
+  .modal-outside-tint {
+    @apply absolute inset-0 bg-black/20 backdrop-blur-none;
   }
 }

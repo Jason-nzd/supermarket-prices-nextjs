@@ -44,6 +44,8 @@ const NavBar = ({ lastUpdatedDate }: Props) => {
             alt=""
             className="hidden lg:block w-20 pt-1 pb-2 duration-200 
               hover:rotate-12 hover:scale-[102%]"
+            loading="eager"
+            priority
           />
         </Link>
 

@@ -58,6 +58,7 @@ function ProductCard({ product }: Props) {
               id={product.id}
               src={"product-images/200/" + product.id + ".webp"}
               desaturate={!productIsCurrent(product)}
+              priority={true}
             />
 
             {/* Optional Size div overlaid on top of image */}
