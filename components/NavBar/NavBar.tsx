@@ -3,7 +3,7 @@ import Link from "next/link";
 import startCase from "lodash/startCase";
 import { useContext } from "react";
 import kiwifruit from "../../public/logo.webp";
-import DepartmentCategoryMenu from "./CategoryMenu";
+import CategoryMenuButton from "./CategoryMenu/CategoryMenuButton";
 import SearchBar from "../SearchBar";
 import MobileBurgerMenu from "./MobileBurgerMenu";
 import DarkModeToggle from "./DarkModeToggle";
@@ -98,7 +98,7 @@ const NavBar = ({ lastUpdatedDate }: Props) => {
             </div>
 
             {/* More Categories Button */}
-            <DepartmentCategoryMenu />
+            <CategoryMenuButton />
 
             {/* Search Bar */}
             <div className="w-fit ml-auto">

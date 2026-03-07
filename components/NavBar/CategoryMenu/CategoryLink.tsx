@@ -1,12 +1,12 @@
 import { setCookie } from "cookies-next";
 import { FavouriteCategoriesContext } from "pages/_app";
-import React, { useContext } from "react";
+import { useContext } from "react";
 
-// CategoryLink - child of DepartmentSection
-// -----------------------------------------
-// Features a clickable link to a product category such as Rice, Bread, etc.
+// CategoryLink - child of CategoryGroup
+// -------------------------------------
+// Link to a product category such as Rice, Bread, etc.
 // A favourite/unfavourite toggle button is placed next to each category.
-// The user favourite categories are also written to a cookie here.
+// Cookies for user favourites are managed here.
 
 interface Props {
   category: string;

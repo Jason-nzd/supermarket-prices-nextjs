@@ -1,20 +1,16 @@
-import React, { useContext } from "react";
 import CategoryLink from "./CategoryLink";
 import Link from "next/link";
 import startCase from "lodash/startCase";
-import { DarkModeContext } from "../../pages/_app";
 
-// DepartmentSection - child of CategoryMenu, parent of CategoryLink
-// ------------------------------------------------------------------
-// Within the CategoryMenu there are many departments such as
-// Pantry, Chilled, etc.
+// CategoryGroup
+// -------------------
 
 interface Props {
   subCategoryTitle: string;
   subCategoryNames: string[];
 }
 
-export default function DepartmentSection({
+export default function CategoryGroup({
   subCategoryTitle,
   subCategoryNames,
 }: Props) {

@@ -6,7 +6,7 @@ import {
 } from "@headlessui/react";
 import React from "react";
 import { burgerIcon } from "./NavBar";
-import SubCategoryList from "./DepartmentSection";
+import SubCategoryList from "./CategoryMenu/CategoryGroup";
 import {
   chilledCategory,
   drinksCategory,

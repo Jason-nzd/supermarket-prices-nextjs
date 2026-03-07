@@ -1,7 +1,7 @@
 import { Dialog, DialogPanel } from "@headlessui/react";
 import { useContext, useState } from "react";
-import DepartmentSection from "./DepartmentSection";
-import { DarkModeContext } from "../../pages/_app";
+import CategoryGroup from "./CategoryGroup";
+import { DarkModeContext } from "../../../pages/_app";
 import {
   chilledCategory,
   drinksCategory,
@@ -11,11 +11,11 @@ import {
   pantryCategory,
   petsCategory,
   snacksCategory,
-} from "../../pages/products/[category]";
+} from "../../../pages/products/[category]";
 
-// CategoryMenu
-// -------------
-// Shows a vertical list of product category links, organized into departments
+// CategoryMenuButton
+// ------------------
+// Pops up a menu of CategoryGroups which contain individual CategoryLinks
 
 export default function CategoryMenu() {
   const [isOpen, setIsOpen] = useState(false);
@@ -47,35 +47,35 @@ export default function CategoryMenu() {
               " p-2 xl:p-4 px-4 xl:px-8 gap-x-5 xl:gap-x-12 gap-y-2 md:gap-y-2 transition-all "
             }
           >
-            <DepartmentSection
+            <CategoryGroup
               subCategoryTitle="Fresh Foods"
               subCategoryNames={freshCategory}
             />
-            <DepartmentSection
+            <CategoryGroup
               subCategoryTitle="Chilled"
               subCategoryNames={chilledCategory}
             />
-            <DepartmentSection
+            <CategoryGroup
               subCategoryTitle="Meat"
               subCategoryNames={meatCategory}
             />
-            <DepartmentSection
+            <CategoryGroup
               subCategoryTitle="Frozen"
               subCategoryNames={frozenCategory}
             />
-            <DepartmentSection
+            <CategoryGroup
               subCategoryTitle="Pantry"
               subCategoryNames={pantryCategory}
             />
-            <DepartmentSection
+            <CategoryGroup
               subCategoryTitle="Snacks"
               subCategoryNames={snacksCategory}
             />
-            <DepartmentSection
+            <CategoryGroup
               subCategoryTitle="Drinks"
               subCategoryNames={drinksCategory}
             />
-            <DepartmentSection
+            <CategoryGroup
               subCategoryTitle="Pets"
               subCategoryNames={petsCategory}
             />
