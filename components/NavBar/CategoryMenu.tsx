@@ -1,5 +1,5 @@
 import { Dialog, DialogPanel } from "@headlessui/react";
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import DepartmentSection from "./DepartmentSection";
 import { DarkModeContext } from "../../pages/_app";
 import {
@@ -24,7 +24,7 @@ export default function CategoryMenu() {
     <>
       <button
         className="bg-green-300 rounded-3xl px-4 mx-4 py-1 
-      hover:bg-green-100 hover:shadow-md transition-colors text-green-800"
+      hover:bg-green-100 hover:shadow-md transition-colors text-green-800 cursor-pointer"
         onClick={() => {
           setIsOpen(true);
         }}
@@ -41,9 +41,9 @@ export default function CategoryMenu() {
           <DialogPanel
             className={
               (useContext(DarkModeContext).darkMode
-                ? "bg-zinc-700 text-zinc-200"
-                : "bg-white") +
-              " hidden lg:block columns-4 xl:columns-7 " +
+                ? "bg-zinc-700/50 text-zinc-200"
+                : "bg-white/50") +
+              " hidden lg:block columns-4 xl:columns-7 backdrop-blur-2xl " +
               " p-2 xl:p-4 px-4 xl:px-8 gap-x-5 xl:gap-x-12 gap-y-2 md:gap-y-2 transition-all "
             }
           >

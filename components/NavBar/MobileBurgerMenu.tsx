@@ -26,12 +26,7 @@ export default function MobileBurgerMenu() {
   return (
     <Popover className="text-md">
       {/* Burger Button */}
-      <PopoverButton
-        className="left-1 top-1 text-primary-colour hover-to-white cursor-pointer"
-        id="mobile-menu-button"
-      >
-        {burgerIcon}
-      </PopoverButton>
+      <PopoverButton id="mobile-menu-button">{burgerIcon}</PopoverButton>
 
       <Transition
         enter="transition duration-100 ease-out"
@@ -42,8 +37,8 @@ export default function MobileBurgerMenu() {
         leaveTo="transform scale-50 opacity-0"
       >
         <PopoverPanel
-          className="z-50 bg-zinc-100 p-3 grid grid-cols-2 md:grid-cols-3 gap-x-2 gap-y-4
-           rounded-xl shadow-2xl text-slate-800 w-[95vw]"
+          className="absolute z-50 top-11 left-5 bg-white/50 dark:bg-zinc-600/50 dark:text-zinc-200 backdrop-blur-xl p-2 px-3 grid grid-cols-2 md:grid-cols-3 gap-x-1 gap-y-2
+           rounded-3xl shadow-2xl text-green-800 w-[calc(92vw)] max-w-180"
         >
           <SubCategoryList
             subCategoryTitle="Fresh Foods"

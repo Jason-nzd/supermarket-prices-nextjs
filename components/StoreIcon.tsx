@@ -7,10 +7,10 @@ import { Store } from "utilities/utilities";
 
 interface Props {
   store: Store;
-  width: number;
+  width?: number;
 }
 
-export default function StoreIcon({ store, width = 60 }: Props) {
+export default function StoreIcon({ store, width = 20 }: Props) {
   switch (store) {
     case Store.Countdown:
       return <Image src={cdlogo} width={width} alt="Countdown Logo" />;

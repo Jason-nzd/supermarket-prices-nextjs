@@ -103,46 +103,41 @@ function ProductModalFull({ product, setIsModalOpen }: Props) {
     // Main modal div requires absolute and high z-index
     <div
       className={
-        (theme === "dark" ? "dark " : "") +
         (theme === "dark"
-          ? "bg-zinc-900/50 text-zinc-100 backdrop-blur-2xl"
-          : "bg-white/60 text-green-800 backdrop-blur-lg") +
+          ? "bg-zinc-900/50 text-zinc-100 backdrop-blur-3xl"
+          : "bg-zinc-50/50 text-green-800 backdrop-blur-lg") +
         " flex flex-col absolute mx-auto rounded-3xl z-50 shadow-2xl" +
         " overflow-y-scroll overflow-x-hidden max-h-[90vh] no-scrollbar"
       }
     >
       {/* Top Div - contains title and X close button*/}
-      <div className="flex w-full bg-transparent backdrop-blur-sm pt-2 px-1 h-12">
+      <div className="flex w-full bg-transparent backdrop-blur-sm px-1 min-h-10 items-center">
         {/* Title */}
-        <div className="w-full">
-          <div
-            className="w-fit mx-auto px-4 rounded-full text-lg
-             font-semibold lg:mb-4 cursor-default"
-          >
-            {product.name}
-          </div>
+        <div
+          className="w-fit px-10 mx-auto rounded-full text-md text-center
+             font-semibold cursor-default leading-tight"
+        >
+          {product.name}
         </div>
 
         {/* X Close Button */}
-        <div className="ml-auto">
-          <div
-            onClick={closeModal}
-            className="absolute right-2 mx-1 ring-2 ring-green-700/30 bg-transparent
-             shadow-sm rounded-full p-1 cursor-pointer hover:shadow-lg hover:bg-white/30"
-          >
-            {xIcon}
-          </div>
+        <div
+          onClick={closeModal}
+          className="absolute top-1 right-1 mx-1 bg-transparent hover-light hover:bg-white/50
+             rounded-full p-1 cursor-pointer"
+        >
+          {xIcon}
         </div>
       </div>
 
       {/* Central Content Div */}
-      <div className="flex flex-col mx-auto w-[calc(90vw)] lg:w-[calc(60vw)] h-full">
-        {/* Image and info upper div */}
-        <div className="block md:flex h-2/3">
+      <div className="flex flex-col mx-auto px-2 w-[calc(90vw)] max-w-5xl">
+        {/* Image and info upper div - max of 60% view height*/}
+        <div className="block md:flex max-h-[calc(60vh)]">
           {/* Image with size tag - On left 2/3 for desktop, full width for mobile */}
           <div className="relative w-full md:w-2/3 m-1 mt-2 md:m-2">
             {/* Image div - has min-h for mobile spacing */}
-            <div className="p-1 md:py-4 md:pl-4 min-h-57.5">
+            <div className="p-1 md:py-4 md:pl-4 h-max min-h-57.5">
               <ImageWithFallback
                 id={product.id}
                 src={"product-images/" + product.id + ".webp"}
@@ -180,26 +175,8 @@ function ProductModalFull({ product, setIsModalOpen }: Props) {
               </div>
             </div>
 
-            {/* Category */}
-            {product.category != null && product.category!.length > 0 && (
-              <div className="glass-capsule text-sm mt-4 mb-3 h-6">
-                {product.category!.map((category, index) => {
-                  return (
-                    <div key={index}>
-                      <Link
-                        href={"/products/" + category}
-                        className="py-1 px-10 hover:bg-white dark:hover:bg-green-200/20 dark:hover:text-white rounded-full"
-                      >
-                        {startCase(category.toLowerCase())}
-                      </Link>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-
             {/* Various advanced stats are hidden on mobile to save screen space */}
-            <div className="hidden md:flex flex-col glass-capsule">
+            <div className="hidden md:flex flex-col glass-capsule mt-4">
               {/* Last Checked */}
               <div className=" text-sm mt-2 mx-auto flex">
                 <div>Price Last Checked </div>
@@ -222,44 +199,42 @@ function ProductModalFull({ product, setIsModalOpen }: Props) {
             {/* Original Site Search Link */}
             <a
               target="_blank"
-              className="max-h-18 w-full"
-              href={originalProductURLBase + "/" + cleanedSearchName}
+              className="glass-capsule text-sm my-4 text-nowrap truncate py-2 hover-light"
+              href={originalProductURLBase + cleanedSearchName}
               rel="noopener noreferrer"
             >
-              <div className={"text-md my-3"}>
-                {getStoreEnum(product) == Store.Countdown && (
-                  <div className="glass-capsule green-ring py-1 px-8 flex-col">
-                    <div>&apos;{product.name}&apos;</div>
-                    <div className="text-sm flex gap-x-1 items-center mx-auto w-fit">
-                      {boxArrow} woolworths.co.nz
-                    </div>
+              {getStoreEnum(product) == Store.Countdown && (
+                <div className="flex-col shadow-none">
+                  <div>&apos;{cleanedSearchName}&apos;</div>
+                  <div className="flex gap-x-1 items-center mx-auto w-fit">
+                    {boxArrow} woolworths.co.nz
                   </div>
-                )}
-                {getStoreEnum(product) == Store.Warehouse && (
-                  <div className="glass-capsule red-ring py-1 px-8 flex-col">
-                    <div>&apos;{product.name}&apos;</div>
-                    <div className="text-sm flex gap-x-1 items-center mx-auto w-fit">
-                      {boxArrow} thewarehouse.co.nz
-                    </div>
+                </div>
+              )}
+              {getStoreEnum(product) == Store.Warehouse && (
+                <div className="red-ring flex-col shadow-none">
+                  <div>&apos;{cleanedSearchName}&apos;</div>
+                  <div className="flex gap-x-1 items-center mx-auto w-fit">
+                    {boxArrow} thewarehouse.co.nz
                   </div>
-                )}
-                {getStoreEnum(product) == Store.Paknsave && (
-                  <div className="glass-capsule yellow-ring py-1 px-8 flex-col">
-                    <div>&apos;{product.name}&apos;</div>
-                    <div className="text-sm flex gap-x-1 items-center mx-auto w-fit">
-                      {boxArrow} paknsave.co.nz
-                    </div>
+                </div>
+              )}
+              {getStoreEnum(product) == Store.Paknsave && (
+                <div className="yellow-ring flex-col shadow-none">
+                  <div>&apos;{cleanedSearchName}&apos;</div>
+                  <div className="flex gap-x-1 items-center mx-auto w-fit">
+                    {boxArrow} paknsave.co.nz
                   </div>
-                )}
-                {getStoreEnum(product) == Store.NewWorld && (
-                  <div className="glass-capsule red-ring py-1 px-8 flex-col">
-                    <div>&apos;{product.name}&apos;</div>
-                    <div className="text-sm flex gap-x-1 items-center mx-auto w-fit">
-                      {boxArrow} newworld.co.nz
-                    </div>
+                </div>
+              )}
+              {getStoreEnum(product) == Store.NewWorld && (
+                <div className="red-ring flex-col shadow-none">
+                  <div>&apos;{cleanedSearchName}&apos;</div>
+                  <div className="flex gap-x-1 items-center mx-auto w-fit">
+                    {boxArrow} newworld.co.nz
                   </div>
-                )}
-              </div>
+                </div>
+              )}
             </a>
 
             {/* First Added  - hidden on mobile*/}
@@ -280,7 +255,7 @@ function ProductModalFull({ product, setIsModalOpen }: Props) {
         </div>
       </div>
 
-      <CardFooter product={product} iconSize={30} />
+      <CardFooter product={product} padding={2} />
     </div>
   );
 }

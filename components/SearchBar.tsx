@@ -55,8 +55,8 @@ export default function SearchBar({
   return (
     <>
       {!mobileVersion && (
-        <div className="flex rounded-3xl border-2 border-green-300 h-8 w-fit transition-all duration-500">
-          <form onSubmit={handleSearch} className="flex">
+        <div className="flex rounded-3xl border-2 border-green-300 h-8 w-full max-w-80 transition-all duration-500">
+          <form onSubmit={handleSearch} className="flex w-full">
             <input
               type="text"
               name="search"
@@ -65,15 +65,19 @@ export default function SearchBar({
               placeholder="Search"
               minLength={3}
               maxLength={26}
-              className="bg-transparent w-[8rem] xl:w-[16rem] focus:outline-none text-white
+              className="grow bg-transparent focus:outline-none text-white
                pl-3 placeholder-[#75F3A3] align-center transition-all duration-500"
               onChange={(e) => setSearchQuery(e.target.value)}
             />
-            <div className="ml-auto hover-to-white text-green-200">
-              <button type="submit" title="Search" id="search-button">
-                {magnifyIcon}
-              </button>
-            </div>
+
+            <button
+              type="submit"
+              title="Search"
+              id="search-button"
+              className="text-green-200 mb-auto pr-2"
+            >
+              {magnifyIcon}
+            </button>
           </form>
         </div>
       )}

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import startCase from "lodash/startCase";
-import React, { useContext } from "react";
+import { useContext } from "react";
 import kiwifruit from "../../public/logo.webp";
 import DepartmentCategoryMenu from "./CategoryMenu";
 import SearchBar from "../SearchBar";
@@ -34,7 +34,7 @@ const NavBar = ({ lastUpdatedDate }: Props) => {
     <nav className="w-full h-fit overflow-hidden">
       {/* Desktop Navbar */}
       <div
-        className="hidden lg:flex mx-auto w-[100%] 2xl:w-[90rem] 3xl:w-[110rem] 
+        className="hidden lg:flex mx-auto w-full 2xl:w-360 3xl:w-440 
         transition-all duration-500 flex-nowrap items-center"
       >
         {/* Website Logo */}
@@ -42,17 +42,14 @@ const NavBar = ({ lastUpdatedDate }: Props) => {
           <Image
             src={kiwifruit}
             alt=""
-            className="hidden lg:block w-[5rem] min-w-[5rem] pt-1 pb-2 duration-200 
+            className="hidden lg:block w-20 pt-1 pb-2 duration-200 
               hover:rotate-12 hover:scale-[102%]"
           />
         </Link>
 
-        <div className="block w-full lg:w-[calc(100%-6rem)] h-[3.6rem] lg:h-[5rem]">
+        <div className="block w-full lg:w-[calc(100%-6rem)] h-[3.6rem] lg:h-20">
           {/* Row 1 - Title - Sub-title - Date */}
-          <div
-            className="flex flex-wrap h-full lg:h-1/2 mx-auto w-full items-center 
-            lg:items-center ml-1"
-          >
+          <div className="flex lg:h-1/2 mx-auto items-center ml-1">
             {/* Title */}
             <Link href="/" className="mr-auto lg:mr-0">
               <h1 className="ml-2 text-2xl font-bold text-stone-100 hover-to-white">
@@ -60,24 +57,24 @@ const NavBar = ({ lastUpdatedDate }: Props) => {
               </h1>
             </Link>
 
-            {/* Sub Title */}
+            {/* Sub Title - hidden on mobile */}
             <h3
-              className="hidden lg:flex ml-6 pt-2 mr-auto text-sm select-none font-bold
+              className="hidden mt-1 lg:flex ml-6 mr-auto text-sm select-none font-bold
              text-zinc-100"
             >
               Tracking the cost of food across New Zealand
             </h3>
 
-            {/* Last Updated Date */}
+            {/* Last Updated Date - hidden on mobile  */}
             <div
-              className="hidden lg:block pb-2 text-primary-colour text-sm select-none 
+              className="hidden lg:block text-primary-colour text-sm select-none 
               pr-4 mt-2 w-fit ml-auto h-8"
             >
               Updated {lastUpdatedDate}
             </div>
           </div>
 
-          {/* Row 2 - Categories - Search Bar*/}
+          {/* Row 2 - Categories & Search Bar - hidden on mobile */}
           <div className="h-1/2 hidden lg:flex items-center pb-2">
             {/* Categories */}
             <div className="flex items-center overflow-hidden whitespace-nowrap w-fit">
@@ -106,9 +103,9 @@ const NavBar = ({ lastUpdatedDate }: Props) => {
               <SearchBar />
             </div>
 
-            {/* Right Button Menu */}
+            {/* Right Button Menu - hidden on mobile */}
             <div
-              className="hidden lg:flex lg:flex-col items-center ml-auto w-fit mt-3 
+              className="hidden lg:flex lg:flex-col items-center  w-fit mt-3 
               h-full pr-2"
             >
               <div className="h-1/2 flex items-center ml-auto pl-3">
@@ -141,31 +138,35 @@ const NavBar = ({ lastUpdatedDate }: Props) => {
       </div>
 
       {/* Mobile Navbar */}
-      <div className="flex h-14 lg:hidden mx-auto w-[100%] transition-all duration-500 items-center">
-        {/* Burger Menu */}
-        <div className="absolute z-50 justify-start left-1 top-1 ml-2 my-auto">
+      <div className="flex h-14 lg:hidden w-full transition-all duration-300 items-center justify-center">
+        {/* Burger Menu - needs absolute position for menu popup */}
+        <div className="absolute top-1 left-1 z-50">
           <MobileBurgerMenu />
         </div>
 
         {/* Logo and Title */}
-        <Link href="/" className="flex items-center mx-auto">
+        <Link href="/" className="pl-10 ml-auto flex items-center">
           <Image
             src={kiwifruit}
             alt=""
-            className="w-[2.5rem] duration-200 hover:rotate-12 hover:scale-[102%]"
+            className="w-10 duration-200 hover:rotate-12 hover:scale-[102%]"
           />
           <h1 className="ml-2 text-2xl font-bold text-stone-100 hover-to-white">
             KiwiPrice.xyz
           </h1>
         </Link>
 
-        {/* Search Menu */}
-        <div className="mr-1">
-          <SearchBar
-            iconSize={8}
-            iconHexColour="#86efac"
-            mobileVersion={true}
-          />
+        {/* Dark Mode & Search buttons anchored to right side */}
+        <div className="flex ml-auto items-center">
+          <DarkModeToggle />
+
+          <div className="mr-1">
+            <SearchBar
+              iconSize={8}
+              iconHexColour="#86efac"
+              mobileVersion={true}
+            />
+          </div>
         </div>
       </div>
     </nav>
@@ -175,10 +176,10 @@ const NavBar = ({ lastUpdatedDate }: Props) => {
 export const burgerIcon = (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width="16"
-    height="16"
+    width="14"
+    height="14"
     fill="currentColor"
-    className="w-12 h-12"
+    className="w-11 h-11"
     viewBox="0 0 16 16"
   >
     <path

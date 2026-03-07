@@ -6,7 +6,7 @@ interface Props {
 }
 
 export default function PriceTag({ product }: Props) {
-  let priceTagDivClass = "glass-capsule h-16 md:h-20 px-3";
+  let priceTagDivClass = "glass-capsule h-16 md:h-20 px-3 ring-2";
   let icon;
 
   // Use local variables for unit display values so we don't mutate props

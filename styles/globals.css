@@ -52,7 +52,7 @@
     background:
       radial-gradient(
         ellipse at 20% 40%,
-        rgba(90, 150, 80, 0.5) 22%,
+        rgba(90, 150, 80, 0.1) 22%,
         transparent 50%
       ),
       radial-gradient(
@@ -60,7 +60,7 @@
         rgba(100, 140, 150, 0.15) 22%,
         transparent 40%
       ),
-      linear-gradient(to bottom, #eeeeee 0%, #d6e789 100%);
+      linear-gradient(to bottom, #eeeeee 0%, #e5ecc3 100%);
     background-size:
       100% 100%,
       100% 100%,
@@ -72,16 +72,16 @@
     @variant dark {
       background:
         radial-gradient(
-          ellipse at 20% 40%,
-          rgba(110, 150, 30, 0.2) 11%,
-          transparent 50%
+          ellipse at 40% 20%,
+          rgba(90, 130, 30, 0.1) 1%,
+          transparent 80%
         ),
         radial-gradient(
           ellipse at 80% 60%,
-          rgba(100, 140, 150, 0.15) 22%,
-          transparent 40%
+          rgba(100, 140, 150, 0.05) 1%,
+          transparent 80%
         ),
-        linear-gradient(to bottom, #111 0%, #000 100%);
+        linear-gradient(to bottom, #121 0%, #101 100%);
       background-size:
         100% 100%,
         100% 100%,
@@ -118,50 +118,42 @@
     hover:scale-[102%] hover:shadow-2xl duration-200 ease-in-out cursor-pointer hover:bg-white;
 
     @variant dark {
-      @apply bg-zinc-800/30 text-zinc-100 ring-zinc-500 ring-2
-       hover:bg-white/10 hover:ring-green-800;
+      background: linear-gradient(to bottom, #121 0%, #111 100%);
+      background-size: 100% 100%;
+      @apply text-zinc-100 ring-zinc-600 ring-2
+       hover:bg-white/40 hover:ring-green-800;
     }
   }
   .grid-title {
-    @apply mt-6 mb-2 text-xl text-[#3C8DA3] font-bold text-center;
+    @apply mt-4 mb-2 text-xl text-[#3C8DA3] font-bold text-center text-nowrap;
     @variant dark {
       @apply text-zinc-300;
     }
   }
   .size-tag {
-    @apply z-20 absolute top-[7rem] left-[1rem] p-2 px-3 text-center text-lg lg:text-base
+    @apply z-20 absolute top-28 left-4 p-2 px-3 text-center text-lg lg:text-base
     bg-black/30 backdrop-blur-sm text-white
     font-semibold ring-1 ring-white rounded-2xl shadow-md;
     @variant dark {
       @apply bg-black/60 text-zinc-300;
     }
   }
-  .external-link {
-    @apply font-semibold ring-2 w-fit rounded-3xl p-2;
-  }
-  .green-ring {
-    @apply ring-green-400 hover:ring-green-300 hover:bg-white/20 shadow-md hover:shadow-lg transition-shadow;
-  }
-  .yellow-ring {
-    @apply ring-yellow-400 hover:ring-yellow-300 hover:bg-white/20  shadow-md hover:shadow-lg transition-shadow;
-  }
-  .red-ring {
-    @apply ring-red-500 hover:ring-red-400 hover:bg-white/20  shadow-md hover:shadow-lg transition-shadow;
-  }
-  .gray-ring {
-    @apply ring-gray-400 ring-2 rounded-3xl px-4 hover:bg-white/20  shadow-md hover:shadow-lg transition-shadow;
-  }
-  .hover-panel {
-    @apply bg-zinc-50 hover:bg-white shadow-md hover:shadow-lg transition-shadow;
-  }
   .source-site-footer {
-    @apply flex items-center justify-center gap-x-2 p-1 rounded-b-2xl;
+    @apply flex items-center justify-center gap-x-2 p-1 rounded-b-2xl h-full;
   }
   .glass-capsule {
-    @apply w-full flex items-center justify-center bg-gray-50/20 shadow-none ring-2 ring-white/60 backdrop-blur-sm rounded-3xl;
+    @apply w-full flex items-center justify-center bg-gray-50/10 backdrop-blur-xs rounded-3xl;
 
     @variant dark {
       @apply bg-transparent;
     }
+  }
+  .hover-light {
+    @apply hover:bg-white/60 hover:shadow-md hover:shadow-black/10 transition-shadow;
+    @apply active:scale-[98%] active:shadow-sm;
+  }
+
+  #mobile-menu-button {
+    @apply text-white/90 hover:text-white focus:outline-0 cursor-pointer;
   }
 }
