@@ -139,7 +139,7 @@ function PriceHistoryChart({
                 year: "2-digit",
               }) +
               "       " +
-              printPrice(context.parsed.y)
+              printPrice(context.parsed.y!)
             );
           },
         },

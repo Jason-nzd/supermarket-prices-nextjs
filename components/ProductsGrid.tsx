@@ -3,6 +3,7 @@ import { Product } from "../typings";
 import ProductCard from "./ProductCard/ProductCard";
 import Link from "next/link";
 import DOMPurify from "isomorphic-dompurify";
+import { getLargestMultiplication } from "utilities/utilities";
 
 interface Props {
   titles?: string[];
@@ -34,19 +35,31 @@ function ProductsGrid({
 
     // For mobile viewports, trim products to 2 columns
     if (isMobile) {
-      trimmedProducts = products.slice(0, nextMultipleDown(products.length, 2));
+      trimmedProducts = products.slice(
+        0,
+        getLargestMultiplication(products.length, 2),
+      );
     }
     // For small viewports, trim products to 3 columns
     if (isSmall) {
-      trimmedProducts = products.slice(0, nextMultipleDown(products.length, 3));
+      trimmedProducts = products.slice(
+        0,
+        getLargestMultiplication(products.length, 3),
+      );
     }
     // For medium viewports, trim products to 4 columns
     if (isMedium) {
-      trimmedProducts = products.slice(0, nextMultipleDown(products.length, 4));
+      trimmedProducts = products.slice(
+        0,
+        getLargestMultiplication(products.length, 4),
+      );
     }
     // For large viewports, trim products to 5 columns
     if (isLarge) {
-      trimmedProducts = products.slice(0, nextMultipleDown(products.length, 5));
+      trimmedProducts = products.slice(
+        0,
+        getLargestMultiplication(products.length, 5),
+      );
     }
   }
 

@@ -152,6 +152,8 @@ const NavBar = ({ lastUpdatedDate }: Props) => {
             src={kiwifruit}
             alt=""
             className="w-10 duration-200 hover:rotate-12 hover:scale-[102%]"
+            priority
+            loading="eager"
           />
           <h1 className="ml-2 text-2xl font-bold text-stone-100 hover-to-white">
             KiwiPrice.xyz
