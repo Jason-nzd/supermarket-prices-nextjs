@@ -110,7 +110,7 @@ const ClientSearch = ({ lastChecked }: Props) => {
               <div>
                 <div className="grid-title">
                   {products.length}
-                  {products.length > 40 ? "+" : ""} products found for `
+                  {products.length >= 40 ? "+" : ""} products found for `
                   {startCase(searchTerm)}`
                 </div>
                 <div className="text-sm">Sorted by unit price</div>
