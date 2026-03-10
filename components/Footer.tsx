@@ -2,9 +2,9 @@ import Link from "next/link";
 
 function Footer() {
   return (
-    <footer className="w-4/5 mx-auto h-full text-green-200 text-sm m-4">
+    <footer className="w-full h-full text-sm p-4">
       {/* Disclaimer */}
-      <div className="flex mx-auto w-fit font-semibold px-4 text-center text-zinc-100">
+      <div className="flex mx-auto w-fit font-semibold px-4 text-center">
         {`Prices are updated on weekdays, but aren't always guaranteed to be accurate. Each
         local store will likely have slight differences in pricing.`}
       </div>

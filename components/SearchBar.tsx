@@ -55,7 +55,7 @@ export default function SearchBar({
   return (
     <>
       {!mobileVersion && (
-        <div className="flex rounded-3xl border-2 border-green-300 h-8 w-full max-w-80 transition-all duration-500">
+        <div className="search-bar">
           <form onSubmit={handleSearch} className="flex w-full">
             <input
               type="text"
@@ -66,7 +66,7 @@ export default function SearchBar({
               minLength={3}
               maxLength={26}
               className="grow bg-transparent focus:outline-none text-white
-               pl-3 placeholder-[#75F3A3] align-center transition-all duration-500"
+               pl-3 align-center"
               onChange={(e) => setSearchQuery(e.target.value)}
             />
 
@@ -74,7 +74,7 @@ export default function SearchBar({
               type="submit"
               title="Search"
               id="search-button"
-              className="text-green-200 mb-auto pr-2"
+              className="mb-auto"
             >
               {magnifyIcon}
             </button>

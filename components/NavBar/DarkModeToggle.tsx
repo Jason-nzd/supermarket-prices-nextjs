@@ -1,5 +1,5 @@
 import { Switch } from "@headlessui/react";
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { DarkModeContext } from "../../pages/_app";
 
 // DarModeToggle
@@ -13,8 +13,9 @@ export default function DarkModeToggle() {
       checked={useContext(DarkModeContext).darkMode}
       onChange={useContext(DarkModeContext).toggleDarkMode}
       className={`${
-        useContext(DarkModeContext).darkMode ? "bg-zinc-700" : "bg-green-700"
-      } relative inline-flex h-8 w-11 items-center rounded-full cursor-pointer`}
+        useContext(DarkModeContext).darkMode ? "bg-black/20" : "bg-green-600"
+      } relative inline-flex h-8 w-11 items-center rounded-full cursor-pointer
+      hover:ring-2 hover:ring-white/50 hover:shadow-lg hover:scale-105`}
     >
       <span className="sr-only">Dark Theme</span>
       <span
@@ -22,7 +23,7 @@ export default function DarkModeToggle() {
           useContext(DarkModeContext).darkMode
             ? "translate-x-3.5"
             : "translate-x-1.5"
-        } inline-block h-6 w-6 transform text-green-200 hover:text-white transition`}
+        } inline-block h-6 w-6 hover-to-white`}
       >
         {useContext(DarkModeContext).darkMode ? moonFilled : moonEmpty}
       </span>

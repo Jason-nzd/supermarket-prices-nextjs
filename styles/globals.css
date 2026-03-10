@@ -1,13 +1,15 @@
 @import "tailwindcss";
 
-/* Theme color variables */
 :root {
   --color-ww-green: #589d7b;
   --color-pak-yellow: #ffd600;
   --color-warehouse-red: #c00;
-  --color-newworld: #555;
+  --color-newworld: #535;
+  --color-gradient-top: #ebe5dd;
+  --color-gradient-bottom: #d7e6bf;
+  --color-dark-gradient-top: rgb(22, 21, 22);
+  --color-dark-gradient-bottom: rgb(22, 11, 22);
 }
-
 @theme {
   --breakpoint-sm: 400px;
   --breakpoint-md: 600px;
@@ -16,38 +18,51 @@
   --breakpoint-2xl: 1700px;
   --breakpoint-3xl: 2100px;
 }
-
 @variant dark (&:where(.dark, .dark *));
 
 @layer utilities {
-  /* Hide scrollbar for Chrome, Safari and Opera */
+  /* Hide scrollbar */
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
-
-  /* Hide scrollbar for IE, Edge and Firefox */
   .no-scrollbar {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }
 
 @layer components {
+  html,
   body {
-    @apply bg-green-600 text-zinc-800;
+    @apply m-0 p-0 min-h-screen;
+  }
+  main,
+  body {
+    @apply text-zinc-800 bg-(--color-gradient-top);
     @variant dark {
-      @apply bg-red-500 text-zinc-100;
+      @apply text-zinc-100 bg-(--color-dark-gradient-top);
     }
   }
-  p {
-    @apply text-zinc-800;
+
+  nav {
+    @apply bg-green-600/50 text-zinc-100 backdrop-blur-md;
     @variant dark {
-      @apply text-zinc-100;
+      @apply bg-green-400/20 backdrop-blur-2xl;
     }
   }
-  .central-responsive-div {
-    @apply px-2 mx-auto w-full 2xl:w-[90rem] 3xl:w-[110rem] transition-all duration-400;
+  .nav-main-link {
+    @apply px-2.5 py-1 m-3 rounded-3xl mx-0.5 transition-all
+    hover:bg-green-300 hover:text-black hover:shadow-md hover:scale-y-105
+    active:bg-green-100 active:shadow-sm active:scale-y-95;
   }
+  .nav-main-link-active {
+    @apply ring-1 border-green-200/50 shadow-lg;
+  }
+  .search-bar {
+    @apply text-white/60 inset-shadow-sm placeholder-white/50
+    flex rounded-3xl border-2 h-8 w-full max-w-100 transition-all duration-500;
+  }
+
   .content-body {
     background:
       radial-gradient(
@@ -60,7 +75,11 @@
         rgba(100, 140, 150, 0.15) 22%,
         transparent 40%
       ),
-      linear-gradient(to bottom, #eeeeee 0%, #e5ecc3 100%);
+      linear-gradient(
+        to bottom,
+        var(--color-gradient-top) 0%,
+        var(--color-gradient-bottom) 100%
+      );
     background-size:
       100% 100%,
       100% 100%,
@@ -72,16 +91,20 @@
     @variant dark {
       background:
         radial-gradient(
-          ellipse at 40% 20%,
-          rgba(90, 130, 30, 0.1) 1%,
+          ellipse at 10% 20%,
+          rgba(80, 90, 70, 0.3) 1%,
           transparent 80%
         ),
         radial-gradient(
-          ellipse at 80% 60%,
-          rgba(100, 140, 150, 0.05) 1%,
+          ellipse at 60% 60%,
+          rgba(100, 140, 150, 0.2) 1%,
           transparent 80%
         ),
-        linear-gradient(to bottom, #121 0%, #101 100%);
+        linear-gradient(
+          to bottom,
+          var(--color-dark-gradient-top) 0%,
+          var(--color-dark-gradient-bottom) 100%
+        );
       background-size:
         100% 100%,
         100% 100%,
@@ -90,19 +113,25 @@
       background-attachment: scroll;
     }
   }
+
+  .central-responsive-div {
+    @apply px-2 mx-auto w-full 2xl:w-360 3xl:w-440 transition-all duration-400;
+  }
+
+  Footer {
+    @apply bg-[#6ac47f] text-zinc-100;
+    @variant dark {
+      @apply bg-[#113428];
+    }
+  }
+
   .text-primary-colour {
     @apply text-green-200;
   }
   .text-input {
     @apply px-2 my-0 py-0 rounded-md border border-stone-300;
   }
-  .nav-main-link {
-    @apply text-green-200 px-2.5 py-1 rounded-3xl mx-0.5
-    hover:bg-green-300 hover:text-black hover:shadow-md transition-all;
-  }
-  .nav-main-link-active {
-    @apply bg-green-300 text-black transition-all;
-  }
+
   .small-link {
     @apply ring-green-300 ring-2 px-2 py-1 rounded-3xl font-semibold bg-zinc-50 hover:bg-white shadow-md hover:shadow-lg transition-shadow;
   }
@@ -118,14 +147,14 @@
     hover:scale-[102%] hover:shadow-2xl duration-200 ease-in-out cursor-pointer hover:bg-white;
 
     @variant dark {
-      background: linear-gradient(to bottom, #121 0%, #111 100%);
+      background: linear-gradient(to bottom, #110 0%, #222 100%);
       background-size: 100% 100%;
       @apply text-zinc-100 ring-zinc-600 ring-2
        hover:bg-white/40 hover:ring-green-800;
     }
   }
   .grid-title {
-    @apply mt-4 mb-2 text-xl text-[#3C8DA3] font-bold text-center text-nowrap;
+    @apply mt-4 mb-2 text-xl text-green-700 font-bold text-center text-nowrap;
     @variant dark {
       @apply text-zinc-300;
     }
