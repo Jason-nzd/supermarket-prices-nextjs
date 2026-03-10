@@ -62,6 +62,9 @@
     @apply text-white/60 inset-shadow-sm placeholder-white/50
     flex rounded-3xl border-2 h-8 w-full max-w-100 transition-all duration-500;
   }
+  #mobile-menu-button {
+    @apply text-white/90 hover:text-white hover:scale-105 focus:outline-0 cursor-pointer;
+  }
 
   .content-body {
     background:
@@ -182,9 +185,6 @@
     @apply active:scale-[98%] active:shadow-sm;
   }
 
-  #mobile-menu-button {
-    @apply text-white/90 hover:text-white focus:outline-0 cursor-pointer;
-  }
   .modal-outside-tint {
     @apply absolute inset-0 bg-black/20 backdrop-blur-none;
   }

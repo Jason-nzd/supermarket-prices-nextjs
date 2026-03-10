@@ -1,12 +1,7 @@
-import {
-  Popover,
-  PopoverButton,
-  PopoverPanel,
-  Transition,
-} from "@headlessui/react";
-import React from "react";
+import { Dialog, DialogPanel } from "@headlessui/react";
 import { burgerIcon } from "./NavBar";
 import SubCategoryList from "./CategoryMenu/CategoryGroup";
+import { DarkModeContext } from "../../pages/_app";
 import {
   chilledCategory,
   drinksCategory,
@@ -17,28 +12,37 @@ import {
   petsCategory,
   snacksCategory,
 } from "../../pages/products/[category]";
+import { useContext, useState } from "react";
 
 // MobileBurgerMenu
 // ----------------
 // Represents a burger button that opens a more compact menu for mobile use
 
 export default function MobileBurgerMenu() {
-  return (
-    <Popover className="text-md">
-      {/* Burger Button */}
-      <PopoverButton id="mobile-menu-button">{burgerIcon}</PopoverButton>
+  const [isOpen, setIsOpen] = useState(false);
 
-      <Transition
-        enter="transition duration-100 ease-out"
-        enterFrom="transform scale-50 opacity-0"
-        enterTo="transform scale-100 opacity-100"
-        leave="transition duration-75 ease-out"
-        leaveFrom="transform scale-100 opacity-100"
-        leaveTo="transform scale-50 opacity-0"
+  return (
+    <>
+      {/* Burger Button */}
+      <button
+        id="mobile-menu-button"
+        onClick={() => {
+          setIsOpen(true);
+        }}
       >
-        <PopoverPanel
-          className="absolute z-50 top-11 left-5 bg-white/50 dark:bg-zinc-600/50 dark:text-zinc-200 backdrop-blur-xl p-2 px-3 grid grid-cols-2 md:grid-cols-3 gap-x-1 gap-y-2
-           rounded-3xl shadow-2xl text-green-800 w-[calc(92vw)] max-w-180"
+        {burgerIcon}
+      </button>
+
+      <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
+        <DialogPanel
+          className={
+            (useContext(DarkModeContext).darkMode
+              ? "bg-transparent text-zinc-200"
+              : "bg-white/30 text-green-800") +
+            " fixed z-50 top-12 left-1/2 -translate-x-1/2 p-3  " +
+            "grid grid-cols-2 md:grid-cols-3 gap-x-1 gap-y-2 items-start " +
+            "backdrop-blur-2xl rounded-3xl shadow-2xl  w-[calc(90vw)] max-w-180"
+          }
         >
           <SubCategoryList
             subCategoryTitle="Fresh Foods"
@@ -72,8 +76,8 @@ export default function MobileBurgerMenu() {
             subCategoryTitle="Pets"
             subCategoryNames={petsCategory}
           />
-        </PopoverPanel>
-      </Transition>
-    </Popover>
+        </DialogPanel>
+      </Dialog>
+    </>
   );
 }

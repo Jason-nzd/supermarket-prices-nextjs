@@ -31,8 +31,8 @@ const NavBar = ({ lastUpdatedDate }: Props) => {
   const { favouriteCategories } = context;
 
   return (
-    <nav className="w-full h-fit overflow-hidden">
-      {/* Desktop Navbar */}
+    <nav className="w-full overflow-hidden sticky top-0 z-50">
+      {/* Desktop Navbar - hidden on mobile - limited width */}
       <div
         className="hidden lg:flex mx-auto w-full 2xl:w-360 3xl:w-440 
         transition-all duration-500 flex-nowrap items-center"
@@ -137,7 +137,7 @@ const NavBar = ({ lastUpdatedDate }: Props) => {
       {/* Mobile Navbar */}
       <div className="flex h-14 lg:hidden w-full transition-all duration-300 items-center justify-center">
         {/* Burger Menu - needs absolute position for menu popup */}
-        <div className="absolute top-1 left-1 z-50">
+        <div className="absolute top-1 left-3 z-50">
           <MobileBurgerMenu />
         </div>
 

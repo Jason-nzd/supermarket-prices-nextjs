@@ -35,16 +35,16 @@ export default function CategoryMenu() {
 
       <Dialog open={isOpen} onClose={() => setIsOpen(false)}>
         <div
-          className="fixed inset-0 z-50 mx-auto w-fit h-fit max-w-[95%] top-[7%] 
-          overflow-hidden shadow-2xl rounded-3xl"
+          className="fixed inset-0 z-50 w-fit max-w-[calc(90vw)] h-fit top-20 
+          overflow-hidden shadow-2xl rounded-3xl left-1/2 -translate-x-1/2"
         >
           <DialogPanel
             className={
               (useContext(DarkModeContext).darkMode
-                ? "bg-zinc-700/50 text-zinc-200"
-                : "bg-white/50") +
-              " hidden lg:block columns-4 xl:columns-7 backdrop-blur-2xl " +
-              " p-2 xl:p-4 px-4 xl:px-8 gap-x-5 xl:gap-x-12 gap-y-2 md:gap-y-2 transition-all "
+                ? "bg-transparent text-zinc-200"
+                : "bg-white/30") +
+              " hidden lg:grid grid-rows-2 grid-flow-col xl:grid-rows-1 backdrop-blur-2xl " +
+              " py-4 px-8 gap-x-1 gap-y-4 transition-all "
             }
           >
             <CategoryGroup
