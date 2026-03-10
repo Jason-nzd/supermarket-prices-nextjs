@@ -13,6 +13,8 @@ import {
 import { Line } from "react-chartjs-2";
 import type { ChartData, ChartOptions } from "chart.js";
 import "chartjs-adapter-date-fns";
+import { useContext } from "react";
+import { DarkModeContext } from "../../pages/_app";
 
 interface Props {
   countdownProduct?: Product | null;
@@ -27,6 +29,8 @@ function MultiStorePriceHistoryChart({
   warehouseProduct,
   newworldProduct,
 }: Props) {
+  const theme = useContext(DarkModeContext).darkMode ? "dark" : "light";
+  const isDark = theme === "dark";
   // Initialize chart.js line chart
   Chart.register(
     CategoryScale,
@@ -159,9 +163,9 @@ function MultiStorePriceHistoryChart({
       {
         label: "Countdown",
         data: priceDataCountdown,
-        borderColor: "green",
-        pointBorderColor: "green",
-        pointBackgroundColor: "white",
+        borderColor: isDark ? "rgb(80, 255, 120)" : "green",
+        pointBorderColor: isDark ? "rgb(80, 255, 120)" : "green",
+        pointBackgroundColor: isDark ? "rgb(30, 30, 30)" : "white",
         pointHoverRadius: 6,
         pointHitRadius: 30,
         pointBorderWidth: 3,
@@ -174,9 +178,9 @@ function MultiStorePriceHistoryChart({
       {
         label: "PaknSave",
         data: priceDataPaknsave,
-        borderColor: "yellow",
-        pointBorderColor: "yellow",
-        pointBackgroundColor: "white",
+        borderColor: isDark ? "rgb(255, 255, 100)" : "yellow",
+        pointBorderColor: isDark ? "rgb(255, 255, 100)" : "yellow",
+        pointBackgroundColor: isDark ? "rgb(30, 30, 30)" : "white",
         pointHoverRadius: 6,
         pointHitRadius: 30,
         pointBorderWidth: 3,
@@ -188,9 +192,9 @@ function MultiStorePriceHistoryChart({
       {
         label: "The Warehouse",
         data: priceDataWarehouse,
-        borderColor: "red",
-        pointBorderColor: "red",
-        pointBackgroundColor: "white",
+        borderColor: isDark ? "rgb(255, 100, 100)" : "red",
+        pointBorderColor: isDark ? "rgb(255, 100, 100)" : "red",
+        pointBackgroundColor: isDark ? "rgb(30, 30, 30)" : "white",
         pointHoverRadius: 6,
         pointHitRadius: 30,
         pointBorderWidth: 3,
@@ -202,9 +206,9 @@ function MultiStorePriceHistoryChart({
       {
         label: "New World",
         data: priceDataNewworld,
-        borderColor: "orange",
-        pointBorderColor: "red",
-        pointBackgroundColor: "white",
+        borderColor: isDark ? "rgb(255, 180, 100)" : "orange",
+        pointBorderColor: isDark ? "rgb(255, 180, 100)" : "red",
+        pointBackgroundColor: isDark ? "rgb(30, 30, 30)" : "white",
         pointHoverRadius: 6,
         pointHitRadius: 30,
         pointBorderWidth: 3,
@@ -230,11 +234,11 @@ function MultiStorePriceHistoryChart({
         //     return ' ' + printPrice(context.parsed.y);
         //   },
         // },
-        backgroundColor: "white",
-        titleColor: "black",
+        backgroundColor: isDark ? "rgb(30, 30, 30)" : "white",
+        titleColor: isDark ? "rgb(230, 230, 230)" : "black",
         titleFont: { weight: "normal" },
-        bodyColor: "black",
-        footerColor: "black",
+        bodyColor: isDark ? "rgb(230, 230, 230)" : "black",
+        footerColor: isDark ? "rgb(230, 230, 230)" : "black",
         // borderColor: trendColour,
         borderWidth: 1,
         padding: 10,
@@ -250,12 +254,22 @@ function MultiStorePriceHistoryChart({
             quarter: "MMMM yyyy",
           },
         },
+        ticks: {
+          color: isDark ? "rgb(180, 180, 180)" : "rgb(80, 80, 80)",
+        },
+        grid: {
+          color: isDark ? "rgba(180, 180, 180, 0.1)" : "rgba(0, 0, 0, 0.1)",
+        },
       },
       y: {
         ticks: {
           callback(tickValue) {
             return "$" + (tickValue as number).toFixed(2);
           },
+          color: isDark ? "rgb(180, 180, 180)" : "rgb(80, 80, 80)",
+        },
+        grid: {
+          color: isDark ? "rgba(180, 180, 180, 0.1)" : "rgba(0, 0, 0, 0.1)",
         },
       },
     },

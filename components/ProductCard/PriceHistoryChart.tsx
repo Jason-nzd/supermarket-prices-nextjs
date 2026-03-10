@@ -12,6 +12,8 @@ import {
 import { Line } from "react-chartjs-2";
 import type { ChartData, ChartOptions } from "chart.js";
 import "chartjs-adapter-date-fns";
+import { useContext } from "react";
+import { DarkModeContext } from "../../pages/_app";
 
 interface Props {
   priceHistory: DatedPrice[];
@@ -25,6 +27,8 @@ function PriceHistoryChart({
   useLargeVersion = false,
   useSteppedLine = true,
 }: Props) {
+  const theme = useContext(DarkModeContext).darkMode ? "dark" : "light";
+  const isDark = theme === "dark";
   // Initialize chart.js line chart
   Chart.register(
     CategoryScale,
@@ -74,22 +78,24 @@ function PriceHistoryChart({
   const priceDiff = getPriceAvgDifference(priceHistory);
 
   // If price difference from the average price is +/- 3%, print black border
-  if (Math.abs(priceDiff) <= 2) trendColour += "rgb(120, 120, 120)";
+  if (Math.abs(priceDiff) <= 2) {
+    trendColour += isDark ? "rgb(180, 180, 180)" : "rgb(120, 120, 120)";
+  }
   // If price diff is +10%, print bold red border
   else if (priceDiff > 10) {
-    trendColour += "rgb(230, 0, 0)";
+    trendColour += isDark ? "rgb(255, 80, 80)" : "rgb(230, 0, 0)";
   }
   // If price diff is +2-10%, print mild red border
   else if (priceDiff > 2) {
-    trendColour += "rgb(190, 30, 30)";
+    trendColour += isDark ? "rgb(255, 100, 100)" : "rgb(190, 30, 30)";
   }
   // If price diff is +10%, print bold green border
   else if (priceDiff < -10) {
-    trendColour += "rgb(0, 200, 0)";
+    trendColour += isDark ? "rgb(80, 255, 80)" : "rgb(0, 200, 0)";
   }
   // If price diff is +2-10%, print mild green border
   else if (priceDiff < -2) {
-    trendColour += "rgb(30, 170, 30)";
+    trendColour += isDark ? "rgb(100, 255, 100)" : "rgb(30, 170, 30)";
   }
 
   // Use smaller point radius for denser charts
@@ -143,11 +149,11 @@ function PriceHistoryChart({
             );
           },
         },
-        backgroundColor: "white",
-        titleColor: "black",
+        backgroundColor: isDark ? "rgb(30, 30, 30)" : "white",
+        titleColor: isDark ? "rgb(230, 230, 230)" : "black",
         titleFont: { weight: "normal" },
-        bodyColor: "black",
-        footerColor: "black",
+        bodyColor: isDark ? "rgb(230, 230, 230)" : "black",
+        footerColor: isDark ? "rgb(230, 230, 230)" : "black",
         borderColor: trendColour,
         borderWidth: 1,
         padding: 10,
@@ -166,6 +172,12 @@ function PriceHistoryChart({
           },
         },
         min: useLargeVersion ? "" : fiveMonthsAgo.getTime(),
+        ticks: {
+          color: isDark ? "rgb(180, 180, 180)" : "rgb(80, 80, 80)",
+        },
+        grid: {
+          color: isDark ? "rgba(180, 180, 180, 0.1)" : "rgba(0, 0, 0, 0.1)",
+        },
       },
       y: {
         ticks: {
@@ -175,9 +187,13 @@ function PriceHistoryChart({
               (tickValue as number).toFixed(displayWithoutDecimals ? 0 : 2)
             );
           },
+          color: isDark ? "rgb(180, 180, 180)" : "rgb(80, 80, 80)",
         },
         suggestedMin: Math.floor(minPrice),
         suggestedMax: Math.ceil(maxPrice),
+        grid: {
+          color: isDark ? "rgba(180, 180, 180, 0.1)" : "rgba(0, 0, 0, 0.1)",
+        },
       },
     },
   };
