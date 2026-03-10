@@ -49,45 +49,40 @@ const NavBar = ({ lastUpdatedDate }: Props) => {
           />
         </Link>
 
-        <div className="block w-full lg:w-[calc(100%-6rem)] h-[3.6rem] lg:h-20">
+        {/* Div for everything right of logo */}
+        <div className="w-[calc(100%-6rem)] h-20">
           {/* Row 1 - Title - Sub-title - Date */}
           <div className="flex lg:h-1/2 mx-auto items-center ml-1">
             {/* Title */}
             <Link href="/" className="mr-auto lg:mr-0">
-              <h1 className="ml-2 text-2xl font-bold text-stone-100 hover-to-white">
+              <h1 className="ml-2 text-2xl font-bold hover-to-white">
                 KiwiPrice.xyz
               </h1>
             </Link>
 
-            {/* Sub Title - hidden on mobile */}
-            <h3
-              className="hidden mt-1 lg:flex ml-6 mr-auto text-sm select-none font-bold
-             text-zinc-100"
-            >
+            {/* Sub Title */}
+            <h3 className="mt-1 flex ml-6 mr-auto text-sm select-none font-bold">
               Tracking the cost of food across New Zealand
             </h3>
 
-            {/* Last Updated Date - hidden on mobile  */}
-            <div
-              className="hidden lg:block text-primary-colour text-sm select-none 
-              pr-4 mt-2 w-fit ml-auto h-8"
-            >
+            {/* Last Updated Date  */}
+            <div className="text-sm select-none pr-4 mt-2 ml-auto h-8">
               Updated {lastUpdatedDate}
             </div>
           </div>
 
-          {/* Row 2 - Categories & Search Bar - hidden on mobile */}
-          <div className="h-1/2 hidden lg:flex items-center pb-2">
+          {/* Row 2 - Categories & Search Bar */}
+          <div className="h-1/2 flex items-center pb-2">
             {/* Categories */}
             <div className="flex items-center overflow-hidden whitespace-nowrap w-fit">
               {favouriteCategories.map((name) => {
                 const href = "/products/" + name;
-                const isActive = currentPath.includes(href);
+                const isCurrentOpenCategory = currentPath.includes(name)
+                  ? "nav-main-link-active"
+                  : "";
                 return (
                   <Link
-                    className={`nav-main-link ${
-                      isActive ? "nav-main-link-active" : ""
-                    }`}
+                    className={"nav-main-link " + isCurrentOpenCategory}
                     href={href}
                     key={href}
                   >
