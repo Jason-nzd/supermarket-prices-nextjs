@@ -100,14 +100,14 @@ function ProductModalFull({ product, setIsModalOpen }: Props) {
   };
 
   return (
-    // Main modal div requires absolute and high z-index
+    // Main modal div
     <div
       className={
         (theme === "dark"
           ? "bg-zinc-900/50 text-zinc-100 backdrop-blur-3xl"
-          : "bg-zinc-50/50 text-green-800 backdrop-blur-lg") +
-        " flex flex-col absolute mx-auto rounded-3xl z-50 shadow-2xl" +
-        " overflow-y-scroll overflow-x-hidden max-h-[90vh] no-scrollbar"
+          : "bg-white/60 text-green-800 backdrop-blur-lg") +
+        " flex flex-col relative mx-auto rounded-3xl shadow-2xl" +
+        " overflow-y-scroll overflow-x-hidden no-scrollbar"
       }
     >
       {/* Top Div - contains title and X close button*/}
@@ -133,7 +133,7 @@ function ProductModalFull({ product, setIsModalOpen }: Props) {
       {/* Central Content Div */}
       <div className="flex flex-col mx-auto px-2 w-[calc(90vw)] max-w-5xl">
         {/* Image and info upper div - max of 60% view height*/}
-        <div className="block md:flex max-h-[calc(60vh)]">
+        <div className="block md:flex lg:h-[calc(50vh)]">
           {/* Image with size tag - On left 2/3 for desktop, full width for mobile */}
           <div className="relative w-full md:w-2/3 m-1 mt-2 md:m-2">
             {/* Image div - has min-h for mobile spacing */}

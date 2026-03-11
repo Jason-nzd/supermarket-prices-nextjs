@@ -186,6 +186,6 @@
   }
 
   .modal-outside-tint {
-    @apply absolute inset-0 bg-black/20 backdrop-blur-none;
+    @apply fixed inset-0 bg-black/10 backdrop-blur-none;
   }
 }

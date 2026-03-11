@@ -88,9 +88,12 @@ function ProductCard({ product }: Props) {
       </div>
 
       <Dialog open={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <div className="modal-outside-tint" />
-        <div className="fixed mx-auto max-h-320 max-w-7xl w-[90%] h-[95%] inset-0 top-[5%] z-40">
-          <DialogPanel className="">
+        <div
+          className="fixed inset-0 bg-black/20 backdrop-blur-none z-50"
+          aria-hidden="true"
+        />
+        <div className="fixed inset-0 z-60 flex items-center justify-center">
+          <DialogPanel>
             <ProductModalFull
               product={product}
               key={product.id}
