@@ -12,11 +12,15 @@ interface Props {
 // This is a modified replacement for <Image />
 // It will try to load a product image using prop src,
 // if nothing is found it will fallback to a placeholder image.
-function ImageWithFallback({ src, desaturate = false, priority = false }: Props) {
+function ImageWithFallback({
+  src,
+  desaturate = false,
+  priority = false,
+}: Props) {
   const imagesHost = process.env.IMAGES_PATH || "https://images.kiwiprice.xyz/";
   const [imgSrc, setImgSrc] = useState(imagesHost + src);
   const tailwindClassnames = desaturate
-    ? "saturate-[30%] hover:saturate-100 transition-all duration-800"
+    ? "saturate-[20%] hover:saturate-100 transition-colors duration-500"
     : "";
 
   return (
