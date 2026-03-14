@@ -47,6 +47,8 @@ export async function connectToCosmosDB(): Promise<boolean> {
     const database = await cosmosClient.database(COSMOS_DBNAME!);
     container = await database.container(COSMOS_CONTAINER!);
 
+    // console.log(`Connected to ${database.id} > ${container.id}`)
+
     return true;
   } catch {
     console.log(
@@ -80,7 +82,7 @@ export async function DBGetProduct(id: string, partitionKey?: string): Promise<P
   return Promise.reject();
 }
 
-// Search DB for products with a search term, optional category, and optional exclude terms
+// Search DB for product names, optional category, and optional exclude terms
 // excludeRegex can be a single word, formatted as "(pineapple|mango|cheese)", or any similar regex
 export async function DBFetchByNameAndExcludeRegex(
   includeTerm: string,
@@ -165,7 +167,7 @@ async function fetchProductsUsingSDK(
   const resultingProducts: Product[] = [];
 
   // Log query to console
-  //console.log('SDK: ' + querySpec.query);
+  // console.log('\nSDK: ' + querySpec.query);
 
   if (await connectToCosmosDB()) {
     // Access CosmosDB directly using the SDK
@@ -181,9 +183,15 @@ async function fetchProductsUsingSDK(
         .fetchNext();
 
       if (dbResponse.resources !== undefined) {
+
         // Push products into array and clean specific fields from CosmosDB
         dbResponse.resources.map((productDocument) => {
+
           resultingProducts.push(cleanProductFields(productDocument));
+          // console.log(`!!! sdk: ${productDocument.name} - ${productDocument.unitPrice}`)
+          // productDocument.priceHistory.map((pd) => {
+          //   console.log(pd.Date + " - " + pd.Price)
+          // })
         });
       }
     } catch (error) {
@@ -320,22 +328,22 @@ export function queryAddLastChecked(lastChecked: LastChecked, useAND: boolean = 
 
 // Fetch products by searching category
 export async function DBFetchByCategory(
-  searchTerm: string,
+  category: string,
   maxItems: number = 20,
   store: Store = Store.Any,
   priceHistoryLimit: PriceHistoryLimit = PriceHistoryLimit.Any,
   orderBy: OrderByMode = OrderByMode.None,
   lastChecked: LastChecked = LastChecked.Within7Days
 ): Promise<Product[]> {
-  const queryBase = 'SELECT * FROM products p WHERE ARRAY_CONTAINS(p.category, @name, true)';
+  const queryBase = 'SELECT * FROM products p WHERE p.category = @name';
   const querySpec: SqlQuerySpec = {
     query:
       queryBase +
       queryAddLimitStore(store, false) +
       queryAddLastChecked(lastChecked) +
-      queryAddPriceHistoryLimit(priceHistoryLimit) +
-      queryAddOrderBy(orderBy),
-    parameters: [{ name: '@name', value: searchTerm }],
+      queryAddPriceHistoryLimit(priceHistoryLimit),
+    // queryAddOrderBy(orderBy),
+    parameters: [{ name: '@name', value: category }],
   };
   return await fetchProductsUsingSDK(querySpec, maxItems);
 }
@@ -397,7 +405,8 @@ export async function DBGetMostRecentDate(): Promise<string> {
 
       if (dbResponse.resources !== undefined) {
         // Return the last checked date in medium date format
-        return utcDateToMediumDate(dbResponse.resources[0].lastChecked);
+        // return utcDateToMediumDate(dbResponse.resources[0].lastChecked);
+        return dbResponse.resources[0].lastChecked
       }
     } catch (error) {
       console.log('Error on DBMostRecentDate()\n' + error);

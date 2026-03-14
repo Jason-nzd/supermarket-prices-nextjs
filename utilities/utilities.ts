@@ -36,6 +36,7 @@ export enum PriceHistoryLimit {
 export enum LastChecked {
   Within3Days,
   Within7Days,
+  Within12Days,
   Within30Days,
   Any,
 }
@@ -49,77 +50,80 @@ export function getStoreEnum(product: Product): Store {
   else return Store.Any;
 }
 
-// Removes undesired fields that CosmosDB creates
+// cleanProductFields
+// -------------------
+// Validates data and cleans undesired fields that CosmosDB creates
 export function cleanProductFields(document: Product): Product {
   const {
     id,
     name,
-    currentPrice,
     size,
     sourceSite,
     priceHistory,
-    lastUpdated
-  } = document;
-  let {
     category,
     lastChecked,
+  } = document;
+
+  let {
     unitPrice,
-    unitName,
-    originalUnitQuantity,
+    unitPriceNum,
   } = document;
 
   try {
-    // Check for valid date and category formats
-    if (lastUpdated === undefined || lastUpdated === null) {
-      console.log(name + ' has null date - ' + lastUpdated);
-    }
-    if (!category) category = ['No Category'];
-    if (!lastChecked) lastChecked = lastUpdated;
-    if (!unitPrice) {
-      const derivedUnitString = deriveUnitPriceString(document);
+    if (id.length < 1) console.log(`Bad Product ID for ${id} - ${name}`)
+    if (name.length < 2) console.log(`Bad name for ${id} - ${name}`)
+    if (!category) console.log(`Missing category for ${id} - ${name}`)
 
-      if (derivedUnitString) {
-        unitPrice = Number.parseFloat(derivedUnitString.split('/')[0] as string);
-        unitName = derivedUnitString.split('/')[1];
-      } else {
-        unitPrice = null;
-        unitName = null;
-      }
-    } else if (unitPrice < 0.01 || unitPrice > 400) {
-      console.log('[Unusual UnitPrice] = ' + name + ' - ' + unitPrice + '/' + unitName);
-      unitPrice = null;
+    // lastChecked should be a date string in the format yyyy-mm-dd
+    if (lastChecked.length != 10) console.log(`Improper lastChecked date string `)
+
+    // TODO: move unit price handling to server side only
+    // ensure unitPrice is limited 2 numbers max
+    if (unitPrice && unitPrice.length > 2) {
+      const unitNum = unitPrice.split("/")[0];
+      let unitName = unitPrice.split("/")[1]
+      unitName = unitName.replace("1ea", "ea")
+      unitPrice = parseFloat(unitNum).toFixed(2) + "/" + unitName;
+      unitPriceNum = parseFloat(unitNum)
     }
-    if (!originalUnitQuantity) originalUnitQuantity = null;
+    // try derive a unit price string if missing
+    if (!unitPrice || unitPrice === "") unitPrice = deriveUnitPriceString(document);
+    if (unitPriceNum === undefined) unitPriceNum = 9999
   } catch (error) {
     console.log(`Error on cleanProductFields() for ${name}\n` + error);
   }
+
   const cleanedProduct: Product = {
     id,
     name,
-    currentPrice,
     size,
     sourceSite,
     priceHistory,
     category,
-    lastUpdated,
     lastChecked,
     unitPrice,
-    unitName,
-    originalUnitQuantity,
+    unitPriceNum
   };
   return cleanedProduct;
 }
 
-export function deriveUnitPriceString(product: Product): string | undefined {
-  let quantity: number | undefined;
+// deriveUnitPriceString
+// ---------------------
+// Try to derive a unit price string such as 500/kg from the product name/size
+// Return an empty string if unable to derive one
+export function deriveUnitPriceString(product: Product): string {
+  let quantity: number = 0;
+  let unit: string = "";
   let deriveUnitPriceFromName = false;
 
-  // Try match any units found in size or name
+  // Try regex match any standard units found in size
   let matchedUnit = product.size
     ?.toLowerCase()
     .match(/\d+(\.\d+)?\s?(g|kg|l|ml)\b/g)
     ?.join('');
+
   if (!matchedUnit) {
+    // If none found try match in name
     matchedUnit = product.name
       ?.toLowerCase()
       .match(/\d+(\.\d+)?\s?(g|kg|l|ml)\b/g)
@@ -128,14 +132,15 @@ export function deriveUnitPriceString(product: Product): string | undefined {
   }
 
   if (matchedUnit) {
-    // Get any digits or decimals from size or name, then parse to a float
-    const regexSizeOnlyDigits = deriveUnitPriceFromName
-      ? product.name?.match(/\d|\./g)?.join('')
-      : product.size?.match(/\d|\./g)?.join('');
-    if (regexSizeOnlyDigits) quantity = parseFloat(regexSizeOnlyDigits);
+    const nameOrSize = deriveUnitPriceFromName ? product.name : product.size || "";
 
-    // Get unit name
-    product.unitName = matchedUnit.match(/(g|kg|l|ml)/g)?.join('');
+    // Regex any digits or decimals
+    const unitNumbers = nameOrSize.match(/\d|\./g)?.join('')
+    // Then parse to quantity
+    if (unitNumbers) quantity = parseFloat(unitNumbers);
+
+    // Regex any words
+    unit = matchedUnit.match(/(g|kg|l|ml)\b/g)?.join('') || "";
 
     // Handle edge case where size contains a 'multiplier x sub-unit' - eg. 4 x 107mL
     const matchMultipliedSizeString = product.size?.match(/\d+\sx\s\d+mL$/g)?.join('');
@@ -143,39 +148,42 @@ export function deriveUnitPriceString(product: Product): string | undefined {
       const splitMultipliedSize = matchMultipliedSizeString.split('x');
       const multiplier = parseInt(splitMultipliedSize[0].trim());
       const subUnitSize = parseInt(splitMultipliedSize[1].trim());
+
+      // set the quantity, overriding any earlier logic
       quantity = multiplier * subUnitSize;
     }
 
     // If size is simply 'kg', process it as 1kg
     if (product.size === 'kg' || product.size?.includes('per kg')) {
       quantity = 1;
-      product.unitName = 'kg';
+      unit = 'kg';
     }
 
     // If units are in grams, convert to /kg
-    if (quantity && product.unitName === 'g') {
+    if (quantity > 0 && unit === 'g') {
       quantity = quantity / 1000;
-      product.unitName = 'kg';
+      unit = 'kg';
     }
 
     // If units are in mL, divide by 1000 and use L instead
-    if (quantity && product.unitName === 'ml') {
+    if (quantity > 0 && unit === 'ml') {
       quantity = quantity / 1000;
-      product.unitName = 'L';
+      unit = 'L';
     }
 
     // Capitalize L for Litres
-    if (quantity && product.unitName === 'l') product.unitName = 'L';
+    unit = unit.replace("l", "L");
 
     // Parse to int and check is within valid range
-    if (quantity && quantity > 0 && quantity < 9999) {
+    if (quantity > 0 && quantity < 9999) {
       // Set per unit price
-      product.unitPrice = parseFloat((product.currentPrice / quantity).toPrecision(2));
-
-      return product.unitPrice + '/' + product.unitName;
+      const currentPrice = product.priceHistory[0].Price;
+      const dividedUnitPrice = parseFloat((currentPrice / quantity).toPrecision(2));
+      return dividedUnitPrice + '/' + unit;
     }
   }
-  return undefined;
+  // Return empty if unable to derive
+  return "";
 }
 
 // getPriceLowDifference()
@@ -185,11 +193,11 @@ export function getPriceLowDifference(priceHistory: DatedPrice[]) {
   // Loop through the price history and find the lowest price
   let lowestPrice = 9999;
   priceHistory.forEach((datedPrice) => {
-    if (datedPrice.price < lowestPrice) lowestPrice = datedPrice.price;
+    if (datedPrice.Price < lowestPrice) lowestPrice = datedPrice.Price;
   });
 
   // Return the difference in price between the current and lowest price
-  const currentPrice = priceHistory[priceHistory.length - 1].price;
+  const currentPrice = priceHistory[priceHistory.length - 1].Price;
   return Math.round((currentPrice / lowestPrice) * 100 - 100);
 }
 
@@ -200,7 +208,7 @@ export function getLowerQuartilePriceDifference(priceHistory: DatedPrice[]) {
   // Extract only prices from the DatedPrice array
   const pricesOnly: number[] = [];
   priceHistory.forEach((datedPrice) => {
-    pricesOnly.push(datedPrice.price);
+    pricesOnly.push(datedPrice.Price);
   });
 
   // Sort prices
@@ -224,7 +232,7 @@ export function getLowerQuartilePriceDifference(priceHistory: DatedPrice[]) {
   const lowerQuartilePrice = lowerQuartileSummed / quartileIndex;
 
   // Return the difference in price between the current and lower quartile price
-  const currentPrice = priceHistory[priceHistory.length - 1].price;
+  const currentPrice = priceHistory[priceHistory.length - 1].Price;
   return Math.round((currentPrice / lowerQuartilePrice) * 100 - 100);
 }
 
@@ -246,17 +254,17 @@ export function getPriceAvgDifference(
   for (let i = priceHistory.length - 1; i >= 0; i--) {
 
     // Sum each price
-    pricesSummed += priceHistory[i].price;
+    pricesSummed += priceHistory[i].Price;
 
     // Once at the end of the historical range, calculate the avg price
-    if ((new Date(priceHistory[i].date) < comparisonDateCutoff) || (i == 0)) {
+    if ((new Date(priceHistory[i].Date) < comparisonDateCutoff) || (i == 0)) {
       avgHistoricalPrice = pricesSummed / (priceHistory.length - i);
       break;
     }
   }
 
   // Return the difference in price between the current and average price
-  const currentPrice = priceHistory[priceHistory.length - 1].price;
+  const currentPrice = priceHistory[priceHistory.length - 1].Price;
   //console.log(currentPrice + " / " + avgHistoricalPrice + " = " + Math.round((currentPrice / avgHistoricalPrice) * 100 - 100))
   return Math.round((currentPrice / avgHistoricalPrice) * 100 - 100);
 }
@@ -268,8 +276,8 @@ export function getLastPriceChangePercent(priceHistory: DatedPrice[]) {
   // Return 0 if there are fewer than 2 price history entries
   if (priceHistory.length < 2) return 0;
 
-  const currentPrice = priceHistory[priceHistory.length - 1].price;
-  const prevPrice = priceHistory[priceHistory.length - 2].price;
+  const currentPrice = priceHistory[priceHistory.length - 1].Price;
+  const prevPrice = priceHistory[priceHistory.length - 2].Price;
   const priceChange = currentPrice / prevPrice;
 
   return Math.round(priceChange * 100 - 100);
@@ -286,11 +294,11 @@ export function utcDateToShortDate(utcDate: Date, returnTodayString: boolean = f
   else return date.substring(4, 10); // Mar 16
 }
 
-// utcDateToLongDate()
+// stringDateToLongDate()
 // -------------------
-// Takes UTC Date and returns 'Friday, 11 August 2023'
-export function utcDateToLongDate(utcDate: Date): string {
-  return new Date(utcDate).toLocaleString('en-GB', {
+// Takes string date and returns 'Friday, 11 August 2023'
+export function stringDateToLongDate(stringDate: string): string {
+  return new Date(stringDate).toLocaleString('en-GB', {
     weekday: 'long',
     day: 'numeric',
     month: 'long',
@@ -319,11 +327,11 @@ export function cleanDate(utcDate: Date): Date {
 
 // daysElapsedSinceDateFormatted()
 // -------------------------------
-// Takes UTC Date and returns number of days elapsed since.
+// Takes string date and returns number of days elapsed since.
 // Can also return easier to read strings such as 'today' if 0 days of difference.
-export function daysElapsedSinceDateFormatted(utcDate: Date): string {
+export function daysElapsedSinceDateFormatted(stringDate: string): string {
   const now = new Date();
-  const then = new Date(utcDate);
+  const then = new Date(stringDate);
   const elapsedDays = Math.floor((now.getTime() - then.getTime()) / (1000 * 3600 * 24));
 
   if (elapsedDays == 0) return 'Today';
@@ -341,11 +349,11 @@ export function numDaysElapsedSinceDate(utcDate: Date): number {
   return Math.floor((now.getTime() - then.getTime()) / (1000 * 3600 * 24));
 }
 
-// utcDateToMonthYear
+// stringDateToMonthYear
 // ------------------
-// Takes UTC Date and returns 'April 2023'
-export function utcDateToMonthYear(utcDate: Date): string {
-  return new Date(utcDate).toLocaleString('en-GB', {
+// Takes a string date and returns 'April 2023'
+export function stringDateToMonthYear(stringDate: string): string {
+  return new Date(stringDate).toLocaleString('en-GB', {
     month: 'long',
     year: 'numeric',
   });
@@ -365,8 +373,8 @@ export function sortProductsByName(products: Product[]): Product[] {
 // --------------------
 export function sortProductsByDate(products: Product[]): Product[] {
   return products.sort((a, b) => {
-    const dateA = new Date(a.priceHistory[a.priceHistory.length - 1].date);
-    const dateB = new Date(b.priceHistory[b.priceHistory.length - 1].date);
+    const dateA = new Date(a.priceHistory[a.priceHistory.length - 1].Date);
+    const dateB = new Date(b.priceHistory[b.priceHistory.length - 1].Date);
     if (dateA > dateB) return -1;
     if (dateA < dateB) return 1;
     return 0;
@@ -378,12 +386,12 @@ export function sortProductsByDate(products: Product[]): Product[] {
 export function sortProductsByUnitPrice(products: Product[]): Product[] {
   return products.sort((a, b) => {
     // If no unit price is available, sort to bottom
-    if (a.unitPrice === null) a.unitPrice = 9999;
-    if (b.unitPrice === null) b.unitPrice = 9999;
+    if (a.unitPriceNum === null) a.unitPriceNum = 9999;
+    if (b.unitPriceNum === null) b.unitPriceNum = 9999;
 
     // Else sort from lowest to highest unit price
-    if (a.unitPrice! < b.unitPrice!) return -1;
-    if (a.unitPrice! > b.unitPrice!) return 1;
+    if (a.unitPriceNum! < b.unitPriceNum!) return -1;
+    if (a.unitPriceNum! > b.unitPriceNum!) return 1;
     return 0;
   });
 }
@@ -406,7 +414,7 @@ export function printPrice(price: number): string {
 // Takes a DatedPrice[] object and returns an enum whether price is trending up/down/same.
 export function priceTrend(priceHistory: DatedPrice[]): PriceTrend {
   if (priceHistory.length > 2) {
-    const latestPrice = priceHistory[priceHistory.length - 1].price;
+    const latestPrice = priceHistory[priceHistory.length - 1].Price;
 
     // Determine 5 recent prices to average, or less if no data available
     const numRecentPricesToAverage = Math.min(priceHistory.length - 1, 5);
@@ -415,7 +423,7 @@ export function priceTrend(priceHistory: DatedPrice[]): PriceTrend {
     // Get the average price across the most recent prices
     const recentPrices = priceHistory.slice(recentPricesIndexStart);
     const averageRecentPrice =
-      recentPrices.reduce((a, b) => a + b.price, 0) / recentPrices.length;
+      recentPrices.reduce((a, b) => a + b.Price, 0) / recentPrices.length;
 
     // Return PriceTrend based on a threshold.
     // If the price difference is within this threshold, PriceTrend.Same enum is returned
