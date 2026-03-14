@@ -32,7 +32,7 @@ async function fetchProductsUsingAPI(queryObject: { query: string }, maxItems: n
 
     try {
       // Fetch response using POST
-      const apiResponse = await fetch('https://api.kiwiprice.xyz/', {
+      const apiResponse = await fetch('https://api.kiwiprice.xyz/v2/', {
         method: 'POST',
         body: JSON.stringify(queryObject),
         mode: 'cors',
