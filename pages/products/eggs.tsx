@@ -56,7 +56,7 @@ export const getStaticProps: GetStaticProps = async () => {
     Store.Any,
     PriceHistoryLimit.Any,
     OrderByMode.None,
-    LastChecked.Within3Days
+    LastChecked.Within3Days,
   );
 
   // Sub-categories for each egg size
@@ -79,34 +79,39 @@ export const getStaticProps: GetStaticProps = async () => {
 
     // Parse to int and check is within valid range
     if (size !== undefined && parseInt(size) < 80) {
-      const quantity = parseInt(size);
+      // Get egg quantity
+      const eggQuantity = parseInt(size);
 
-      // Set per egg unit price
-      product.unitPrice = product.currentPrice / quantity;
+      // Get pack price
+      const packPrice =
+        product.priceHistory[product.priceHistory.length - 1].Price;
 
-      // Set size
-      product.size = quantity + " Pack";
+      // Divide per egg price
+      const perEggPrice = parseFloat((packPrice / eggQuantity).toPrecision(2));
+      product.unitPriceNum = perEggPrice;
+
+      // Build unitPrice string
+      product.unitPrice = perEggPrice + "/egg";
+
+      // Set size tag
+      product.size = eggQuantity + " Pack";
     }
-    // If a unit price could not be derived,
-    //  set unitPrice to 999 to force ordering to bottom
-    else product.unitPrice = 999;
-
-    // Set unit name
-    product.unitName = "egg";
+    // If an egg unit price could not be parsed - blank it out
+    else {
+      product.unitPrice = "";
+      product.unitPriceNum = 999; // set to 999 so it sorts to the bottom
+    }
   });
 
   // Sort by unit price
   products.sort((a, b) => {
-    if (a.unitPrice! < b.unitPrice!) return -1;
-    if (a.unitPrice! > b.unitPrice!) return 1;
+    if (a.unitPriceNum! < b.unitPriceNum!) return -1;
+    if (a.unitPriceNum! > b.unitPriceNum!) return 1;
     return 0;
   });
 
   // Loop through all products and split by category
   products.forEach((product) => {
-    // Clear any unitPrices of 999 that were needed for sorting
-    if (product.unitPrice === 999) product.unitPrice = null;
-
     // Split each product into egg sizes
     if (product.name.toLowerCase().includes("size 6")) mixedGrade.push(product);
     else if (product.name.toLowerCase().includes("size 7")) size7.push(product);
