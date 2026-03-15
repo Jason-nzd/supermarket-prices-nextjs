@@ -8,13 +8,10 @@ import {
   DBGetMostRecentDate,
 } from "@/lib/db/cosmos";
 import {
-  LastChecked,
-  OrderByMode,
-  PriceHistoryLimit,
-  Store,
   printProductCountSubTitle,
   sortProductsByUnitPrice,
 } from "@/lib/utils";
+import { LastChecked, OrderByMode, PriceHistoryLimit, Store } from "@/lib/enums";
 import PageLayout from "@/components/layout/PageLayout";
 import startCase from "lodash/startCase";
 

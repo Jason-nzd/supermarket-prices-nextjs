@@ -1,5 +1,6 @@
 import { Product } from "@/typings";
-import { LastChecked, PriceHistoryLimit, Store, cleanProductFields } from "@/lib/utils";
+import { LastChecked, PriceHistoryLimit, Store } from "@/lib/enums";
+import { cleanProductFields } from "@/lib/utils";
 import { queryAddLastChecked, queryAddLimitStore, queryAddPriceHistoryLimit } from "@/lib/db/cosmos";
 
 // Fetch all products, with optional store selection

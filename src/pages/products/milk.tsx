@@ -1,21 +1,17 @@
 import { GetStaticProps } from "next";
-import { useContext } from "react";
-import { Product, ProductGridData } from "@/typings";
+import { ProductGridData } from "@/typings";
 import ProductsGrid from "@/components/features/products/ProductGrid";
 import {
   DBFetchByCategory,
   DBGetMostRecentDate,
 } from "@/lib/db/cosmos";
-import { DarkModeContext } from "@/pages/_app";
 import PageLayout from "@/components/layout/PageLayout";
 import {
   LastChecked,
   OrderByMode,
   PriceHistoryLimit,
   Store,
-  printProductCountSubTitle,
-  sortProductsByUnitPrice,
-} from "@/lib/utils";
+} from "@/lib/enums";
 
 interface Props {
   productGridDataAll: ProductGridData[];
@@ -42,10 +38,10 @@ const Category = ({ productGridDataAll, lastChecked }: Props) => {
 import { buildSubCategoryGrids } from "@/lib/sub-categorisation";
 
 export const getStaticProps: GetStaticProps = async () => {
-  // Fetch milk from DB
+  // Fetch milk category from DB
   const allMilk = await DBFetchByCategory(
     "milk",
-    600,
+    900,
     Store.Any,
     PriceHistoryLimit.Any,
     OrderByMode.None,
@@ -53,16 +49,16 @@ export const getStaticProps: GetStaticProps = async () => {
   );
 
   // Filter out powder and proceed to categorize
-  const products = allMilk.filter(
-    (product) => !product.name.toLowerCase().includes("powder")
-  );
+  // const products = allMilk.filter(
+  //   (product) => !product.name.toLowerCase().includes("powder")
+  // );
 
   const productGridDataAll = buildSubCategoryGrids(
-    products,
+    allMilk,
     [
       {
         titles: ["Standard Milk"],
-        match: /standard|original|blue|gate.milk.2l/i,
+        match: /standard|original|blue|gate.milk/i,
       },
       {
         titles: ["Trim Milk"],
@@ -82,7 +78,7 @@ export const getStaticProps: GetStaticProps = async () => {
         createSearchLink: false,
       },
     ],
-    { sort: true, defaultLimit: 15 }
+    { sort: true, defaultLimit: 20 }
   );
 
   // Store date, to be displayed in static page title bar

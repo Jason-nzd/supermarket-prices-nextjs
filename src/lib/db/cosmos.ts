@@ -11,13 +11,10 @@ import { getSampleProductsInstead } from "@/lib/sample-products";
 import { Product } from "@/typings";
 import {
   cleanProductFields,
-  LastChecked,
-  OrderByMode,
-  PriceHistoryLimit,
   sortProductsByUnitPrice,
-  Store,
   utcDateToMediumDate,
 } from "@/lib/utils";
+import { LastChecked, OrderByMode, PriceHistoryLimit, Store } from "@/lib/enums";
 
 // CosmosDB Env Variables
 const COSMOS_CONSTRING = process.env.COSMOS_CONSTRING;
@@ -60,6 +57,49 @@ export async function connectToCosmosDB(): Promise<boolean> {
     );
     return false;
   }
+}
+
+// Takes an SDK querySpec and performs the actual CosmosDB lookup
+async function fetchProductsUsingSDK(
+  querySpec: SqlQuerySpec,
+  maxItems: number
+): Promise<Product[]> {
+  const resultingProducts: Product[] = [];
+
+  // Log query to console
+  console.log('\nSDK: ' + querySpec.query);
+
+  if (await connectToCosmosDB()) {
+    // Access CosmosDB directly using the SDK
+    try {
+      // Set Cosmos Query options
+      const options: FeedOptions = {
+        maxItemCount: maxItems,
+      };
+
+      // Perform DB Fetch
+      const dbResponse: FeedResponse<Product> = await container.items
+        .query(querySpec, options)
+        .fetchNext();
+
+      if (dbResponse.resources !== undefined) {
+
+        // Push products into array and clean specific fields from CosmosDB
+        dbResponse.resources.map((productDocument) => {
+
+          resultingProducts.push(cleanProductFields(productDocument));
+          // console.log(`!!! sdk: ${productDocument.name} - ${productDocument.unitPrice}`)
+          // productDocument.priceHistory.map((pd) => {
+          //   console.log(pd.date + " - " + pd.price)
+          // })
+        });
+      }
+    } catch (error) {
+      console.log('Error on fetchProductsUsingSDK()\n' + error);
+    }
+  } else return getSampleProductsInstead();
+
+  return resultingProducts;
 }
 
 // Get a specific product using id, optional partition key
@@ -157,49 +197,6 @@ export async function DBFetchAll(
   };
 
   return await fetchProductsUsingSDK(querySpec, maxItems);
-}
-
-// Takes an SDK querySpec and performs the actual CosmosDB lookup
-async function fetchProductsUsingSDK(
-  querySpec: SqlQuerySpec,
-  maxItems: number
-): Promise<Product[]> {
-  const resultingProducts: Product[] = [];
-
-  // Log query to console
-  // console.log('\nSDK: ' + querySpec.query);
-
-  if (await connectToCosmosDB()) {
-    // Access CosmosDB directly using the SDK
-    try {
-      // Set Cosmos Query options
-      const options: FeedOptions = {
-        maxItemCount: maxItems,
-      };
-
-      // Perform DB Fetch
-      const dbResponse: FeedResponse<Product> = await container.items
-        .query(querySpec, options)
-        .fetchNext();
-
-      if (dbResponse.resources !== undefined) {
-
-        // Push products into array and clean specific fields from CosmosDB
-        dbResponse.resources.map((productDocument) => {
-
-          resultingProducts.push(cleanProductFields(productDocument));
-          // console.log(`!!! sdk: ${productDocument.name} - ${productDocument.unitPrice}`)
-          // productDocument.priceHistory.map((pd) => {
-          //   console.log(pd.date + " - " + pd.price)
-          // })
-        });
-      }
-    } catch (error) {
-      console.log('Error on fetchProductsUsingSDK()\n' + error);
-    }
-  } else return getSampleProductsInstead();
-
-  return resultingProducts;
 }
 
 // Takes an orderBy enum and returns the corresponding SQL query add-on

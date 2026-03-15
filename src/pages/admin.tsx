@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import ProductEditRow from "@/components/features/admin/AdminProductRow";
 import { Product } from "@/typings";
-import { LastChecked, PriceHistoryLimit, Store } from "@/lib/utils";
+import { LastChecked, PriceHistoryLimit, Store } from "@/lib/enums";
 import startCase from "lodash/startCase";
 import { DBFetchAllAPI, DBFetchByNameAPI } from "@/services/api";
 import Link from "next/link";

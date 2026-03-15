@@ -1,7 +1,7 @@
 import ProductsGrid from "@/components/features/products/ProductGrid";
 import { Product } from "@/typings";
 import { DBFetchAll, DBGetMostRecentDate } from "@/lib/db/cosmos";
-import { OrderByMode, PriceHistoryLimit, Store } from "@/lib/utils";
+import { OrderByMode, PriceHistoryLimit, Store } from "@/lib/enums";
 import PageLayout from "@/components/layout/PageLayout";
 
 interface Props {

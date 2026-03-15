@@ -3,7 +3,7 @@ import cdlogo from "../../../public/images/cd-logo-64.png";
 import whlogo from "../../../public/images/wh-logo.svg";
 import pklogo from "../../../public/images/pk-logo-64.png";
 import nwlogo from "../../../public/images/nw-logo-64-wide.png";
-import { Store } from "@/lib/utils";
+import { Store } from "@/lib/enums";
 
 interface Props {
   store: Store;

@@ -10,8 +10,10 @@ import {
   LastChecked,
   OrderByMode,
   PriceHistoryLimit,
-  printProductCountSubTitle,
   Store,
+} from "@/lib/enums";
+import {
+  printProductCountSubTitle,
 } from "@/lib/utils";
 import PageLayout from "@/components/layout/PageLayout";
 
