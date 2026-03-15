@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Product } from "@/typings";
 import ImageWithFallback from "@/components/common/ImageWithFallback";
 import { Dialog, DialogPanel } from "@headlessui/react";
-import ProductModalFull from "@/components/features/products/ProductCard/ProductCardDetailed";
+import ProductModal from "@/components/features/products/ProductCard/ProductModal";
 import PriceTag from "@/components/features/products/ProductCard/PriceTag";
 import dynamic from "next/dynamic";
 import { productIsCurrent } from "@/lib/utils";
@@ -90,7 +90,7 @@ function ProductCard({ product }: Props) {
         />
         <div className="fixed inset-0 z-60 flex items-center justify-center">
           <DialogPanel>
-            <ProductModalFull
+            <ProductModal
               product={product}
               key={product.id}
               setIsModalOpen={setIsModalOpen}

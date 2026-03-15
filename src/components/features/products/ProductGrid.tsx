@@ -3,14 +3,13 @@ import { Product } from "@/typings";
 import ProductCard from "@/components/features/products/ProductCard/ProductCard";
 import Link from "next/link";
 import DOMPurify from "isomorphic-dompurify";
-import { getLargestMultiplication } from "@/lib/utils";
 
 interface Props {
   titles?: string[];
   subTitle?: string;
   products: Product[];
   trimColumns?: boolean;
-  createSearchLink?: boolean;
+  titleAsSearchLink?: boolean;
   createDeepLink?: string;
 }
 
@@ -19,7 +18,7 @@ function ProductGrid({
   subTitle = "",
   products,
   trimColumns = false,
-  createSearchLink = true,
+  titleAsSearchLink = true,
   createDeepLink = "",
 }: Props) {
   let trimmedProducts: Product[] = [];
@@ -66,14 +65,14 @@ function ProductGrid({
   if (products.length > 0)
     return (
       <div>
-        {/* Display grid title as-is if no createSearchLink option is set */}
-        {!createSearchLink && createDeepLink.length == 0 && (
+        {/* Display grid title as-is if no titleAsSearchLink option is set */}
+        {!titleAsSearchLink && createDeepLink.length == 0 && (
           <div className="grid-title">{titles[0]}</div>
         )}
 
         {/* Create search links for each word */}
         {createDeepLink.length == 0 &&
-          createSearchLink &&
+          titleAsSearchLink &&
           titles.length >= 1 && (
             <div className="flex w-fit mx-auto grid-title">
               {titles.map((word) => {
@@ -94,7 +93,7 @@ function ProductGrid({
 
         {/* Create deep category links for each word */}
         {createDeepLink.length > 1 &&
-          !createSearchLink &&
+          !titleAsSearchLink &&
           titles.length >= 1 && (
             <div className="flex w-fit mx-auto grid-title">
               {titles.map((word) => {
@@ -145,3 +144,15 @@ function ProductGrid({
 }
 
 export default ProductGrid;
+
+function getLargestMultiplication(inputNum: number, multiplier: number): number {
+  let currentMultiple = multiplier;
+  let largestMultiplication = multiplier;
+  while (true) {
+    currentMultiple += multiplier;
+    if (currentMultiple === inputNum) return inputNum;
+    if (currentMultiple > inputNum) return largestMultiplication;
+
+    largestMultiplication = currentMultiple;
+  }
+}

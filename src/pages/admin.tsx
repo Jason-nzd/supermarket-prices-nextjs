@@ -6,7 +6,7 @@ import startCase from "lodash/startCase";
 import { DBFetchAllAPI, DBFetchByNameAPI } from "@/services/api";
 import Link from "next/link";
 import { DBGetMostRecentDate } from "@/lib/db/cosmos";
-import PageLayout from "@/components/layout/PageLayout";
+import StandardPageLayout from "@/components/layout/StandardPageLayout";
 
 interface Props {
   lastChecked: string;
@@ -53,7 +53,7 @@ const AdminPanel = ({ lastChecked }: Props) => {
   }, []);
 
   return (
-    <PageLayout lastUpdatedDate={lastChecked}>
+    <StandardPageLayout lastUpdatedDate={lastChecked}>
       <div className="min-h-[50rem]">
         <h1 className="grid-title">Admin Tools (Demo Mode)</h1>
         <div className="mx-auto w-fit p-2">
@@ -180,7 +180,7 @@ const AdminPanel = ({ lastChecked }: Props) => {
           </div>
         )}
       </div>
-    </PageLayout>
+    </StandardPageLayout>
   );
 };
 

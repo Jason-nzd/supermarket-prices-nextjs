@@ -8,7 +8,7 @@ interface Props {
   lastUpdatedDate: string;
 }
 
-const PageLayout = ({ children, lastUpdatedDate }: Props) => {
+const StandardPageLayout = ({ children, lastUpdatedDate }: Props) => {
   const theme = useContext(DarkModeContext).darkMode ? "dark" : "light";
 
   return (
@@ -26,4 +26,4 @@ const PageLayout = ({ children, lastUpdatedDate }: Props) => {
   );
 };
 
-export default PageLayout;
+export default StandardPageLayout;

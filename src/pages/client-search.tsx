@@ -13,7 +13,7 @@ import { useRouter } from "next/router";
 import startCase from "lodash/startCase";
 import { DBFetchByNameAPI } from "@/services/api";
 import { DBGetMostRecentDate } from "@/lib/db/cosmos";
-import PageLayout from "@/components/layout/PageLayout";
+import StandardPageLayout from "@/components/layout/StandardPageLayout";
 
 interface Props {
   lastChecked: string;
@@ -97,7 +97,7 @@ const ClientSearch = ({ lastChecked }: Props) => {
   }, [searchTerm]);
 
   return (
-    <PageLayout lastUpdatedDate={lastChecked}>
+    <StandardPageLayout lastUpdatedDate={lastChecked}>
       <div className="min-h-[50rem]">
         {/* Page Title */}
         <div className="grid-title">
@@ -150,12 +150,12 @@ const ClientSearch = ({ lastChecked }: Props) => {
             </div>
             <ProductsGrid
               products={outOfStockProducts}
-              createSearchLink={false}
+              titleAsSearchLink={false}
             />
           </div>
         )}
       </div>
-    </PageLayout>
+    </StandardPageLayout>
   );
 };
 

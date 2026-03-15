@@ -9,6 +9,7 @@ import MobileBurgerMenu from "@/components/layout/Navbar/MobileMenu";
 import DarkModeToggle from "@/components/layout/Navbar/DarkModeToggle";
 import { useRouter } from "next/router";
 import { FavouriteCategoriesContext } from "@/pages/_app";
+import { stringDateToLongDate } from "@/lib/utils";
 
 // NavBar
 // ------
@@ -67,7 +68,7 @@ const NavBar = ({ lastUpdatedDate }: Props) => {
 
             {/* Last Updated Date  */}
             <div className="text-sm select-none pr-4 mt-2 ml-auto h-8">
-              Updated {lastUpdatedDate}
+              Updated {stringDateToLongDate(lastUpdatedDate)}
             </div>
           </div>
 

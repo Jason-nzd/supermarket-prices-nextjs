@@ -31,7 +31,7 @@ function DynamicChartCall({ product }: ChartProps) {
   return <DynamicChart product={product} useLargeVersion={true} />;
 }
 
-function ProductModalFull({ product, setIsModalOpen }: Props) {
+function ProductModal({ product, setIsModalOpen }: Props) {
   // Additional price stats for full product page
   let lowestPrice = 9999;
   let highestPrice = 0;
@@ -244,7 +244,7 @@ function ProductModalFull({ product, setIsModalOpen }: Props) {
 
         {/* Price Chart - full width, max-h-80 on mobile, or height 1/3 on desktop*/}
         <div className="flex w-full mx-auto h-full max-h-80 md:h-1/3 px-2 lg:mb-2">
-          {/* <DynamicChartCall product={product} useLargeVersion={true} /> */}
+          <DynamicChartCall product={product} useLargeVersion={true} />
         </div>
       </div>
 
@@ -253,7 +253,7 @@ function ProductModalFull({ product, setIsModalOpen }: Props) {
   );
 }
 
-export default ProductModalFull;
+export default ProductModal;
 
 const boxArrow = (
   <svg

@@ -2,7 +2,7 @@ import { GetStaticProps } from "next";
 import { Product } from "@/typings";
 import { DBFetchByName, DBGetMostRecentDate } from "@/lib/db/cosmos";
 import dynamic from "next/dynamic";
-import PageLayout from "@/components/layout/PageLayout";
+import StandardPageLayout from "@/components/layout/StandardPageLayout";
 
 const MultiStorePriceHistoryChart = dynamic(
   () => import("@/components/features/charts/PriceChartMulti"),
@@ -28,7 +28,7 @@ const Category = ({
   lastChecked,
 }: Props) => {
   return (
-    <PageLayout lastUpdatedDate={lastChecked}>
+    <StandardPageLayout lastUpdatedDate={lastChecked}>
       <div className="min-h-200">
         {/* Categorised Product Grids*/}
         <h1 className="grid-title">{countdownProduct?.name}</h1>
@@ -41,7 +41,7 @@ const Category = ({
           />
         </div>
       </div>
-    </PageLayout>
+    </StandardPageLayout>
   );
 };
 

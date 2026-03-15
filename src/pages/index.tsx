@@ -2,7 +2,7 @@ import ProductsGrid from "@/components/features/products/ProductGrid";
 import { Product } from "@/typings";
 import { DBFetchAll, DBGetMostRecentDate } from "@/lib/db/cosmos";
 import { OrderByMode, PriceHistoryLimit, Store } from "@/lib/enums";
-import PageLayout from "@/components/layout/PageLayout";
+import StandardPageLayout from "@/components/layout/StandardPageLayout";
 
 interface Props {
   countdownProducts: Product[];
@@ -21,7 +21,7 @@ export default function Home({
   lastChecked,
 }: Props) {
   return (
-    <PageLayout lastUpdatedDate={lastChecked}>
+    <StandardPageLayout lastUpdatedDate={lastChecked}>
       {/* Page Title */}
       <div className="grid-title">{"Today's Trending Products"}</div>
       {countdownProducts && (
@@ -52,7 +52,7 @@ export default function Home({
           trimColumns={true}
         />
       )}
-    </PageLayout>
+    </StandardPageLayout>
   );
 }
 

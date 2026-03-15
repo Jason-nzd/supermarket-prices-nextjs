@@ -1,4 +1,4 @@
-import PageLayout from "@/components/layout/PageLayout";
+import StandardPageLayout from "@/components/layout/StandardPageLayout";
 import { DBGetMostRecentDate } from "@/lib/db/cosmos";
 
 interface Props {
@@ -7,7 +7,7 @@ interface Props {
 
 export default function Privacy({ lastChecked }: Props) {
   return (
-    <PageLayout lastUpdatedDate={lastChecked}>
+    <StandardPageLayout lastUpdatedDate={lastChecked}>
       {/* Page Title */}
       <div className="grid-title">Privacy & Cookie Policy</div>
       <div className="max-w-3xl mx-auto min-h-[20rem] px-2">
@@ -18,7 +18,7 @@ export default function Privacy({ lastChecked }: Props) {
         </p>
         <p className="mt-2">No other information is stored or collected.</p>
       </div>
-    </PageLayout>
+    </StandardPageLayout>
   );
 }
 
