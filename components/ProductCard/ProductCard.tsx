@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { DatedPrice, Product } from "../../typings";
+import { Product } from "../../typings";
 import ImageWithFallback from "../ImageWithFallback";
 import { Dialog, DialogPanel } from "@headlessui/react";
 import ProductModalFull from "./ProductCardDetailed";
@@ -12,31 +12,27 @@ interface Props {
   product: Product;
 }
 
-// Lazy/Dynamic load in heavy chart.js from PriceHistoryChart
+// Lazy load in heavy chart.js from PriceHistoryChart
 const DynamicChart = dynamic(() => import("./PriceHistoryChart"), {
   loading: () => <p>Loading...</p>,
 });
 interface ChartProps {
-  priceHistory: DatedPrice[];
-  lastChecked: Date;
+  product: Product;
   useLargeVersion: boolean;
 }
-function DynamicChartCall({ priceHistory, lastChecked }: ChartProps) {
-  return (
-    <DynamicChart
-      priceHistory={priceHistory}
-      lastChecked={lastChecked}
-      useLargeVersion={false}
-    />
-  );
+function DynamicChartCall({ product }: ChartProps) {
+  return <DynamicChart product={product} useLargeVersion={false} />;
 }
 
 function ProductCard({ product }: Props) {
   function handleClick() {
     setIsModalOpen(true);
   }
-
   const [isModalOpen, setIsModalOpen] = useState(false);
+  // console.log(`!!!!! ${product.name}`);
+  // product.priceHistory.map((dp) => {
+  //   console.log(dp.Date + " - " + dp.Price);
+  // });
 
   return (
     <>
@@ -67,17 +63,16 @@ function ProductCard({ product }: Props) {
           <div className="w-3/6">
             {/* Price History Chart */}
             <div className="pl-2 pr-1 z-30 h-24 mb-4 mr-1">
-              <DynamicChartCall
-                priceHistory={product.priceHistory}
-                lastChecked={product.lastChecked}
-                useLargeVersion={false}
-              />
+              <DynamicChartCall product={product} useLargeVersion={false} />
             </div>
 
             <div className="flex flex-col items-center">
               {/* Price Tag */}
               <div className="mr-2 ml-auto">
-                <PriceTag product={product} />
+                <PriceTag
+                  priceHistory={product.priceHistory}
+                  unitPrice={product.unitPrice}
+                />
               </div>
             </div>
           </div>

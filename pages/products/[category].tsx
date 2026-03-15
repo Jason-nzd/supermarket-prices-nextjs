@@ -151,7 +151,7 @@ let categoryNames = freshCategory.concat(
   pantryCategory,
   snacksCategory,
   drinksCategory,
-  petsCategory
+  petsCategory,
 );
 
 // Remove special sub-categories which have custom made pages instead of generated pages
@@ -194,15 +194,15 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 // Gets products from DB based on search term
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const searchTerm = params?.category as string;
+  const category = params?.category as string;
 
   let products = await DBFetchByCategory(
-    searchTerm,
+    category,
     500,
     Store.Any,
     PriceHistoryLimit.Any,
     OrderByMode.None,
-    LastChecked.Within7Days
+    LastChecked.Within7Days,
   );
 
   // Sort by unit price
@@ -212,12 +212,12 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const foundItemsCount = products.length;
 
   // Trim array size for first page
-  const numProductsPerPage = 40;
+  const numProductsPerPage = 30;
   products = products.slice(0, numProductsPerPage);
 
   // Build ProductGridData object
   const productGridData: ProductGridData = {
-    titles: [startCase(searchTerm)],
+    titles: [startCase(category)],
     subTitle: printProductCountSubTitle(products.length, foundItemsCount),
     products: products,
     createSearchLink: false,

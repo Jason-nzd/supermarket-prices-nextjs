@@ -1,4 +1,4 @@
-import { DatedPrice } from "../../typings";
+import { DatedPrice, Product } from "../../typings";
 import { getPriceAvgDifference, printPrice } from "../../utilities/utilities";
 import {
   CategoryScale,
@@ -16,19 +16,22 @@ import { useContext } from "react";
 import { DarkModeContext } from "../../pages/_app";
 
 interface Props {
-  priceHistory: DatedPrice[];
-  lastChecked: Date;
+  product: Product;
   useLargeVersion: boolean;
   useSteppedLine?: boolean;
 }
 
 function PriceHistoryChart({
-  priceHistory,
+  product,
   useLargeVersion = false,
   useSteppedLine = true,
 }: Props) {
   const theme = useContext(DarkModeContext).darkMode ? "dark" : "light";
   const isDark = theme === "dark";
+
+  // Make a copy of the price history array for chart specific tweaks
+  let ph = [...product.priceHistory];
+
   // Initialize chart.js line chart
   Chart.register(
     CategoryScale,
@@ -40,10 +43,10 @@ function PriceHistoryChart({
   );
 
   // Check if the price was updated today or not
-  const lastDatedPrice = priceHistory[priceHistory.length - 1];
-  const lastCheckedDateString = new Date(lastDatedPrice.date).toDateString();
-  const todayString = new Date().toDateString();
-  const wasUpdatedToday = lastCheckedDateString == todayString;
+  const lastDatedPrice = ph[ph.length - 1];
+  const lastCheckedDate = lastDatedPrice.Date;
+  const todayString = new Date().toISOString().split("T")[0];
+  const wasUpdatedToday = lastCheckedDate == todayString;
 
   // Limit small charts to five months ago for readability
   const fiveMonthsAgo = new Date(
@@ -51,31 +54,25 @@ function PriceHistoryChart({
   );
 
   // Find the min and max all time price
-  const minPrice = Math.min(
-    ...priceHistory.map((datedPrice) => datedPrice.price),
-  );
-  const maxPrice = Math.max(
-    ...priceHistory.map((datedPrice) => datedPrice.price),
-  );
+  const minPrice = Math.min(...ph.map((datedPrice) => datedPrice.Price));
+  const maxPrice = Math.max(...ph.map((datedPrice) => datedPrice.Price));
 
   // If any of prices are too high to warrant decimals, don't show decimals
-  const displayWithoutDecimals = priceHistory.some(
-    (datedPrice) => datedPrice.price > 9,
-  );
+  const displayWithoutDecimals = ph.some((datedPrice) => datedPrice.Price > 9);
 
   // If the price wasn't changed today, duplicate the most recent price point
-  // This highlights the last checked price should still be valid today
+  // This highlights the last checked price should still be valid
   if (!wasUpdatedToday) {
     const duplicatedDatedPrice: DatedPrice = {
-      date: new Date(),
-      price: priceHistory[priceHistory.length - 1].price,
+      Date: todayString,
+      Price: ph[ph.length - 1].Price,
     };
-    priceHistory.push(duplicatedDatedPrice);
+    ph.push(duplicatedDatedPrice);
   }
 
   // Set line colour to green, red or gray depending on price trend
   let trendColour = "";
-  const priceDiff = getPriceAvgDifference(priceHistory);
+  const priceDiff = getPriceAvgDifference(ph);
 
   // If price difference from the average price is +/- 3%, print black border
   if (Math.abs(priceDiff) <= 2) {
@@ -100,14 +97,14 @@ function PriceHistoryChart({
 
   // Use smaller point radius for denser charts
   let relativePointRadius = 1;
-  if (priceHistory.length > 10 && !useLargeVersion) relativePointRadius = 0;
+  if (ph.length > 10 && !useLargeVersion) relativePointRadius = 0;
 
   // Prepare chart data for chart.js line chart
   const chartData: ChartData<"line"> = {
-    labels: priceHistory.map((datedPrice) => datedPrice.date),
+    labels: ph.map((datedPrice) => datedPrice.Date),
     datasets: [
       {
-        data: priceHistory.map((datedPrice) => datedPrice.price),
+        data: ph.map((datedPrice) => datedPrice.Price),
         borderColor: trendColour,
         pointBorderColor: trendColour,
         pointBackgroundColor: "white",

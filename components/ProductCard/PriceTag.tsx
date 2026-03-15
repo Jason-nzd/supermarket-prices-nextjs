@@ -1,33 +1,17 @@
-import { Product } from "../../typings";
+import { DatedPrice } from "../../typings";
 import { getPriceAvgDifference } from "../../utilities/utilities";
 
 interface Props {
-  product: Product;
+  priceHistory: DatedPrice[];
+  unitPrice: string;
 }
 
-export default function PriceTag({ product }: Props) {
+export default function PriceTag({ priceHistory, unitPrice }: Props) {
   let priceTagDivClass = "glass-capsule h-16 md:h-20 px-3 ring-2";
   let icon;
+  const currentPrice = priceHistory[priceHistory.length - 1].Price;
 
-  // Use local variables for unit display values so we don't mutate props
-  let displayUnitPrice = product.unitPrice;
-  let displayUnitName = product.unitName;
-
-  // Convert product size in per/kg to per/100g if it will fit in a nicer range
-  if (displayUnitPrice) {
-    if (
-      product.originalUnitQuantity &&
-      product.originalUnitQuantity < 500 &&
-      product.originalUnitQuantity > 40 &&
-      product.unitName === "kg"
-    ) {
-      // Convert from per kg to per 100g (update local copies only)
-      displayUnitName = "100g";
-      displayUnitPrice = displayUnitPrice / 10;
-    }
-  }
-
-  const priceDiff = getPriceAvgDifference(product.priceHistory);
+  const priceDiff = getPriceAvgDifference(priceHistory);
 
   // Icon - Determine up, down, or blank icon depending on price trend
   if (priceDiff >= 2) {
@@ -36,7 +20,7 @@ export default function PriceTag({ product }: Props) {
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 20 20"
         fill="currentColor"
-        className="w-4 h-4 xl:w-6 xl:h-6 text-[#a00] dark:text-[#b33]"
+        className="w-4 h-4 xl:w-6 xl:h-6 text-[#da0202] dark:text-[#f34343]"
       >
         <path
           fillRule="evenodd"
@@ -51,7 +35,7 @@ export default function PriceTag({ product }: Props) {
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 20 20"
         fill="currentColor"
-        className="w-4 h-4 xl:w-6 xl:h-6 text-[#282] dark:text-[#3a3]"
+        className="w-4 h-4 xl:w-6 xl:h-6 text-[#14bb14] dark:text-[#43d643]"
       >
         <path
           fillRule="evenodd"
@@ -65,7 +49,7 @@ export default function PriceTag({ product }: Props) {
   // If price diff is too small, print a grey border
   if (Math.abs(priceDiff) <= 2) {
     priceTagDivClass +=
-      " border-[#644] text-[#644] dark:border-[#886] dark:text-[#886]";
+      " border-[#644] text-[#644] dark:text-zinc-300 dark:border-[#886] dark:text-[#886]";
   }
   // If price diff is +10%, print bold red border
   else if (priceDiff >= 10) {
@@ -75,29 +59,17 @@ export default function PriceTag({ product }: Props) {
   // If price diff is +2-10%, print mild red border
   else if (priceDiff >= 2) {
     priceTagDivClass +=
-      " border-[#a00] text-[#a00] dark:border-[#b33] dark:text-[#b33]";
+      " border-[#a00] text-[#a00] dark:border-[#b33] dark:text-red-700";
   }
   // If price diff is +10%, print bold green border
   else if (priceDiff <= -10) {
     priceTagDivClass +=
-      " border-[#0a0] text-[#0a0] dark:border-[#2b2] dark:text-[#2b2]";
+      " border-[#0a0] text-[#0a0] dark:border-[#2b2] dark:text-green-500";
   }
   // If price diff is +2-10%, print mild green border
   else if (priceDiff <= -2) {
     priceTagDivClass +=
       " border-[#282] text-[#282] dark:border-[#3a3] dark:text-[#3a3]";
-  }
-
-  // Simplify unit price for readability (operate on local copy)
-  if (displayUnitPrice) {
-    // Display whole numbers as-is, without the .00
-    if (displayUnitPrice == Number(displayUnitPrice.toFixed(0)))
-      displayUnitPrice = Number(displayUnitPrice.toFixed(0));
-    // Display decimal numbers under $10 with 2 decimal points
-    else if (displayUnitPrice < 10)
-      displayUnitPrice = Number(displayUnitPrice.toFixed(2));
-    // Display numbers over 10 with 1 decimal point for readability
-    else displayUnitPrice = Number(displayUnitPrice.toFixed(1));
   }
 
   return (
@@ -116,25 +88,20 @@ export default function PriceTag({ product }: Props) {
 
             {/* Dollars */}
             <div className="font-bold text-xl lg:text-md lg:text-xl tracking-tighter">
-              {printDollars(product.currentPrice)}
+              {printDollars(currentPrice)}
             </div>
 
             {/* Cents */}
             <div className="pt-[0.2rem] pl-[0.1rem] font-semibold text-sm tracking-normal">
-              {printCents(product.currentPrice)}
+              {printCents(currentPrice)}
             </div>
           </div>
 
           {/* Unit Price */}
-          {displayUnitPrice && displayUnitName && displayUnitPrice != 9999 && (
-            <div className="flex text-md items-center">
-              <div className="text-xs">$</div>
-              <div className="font-semibold text-lg lg:text-md">
-                {displayUnitPrice}
-              </div>
-              <div>{displayUnitName ? "/" + displayUnitName : "/Unit"}</div>
-            </div>
-          )}
+          <div className="flex text-md items-center">
+            <div className="text-xs">$</div>
+            <div className="font-semibold text-lg lg:text-md">{unitPrice}</div>
+          </div>
         </div>
       </div>
     </div>

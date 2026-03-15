@@ -1,13 +1,11 @@
-import startCase from "lodash/startCase";
-import Link from "next/link";
 import { useContext } from "react";
 import { DatedPrice, Product } from "../../typings";
 import {
   daysElapsedSinceDateFormatted,
   getStoreEnum,
   Store,
-  utcDateToLongDate,
-  utcDateToMonthYear,
+  stringDateToLongDate,
+  stringDateToMonthYear,
 } from "../../utilities/utilities";
 import ImageWithFallback from "../ImageWithFallback";
 import PriceTag from "./PriceTag";
@@ -25,18 +23,11 @@ const DynamicChart = dynamic(() => import("./PriceHistoryChart"), {
   loading: () => <p>Loading...</p>,
 });
 interface ChartProps {
-  priceHistory: DatedPrice[];
-  lastChecked: Date;
+  product: Product;
   useLargeVersion: boolean;
 }
-function DynamicChartCall({ priceHistory, lastChecked }: ChartProps) {
-  return (
-    <DynamicChart
-      priceHistory={priceHistory}
-      lastChecked={lastChecked}
-      useLargeVersion={true}
-    />
-  );
+function DynamicChartCall({ product }: ChartProps) {
+  return <DynamicChart product={product} useLargeVersion={true} />;
 }
 
 function ProductModalFull({ product, setIsModalOpen }: Props) {
@@ -48,9 +39,9 @@ function ProductModalFull({ product, setIsModalOpen }: Props) {
 
   // Loop through priceHistory array and generate price stats
   product.priceHistory.forEach((datedPrice) => {
-    if (datedPrice.price < lowestPrice) lowestPrice = datedPrice.price;
-    if (datedPrice.price > highestPrice) highestPrice = datedPrice.price;
-    summedPrices += datedPrice.price;
+    if (datedPrice.Price < lowestPrice) lowestPrice = datedPrice.Price;
+    if (datedPrice.Price > highestPrice) highestPrice = datedPrice.Price;
+    summedPrices += datedPrice.Price;
   });
 
   // Calculate average price
@@ -89,7 +80,7 @@ function ProductModalFull({ product, setIsModalOpen }: Props) {
     product.lastChecked,
   );
   const daysSinceLastUpdated = daysElapsedSinceDateFormatted(
-    product.lastUpdated,
+    product.priceHistory[product.priceHistory.length - 1].Date,
   );
 
   // Set dark mode theme from useContext
@@ -137,7 +128,7 @@ function ProductModalFull({ product, setIsModalOpen }: Props) {
           {/* Image with size tag - On left 2/3 for desktop, full width for mobile */}
           <div className="relative w-full md:w-2/3 m-1 mt-2 md:m-2">
             {/* Image div - has min-h for mobile spacing */}
-            <div className="p-1 md:py-4 md:pl-4 h-max min-h-57.5">
+            <div className="relative p-1 md:py-4 md:pl-4 h-full min-h-57.5">
               <ImageWithFallback
                 id={product.id}
                 src={"product-images/" + product.id + ".webp"}
@@ -153,7 +144,10 @@ function ProductModalFull({ product, setIsModalOpen }: Props) {
             <div className="flex w-full">
               {/* Price Tag */}
               <div className="w-1/2 mr-8">
-                <PriceTag product={product} />
+                <PriceTag
+                  priceHistory={product.priceHistory}
+                  unitPrice={product.unitPrice}
+                />
               </div>
 
               {/* Price Stats */}
@@ -191,7 +185,9 @@ function ProductModalFull({ product, setIsModalOpen }: Props) {
               <div className=" text-sm mb-2 mx-auto flex">
                 <div>on</div>
                 <div className="pl-1 font-semibold">
-                  {utcDateToLongDate(product.lastUpdated)}
+                  {stringDateToLongDate(
+                    product.priceHistory[product.priceHistory.length - 1].Date,
+                  )}
                 </div>
               </div>
             </div>
@@ -240,18 +236,14 @@ function ProductModalFull({ product, setIsModalOpen }: Props) {
             {/* First Added  - hidden on mobile*/}
             <div className="glass-capsule text-sm my-1 hidden md:flex">
               <div className="p-1">First added to KiwiPrice on</div>
-              <div>{utcDateToMonthYear(product.priceHistory[0].date)}</div>
+              <div>{stringDateToMonthYear(product.priceHistory[0].Date)}</div>
             </div>
           </div>
         </div>
 
         {/* Price Chart - full width, max-h-80 on mobile, or height 1/3 on desktop*/}
         <div className="flex w-full mx-auto h-full max-h-80 md:h-1/3 px-2 lg:mb-2">
-          <DynamicChartCall
-            priceHistory={product.priceHistory}
-            lastChecked={product.lastChecked}
-            useLargeVersion={true}
-          />
+          {/* <DynamicChartCall product={product} useLargeVersion={true} /> */}
         </div>
       </div>
 
