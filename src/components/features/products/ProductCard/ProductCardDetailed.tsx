@@ -7,11 +7,11 @@ import {
   stringDateToLongDate,
   stringDateToMonthYear,
 } from "@/lib/utils";
-import ImageWithFallback from "../ImageWithFallback";
-import PriceTag from "./PriceTag";
-import { DarkModeContext } from "../../pages/_app";
+import ImageWithFallback from "@/components/common/ImageWithFallback";
+import PriceTag from "@/components/features/products/ProductCard/PriceTag";
+import { DarkModeContext } from "@/pages/_app";
 import dynamic from "next/dynamic";
-import CardFooter from "./CardFooter";
+import CardFooter from "@/components/features/products/ProductCard/CardFooter";
 
 interface Props {
   product: Product;
@@ -19,8 +19,9 @@ interface Props {
 }
 
 // Lazy/Dynamic load in heavy chart.js from PriceHistoryChart
-const DynamicChart = dynamic(() => import("./PriceHistoryChart"), {
+const DynamicChart = dynamic(() => import("@/components/features/charts/PriceChart"), {
   loading: () => <p>Loading...</p>,
+  ssr: false,
 });
 interface ChartProps {
   product: Product;

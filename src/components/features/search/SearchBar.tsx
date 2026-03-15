@@ -33,25 +33,6 @@ export default function SearchBar({
     iconSize.toString() +
     " mr-2 pt-1.5 scale-[120%] hover:scale-[130%] hover:text-white";
 
-  const magnifyIcon = (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      width="24"
-      height="16"
-      viewBox="0 0 24 24"
-      strokeWidth={1.5}
-      stroke={iconHexColour}
-      className={iconClasses}
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-      />
-    </svg>
-  );
-
   return (
     <>
       {!mobileVersion && (
@@ -76,7 +57,11 @@ export default function SearchBar({
               id="search-button"
               className="mb-auto"
             >
-              {magnifyIcon}
+              <MagnifyIcon
+                iconSize={iconSize}
+                iconHexColour={iconHexColour}
+                iconClasses={iconClasses}
+              />
             </button>
           </form>
         </div>
@@ -90,7 +75,11 @@ export default function SearchBar({
             className="text-green-200"
             id="mobile-search-button"
           >
-            {magnifyIcon}
+            <MagnifyIcon
+              iconSize={iconSize}
+              iconHexColour={iconHexColour}
+              iconClasses={iconClasses}
+            />
           </button>
         </div>
       )}
@@ -124,7 +113,11 @@ export default function SearchBar({
                   title="Search"
                   className="pl-4 text-green-700"
                 >
-                  {magnifyIcon}
+                  <MagnifyIcon
+                    iconSize={iconSize}
+                    iconHexColour={iconHexColour}
+                    iconClasses={iconClasses}
+                  />
                 </button>
               </div>
             </form>
@@ -134,3 +127,30 @@ export default function SearchBar({
     </>
   );
 }
+
+const MagnifyIcon = ({
+  iconSize,
+  iconHexColour,
+  iconClasses,
+}: {
+  iconSize: number;
+  iconHexColour: string;
+  iconClasses: string;
+}) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    width="24"
+    height="16"
+    viewBox="0 0 24 24"
+    strokeWidth={1.5}
+    stroke={iconHexColour}
+    className={iconClasses}
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+    />
+  </svg>
+);

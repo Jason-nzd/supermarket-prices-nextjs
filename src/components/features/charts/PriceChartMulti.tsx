@@ -13,8 +13,8 @@ import {
 import { Line } from "react-chartjs-2";
 import type { ChartData, ChartOptions } from "chart.js";
 import "chartjs-adapter-date-fns";
-import { useContext } from "react";
-import { DarkModeContext } from "../../pages/_app";
+import { DarkModeContext } from "@/pages/_app";
+import { useContext, useEffect, useState, useRef } from "react";
 
 interface Props {
   countdownProduct?: Product | null;
@@ -23,23 +23,38 @@ interface Props {
   newworldProduct?: Product | null;
 }
 
-function MultiStorePriceHistoryChart({
+// Initialize chart.js line chart
+Chart.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  TimeScale,
+  Tooltip,
+);
+
+function PriceChartMulti({
   countdownProduct,
   paknsaveProduct,
   warehouseProduct,
   newworldProduct,
 }: Props) {
+  const chartRef = useRef<Chart<"line">>(null);
   const theme = useContext(DarkModeContext).darkMode ? "dark" : "light";
   const isDark = theme === "dark";
-  // Initialize chart.js line chart
-  Chart.register(
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    TimeScale,
-    Tooltip
-  );
+
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
+    const currentRef = chartRef.current;
+    return () => {
+      // Manual cleanup to prevent "ownerDocument" errors on unmount/HMR
+      if (currentRef) {
+        currentRef.destroy();
+      }
+    };
+  }, []);
 
   // Dates array will share dates from all stores on the X axis
   const sharedDates: Date[] = [];
@@ -73,20 +88,6 @@ function MultiStorePriceHistoryChart({
   const priceDataPaknsave = new Array(sharedDates.length).fill(NaN);
   const priceDataWarehouse = new Array(sharedDates.length).fill(NaN);
   const priceDataNewworld = new Array(sharedDates.length).fill(NaN);
-
-  // Debug
-  // if (countdownProduct) {
-  //   console.log(
-  //     'DEBUG: Countdown 1st date: ' +
-  //       utcDateToLongDate(countdownProduct?.priceHistory[0].date) +
-  //       ' last date: ' +
-  //       utcDateToLongDate(
-  //         countdownProduct?.priceHistory[countdownProduct?.priceHistory.length - 1].date
-  //       ) +
-  //       ' - total prices: ' +
-  //       countdownProduct?.priceHistory.length
-  //   );
-  // }
 
   // Sort dates
   sharedDates.sort((a, b) => {
@@ -212,23 +213,13 @@ function MultiStorePriceHistoryChart({
   const options: ChartOptions<"line"> = {
     responsive: true,
     maintainAspectRatio: false,
-    resizeDelay: 200,
     plugins: {
       tooltip: {
-        // callbacks: {
-        //   title: () => {
-        //     return '';
-        //   },
-        //   label: function (context: any) {
-        //     return ' ' + printPrice(context.parsed.y);
-        //   },
-        // },
         backgroundColor: isDark ? "rgb(30, 30, 30)" : "white",
         titleColor: isDark ? "rgb(230, 230, 230)" : "black",
         titleFont: { weight: "normal" },
         bodyColor: isDark ? "rgb(230, 230, 230)" : "black",
         footerColor: isDark ? "rgb(230, 230, 230)" : "black",
-        // borderColor: trendColour,
         borderWidth: 1,
         padding: 10,
         cornerRadius: 14,
@@ -264,7 +255,17 @@ function MultiStorePriceHistoryChart({
     },
   };
 
-  return <Line data={chartData} options={options} className="z-40" />;
+  if (!mounted) return <div className="h-full w-full bg-transparent" />;
+
+  return (
+    <Line
+      ref={chartRef}
+      data={chartData}
+      options={options}
+      className="z-40"
+      id="multi-store-chart"
+    />
+  );
 }
 
-export default MultiStorePriceHistoryChart;
+export default PriceChartMulti;

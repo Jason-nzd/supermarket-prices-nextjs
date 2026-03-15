@@ -1,4 +1,4 @@
-import StoreIcon from "@/components/StoreIcon";
+import StoreIcon from "@/components/common/StoreIcon";
 import { Product } from "@/typings";
 import { getStoreEnum, Store } from "@/lib/utils";
 

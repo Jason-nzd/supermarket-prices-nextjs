@@ -1,6 +1,6 @@
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { Product } from "@/typings";
-import ProductCard from "./ProductCard/ProductCard";
+import ProductCard from "@/components/features/products/ProductCard/ProductCard";
 import Link from "next/link";
 import DOMPurify from "isomorphic-dompurify";
 import { getLargestMultiplication } from "@/lib/utils";
@@ -14,7 +14,7 @@ interface Props {
   createDeepLink?: string;
 }
 
-function ProductsGrid({
+function ProductGrid({
   titles = [],
   subTitle = "",
   products,
@@ -144,4 +144,4 @@ function ProductsGrid({
   else return <div></div>;
 }
 
-export default ProductsGrid;
+export default ProductGrid;

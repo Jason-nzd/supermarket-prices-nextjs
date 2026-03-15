@@ -1,6 +1,6 @@
 import React from 'react';
 
-function ResultsFilterPanel() {
+function ProductFilters() {
   return (
     <div className='flex flex-wrap h-min p-0.5 border-2 border-slate-400 rounded-2xl gap-10 px-10'>
       <div className='flex flex-wrap items-center'>Countdown {toggleIcon}</div>
@@ -26,4 +26,4 @@ const toggleIcon = (
   </svg>
 );
 
-export default ResultsFilterPanel;
+export default ProductFilters;

@@ -1,20 +1,21 @@
 import { useState } from "react";
 import { Product } from "@/typings";
-import ImageWithFallback from "../ImageWithFallback";
+import ImageWithFallback from "@/components/common/ImageWithFallback";
 import { Dialog, DialogPanel } from "@headlessui/react";
-import ProductModalFull from "./ProductCardDetailed";
-import PriceTag from "./PriceTag";
+import ProductModalFull from "@/components/features/products/ProductCard/ProductCardDetailed";
+import PriceTag from "@/components/features/products/ProductCard/PriceTag";
 import dynamic from "next/dynamic";
 import { productIsCurrent } from "@/lib/utils";
-import CardFooter from "./CardFooter";
+import CardFooter from "@/components/features/products/ProductCard/CardFooter";
 
 interface Props {
   product: Product;
 }
 
 // Lazy load in heavy chart.js from PriceHistoryChart
-const DynamicChart = dynamic(() => import("./PriceHistoryChart"), {
+const DynamicChart = dynamic(() => import("@/components/features/charts/PriceChart"), {
   loading: () => <p>Loading...</p>,
+  ssr: false,
 });
 interface ChartProps {
   product: Product;

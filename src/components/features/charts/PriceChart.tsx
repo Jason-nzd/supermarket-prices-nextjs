@@ -12,8 +12,8 @@ import {
 import { Line } from "react-chartjs-2";
 import type { ChartData, ChartOptions } from "chart.js";
 import "chartjs-adapter-date-fns";
-import { useContext } from "react";
-import { DarkModeContext } from "../../pages/_app";
+import { DarkModeContext } from "@/pages/_app";
+import { useContext, useEffect, useState, useRef } from "react";
 
 interface Props {
   product: Product;
@@ -21,26 +21,40 @@ interface Props {
   useSteppedLine?: boolean;
 }
 
-function PriceHistoryChart({
+// Initialize chart.js line chart
+Chart.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  TimeScale,
+  Tooltip,
+);
+
+function PriceChart({
   product,
   useLargeVersion = false,
   useSteppedLine = true,
 }: Props) {
+  const chartRef = useRef<Chart<"line">>(null);
   const theme = useContext(DarkModeContext).darkMode ? "dark" : "light";
   const isDark = theme === "dark";
 
-  // Make a copy of the price history array for chart specific tweaks
-  let ph = [...product.priceHistory];
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
+    const currentRef = chartRef.current;
+    return () => {
+      // Manual cleanup to prevent "ownerDocument" errors on unmount/HMR
+      if (currentRef) {
+        currentRef.destroy();
+      }
+    };
+  }, []);
 
-  // Initialize chart.js line chart
-  Chart.register(
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    TimeScale,
-    Tooltip,
-  );
+  // Make a copy of the price history array for chart specific tweaks
+  const ph = [...product.priceHistory];
 
   // Check if the price was updated today or not
   const lastDatedPrice = ph[ph.length - 1];
@@ -122,7 +136,6 @@ function PriceHistoryChart({
   const options: ChartOptions<"line"> = {
     responsive: true,
     maintainAspectRatio: false,
-    resizeDelay: 200,
     plugins: {
       tooltip: {
         callbacks: {
@@ -195,7 +208,17 @@ function PriceHistoryChart({
     },
   };
 
-  return <Line data={chartData} options={options} className="z-40" />;
+  if (!mounted) return <div className="h-full w-full bg-transparent" />;
+
+  return (
+    <Line
+      ref={chartRef}
+      data={chartData}
+      options={options}
+      className="z-40"
+      id={`chart-${product.id}`}
+    />
+  );
 }
 
-export default PriceHistoryChart;
+export default PriceChart;
