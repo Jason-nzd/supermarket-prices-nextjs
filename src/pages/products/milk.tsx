@@ -1,14 +1,13 @@
 import { GetStaticProps } from "next";
 import { useContext } from "react";
 import { Product, ProductGridData } from "@/typings";
-import ProductsGrid from "@/components/ProductsGrid";
+import ProductsGrid from "@/components/features/products/ProductGrid";
 import {
   DBFetchByCategory,
   DBGetMostRecentDate,
 } from "@/lib/db/cosmos";
 import { DarkModeContext } from "@/pages/_app";
-import NavBar from "@/components/NavBar/NavBar";
-import Footer from "@/components/Footer";
+import PageLayout from "@/components/layout/PageLayout";
 import {
   LastChecked,
   OrderByMode,
@@ -24,31 +23,23 @@ interface Props {
 }
 
 const Category = ({ productGridDataAll, lastChecked }: Props) => {
-  const theme = useContext(DarkModeContext).darkMode ? "dark" : "light";
-
   return (
-    <main className={theme}>
-      <NavBar lastUpdatedDate={lastChecked} />
-      {/* Background Div */}
-      <div className="content-body">
-        {/* Central Aligned Div */}
-        <div className="central-responsive-div">
-          {/* Categorised Product Grids*/}
-          {productGridDataAll.map((productGridData, index) => (
-            <ProductsGrid
-              key={index}
-              titles={productGridData.titles}
-              subTitle={productGridData.subTitle}
-              products={productGridData.products}
-              createSearchLink={productGridData.createSearchLink}
-            />
-          ))}
-        </div>
-      </div>
-      <Footer />
-    </main>
+    <PageLayout lastUpdatedDate={lastChecked}>
+      {/* Categorised Product Grids*/}
+      {productGridDataAll.map((productGridData, index) => (
+        <ProductsGrid
+          key={index}
+          titles={productGridData.titles}
+          subTitle={productGridData.subTitle}
+          products={productGridData.products}
+          createSearchLink={productGridData.createSearchLink}
+        />
+      ))}
+    </PageLayout>
   );
 };
+
+import { buildSubCategoryGrids } from "@/lib/sub-categorisation";
 
 export const getStaticProps: GetStaticProps = async () => {
   // Fetch milk from DB
@@ -61,83 +52,38 @@ export const getStaticProps: GetStaticProps = async () => {
     LastChecked.Within7Days
   );
 
-  // Create sub categories of milk
-  let standardMilk: Product[] = [];
-  let trimMilk: Product[] = [];
-  let oatMilk: Product[] = [];
-  let flavouredMilk: Product[] = [];
-  let otherMilk: Product[] = [];
+  // Filter out powder and proceed to categorize
+  const products = allMilk.filter(
+    (product) => !product.name.toLowerCase().includes("powder")
+  );
 
-  // Filter milk into sub categories based on product name keywords
-  allMilk.forEach((product) => {
-    const name = product.name.toLowerCase();
-    if (!name.includes("powder")) {
-      if (name.match("oat|almond|soy|lacto")) oatMilk.push(product);
-      else if (name.match("trim|lite|light.blue|reduced|fat"))
-        trimMilk.push(product);
-      else if (name.match("standard|original|blue|gate.milk.2l"))
-        standardMilk.push(product);
-      else if (name.match("chocolate|caramel|flavoured|calci-yum"))
-        flavouredMilk.push(product);
-      else if (name.match("milk")) otherMilk.push(product);
-    }
-  });
-
-  const standardDBCount = standardMilk.length;
-  const trimMilkDBCount = trimMilk.length;
-  const oatMilkDBCount = oatMilk.length;
-  const flavouredMilkDBCount = flavouredMilk.length;
-  const otherMilkDBCount = otherMilk.length;
-
-  // Sort all by unit price
-  standardMilk = sortProductsByUnitPrice(standardMilk).slice(0, 15);
-  trimMilk = sortProductsByUnitPrice(trimMilk).slice(0, 15);
-  oatMilk = sortProductsByUnitPrice(oatMilk).slice(0, 15);
-  flavouredMilk = sortProductsByUnitPrice(flavouredMilk).slice(0, 15);
-  otherMilk = sortProductsByUnitPrice(otherMilk).slice(0, 15);
-
-  const standardMilkData: ProductGridData = {
-    titles: ["Standard Milk"],
-    subTitle: printProductCountSubTitle(standardMilk.length, standardDBCount),
-    products: standardMilk,
-    createSearchLink: true,
-  };
-  const trimMilkData: ProductGridData = {
-    titles: ["Trim Milk"],
-    subTitle: printProductCountSubTitle(trimMilk.length, trimMilkDBCount),
-    products: trimMilk,
-    createSearchLink: true,
-  };
-  const oatMilkData: ProductGridData = {
-    titles: ["Oat Milk", "Almond Milk", "Soy Milk"],
-    subTitle: printProductCountSubTitle(oatMilk.length, oatMilkDBCount),
-    products: oatMilk,
-    createSearchLink: true,
-  };
-  const flavouredMilkData: ProductGridData = {
-    titles: ["Flavoured Milk", "Chocolate Milk"],
-    subTitle: printProductCountSubTitle(
-      flavouredMilk.length,
-      flavouredMilkDBCount
-    ),
-    products: flavouredMilk,
-    createSearchLink: true,
-  };
-  const otherMilkData: ProductGridData = {
-    titles: ["Other Milk"],
-    subTitle: printProductCountSubTitle(otherMilk.length, otherMilkDBCount),
-    products: otherMilk,
-    createSearchLink: false,
-  };
-
-  // Combine ProductGridData objects into array
-  const productGridDataAll: ProductGridData[] = [
-    standardMilkData,
-    trimMilkData,
-    oatMilkData,
-    flavouredMilkData,
-    otherMilkData,
-  ];
+  const productGridDataAll = buildSubCategoryGrids(
+    products,
+    [
+      {
+        titles: ["Standard Milk"],
+        match: /standard|original|blue|gate.milk.2l/i,
+      },
+      {
+        titles: ["Trim Milk"],
+        match: /trim|lite|light.blue|reduced|fat/i,
+      },
+      {
+        titles: ["Oat Milk", "Almond Milk", "Soy Milk"],
+        match: /oat|almond|soy|lacto/i,
+      },
+      {
+        titles: ["Flavoured Milk", "Chocolate Milk"],
+        match: /chocolate|caramel|flavoured|calci-yum/i,
+      },
+      {
+        titles: ["Other Milk"],
+        match: /milk/i,
+        createSearchLink: false,
+      },
+    ],
+    { sort: true, defaultLimit: 15 }
+  );
 
   // Store date, to be displayed in static page title bar
   const lastChecked = await DBGetMostRecentDate();

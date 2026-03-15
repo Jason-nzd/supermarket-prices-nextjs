@@ -1,7 +1,7 @@
 import { GetStaticProps } from "next";
 import React, { useContext } from "react";
 import { Product, ProductGridData } from "@/typings";
-import ProductsGrid from "@/components/ProductsGrid";
+import ProductsGrid from "@/components/features/products/ProductGrid";
 import {
   DBFetchByCategory,
   DBGetMostRecentDate,
@@ -13,9 +13,7 @@ import {
   printProductCountSubTitle,
   Store,
 } from "@/lib/utils";
-import { DarkModeContext } from "@/pages/_app";
-import NavBar from "@/components/NavBar/NavBar";
-import Footer from "@/components/Footer";
+import PageLayout from "@/components/layout/PageLayout";
 
 interface Props {
   productGridDataAll: ProductGridData[];
@@ -23,31 +21,23 @@ interface Props {
 }
 
 const Category = ({ productGridDataAll, lastChecked }: Props) => {
-  const theme = useContext(DarkModeContext).darkMode ? "dark" : "light";
-
   return (
-    <main className={theme}>
-      <NavBar lastUpdatedDate={lastChecked} />
-      {/* Background Div */}
-      <div className="content-body">
-        {/* Central Aligned Div */}
-        <div className="central-responsive-div">
-          {/* Categorised Product Grids*/}
-          {productGridDataAll.map((productGridData, index) => (
-            <ProductsGrid
-              key={index}
-              titles={productGridData.titles}
-              subTitle={productGridData.subTitle}
-              products={productGridData.products}
-              createSearchLink={productGridData.createSearchLink}
-            />
-          ))}
-        </div>
-      </div>
-      <Footer />
-    </main>
+    <PageLayout lastUpdatedDate={lastChecked}>
+      {/* Categorised Product Grids*/}
+      {productGridDataAll.map((productGridData, index) => (
+        <ProductsGrid
+          key={index}
+          titles={productGridData.titles}
+          subTitle={productGridData.subTitle}
+          products={productGridData.products}
+          createSearchLink={productGridData.createSearchLink}
+        />
+      ))}
+    </PageLayout>
   );
 };
+
+import { buildSubCategoryGrids } from "@/lib/sub-categorisation";
 
 export const getStaticProps: GetStaticProps = async () => {
   const products = await DBFetchByCategory(
@@ -56,13 +46,8 @@ export const getStaticProps: GetStaticProps = async () => {
     Store.Any,
     PriceHistoryLimit.Any,
     OrderByMode.None,
-    LastChecked.Within3Days,
+    LastChecked.Within7Days
   );
-
-  // Sub-categories for each egg size
-  let mixedGrade: Product[] = [];
-  let size7: Product[] = [];
-  let size8plus: Product[] = [];
 
   // Try derive per unit price of each product
   products.forEach((product) => {
@@ -103,61 +88,29 @@ export const getStaticProps: GetStaticProps = async () => {
     }
   });
 
-  // Sort by unit price
-  products.sort((a, b) => {
-    if (a.unitPriceNum! < b.unitPriceNum!) return -1;
-    if (a.unitPriceNum! > b.unitPriceNum!) return 1;
-    return 0;
-  });
-
-  // Loop through all products and split by category
-  products.forEach((product) => {
-    // Split each product into egg sizes
-    if (product.name.toLowerCase().includes("size 6")) mixedGrade.push(product);
-    else if (product.name.toLowerCase().includes("size 7")) size7.push(product);
-    else if (
-      product.name.toLowerCase().includes("size 8") ||
-      product.name.toLowerCase().includes("size 9") ||
-      product.name.toLowerCase().includes("size 10") ||
-      product.name.toLowerCase().includes("jumbo")
-    )
-      size8plus.push(product);
-    else mixedGrade.push(product);
-  });
-
-  const mixedGradeCount = mixedGrade.length;
-  const size7Count = size7.length;
-  const size8plusCount = size8plus.length;
-
-  mixedGrade = mixedGrade.slice(0, 15);
-  size7 = size7.slice(0, 15);
-  size8plus = size8plus.slice(0, 15);
-
-  const mixedGradeData: ProductGridData = {
-    titles: ["Size 5, 6 and Mixed Range Eggs"],
-    subTitle: printProductCountSubTitle(mixedGrade.length, mixedGradeCount),
-    products: mixedGrade,
-    createSearchLink: false,
-  };
-  const size7Data: ProductGridData = {
-    titles: ["Size 7 Eggs"],
-    subTitle: printProductCountSubTitle(size7.length, size7Count),
-    products: size7,
-    createSearchLink: false,
-  };
-  const size8plusData: ProductGridData = {
-    titles: ["Size 8+ and Jumbo Eggs"],
-    subTitle: printProductCountSubTitle(size8plus.length, size8plusCount),
-    products: size8plus,
-    createSearchLink: false,
-  };
-
-  // Combine ProductGridData objects into array
-  const productGridDataAll: ProductGridData[] = [
-    mixedGradeData,
-    size7Data,
-    size8plusData,
-  ];
+  const productGridDataAll = buildSubCategoryGrids(
+    products,
+    [
+      {
+        titles: ["Size 7 Eggs"],
+        match: /size 7/i,
+        createSearchLink: false,
+        limit: 15,
+      },
+      {
+        titles: ["Size 8+ and Jumbo Eggs"],
+        match: /size 8|size 9|size 10|jumbo/i,
+        createSearchLink: false,
+        limit: 15,
+      },
+    ],
+    {
+      useOther: true,
+      otherTitle: "Size 5, 6 and Mixed Range Eggs",
+      otherLimit: 15,
+      sort: true, // will use unitPriceNum we just set
+    }
+  );
 
   const lastChecked = await DBGetMostRecentDate();
 
