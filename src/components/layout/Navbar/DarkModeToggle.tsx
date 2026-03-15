@@ -1,6 +1,6 @@
 import { Switch } from "@headlessui/react";
 import { useContext } from "react";
-import { DarkModeContext } from "../../pages/_app";
+import { DarkModeContext } from "@/pages/_app";
 
 // DarModeToggle
 // -------------

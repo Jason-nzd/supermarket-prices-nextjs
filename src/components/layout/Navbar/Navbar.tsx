@@ -2,11 +2,11 @@ import Image from "next/image";
 import Link from "next/link";
 import startCase from "lodash/startCase";
 import { useContext } from "react";
-import kiwifruit from "../../../public/logo.webp";
-import CategoryMenuButton from "./CategoryMenu/CategoryMenuButton";
-import SearchBar from "../SearchBar";
-import MobileBurgerMenu from "./MobileBurgerMenu";
-import DarkModeToggle from "./DarkModeToggle";
+import kiwifruit from "../../../../public/logo.webp";
+import CategoryMenuButton from "@/components/layout/Navbar/CategoryMenu/CategoryMenuButton";
+import SearchBar from "@/components/features/search/SearchBar";
+import MobileBurgerMenu from "@/components/layout/Navbar/MobileMenu";
+import DarkModeToggle from "@/components/layout/Navbar/DarkModeToggle";
 import { useRouter } from "next/router";
 import { FavouriteCategoriesContext } from "@/pages/_app";
 
