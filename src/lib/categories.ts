@@ -20,6 +20,7 @@ export const chilledCategory = [
   "cheese",
   "salami",
   "other-deli-foods",
+  "dips-hummus",
 ];
 
 export const meatCategory = [
@@ -55,6 +56,7 @@ export const pantryCategory = [
   "pasta",
   "beans-spaghetti",
   "canned-fish",
+  "canned-fruit",
   "canned-meat",
   "soup",
   "cereal",
@@ -63,6 +65,7 @@ export const pantryCategory = [
   "sauces",
   "oils-vinegars",
   "world-foods",
+  "herbs-spices",
 ];
 
 export const snacksCategory = [
@@ -86,7 +89,10 @@ export const drinksCategory = [
   "soft-drinks",
   "energy-drinks",
   "juice",
+  "water",
 ];
+
+export const beerWineCategory = ["beer", "craft-beer", "wine"];
 
 export const petsCategory = [
   "cat-food",
@@ -103,6 +109,7 @@ export const titledCategoryGroups = [
   { title: "Pantry", categories: pantryCategory },
   { title: "Snacks", categories: snacksCategory },
   { title: "Drinks", categories: drinksCategory },
+  { title: "Beer & Wine", categories: beerWineCategory },
   { title: "Pets", categories: petsCategory },
 ];
 
@@ -124,6 +131,7 @@ export const titledCategories: Record<string, string> = {
   cheese: "Cheese",
   salami: "Salami",
   "other-deli-foods": "Other Deli Foods",
+  "dips-hummus": "Dips & Hummus",
   "beef-lamb": "Beef & Lamb",
   chicken: "Chicken",
   ham: "Ham",
@@ -150,6 +158,7 @@ export const titledCategories: Record<string, string> = {
   pasta: "Pasta",
   "beans-spaghetti": "Beans & Spaghetti",
   "canned-fish": "Canned Fish",
+  "canned-fruit": "Canned Fruit",
   "canned-meat": "Canned Meat",
   soup: "Soup",
   cereal: "Cereal",
@@ -158,6 +167,7 @@ export const titledCategories: Record<string, string> = {
   sauces: "Sauces",
   "oils-vinegars": "Oils & Vinegars",
   "world-foods": "World Foods",
+  "herbs-spices": "Herbs & Spices",
   chocolate: "Chocolate",
   "boxed-chocolate": "Boxed Chocolate",
   chips: "Chips",
@@ -175,6 +185,10 @@ export const titledCategories: Record<string, string> = {
   "soft-drinks": "Soft Drinks",
   "energy-drinks": "Energy Drinks",
   juice: "Juice",
+  water: "Water",
+  beer: "Beer",
+  "craft-beer": "Craft Beer",
+  wine: "Wine",
   "cat-food": "Cat Food",
   "cat-treats": "Cat Treats",
   "dog-food": "Dog Food",
@@ -189,5 +203,6 @@ export const allCategoryNames = freshCategory.concat(
   pantryCategory,
   snacksCategory,
   drinksCategory,
+  beerWineCategory,
   petsCategory
 );
