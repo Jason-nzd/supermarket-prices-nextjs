@@ -1,1 +1,0 @@
-src/lib/sample-products.ts(16,11): error TS2741: Property 'unitPrice' is missing in type '{ id: string; name: string; currentPrice: number; size: string; sourceSite: string; category: string; lastChecked: string; priceHistory: DatedPrice[]; }' but required in type 'Product'.
