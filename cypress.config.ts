@@ -11,7 +11,16 @@ export default defineConfig({
   e2e: {
     baseUrl: 'http://localhost:3000',
     setupNodeEvents(on, config) {
-      // implement node event listeners here
+      on('task', {
+        log(message: string) {
+          // prints to the Node process stdout (visible in npx cypress run)
+          // eslint-disable-next-line no-console
+          console.log(message);
+          return null;
+        },
+      });
+
+      return config;
     },
     video: false,
     defaultCommandTimeout: 20000,

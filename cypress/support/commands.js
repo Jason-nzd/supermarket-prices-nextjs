@@ -36,4 +36,40 @@
 //   }
 // }
 
-export {};
+
+// Cypress.Commands.add('waitForHydration', () => {
+//     cy.window().then((win) => {
+//         return new Cypress.Promise((resolve) => {
+//             let timeout
+//             let observer
+
+//             const done = () => {
+//                 if (observer) observer.disconnect()
+//                 resolve()
+//             }
+
+//             const resetTimer = () => {
+//                 clearTimeout(timeout)
+//                 timeout = setTimeout(() => {
+//                     // Give React a chance to flush microtasks
+//                     win.requestIdleCallback(done, { timeout: 200 })
+//                 }, 100)
+//             }
+
+//             observer = new win.MutationObserver(resetTimer)
+
+//             observer.observe(win.document.getElementById('__next'), {
+//                 childList: true,
+//                 subtree: true,
+//                 attributes: true
+//             })
+
+//             // Start the timer immediately
+//             resetTimer()
+//         })
+//     })
+// })
+
+
+
+export { };
