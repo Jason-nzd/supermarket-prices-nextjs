@@ -189,55 +189,7 @@ export function deriveUnitPriceString(product: Product): string {
   return "";
 }
 
-// getPriceLowDifference()
-// ---------------------------
-// Gets the % difference in price between the current price and its historical lowest.
-export function getPriceLowDifference(priceHistory: DatedPrice[]) {
-  // Loop through the price history and find the lowest price
-  let lowestPrice = 9999;
-  priceHistory.forEach((datedPrice) => {
-    if (datedPrice.price < lowestPrice) lowestPrice = datedPrice.price;
-  });
 
-  // Return the difference in price between the current and lowest price
-  const currentPrice = priceHistory[priceHistory.length - 1].price;
-  return Math.round((currentPrice / lowestPrice) * 100 - 100);
-}
-
-// getLowerQuartilePriceDifference()
-// ---------------------------
-// Gets the % difference in price between the current and lower quartile average.
-export function getLowerQuartilePriceDifference(priceHistory: DatedPrice[]) {
-  // Extract only prices from the DatedPrice array
-  const pricesOnly: number[] = [];
-  priceHistory.forEach((datedPrice) => {
-    pricesOnly.push(datedPrice.price);
-  });
-
-  // Sort prices
-  pricesOnly.sort((a, b) => {
-    if (a < b) return -1;
-    if (a > b) return 1;
-    return 0;
-  });
-
-  // Select the index of the lower quartile
-  const quartileIndex = Math.ceil(pricesOnly.length / 4);
-
-  // Loop through the lower quartile and add up all the prices
-  let lowerQuartileSummed = 0;
-  for (let i = 0; i < quartileIndex; i++) {
-    lowerQuartileSummed += pricesOnly[i];
-    console.log(lowerQuartileSummed);
-  }
-
-  // Calculate the lower quartile price
-  const lowerQuartilePrice = lowerQuartileSummed / quartileIndex;
-
-  // Return the difference in price between the current and lower quartile price
-  const currentPrice = priceHistory[priceHistory.length - 1].price;
-  return Math.round((currentPrice / lowerQuartilePrice) * 100 - 100);
-}
 
 // getPriceAvgDifference()
 // ---------------------------
@@ -272,19 +224,6 @@ export function getPriceAvgDifference(
   return Math.round((currentPrice / avgHistoricalPrice) * 100 - 100);
 }
 
-// getLastPriceChangePercent()
-// ---------------------------
-// Gets the % difference in price between the current and previous price.
-export function getLastPriceChangePercent(priceHistory: DatedPrice[]) {
-  // Return 0 if there are fewer than 2 price history entries
-  if (priceHistory.length < 2) return 0;
-
-  const currentPrice = priceHistory[priceHistory.length - 1].price;
-  const prevPrice = priceHistory[priceHistory.length - 2].price;
-  const priceChange = currentPrice / prevPrice;
-
-  return Math.round(priceChange * 100 - 100);
-}
 
 // utcDateToShortDate()
 // --------------------
@@ -343,14 +282,6 @@ export function daysElapsedSinceDateFormatted(stringDate: string): string {
   else return Math.floor(elapsedDays / 7).toString() + ' weeks ago';
 }
 
-// numDaysElapsedSinceDate()
-// -------------------------
-// Takes UTC Date and returns number of days elapsed since.
-export function numDaysElapsedSinceDate(utcDate: Date): number {
-  const now = new Date();
-  const then = new Date(utcDate);
-  return Math.floor((now.getTime() - then.getTime()) / (1000 * 3600 * 24));
-}
 
 // stringDateToMonthYear
 // ------------------
@@ -362,27 +293,6 @@ export function stringDateToMonthYear(stringDate: string): string {
   });
 }
 
-// sortProductsByName()
-// --------------------
-export function sortProductsByName(products: Product[]): Product[] {
-  return products.sort((a, b) => {
-    if (a.name < b.name) return -1;
-    if (a.name > b.name) return 1;
-    return 0;
-  });
-}
-
-// sortProductsByDate()
-// --------------------
-export function sortProductsByDate(products: Product[]): Product[] {
-  return products.sort((a, b) => {
-    const dateA = new Date(a.priceHistory[a.priceHistory.length - 1].date);
-    const dateB = new Date(b.priceHistory[b.priceHistory.length - 1].date);
-    if (dateA > dateB) return -1;
-    if (dateA < dateB) return 1;
-    return 0;
-  });
-}
 
 // sortProductsByUnitPrice()
 // -------------------------
@@ -412,31 +322,6 @@ export function printPrice(price: number): string {
   }
 }
 
-// priceTrend()
-// ------------
-// Takes a DatedPrice[] object and returns an enum whether price is trending up/down/same.
-export function priceTrend(priceHistory: DatedPrice[]): PriceTrend {
-  if (priceHistory.length > 2) {
-    const latestPrice = priceHistory[priceHistory.length - 1].price;
-
-    // Determine 5 recent prices to average, or less if no data available
-    const numRecentPricesToAverage = Math.min(priceHistory.length - 1, 5);
-    const recentPricesIndexStart = priceHistory.length - 1 - numRecentPricesToAverage;
-
-    // Get the average price across the most recent prices
-    const recentPrices = priceHistory.slice(recentPricesIndexStart);
-    const averageRecentPrice =
-      recentPrices.reduce((a, b) => a + b.price, 0) / recentPrices.length;
-
-    // Return PriceTrend based on a threshold.
-    // If the price difference is within this threshold, PriceTrend.Same enum is returned
-    const trendThreshold = 0.05;
-
-    if ((latestPrice / averageRecentPrice) < 1 - trendThreshold) return PriceTrend.Decreased;
-    else if ((latestPrice / averageRecentPrice) > 1 - trendThreshold) return PriceTrend.Increased;
-  }
-  return PriceTrend.Same;
-}
 
 // productIsCurrent()
 // ------------------
@@ -450,16 +335,6 @@ export function productIsCurrent(product: Product, withinDays: number = 5): bool
   return productDate >= withinDate;
 }
 
-// numToArrayOfNumbers()
-// ---------------------
-// Takes a number and returns an array of numbers from 1 to that number.
-export function numToArrayOfNumbers(numPages: number) {
-  const arrayOfNumbers = [];
-  for (let index = 1; index <= numPages; index++) {
-    arrayOfNumbers.push(index);
-  }
-  return arrayOfNumbers;
-}
 
 // printProductCountSubTitle()
 // ---------------------------
