@@ -142,7 +142,7 @@ export function deriveUnitPriceString(product: Product): string {
     // Parse to int and check is within valid range
     if (quantity > 0 && quantity < 9999) {
       // Set per unit price
-      const currentPrice = product.priceHistory[0].price;
+      const currentPrice = product.priceHistory[product.priceHistory.length - 1].price;
       const dividedUnitPrice = parseFloat((currentPrice / quantity).toPrecision(2));
       return dividedUnitPrice + '/' + unit;
     }
@@ -244,7 +244,6 @@ export function daysElapsedSinceDateFormatted(stringDate: string): string {
   else return Math.floor(elapsedDays / 7).toString() + ' weeks ago';
 }
 
-
 // stringDateToMonthYear
 // ------------------
 // Takes a string date and returns 'April 2023'
@@ -255,6 +254,17 @@ export function stringDateToMonthYear(stringDate: string): string {
   });
 }
 
+// productIsCurrent()
+// ------------------
+// Checks if product was recently scraped within a certain number of days.
+// Defaults to 5 days.
+export function productIsCurrent(product: Product, withinDays: number = 5): boolean {
+  const productDate = new Date(product.lastChecked);
+  const withinDate = new Date();
+  withinDate.setDate(withinDate.getDate() - withinDays);
+
+  return productDate >= withinDate;
+}
 
 // sortProductsByUnitPrice()
 // -------------------------
@@ -284,20 +294,6 @@ export function printPrice(price: number): string {
   }
 }
 
-
-// productIsCurrent()
-// ------------------
-// Checks if product was recently scraped within a certain number of days.
-// Defaults to 5 days.
-export function productIsCurrent(product: Product, withinDays: number = 5): boolean {
-  const productDate = new Date(product.lastChecked);
-  const withinDate = new Date();
-  withinDate.setDate(withinDate.getDate() - withinDays);
-
-  return productDate >= withinDate;
-}
-
-
 // printProductCountSubTitle()
 // ---------------------------
 // Displays the number of products shown in the grid, and the total number of products in the database.
@@ -306,18 +302,3 @@ export function printProductCountSubTitle(numProductsShown: number, numProductsI
   return `Showing cheapest ${numProductsShown}/${numProductsInDB} in-stock products`;
 }
 
-// getLargestMultiplication()
-// --------------------------
-// Get the largest multiplication that fits within the range of inputNum
-// eg. inputNum = 45, multiplier = 6, returns 42 (7 multiples of 6)
-export function getLargestMultiplication(inputNum: number, multiplier: number): number {
-  let currentMultiple = multiplier;
-  let largestMultiplication = multiplier;
-  while (true) {
-    currentMultiple += multiplier;
-    if (currentMultiple === inputNum) return inputNum;
-    if (currentMultiple > inputNum) return largestMultiplication;
-
-    largestMultiplication = currentMultiple;
-  }
-}
