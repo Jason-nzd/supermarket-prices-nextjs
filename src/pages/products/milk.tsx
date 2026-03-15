@@ -48,15 +48,6 @@ export const getStaticProps: GetStaticProps = async () => {
     LastChecked.Within7Days
   );
 
-  allMilk.map((p) => {
-    if (p.sourceSite == "countdown.co.nz") {
-      console.log("countdown ", p.name)
-    }
-    if (p.sourceSite == "newworld.co.nz") {
-      console.log("newworld ", p.name)
-    }
-  })
-
   const productGridDataAll = buildSubCategoryGrids(
     allMilk,
     [
