@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Image from "next/image";
-import fallbackImg from "../../public/images/placeholder-square.png";
+import fallbackImg from "../../../public/images/placeholder-square.png";
 
 interface Props {
   id: string;
