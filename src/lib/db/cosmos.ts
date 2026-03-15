@@ -7,14 +7,13 @@ import {
   SqlParameter,
   SqlQuerySpec,
 } from '@azure/cosmos';
-import { getSampleProductsInstead } from "@/lib/sample-products";
 import { Product } from "@/typings";
 import {
   cleanProductFields,
   sortProductsByUnitPrice,
-  utcDateToMediumDate,
 } from "@/lib/utils";
 import { LastChecked, OrderByMode, PriceHistoryLimit, Store } from "@/lib/enums";
+import { demoProducts } from '../demo-products';
 
 // CosmosDB Env Variables
 const COSMOS_CONSTRING = process.env.COSMOS_CONSTRING;
@@ -44,6 +43,7 @@ export async function connectToCosmosDB(): Promise<boolean> {
     const database = await cosmosClient.database(COSMOS_DBNAME!);
     container = await database.container(COSMOS_CONTAINER!);
 
+    // Log connection to console
     // console.log(`Connected to ${database.id} > ${container.id}`)
 
     return true;
@@ -67,7 +67,7 @@ async function fetchProductsUsingSDK(
   const resultingProducts: Product[] = [];
 
   // Log query to console
-  console.log('\nSDK: ' + querySpec.query);
+  // console.log('\nSDK: ' + querySpec.query);
 
   if (await connectToCosmosDB()) {
     // Access CosmosDB directly using the SDK
@@ -97,7 +97,7 @@ async function fetchProductsUsingSDK(
     } catch (error) {
       console.log('Error on fetchProductsUsingSDK()\n' + error);
     }
-  } else return getSampleProductsInstead();
+  } else return demoProducts;
 
   return resultingProducts;
 }
