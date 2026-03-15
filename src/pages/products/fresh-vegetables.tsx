@@ -16,7 +16,7 @@ import {
   printProductCountSubTitle,
   sortProductsByUnitPrice,
 } from "@/lib/utils";
-import PageLayout from "@/components/layout/PageLayout";
+import StandardPageLayout from "@/components/layout/StandardPageLayout";
 
 interface Props {
   productGridDataAll: ProductGridData[];
@@ -25,7 +25,7 @@ interface Props {
 
 const Category = ({ productGridDataAll, lastChecked }: Props) => {
   return (
-    <PageLayout lastUpdatedDate={lastChecked}>
+    <StandardPageLayout lastUpdatedDate={lastChecked}>
       {/* Categorised Product Grids*/}
       {productGridDataAll.map((productGridData, index) => (
         <ProductsGrid
@@ -33,10 +33,10 @@ const Category = ({ productGridDataAll, lastChecked }: Props) => {
           titles={productGridData.titles}
           subTitle={productGridData.subTitle}
           products={productGridData.products}
-          createSearchLink={productGridData.createSearchLink}
+          titleAsSearchLink={productGridData.titleAsSearchLink}
         />
       ))}
-    </PageLayout>
+    </StandardPageLayout>
   );
 };
 
@@ -58,45 +58,45 @@ export const getStaticProps: GetStaticProps = async () => {
       {
         titles: ["Potatoes", "Kumara"],
         match: /potato|kumara/i,
-        limit: 10,
+        maxProductsToShow: 10,
       },
       {
         titles: ["Broccoli", "Cauliflower", "Cabbage"],
         match: /broccoli|cauliflower|cabbage/i,
-        limit: 10,
+        maxProductsToShow: 10,
       },
       {
         titles: ["Carrots", "Yams"],
         match: /carrot|parsnip|beetroot|yam|daikon/i,
-        limit: 10,
+        maxProductsToShow: 10,
       },
       {
         titles: ["Lettuce", "Spinach", "Celery", "Sprouts"],
         match: /lettuce|spinach|celery|sprouts|choy|salad/i,
-        limit: 10,
+        maxProductsToShow: 10,
       },
       {
         titles: ["Mushrooms"],
         match: "mushroom",
-        limit: 5,
+        maxProductsToShow: 5,
       },
       {
         titles: ["Tomatoes", "Cucumber", "Capsicum"],
         match: /tomato|capsicum|cucumber/i,
-        limit: 10,
+        maxProductsToShow: 10,
       },
       {
         titles: ["Onions", "Shallots", "Leek"],
         match: /onion|shallot|leek/i,
-        limit: 5,
+        maxProductsToShow: 5,
       },
       {
         titles: ["Chili", "Garlic", "Ginger"],
         match: /chili|garlic|ginger/i,
-        limit: 5,
+        maxProductsToShow: 5,
       },
     ],
-    { useOther: true, otherTitle: "Other Vegetables", otherLimit: 10 }
+    { useLeftoverProducts: true, leftoverProductsTitle: "Other Vegetables", leftoverMaxProductsToShow: 10 }
   );
 
   // Store date, to be displayed in static page title bar

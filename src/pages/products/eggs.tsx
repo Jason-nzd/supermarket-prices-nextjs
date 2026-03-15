@@ -15,7 +15,7 @@ import {
 import {
   printProductCountSubTitle,
 } from "@/lib/utils";
-import PageLayout from "@/components/layout/PageLayout";
+import StandardPageLayout from "@/components/layout/StandardPageLayout";
 
 interface Props {
   productGridDataAll: ProductGridData[];
@@ -24,7 +24,7 @@ interface Props {
 
 const Category = ({ productGridDataAll, lastChecked }: Props) => {
   return (
-    <PageLayout lastUpdatedDate={lastChecked}>
+    <StandardPageLayout lastUpdatedDate={lastChecked}>
       {/* Categorised Product Grids*/}
       {productGridDataAll.map((productGridData, index) => (
         <ProductsGrid
@@ -32,10 +32,10 @@ const Category = ({ productGridDataAll, lastChecked }: Props) => {
           titles={productGridData.titles}
           subTitle={productGridData.subTitle}
           products={productGridData.products}
-          createSearchLink={productGridData.createSearchLink}
+          titleAsSearchLink={productGridData.titleAsSearchLink}
         />
       ))}
-    </PageLayout>
+    </StandardPageLayout>
   );
 };
 
@@ -96,20 +96,20 @@ export const getStaticProps: GetStaticProps = async () => {
       {
         titles: ["Size 7 Eggs"],
         match: /size 7/i,
-        createSearchLink: false,
-        limit: 15,
+        titleAsSearchLink: false,
+        maxProductsToShow: 15,
       },
       {
         titles: ["Size 8+ and Jumbo Eggs"],
         match: /size 8|size 9|size 10|jumbo/i,
-        createSearchLink: false,
-        limit: 15,
+        titleAsSearchLink: false,
+        maxProductsToShow: 15,
       },
     ],
     {
-      useOther: true,
-      otherTitle: "Size 5, 6 and Mixed Range Eggs",
-      otherLimit: 15,
+      useLeftoverProducts: true,
+      leftoverProductsTitle: "Size 5, 6 and Mixed Range Eggs",
+      leftoverMaxProductsToShow: 15,
       sort: true, // will use unitPriceNum we just set
     }
   );

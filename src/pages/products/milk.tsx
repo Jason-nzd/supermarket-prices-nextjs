@@ -5,7 +5,7 @@ import {
   DBFetchByCategory,
   DBGetMostRecentDate,
 } from "@/lib/db/cosmos";
-import PageLayout from "@/components/layout/PageLayout";
+import StandardPageLayout from "@/components/layout/StandardPageLayout";
 import {
   LastChecked,
   OrderByMode,
@@ -20,7 +20,7 @@ interface Props {
 
 const Category = ({ productGridDataAll, lastChecked }: Props) => {
   return (
-    <PageLayout lastUpdatedDate={lastChecked}>
+    <StandardPageLayout lastUpdatedDate={lastChecked}>
       {/* Categorised Product Grids*/}
       {productGridDataAll.map((productGridData, index) => (
         <ProductsGrid
@@ -28,10 +28,10 @@ const Category = ({ productGridDataAll, lastChecked }: Props) => {
           titles={productGridData.titles}
           subTitle={productGridData.subTitle}
           products={productGridData.products}
-          createSearchLink={productGridData.createSearchLink}
+          titleAsSearchLink={productGridData.titleAsSearchLink}
         />
       ))}
-    </PageLayout>
+    </StandardPageLayout>
   );
 };
 
@@ -41,17 +41,21 @@ export const getStaticProps: GetStaticProps = async () => {
   // Fetch milk category from DB
   const allMilk = await DBFetchByCategory(
     "milk",
-    900,
+    2000,
     Store.Any,
     PriceHistoryLimit.Any,
     OrderByMode.None,
     LastChecked.Within7Days
   );
 
-  // Filter out powder and proceed to categorize
-  // const products = allMilk.filter(
-  //   (product) => !product.name.toLowerCase().includes("powder")
-  // );
+  allMilk.map((p) => {
+    if (p.sourceSite == "countdown.co.nz") {
+      console.log("countdown ", p.name)
+    }
+    if (p.sourceSite == "newworld.co.nz") {
+      console.log("newworld ", p.name)
+    }
+  })
 
   const productGridDataAll = buildSubCategoryGrids(
     allMilk,
@@ -75,10 +79,11 @@ export const getStaticProps: GetStaticProps = async () => {
       {
         titles: ["Other Milk"],
         match: /milk/i,
-        createSearchLink: false,
+        titleAsSearchLink: false,
+        maxProductsToShow: 10,
       },
     ],
-    { sort: true, defaultLimit: 20 }
+    { sort: true, maxProductsToShow: 10 }
   );
 
   // Store date, to be displayed in static page title bar

@@ -1,6 +1,5 @@
 import { GetStaticProps } from "next";
-import React, { useContext } from "react";
-import { Product, ProductGridData } from "@/typings";
+import { ProductGridData } from "@/typings";
 import ProductsGrid from "@/components/features/products/ProductGrid";
 import {
   DBFetchByCategory,
@@ -12,10 +11,7 @@ import {
   PriceHistoryLimit,
   Store,
 } from "@/lib/enums";
-import {
-  printProductCountSubTitle,
-} from "@/lib/utils";
-import PageLayout from "@/components/layout/PageLayout";
+import StandardPageLayout from "@/components/layout/StandardPageLayout";
 
 interface Props {
   productGridDataAll: ProductGridData[];
@@ -24,18 +20,17 @@ interface Props {
 
 const Category = ({ productGridDataAll, lastChecked }: Props) => {
   return (
-    <PageLayout lastUpdatedDate={lastChecked}>
-      {/* Categorised Product Grids*/}
+    <StandardPageLayout lastUpdatedDate={lastChecked}>
       {productGridDataAll.map((productGridData, index) => (
         <ProductsGrid
           key={index}
           titles={productGridData.titles}
           subTitle={productGridData.subTitle}
           products={productGridData.products}
-          createSearchLink={productGridData.createSearchLink}
+          titleAsSearchLink={productGridData.titleAsSearchLink}
         />
       ))}
-    </PageLayout>
+    </StandardPageLayout>
   );
 };
 
@@ -51,19 +46,23 @@ export const getStaticProps: GetStaticProps = async () => {
     LastChecked.Within7Days
   );
 
+  const teaBagRegex = /(bag|pk|pack|\d*x|\d*'s)/g;
+
   // Try derive per unit price of each product
   products.forEach((product) => {
     // Treat any products with names without bags, pk, pack as loose tea
-    if (product.name.toLowerCase().match(/(bag|pk|pack|\d*'s)/g)) {
+    if (product.name.toLowerCase().match(teaBagRegex)) {
       // Try parse size to get quantity while excluding grams per teabag, e.g. 100 x 2g
       let size = product.size?.toLowerCase().split("x")[0];
-      // Get just the quantity
+
+      // Get just the quantity number
       size = size ? size.match(/\d/g)?.join("") : "";
 
+      // If size could not be derived, try parse name
       if (size === undefined || size === "") {
         size = product.name
           .toLowerCase()
-          .match(/\d*\spk|\d*\spack|\d*.*bags|\d*'s/g)
+          .match(teaBagRegex)
           ?.join("")
           .match(/\d/g)
           ?.join("");
@@ -74,7 +73,7 @@ export const getStaticProps: GetStaticProps = async () => {
         const quantity = parseInt(size);
 
         // Set per teabag unit price
-        product.unitPriceNum = (product.currentPrice || 0) / quantity;
+        product.unitPriceNum = (product.priceHistory[product.priceHistory.length - 1].price) / quantity;
         product.unitPrice = product.unitPriceNum.toFixed(2) + "/bag";
 
         // Set size
@@ -97,14 +96,23 @@ export const getStaticProps: GetStaticProps = async () => {
     [
       {
         titles: ["Black Tea Bags"],
-        match: /(bag|pk|pack|\d*'s)/i,
-        limit: 20,
+        match: teaBagRegex,
+        matchField: "both",
+        titleAsSearchLink: false,
+        maxProductsToShow: 15,
+      },
+      {
+        titles: ["Black Loose Tea"],
+        match: /(loose|leaf tea)/i,
+        matchField: "both",
+        titleAsSearchLink: false,
+        maxProductsToShow: 10,
       },
     ],
     {
-      useOther: true,
-      otherTitle: "Loose Tea",
-      otherLimit: 10,
+      useLeftoverProducts: true,
+      leftoverProductsTitle: "Other Black Tea",
+      leftoverMaxProductsToShow: 10,
       sort: true,
     }
   );

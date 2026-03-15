@@ -16,7 +16,7 @@ import {
   printProductCountSubTitle,
   sortProductsByUnitPrice,
 } from "@/lib/utils";
-import PageLayout from "@/components/layout/PageLayout";
+import StandardPageLayout from "@/components/layout/StandardPageLayout";
 
 interface Props {
   productGridDataAll: ProductGridData[];
@@ -25,7 +25,7 @@ interface Props {
 
 const Category = ({ productGridDataAll, lastChecked }: Props) => {
   return (
-    <PageLayout lastUpdatedDate={lastChecked}>
+    <StandardPageLayout lastUpdatedDate={lastChecked}>
       {/* Categorised Product Grids*/}
       {productGridDataAll.map((productGridData, index) => (
         <ProductsGrid
@@ -33,10 +33,10 @@ const Category = ({ productGridDataAll, lastChecked }: Props) => {
           titles={productGridData.titles}
           subTitle={productGridData.subTitle}
           products={productGridData.products}
-          createSearchLink={productGridData.createSearchLink}
+          titleAsSearchLink={productGridData.titleAsSearchLink}
         />
       ))}
-    </PageLayout>
+    </StandardPageLayout>
   );
 };
 
@@ -58,47 +58,47 @@ export const getStaticProps: GetStaticProps = async () => {
       {
         titles: ["Premium Nut Butters"],
         match: /(fogg|pic|mother|brothers|macro|ceres).*butter/i,
-        createSearchLink: false,
-        limit: 10,
+        titleAsSearchLink: false,
+        maxProductsToShow: 10,
       },
       {
         titles: ["Value Nut Butters"],
         match: "butter",
-        createSearchLink: false,
-        limit: 10,
+        titleAsSearchLink: false,
+        maxProductsToShow: 10,
       },
       {
         titles: ["Strawberry Jam", "Raspberry Jam", "Plum Jam", "Apricot Jam"],
         match: /jam|berry/i,
-        createSearchLink: false,
-        limit: 10,
+        titleAsSearchLink: false,
+        maxProductsToShow: 10,
       },
       {
         titles: ["Honey"],
         match: "honey",
-        createSearchLink: false,
-        limit: 10,
+        titleAsSearchLink: false,
+        maxProductsToShow: 10,
       },
       {
         titles: ["Vegemite", "Marmite"],
         match: /vegemite|marmite|yeast/i,
-        createSearchLink: false,
-        limit: 10,
+        titleAsSearchLink: false,
+        maxProductsToShow: 10,
       },
       {
         titles: ["Hazelnut", "Nutella"],
         match: /hazelnut|nutella/i,
-        createSearchLink: false,
-        limit: 10,
+        titleAsSearchLink: false,
+        maxProductsToShow: 10,
       },
       {
         titles: ["Marmalade"],
         match: /marmalade|lemon/i,
-        createSearchLink: false,
-        limit: 10,
+        titleAsSearchLink: false,
+        maxProductsToShow: 10,
       },
     ],
-    { useOther: true, otherTitle: "Other Spreads", otherLimit: 10 }
+    { useLeftoverProducts: true, leftoverProductsTitle: "Other Spreads", leftoverMaxProductsToShow: 10 }
   );
 
   // Store date, to be displayed in static page title bar

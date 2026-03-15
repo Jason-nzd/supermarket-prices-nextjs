@@ -15,7 +15,7 @@ import {
 import {
   printProductCountSubTitle,
 } from "@/lib/utils";
-import PageLayout from "@/components/layout/PageLayout";
+import StandardPageLayout from "@/components/layout/StandardPageLayout";
 
 interface Props {
   productGridDataAll: ProductGridData[];
@@ -24,7 +24,7 @@ interface Props {
 
 const Category = ({ productGridDataAll, lastChecked }: Props) => {
   return (
-    <PageLayout lastUpdatedDate={lastChecked}>
+    <StandardPageLayout lastUpdatedDate={lastChecked}>
       {/* Categorised Product Grids*/}
       {productGridDataAll.map((productGridData, index) => (
         <ProductsGrid
@@ -32,10 +32,10 @@ const Category = ({ productGridDataAll, lastChecked }: Props) => {
           titles={productGridData.titles}
           subTitle={productGridData.subTitle}
           products={productGridData.products}
-          createSearchLink={productGridData.createSearchLink}
+          titleAsSearchLink={productGridData.titleAsSearchLink}
         />
       ))}
-    </PageLayout>
+    </StandardPageLayout>
   );
 };
 
@@ -59,14 +59,14 @@ export const getStaticProps: GetStaticProps = async () => {
         match: (p: Product) =>
           !p.name.toLowerCase().match(/sticks|sachet|bag|pack/i) &&
           !p.size?.toLowerCase().match(/pack|each|\wx\w/i),
-        limit: 20,
+        maxProductsToShow: 20,
       },
       {
         titles: ["Sachets"],
         match: /sticks|sachet|bag|pack|each|\wx\w/i,
         matchField: "both",
-        createSearchLink: false,
-        limit: 10,
+        titleAsSearchLink: false,
+        maxProductsToShow: 10,
       },
     ],
     { sort: true }

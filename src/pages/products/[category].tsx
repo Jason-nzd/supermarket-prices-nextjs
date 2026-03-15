@@ -1,6 +1,4 @@
 import { GetStaticPaths, GetStaticProps } from "next";
-//import { useRouter } from "next/router";
-import React, { useContext } from "react";
 import { ProductGridData } from "@/typings";
 import ProductsGrid from "@/components/features/products/ProductGrid";
 import {
@@ -12,7 +10,7 @@ import {
   sortProductsByUnitPrice,
 } from "@/lib/utils";
 import { LastChecked, OrderByMode, PriceHistoryLimit, Store } from "@/lib/enums";
-import PageLayout from "@/components/layout/PageLayout";
+import StandardPageLayout from "@/components/layout/StandardPageLayout";
 import startCase from "lodash/startCase";
 
 interface Props {
@@ -22,18 +20,16 @@ interface Props {
 
 const Category = ({ productGridData, lastChecked }: Props) => {
   return (
-    <PageLayout lastUpdatedDate={lastChecked}>
+    <StandardPageLayout lastUpdatedDate={lastChecked}>
       <div className="min-h-[50rem]">
-        {/* Filter Selection */}
-        <div className="ml-20">{/* <ResultsFilterPanel /> */}</div>
         <ProductsGrid
           titles={productGridData.titles}
           subTitle={productGridData.subTitle}
           products={productGridData.products}
-          createSearchLink={productGridData.createSearchLink}
+          titleAsSearchLink={productGridData.titleAsSearchLink}
         />
       </div>
-    </PageLayout>
+    </StandardPageLayout>
   );
 };
 
@@ -41,10 +37,10 @@ import { allCategoryNames, titledCategories } from "@/lib/categories";
 
 // Combine all category groups into one big array.
 // Each category will be built into fully static export pages
-let categoryNames = allCategoryNames;
+let categoriesToGenerate = allCategoryNames;
 
 // Remove special sub-categories which have custom made pages instead of generated pages
-categoryNames = categoryNames.filter((name) => {
+categoriesToGenerate = categoriesToGenerate.filter((name) => {
   return ![
     "eggs",
     "fruit",
@@ -62,9 +58,9 @@ categoryNames = categoryNames.filter((name) => {
 
 // getAllStaticPaths()
 // -------------------
-// Takes an array of categories, and returns them in { path } format needed for static generation
+// Takes an array of categories, returns them in { path } format for static generation
 export function getAllStaticPaths() {
-  return categoryNames.map((name) => {
+  return categoriesToGenerate.map((name) => {
     return {
       params: {
         category: name,
@@ -112,7 +108,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     titles: [categoryTitle],
     subTitle: printProductCountSubTitle(products.length, foundItemsCount),
     products: products,
-    createSearchLink: false,
+    titleAsSearchLink: false,
   };
 
   const lastChecked = await DBGetMostRecentDate();

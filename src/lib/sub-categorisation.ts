@@ -1,22 +1,22 @@
 import { Product, ProductGridData } from "@/typings";
 import { printProductCountSubTitle, sortProductsByUnitPrice } from "./utils";
 
-export interface CategoryRule {
+export interface SubCategoryRule {
   titles: string[];
   match: string | RegExp | ((product: Product) => boolean);
   matchField?: "name" | "size" | "both";
-  createSearchLink?: boolean;
+  titleAsSearchLink?: boolean;
   createDeepLink?: string;
   trimColumns?: boolean;
-  limit?: number;
+  maxProductsToShow?: number;
 }
 
 export interface CategorizeOptions {
-  useOther?: boolean;
-  otherTitle?: string;
-  otherLimit?: number;
+  useLeftoverProducts?: boolean;
+  leftoverProductsTitle?: string;
+  leftoverMaxProductsToShow?: number;
   sort?: boolean;
-  defaultLimit?: number;
+  maxProductsToShow?: number;
 }
 
 /**
@@ -25,26 +25,26 @@ export interface CategorizeOptions {
  */
 export function buildSubCategoryGrids(
   products: Product[],
-  rules: CategoryRule[],
+  rules: SubCategoryRule[],
   options: CategorizeOptions = {}
-): ProductGridData[] {
+ ): ProductGridData[] {
   const {
-    useOther = false,
-    otherTitle = "Other",
-    otherLimit = 10,
+    useLeftoverProducts = false,
+    leftoverProductsTitle = "Other",
+    leftoverMaxProductsToShow = 10,
     sort = true,
-    defaultLimit = 15,
+    maxProductsToShow = 15,
   } = options;
 
-  const results: { rule: CategoryRule; products: Product[]; dbCount: number }[] =
+  const results: { rule: SubCategoryRule; products: Product[]; dbCount: number }[] =
     rules.map((rule) => ({
       rule,
       products: [],
       dbCount: 0,
     }));
 
-  const otherProducts: Product[] = [];
-  let otherDbCount = 0;
+  const leftoverProducts: Product[] = [];
+  let leftoverDbCount = 0;
 
   products.forEach((product) => {
     const name = product.name.toLowerCase();
@@ -71,16 +71,16 @@ export function buildSubCategoryGrids(
       }
 
       if (isMatch) {
-        res.dbCount++;
+         res.dbCount++;
         res.products.push(product);
         matched = true;
         break;
       }
     }
 
-    if (!matched && useOther) {
-      otherDbCount++;
-      otherProducts.push(product);
+    if (!matched && useLeftoverProducts) {
+      leftoverDbCount++;
+      leftoverProducts.push(product);
     }
   });
 
@@ -88,29 +88,29 @@ export function buildSubCategoryGrids(
     let gridProducts = res.products;
     if (sort) gridProducts = sortProductsByUnitPrice(gridProducts);
 
-    const limit = res.rule.limit || defaultLimit;
+    const limit = res.rule.maxProductsToShow || maxProductsToShow;
     const finalProducts = gridProducts.slice(0, limit);
 
     return {
       titles: res.rule.titles,
       subTitle: printProductCountSubTitle(finalProducts.length, res.dbCount),
       products: finalProducts,
-      createSearchLink: res.rule.createSearchLink ?? true,
+      titleAsSearchLink: res.rule.titleAsSearchLink ?? true,
       createDeepLink: res.rule.createDeepLink || "",
       trimColumns: res.rule.trimColumns ?? false,
     };
   });
 
-  if (useOther && otherProducts.length > 0) {
-    let gridProducts = otherProducts;
+  if (useLeftoverProducts && leftoverProducts.length > 0) {
+    let gridProducts = leftoverProducts;
     if (sort) gridProducts = sortProductsByUnitPrice(gridProducts);
-    const finalProducts = gridProducts.slice(0, otherLimit);
+    const finalProducts = gridProducts.slice(0, leftoverMaxProductsToShow);
 
     productGrids.push({
-      titles: [otherTitle],
-      subTitle: printProductCountSubTitle(finalProducts.length, otherDbCount),
+      titles: [leftoverProductsTitle],
+      subTitle: printProductCountSubTitle(finalProducts.length, leftoverDbCount),
       products: finalProducts,
-      createSearchLink: false,
+      titleAsSearchLink: false,
     });
   }
 

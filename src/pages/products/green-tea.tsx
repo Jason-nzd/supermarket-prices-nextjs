@@ -15,7 +15,7 @@ import {
 import {
   printProductCountSubTitle,
 } from "@/lib/utils";
-import PageLayout from "@/components/layout/PageLayout";
+import StandardPageLayout from "@/components/layout/StandardPageLayout";
 
 interface Props {
   productGridDataAll: ProductGridData[];
@@ -24,7 +24,7 @@ interface Props {
 
 const Category = ({ productGridDataAll, lastChecked }: Props) => {
   return (
-    <PageLayout lastUpdatedDate={lastChecked}>
+    <StandardPageLayout lastUpdatedDate={lastChecked}>
       {/* Categorised Product Grids*/}
       {productGridDataAll.map((productGridData, index) => (
         <ProductsGrid
@@ -32,10 +32,10 @@ const Category = ({ productGridDataAll, lastChecked }: Props) => {
           titles={productGridData.titles}
           subTitle={productGridData.subTitle}
           products={productGridData.products}
-          createSearchLink={productGridData.createSearchLink}
+          titleAsSearchLink={productGridData.titleAsSearchLink}
         />
       ))}
-    </PageLayout>
+    </StandardPageLayout>
   );
 };
 
@@ -75,7 +75,7 @@ export const getStaticProps: GetStaticProps = async () => {
         const quantity = parseInt(size);
 
         // Set per teabag unit price
-        product.unitPriceNum = (product.currentPrice || 0) / quantity;
+        product.unitPriceNum = (product.priceHistory[product.priceHistory.length - 1].price) / quantity;
         product.unitPrice = product.unitPriceNum.toFixed(2) + "/bag";
 
         // Set size
@@ -99,13 +99,13 @@ export const getStaticProps: GetStaticProps = async () => {
       {
         titles: ["Green Tea Bags"],
         match: (p) => !p.name.toLowerCase().includes("loose"),
-        limit: 20,
+        maxProductsToShow: 20,
       },
     ],
     {
-      useOther: true,
-      otherTitle: "Loose Tea",
-      otherLimit: 10,
+      useLeftoverProducts: true,
+      leftoverProductsTitle: "Loose Tea",
+      leftoverMaxProductsToShow: 10,
       sort: true,
     }
   );

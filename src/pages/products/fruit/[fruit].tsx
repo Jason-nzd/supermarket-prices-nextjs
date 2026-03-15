@@ -1,12 +1,11 @@
 import { GetStaticPaths, GetStaticProps } from "next";
-import React, { useContext } from "react";
 import { Product } from "@/typings";
 import ProductsGrid from "@/components/features/products/ProductGrid";
 import {
   DBFetchByNameAndExcludeRegex,
   DBGetMostRecentDate,
 } from "@/lib/db/cosmos";
-import PageLayout from "@/components/layout/PageLayout";
+import StandardPageLayout from "@/components/layout/StandardPageLayout";
 import { useRouter } from "next/router";
 import _ from "lodash";
 
@@ -21,13 +20,12 @@ const Fruit = ({ products, lastChecked }: Props) => {
   const fruitTitle: string = fruit as string;
 
   return (
-    <PageLayout lastUpdatedDate={lastChecked}>
-      {/* Categorised Product Grids*/}
+    <StandardPageLayout lastUpdatedDate={lastChecked}>
       <ProductsGrid
         titles={[_.startCase(fruitTitle)]}
         products={products}
       />
-    </PageLayout>
+    </StandardPageLayout>
   );
 };
 

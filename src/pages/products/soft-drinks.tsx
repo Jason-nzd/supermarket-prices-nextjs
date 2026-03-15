@@ -16,7 +16,7 @@ import {
   printProductCountSubTitle,
   sortProductsByUnitPrice,
 } from "@/lib/utils";
-import PageLayout from "@/components/layout/PageLayout";
+import StandardPageLayout from "@/components/layout/StandardPageLayout";
 
 interface Props {
   productGridDataAll: ProductGridData[];
@@ -25,7 +25,7 @@ interface Props {
 
 const Category = ({ productGridDataAll, lastChecked }: Props) => {
   return (
-    <PageLayout lastUpdatedDate={lastChecked}>
+    <StandardPageLayout lastUpdatedDate={lastChecked}>
       {/* Categorised Product Grids*/}
       {productGridDataAll.map((productGridData, index) => (
         <ProductsGrid
@@ -33,10 +33,10 @@ const Category = ({ productGridDataAll, lastChecked }: Props) => {
           titles={productGridData.titles}
           subTitle={productGridData.subTitle}
           products={productGridData.products}
-          createSearchLink={productGridData.createSearchLink}
+          titleAsSearchLink={productGridData.titleAsSearchLink}
         />
       ))}
-    </PageLayout>
+    </StandardPageLayout>
   );
 };
 
@@ -60,14 +60,14 @@ export const getStaticProps: GetStaticProps = async () => {
         titles: ["Soft Drinks (Cans & Small Bottles)"],
         match: /can|pack|tray/i,
         matchField: "both",
-        createSearchLink: false,
-        limit: 20,
+        titleAsSearchLink: false,
+        maxProductsToShow: 20,
       },
     ],
     {
-      useOther: true,
-      otherTitle: "Soft Drinks (Large Bottles)",
-      otherLimit: 20,
+      useLeftoverProducts: true,
+      leftoverProductsTitle: "Soft Drinks (Large Bottles)",
+      leftoverMaxProductsToShow: 20,
     }
   );
 

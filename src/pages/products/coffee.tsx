@@ -16,7 +16,7 @@ import {
   printProductCountSubTitle,
   sortProductsByUnitPrice,
 } from "@/lib/utils";
-import PageLayout from "@/components/layout/PageLayout";
+import StandardPageLayout from "@/components/layout/StandardPageLayout";
 
 interface Props {
   productGridDataAll: ProductGridData[];
@@ -25,7 +25,7 @@ interface Props {
 
 const Category = ({ productGridDataAll, lastChecked }: Props) => {
   return (
-    <PageLayout lastUpdatedDate={lastChecked}>
+    <StandardPageLayout lastUpdatedDate={lastChecked}>
       {/* Categorised Product Grids*/}
       {productGridDataAll.map((productGridData, index) => (
         <ProductsGrid
@@ -33,10 +33,10 @@ const Category = ({ productGridDataAll, lastChecked }: Props) => {
           titles={productGridData.titles}
           subTitle={productGridData.subTitle}
           products={productGridData.products}
-          createSearchLink={productGridData.createSearchLink}
+          titleAsSearchLink={productGridData.titleAsSearchLink}
         />
       ))}
-    </PageLayout>
+    </StandardPageLayout>
   );
 };
 
@@ -58,30 +58,30 @@ export const getStaticProps: GetStaticProps = async () => {
       {
         titles: ["Sachet Coffee"],
         match: /sachet|sticks|pack/i,
-        limit: 10,
+        maxProductsToShow: 10,
       },
       {
         titles: ["Instant Coffee"],
         match: /instant|jarrah|freeze|original|decaf|classic|blend/i,
-        limit: 10,
+        maxProductsToShow: 10,
       },
       {
         titles: ["Grind Coffee", "Plunger Coffee", "Filter Coffee"],
         match: /ground|powder|grind|plunger/i,
-        limit: 10,
+        maxProductsToShow: 10,
       },
       {
         titles: ["Coffee Beans"],
         match: "beans",
-        limit: 10,
+        maxProductsToShow: 10,
       },
       {
         titles: ["Capsules", "Pods", "Dolce Gusto", "Nespresso"],
         match: /capsule|pods|gusto|nespresso/i,
-        limit: 10,
+        maxProductsToShow: 10,
       },
     ],
-    { useOther: true, otherTitle: "Other Coffee", otherLimit: 5 }
+    { useLeftoverProducts: true, leftoverProductsTitle: "Other Coffee", leftoverMaxProductsToShow: 5 }
   );
 
   // Store date, to be displayed in static page title bar

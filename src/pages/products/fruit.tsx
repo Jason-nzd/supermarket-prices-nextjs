@@ -16,7 +16,7 @@ import {
   printProductCountSubTitle,
   sortProductsByUnitPrice,
 } from "@/lib/utils";
-import PageLayout from "@/components/layout/PageLayout";
+import StandardPageLayout from "@/components/layout/StandardPageLayout";
 
 import { buildSubCategoryGrids } from "@/lib/sub-categorisation";
 
@@ -27,7 +27,7 @@ interface Props {
 
 const Category = ({ productGridDataAll, lastChecked }: Props) => {
   return (
-    <PageLayout lastUpdatedDate={lastChecked}>
+    <StandardPageLayout lastUpdatedDate={lastChecked}>
       {/* Categorised Product Grids*/}
       {productGridDataAll.map((grid, index) => (
         <ProductsGrid
@@ -36,11 +36,11 @@ const Category = ({ productGridDataAll, lastChecked }: Props) => {
           subTitle={grid.subTitle}
           products={grid.products}
           trimColumns={grid.trimColumns}
-          createSearchLink={grid.createSearchLink}
+          titleAsSearchLink={grid.titleAsSearchLink}
           createDeepLink={grid.createDeepLink}
         />
       ))}
-    </PageLayout>
+    </StandardPageLayout>
   );
 };
 
@@ -62,15 +62,15 @@ export const getStaticProps: GetStaticProps = async () => {
         match: (p) =>
           p.name.toLowerCase().includes("apple") &&
           !p.name.toLowerCase().includes("pineapple"),
-        limit: 10,
-        createSearchLink: false,
+        maxProductsToShow: 10,
+        titleAsSearchLink: false,
         createDeepLink: "/products/fruit/",
       },
       {
         titles: ["Bananas"],
         match: "banana",
-        limit: 10,
-        createSearchLink: false,
+        maxProductsToShow: 10,
+        titleAsSearchLink: false,
         createDeepLink: "/products/fruit/",
       },
       {
@@ -82,43 +82,43 @@ export const getStaticProps: GetStaticProps = async () => {
             !name.match(/avocado|juice/i)
           );
         },
-        limit: 10,
+        maxProductsToShow: 10,
       },
       {
         titles: ["Pears"],
         match: "pears",
-        limit: 10,
+        maxProductsToShow: 10,
       },
       {
         titles: ["Kiwifruit", "Feijoa"],
         match: /feijoa|kiwifruit/i,
-        limit: 10,
+        maxProductsToShow: 10,
       },
       {
         titles: ["Peaches", "Plums", "Nectarines"],
         match: /peach|nectarine|plums/i,
-        limit: 10,
+        maxProductsToShow: 10,
       },
       {
         titles: ["Strawberries", "Blueberries", "Raspberries"],
         match: /berry|berries/i,
-        limit: 10,
+        maxProductsToShow: 10,
       },
       {
         titles: ["Pineapple", "Mango", "Melon"],
         match: /pineapple|mango|melon/i,
-        limit: 10,
+        maxProductsToShow: 10,
       },
       {
         titles: ["Grapes"],
         match: "grapes",
-        limit: 10,
+        maxProductsToShow: 10,
       },
     ],
     {
-      useOther: true,
-      otherTitle: "Other Fruit",
-      otherLimit: 10,
+      useLeftoverProducts: true,
+      leftoverProductsTitle: "Other Fruit",
+      leftoverMaxProductsToShow: 10,
       sort: true,
     }
   );
@@ -127,7 +127,7 @@ export const getStaticProps: GetStaticProps = async () => {
   const otherGrid = productGridDataAll.find((g) => g.titles[0] === "Other Fruit");
   if (otherGrid) {
     otherGrid.trimColumns = true;
-    otherGrid.createSearchLink = false;
+    otherGrid.titleAsSearchLink = false;
   }
 
   const lastChecked = await DBGetMostRecentDate();
