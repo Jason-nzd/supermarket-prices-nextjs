@@ -5,9 +5,11 @@
 /node_modules
 /.pnp
 .pnp.js
+.pnpm-store/
 
 # testing
 /coverage
+/scripts
 
 # next.js
 /.next/
