@@ -37,7 +37,7 @@ export function cleanProductFields(document: Product): Product {
     if (!category) console.log(`Missing category for ${id} - ${name}`)
 
     // lastChecked should be a date string in the format yyyy-mm-dd
-    if (lastChecked.length != 10) console.log(`Improper lastChecked date string `)
+    if (lastChecked.length != 10) console.log(`${id}\t - ${name}\t - Improper lastChecked: ${lastChecked}`)
 
     // TODO: move unit price handling to server side only
     // ensure unitPrice is limited 2 numbers max
