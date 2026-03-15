@@ -1,0 +1,2 @@
+src/lib/sample-products.ts(12,32): error TS2322: Type 'Date' is not assignable to type 'string'.
+src/lib/sample-products.ts(23,7): error TS2322: Type 'Date' is not assignable to type 'string'.

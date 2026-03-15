@@ -1,0 +1,56 @@
+
+> supermarket-prices@0.2.3 build
+> next build
+
+Γû▓ Next.js 16.1.6 (Turbopack)
+- Environments: .env
+
+  Running TypeScript ...
+  Creating an optimized production build ...
+Γ£ô Compiled successfully in 2.9s
+  Collecting page data using 11 workers ...
+  Generating static pages using 11 workers (0/81) ...
+  Generating static pages using 11 workers (20/81) 
+  Generating static pages using 11 workers (40/81) 
+Warning: data for page "/products/coffee" (path "/products/coffee/") is 161 kB which exceeds the threshold of 128 kB, this amount of data can reduce performance.
+See more info here: https://nextjs.org/docs/messages/large-page-data
+  Generating static pages using 11 workers (60/81) 
+Γ£ô Generating static pages using 11 workers (81/81) in 2.1s
+  Finalizing page optimization ...
+  Exporting using 11 workers (0/18) ...
+
+Route (pages)
+Γöî ΓùÅ / (698 ms)
+Γö£   /_app
+Γö£ Γùï /404
+Γö£ ΓùÅ /admin
+Γö£ ΓùÅ /client-search (754 ms)
+Γö£ ΓùÅ /privacy
+Γö£ ΓùÅ /products/[category] (34252 ms)
+Γöé Γö£ /products/chocolate (1147 ms)
+Γöé Γö£ /products/chips (1075 ms)
+Γöé Γö£ /products/biscuits (1074 ms)
+Γöé Γö£ /products/specialty-bread (1059 ms)
+Γöé Γö£ /products/yoghurt (1057 ms)
+Γöé Γö£ /products/cheese (1055 ms)
+Γöé Γö£ /products/salami (1054 ms)
+Γöé Γöö [+54 more paths] (avg 495 ms)
+Γö£ ΓùÅ /products/black-tea
+Γö£ ΓùÅ /products/butter (372 ms)
+Γö£ ΓùÅ /products/coffee
+Γö£ ΓùÅ /products/drinking-chocolate
+Γö£ ΓùÅ /products/eggs (944 ms)
+Γö£ ΓùÅ /products/fresh-vegetables (1124 ms)
+Γö£ ΓùÅ /products/fruit (945 ms)
+Γö£ ΓùÅ /products/fruit/[fruit] (417 ms)
+Γöé Γö£ /products/fruit/apples
+Γöé Γöö /products/fruit/bananas
+Γö£ ΓùÅ /products/green-tea (1125 ms)
+Γö£ ΓùÅ /products/milk (1125 ms)
+Γö£ ΓùÅ /products/soft-drinks (1125 ms)
+Γö£ ΓùÅ /products/spreads (1124 ms)
+Γöö ΓùÅ /test-features/multi-store-products
+
+Γùï  (Static)  prerendered as static content
+ΓùÅ  (SSG)     prerendered as static HTML (uses getStaticProps)
+

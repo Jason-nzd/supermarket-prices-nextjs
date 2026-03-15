@@ -1,0 +1,7 @@
+src/components/ProductCard/MultiStorePriceHistoryChart.tsx(56,42): error TS2345: Argument of type 'string' is not assignable to parameter of type 'Date'.
+src/components/ProductCard/MultiStorePriceHistoryChart.tsx(98,35): error TS2345: Argument of type 'string' is not assignable to parameter of type 'Date'.
+src/components/ProductCard/MultiStorePriceHistoryChart.tsx(122,35): error TS2345: Argument of type 'string' is not assignable to parameter of type 'Date'.
+src/components/ProductCard/MultiStorePriceHistoryChart.tsx(135,35): error TS2345: Argument of type 'string' is not assignable to parameter of type 'Date'.
+src/components/ProductCard/MultiStorePriceHistoryChart.tsx(148,35): error TS2345: Argument of type 'string' is not assignable to parameter of type 'Date'.
+src/lib/sample-products.ts(12,32): error TS2322: Type 'Date' is not assignable to type 'string'.
+src/lib/sample-products.ts(23,7): error TS2322: Type 'Date' is not assignable to type 'string'.
