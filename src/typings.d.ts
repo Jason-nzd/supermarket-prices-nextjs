@@ -17,6 +17,8 @@ export interface ProductGridData {
   subTitle: string;
   products: Product[];
   createSearchLink?: boolean;
+  createDeepLink?: string;
+  trimColumns?: boolean;
 }
 
 export interface DatedPrice {

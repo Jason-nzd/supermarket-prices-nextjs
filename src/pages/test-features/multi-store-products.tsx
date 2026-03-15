@@ -1,11 +1,16 @@
 import { GetStaticProps } from "next";
-import { useContext } from "react";
 import { Product } from "@/typings";
 import { DBFetchByName, DBGetMostRecentDate } from "@/lib/db/cosmos";
-import { DarkModeContext } from "@/pages/_app";
-import NavBar from "@/components/NavBar/NavBar";
-import Footer from "@/components/Footer";
-import MultiStorePriceHistoryChart from "@/components/ProductCard/MultiStorePriceHistoryChart";
+import dynamic from "next/dynamic";
+import PageLayout from "@/components/layout/PageLayout";
+
+const MultiStorePriceHistoryChart = dynamic(
+  () => import("@/components/features/charts/PriceChartMulti"),
+  {
+    loading: () => <p>Loading...</p>,
+    ssr: false,
+  },
+);
 
 interface Props {
   countdownProduct: Product | null;
@@ -22,29 +27,21 @@ const Category = ({
   newworldProduct,
   lastChecked,
 }: Props) => {
-  const theme = useContext(DarkModeContext).darkMode ? "dark" : "light";
-
   return (
-    <main className={theme}>
-      <NavBar lastUpdatedDate={lastChecked} />
-      {/* Background Div */}
-      <div className="content-body">
-        {/* Central Aligned Div */}
-        <div className="central-responsive-div min-h-200">
-          {/* Categorised Product Grids*/}
-          <h1 className="grid-title">{countdownProduct?.name}</h1>
-          <div className="flex mx-auto w-full max-w-7xl h-125">
-            <MultiStorePriceHistoryChart
-              countdownProduct={countdownProduct}
-              paknsaveProduct={paknsaveProduct}
-              warehouseProduct={warehouseProduct}
-              newworldProduct={newworldProduct}
-            />
-          </div>
+    <PageLayout lastUpdatedDate={lastChecked}>
+      <div className="min-h-200">
+        {/* Categorised Product Grids*/}
+        <h1 className="grid-title">{countdownProduct?.name}</h1>
+        <div className="flex mx-auto w-full max-w-7xl h-125">
+          <MultiStorePriceHistoryChart
+            countdownProduct={countdownProduct}
+            paknsaveProduct={paknsaveProduct}
+            warehouseProduct={warehouseProduct}
+            newworldProduct={newworldProduct}
+          />
         </div>
       </div>
-      <Footer />
-    </main>
+    </PageLayout>
   );
 };
 

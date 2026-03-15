@@ -1,11 +1,8 @@
-import { useContext } from "react";
-import Footer from "@/components/Footer";
-import NavBar from "@/components/NavBar/NavBar";
-import ProductsGrid from "@/components/ProductsGrid";
+import ProductsGrid from "@/components/features/products/ProductGrid";
 import { Product } from "@/typings";
 import { DBFetchAll, DBGetMostRecentDate } from "@/lib/db/cosmos";
 import { OrderByMode, PriceHistoryLimit, Store } from "@/lib/utils";
-import { DarkModeContext } from "./_app";
+import PageLayout from "@/components/layout/PageLayout";
 
 interface Props {
   countdownProducts: Product[];
@@ -23,49 +20,39 @@ export default function Home({
   newworldProducts,
   lastChecked,
 }: Props) {
-  const theme = useContext(DarkModeContext).darkMode ? "dark" : "light";
-
   return (
-    <main className={theme}>
-      <NavBar lastUpdatedDate={lastChecked} />
-      {/* Background Div */}
-      <div className="content-body">
-        {/* Central Aligned Div */}
-        <div className="central-responsive-div">
-          {/* Page Title */}
-          <div className="grid-title">{"Today's Trending Products"}</div>
-          {countdownProducts && (
-            <ProductsGrid
-              products={countdownProducts}
-              key="countdown"
-              trimColumns={true}
-            />
-          )}
-          {paknsaveProducts && (
-            <ProductsGrid
-              products={paknsaveProducts}
-              key="paknsave"
-              trimColumns={true}
-            />
-          )}
-          {warehouseProducts && (
-            <ProductsGrid
-              products={warehouseProducts}
-              key="warehouse"
-              trimColumns={true}
-            />
-          )}
-          {newworldProducts && (
-            <ProductsGrid
-              products={newworldProducts}
-              key="newworld"
-              trimColumns={true}
-            />
-          )}
-        </div>
-      </div>
-      <Footer />
-    </main>
+    <PageLayout lastUpdatedDate={lastChecked}>
+      {/* Page Title */}
+      <div className="grid-title">{"Today's Trending Products"}</div>
+      {countdownProducts && (
+        <ProductsGrid
+          products={countdownProducts}
+          key="countdown"
+          trimColumns={true}
+        />
+      )}
+      {paknsaveProducts && (
+        <ProductsGrid
+          products={paknsaveProducts}
+          key="paknsave"
+          trimColumns={true}
+        />
+      )}
+      {warehouseProducts && (
+        <ProductsGrid
+          products={warehouseProducts}
+          key="warehouse"
+          trimColumns={true}
+        />
+      )}
+      {newworldProducts && (
+        <ProductsGrid
+          products={newworldProducts}
+          key="newworld"
+          trimColumns={true}
+        />
+      )}
+    </PageLayout>
   );
 }
 

@@ -1,16 +1,13 @@
 import { GetStaticPaths, GetStaticProps } from "next";
 import React, { useContext } from "react";
 import { Product } from "@/typings";
-import ProductsGrid from "@/components/ProductsGrid";
+import ProductsGrid from "@/components/features/products/ProductGrid";
 import {
   DBFetchByNameAndExcludeRegex,
   DBGetMostRecentDate,
 } from "@/lib/db/cosmos";
-import { DarkModeContext } from "@/pages/_app";
-import NavBar from "@/components/NavBar/NavBar";
-import Footer from "@/components/Footer";
+import PageLayout from "@/components/layout/PageLayout";
 import { useRouter } from "next/router";
-
 import _ from "lodash";
 
 interface Props {
@@ -22,24 +19,15 @@ const Fruit = ({ products, lastChecked }: Props) => {
   const router = useRouter();
   const { fruit } = router.query;
   const fruitTitle: string = fruit as string;
-  const theme = useContext(DarkModeContext).darkMode ? "dark" : "light";
 
   return (
-    <main className={theme}>
-      <NavBar lastUpdatedDate={lastChecked} />
-      {/* Background Div */}
-      <div className="content-body">
-        {/* Central Aligned Div */}
-        <div className="central-responsive-div">
-          {/* Categorised Product Grids*/}
-          <ProductsGrid
-            titles={[_.startCase(fruitTitle)]}
-            products={products}
-          />
-        </div>
-      </div>
-      <Footer />
-    </main>
+    <PageLayout lastUpdatedDate={lastChecked}>
+      {/* Categorised Product Grids*/}
+      <ProductsGrid
+        titles={[_.startCase(fruitTitle)]}
+        products={products}
+      />
+    </PageLayout>
   );
 };
 

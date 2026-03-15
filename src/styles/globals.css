@@ -123,13 +123,7 @@
       @apply bg-green-800;
     }
   }
-  .text-input {
-    @apply px-2 my-0 py-0 rounded-md border border-stone-300;
-  }
 
-  .small-link {
-    @apply ring-green-300 ring-2 px-2 py-1 rounded-3xl font-semibold bg-zinc-50 hover:bg-white shadow-md hover:shadow-lg transition-shadow;
-  }
   .btn-primary {
     @apply py-2 px-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700
      focus:outline-none focus:ring-2 focus:ring-blue-400/75;
@@ -175,9 +169,5 @@
   .hover-light {
     @apply hover:bg-white/60 hover:shadow-md hover:shadow-black/10 transition-shadow;
     @apply active:scale-[98%] active:shadow-sm;
-  }
-
-  .modal-outside-tint {
-    @apply fixed inset-0 bg-black/10 backdrop-blur-none;
   }
 }
