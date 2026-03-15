@@ -13,14 +13,13 @@ export const freshCategory = [
 
 export const chilledCategory = [
   "milk",
-  "long-life-milk",
   "cream",
   "yoghurt",
   "butter",
   "cheese",
   "salami",
-  "other-deli-foods",
   "dips-hummus",
+  "other-deli-foods",
 ];
 
 export const meatCategory = [
@@ -81,6 +80,8 @@ export const snacksCategory = [
 ];
 
 export const drinksCategory = [
+  "long-life-milk",
+  "plant-milk",
   "black-tea",
   "green-tea",
   "herbal-tea",
@@ -123,8 +124,9 @@ export const titledCategories: Record<string, string> = {
   "specialty-bread": "Specialty Bread",
   "bakery-cakes": "Bakery Cakes",
   "bakery-desserts": "Bakery Desserts",
-  milk: "Milk",
+  milk: "Fresh Milk",
   "long-life-milk": "Long Life Milk",
+  "plant-milk": "Plant Milk",
   cream: "Cream",
   yoghurt: "Yoghurt",
   butter: "Butter",
