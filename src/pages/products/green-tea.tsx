@@ -2,19 +2,14 @@ import { GetStaticProps } from "next";
 import React, { useContext } from "react";
 import { Product, ProductGridData } from "@/typings";
 import ProductsGrid from "@/components/features/products/ProductGrid";
-import {
-  DBFetchByCategory,
-  DBGetMostRecentDate,
-} from "@/lib/db/cosmos";
+import { DBFetchByCategory, DBGetMostRecentDate } from "@/lib/db/cosmos";
 import {
   LastChecked,
   OrderByMode,
   PriceHistoryLimit,
   Store,
 } from "@/lib/enums";
-import {
-  printProductCountSubTitle,
-} from "@/lib/utils";
+import { printProductCountSubTitle } from "@/lib/utils";
 import StandardPageLayout from "@/components/layout/StandardPageLayout";
 
 interface Props {
@@ -48,7 +43,7 @@ export const getStaticProps: GetStaticProps = async () => {
     Store.Any,
     PriceHistoryLimit.Any,
     OrderByMode.None,
-    LastChecked.Within7Days
+    LastChecked.Within7Days,
   );
 
   // Try derive per unit price of each product
@@ -75,7 +70,9 @@ export const getStaticProps: GetStaticProps = async () => {
         const quantity = parseInt(size);
 
         // Set per teabag unit price
-        product.unitPriceNum = (product.priceHistory[product.priceHistory.length - 1].price) / quantity;
+        product.unitPriceNum =
+          product.priceHistory[product.priceHistory.length - 1].price /
+          quantity;
         product.unitPrice = product.unitPriceNum.toFixed(2) + "/bag";
 
         // Set size
@@ -87,9 +84,6 @@ export const getStaticProps: GetStaticProps = async () => {
         product.unitPriceNum = 999;
         product.unitPrice = "";
       }
-
-      // Set unit name
-      product.unitName = "bag";
     }
   });
 
@@ -107,7 +101,7 @@ export const getStaticProps: GetStaticProps = async () => {
       leftoverProductsTitle: "Loose Tea",
       leftoverMaxProductsToShow: 10,
       sort: true,
-    }
+    },
   );
 
   const lastChecked = await DBGetMostRecentDate();

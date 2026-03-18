@@ -93,7 +93,7 @@ function AdminProductRow({ product }: Props) {
       {/* Unit Price */}
       <td className="px-6 py-1">
         <div className="text-xs">
-          {product.unitPrice && `$${product.unitPrice}/${product.unitName}`}
+          {product.unitPrice && `$${product.unitPrice}`}
         </div>
       </td>
 

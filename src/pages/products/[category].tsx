@@ -1,15 +1,17 @@
 import { GetStaticPaths, GetStaticProps } from "next";
 import { ProductGridData } from "@/typings";
 import ProductsGrid from "@/components/features/products/ProductGrid";
-import {
-  DBFetchByCategory,
-  DBGetMostRecentDate,
-} from "@/lib/db/cosmos";
+import { DBFetchByCategory, DBGetMostRecentDate } from "@/lib/db/cosmos";
 import {
   printProductCountSubTitle,
   sortProductsByUnitPrice,
 } from "@/lib/utils";
-import { LastChecked, OrderByMode, PriceHistoryLimit, Store } from "@/lib/enums";
+import {
+  LastChecked,
+  OrderByMode,
+  PriceHistoryLimit,
+  Store,
+} from "@/lib/enums";
 import StandardPageLayout from "@/components/layout/StandardPageLayout";
 import startCase from "lodash/startCase";
 
@@ -21,7 +23,7 @@ interface Props {
 const Category = ({ productGridData, lastChecked }: Props) => {
   return (
     <StandardPageLayout lastUpdatedDate={lastChecked}>
-      <div className="min-h-[50rem]">
+      <div className="min-h-200">
         <ProductsGrid
           titles={productGridData.titles}
           subTitle={productGridData.subTitle}

@@ -20,7 +20,7 @@ function ImageWithFallback({
   const imagesHost = process.env.IMAGES_PATH || "https://images.kiwiprice.xyz/";
   const [imgSrc, setImgSrc] = useState(imagesHost + src);
   const tailwindClassnames = desaturate
-    ? "saturate-[20%] hover:saturate-100 transition-colors duration-500"
+    ? "saturate-[70%] hover:saturate-100 transition-colors duration-500"
     : "";
 
   return (

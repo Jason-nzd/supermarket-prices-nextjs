@@ -1,10 +1,7 @@
 import { GetStaticProps } from "next";
 import { ProductGridData } from "@/typings";
 import ProductsGrid from "@/components/features/products/ProductGrid";
-import {
-  DBFetchByCategory,
-  DBGetMostRecentDate,
-} from "@/lib/db/cosmos";
+import { DBFetchByCategory, DBGetMostRecentDate } from "@/lib/db/cosmos";
 import {
   LastChecked,
   OrderByMode,
@@ -43,7 +40,7 @@ export const getStaticProps: GetStaticProps = async () => {
     Store.Any,
     PriceHistoryLimit.Any,
     OrderByMode.None,
-    LastChecked.Within7Days
+    LastChecked.Within7Days,
   );
 
   const teaBagRegex = /(bag|pk|pack|\d*x|\d*'s)/g;
@@ -73,7 +70,9 @@ export const getStaticProps: GetStaticProps = async () => {
         const quantity = parseInt(size);
 
         // Set per teabag unit price
-        product.unitPriceNum = (product.priceHistory[product.priceHistory.length - 1].price) / quantity;
+        product.unitPriceNum =
+          product.priceHistory[product.priceHistory.length - 1].price /
+          quantity;
         product.unitPrice = product.unitPriceNum.toFixed(2) + "/bag";
 
         // Set size
@@ -85,9 +84,6 @@ export const getStaticProps: GetStaticProps = async () => {
         product.unitPriceNum = 999;
         product.unitPrice = "";
       }
-
-      // Set unit name
-      product.unitName = "bag";
     }
   });
 
@@ -114,7 +110,7 @@ export const getStaticProps: GetStaticProps = async () => {
       leftoverProductsTitle: "Other Black Tea",
       leftoverMaxProductsToShow: 10,
       sort: true,
-    }
+    },
   );
 
   // Store date, to be displayed in static page title bar
