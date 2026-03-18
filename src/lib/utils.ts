@@ -19,7 +19,6 @@ export function cleanProductFields(document: Product): Product {
   const {
     id,
     name,
-    size,
     sourceSite,
     priceHistory,
     category,
@@ -27,6 +26,7 @@ export function cleanProductFields(document: Product): Product {
   } = document;
 
   let {
+    size,
     unitPrice,
     unitPriceNum,
   } = document;
@@ -35,6 +35,8 @@ export function cleanProductFields(document: Product): Product {
     if (id.length < 1) console.log(`Bad Product ID for ${id} - ${name}`)
     if (name.length < 2) console.log(`Bad name for ${id} - ${name}`)
     if (!category) console.log(`Missing category for ${id} - ${name}`)
+
+    if (size == undefined) size = "";
 
     // lastChecked should be a date string in the format yyyy-mm-dd
     if (lastChecked.length != 10) console.log(`${id}\t - ${name}\t - Improper lastChecked: ${lastChecked}`)

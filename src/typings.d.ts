@@ -8,7 +8,6 @@ export interface Product {
   lastChecked: string;        // "yyyy-mm-dd" for when the product info was last checked
   unitPrice: any;             // string such as 400/kg
   unitPriceNum?: number;      // optional number for sorting by unit price
-  unitName?: string;
 }
 
 export interface ProductGridData {
