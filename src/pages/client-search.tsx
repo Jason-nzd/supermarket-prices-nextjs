@@ -1,14 +1,8 @@
 import { useEffect, useState } from "react";
 import ProductsGrid from "@/components/features/products/ProductGrid";
 import { Product } from "@/typings";
-import {
-  LastChecked,
-  PriceHistoryLimit,
-  Store,
-} from "@/lib/enums";
-import {
-  sortProductsByUnitPrice,
-} from "@/lib/utils";
+import { LastChecked, PriceHistoryLimit, Store } from "@/lib/enums";
+import { sortProductsByUnitPrice } from "@/lib/utils";
 import { useRouter } from "next/router";
 import startCase from "lodash/startCase";
 import { DBFetchByNameAPI } from "@/services/api";
@@ -98,7 +92,7 @@ const ClientSearch = ({ lastChecked }: Props) => {
 
   return (
     <StandardPageLayout lastUpdatedDate={lastChecked}>
-      <div className="min-h-[50rem]">
+      <div className="min-h-[calc(100vh-17.8em)]">
         {/* Page Title */}
         <div className="grid-title">
           {!isLoading && products.length >= 1 && (

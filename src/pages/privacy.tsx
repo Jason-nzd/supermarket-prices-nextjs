@@ -10,11 +10,11 @@ export default function Privacy({ lastChecked }: Props) {
     <StandardPageLayout lastUpdatedDate={lastChecked}>
       {/* Page Title */}
       <div className="grid-title">Privacy & Cookie Policy</div>
-      <div className="max-w-3xl mx-auto min-h-[20rem] px-2">
+      <div className="max-w-3xl mx-auto min-h-[calc(100vh-20em)] px-2">
         <p>
-          Each user can choose favourite categories to appear at the top
-          menu. These categories are saved as a cookie with session expiry.
-          The website can still fully function if cookies are disabled.
+          Each user can choose favourite categories to appear at the top menu.
+          These categories are saved as a cookie with session expiry. The
+          website can still fully function if cookies are disabled.
         </p>
         <p className="mt-2">No other information is stored or collected.</p>
       </div>
