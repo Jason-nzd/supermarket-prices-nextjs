@@ -1,9 +1,8 @@
-import { titledCategories } from "@/lib/categories";
 import CategoryLink from "@/components/layout/Navbar/CategoryMenu/CategoryLink";
 import Link from "next/link";
-import startCase from "lodash/startCase";
 import { DarkModeContext } from "@/pages/_app";
 import { useContext } from "react";
+import { getCategoryTitle } from "@/lib/categories/index";
 
 // CategoryGroup
 // -------------------
@@ -33,7 +32,7 @@ export default function CategoryGroup({
       {/* Within each department are 4-20 CategoryLinks */}
       {subCategoryNames.map((categoryName) => {
         const href = "/products/" + categoryName;
-        const categoryTitle = titledCategories[categoryName] || startCase(categoryName);
+        const categoryTitle = getCategoryTitle(categoryName);
         return (
           <div className="flex items-center w-full max-w-40" key={categoryName}>
             {<CategoryLink category={categoryName} />}

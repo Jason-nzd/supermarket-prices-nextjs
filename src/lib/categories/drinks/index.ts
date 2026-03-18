@@ -1,0 +1,10 @@
+export { longLifeMilk } from "./long-life-milk";
+export { blackTea } from "./black-tea";
+export { greenTea } from "./green-tea";
+export { herbalTea } from "./herbal-tea";
+export { drinkingChocolate } from "./drinking-chocolate";
+export { coffee } from "./coffee";
+export { softDrinks } from "./soft-drinks";
+export { energyDrinks } from "./energy-drinks";
+export { juice } from "./juice";
+export { water } from "./water";

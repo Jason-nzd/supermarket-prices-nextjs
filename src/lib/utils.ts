@@ -154,7 +154,6 @@ export function deriveUnitPriceString(product: Product): string {
 }
 
 
-
 // getPriceAvgDifference()
 // ---------------------------
 // Gets the % difference in price between the current price and its historical average.

@@ -34,7 +34,7 @@ const Category = ({ productGridDataAll, lastChecked }: Props) => {
   );
 };
 
-import { buildSubCategoryGrids } from "@/lib/sub-categorisation";
+import { separateProductsIntoSubCategories } from "@/lib/sub-categorisation";
 
 export const getStaticProps: GetStaticProps = async () => {
   const products = await DBFetchByCategory(
@@ -87,12 +87,13 @@ export const getStaticProps: GetStaticProps = async () => {
     }
   });
 
-  const productGridDataAll = buildSubCategoryGrids(
+  const productGridDataAll = separateProductsIntoSubCategories(
     products,
     [
       {
         titles: ["Green Tea Bags"],
-        match: (p) => !p.name.toLowerCase().includes("loose"),
+        // Match products that DON'T contain "loose" (negative lookahead)
+        regexMatch: /^(?!.*loose).*/i,
         maxProductsToShow: 20,
       },
     ],
@@ -100,7 +101,6 @@ export const getStaticProps: GetStaticProps = async () => {
       useLeftoverProducts: true,
       leftoverProductsTitle: "Loose Tea",
       leftoverMaxProductsToShow: 10,
-      sort: true,
     },
   );
 

@@ -31,7 +31,7 @@ const Category = ({ productGridDataAll, lastChecked }: Props) => {
   );
 };
 
-import { buildSubCategoryGrids } from "@/lib/sub-categorisation";
+import { separateProductsIntoSubCategories } from "@/lib/sub-categorisation";
 
 export const getStaticProps: GetStaticProps = async () => {
   const products = await DBFetchByCategory(
@@ -87,19 +87,19 @@ export const getStaticProps: GetStaticProps = async () => {
     }
   });
 
-  const productGridDataAll = buildSubCategoryGrids(
+  const productGridDataAll = separateProductsIntoSubCategories(
     products,
     [
       {
         titles: ["Black Tea Bags"],
-        match: teaBagRegex,
+        regexMatch: teaBagRegex,
         matchField: "both",
         titleAsSearchLink: false,
         maxProductsToShow: 15,
       },
       {
         titles: ["Black Loose Tea"],
-        match: /(loose|leaf tea)/i,
+        regexMatch: /(loose|leaf tea)/i,
         matchField: "both",
         titleAsSearchLink: false,
         maxProductsToShow: 10,
@@ -109,7 +109,6 @@ export const getStaticProps: GetStaticProps = async () => {
       useLeftoverProducts: true,
       leftoverProductsTitle: "Other Black Tea",
       leftoverMaxProductsToShow: 10,
-      sort: true,
     },
   );
 

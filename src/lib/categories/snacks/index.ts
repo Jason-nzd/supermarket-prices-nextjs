@@ -1,0 +1,9 @@
+export { chocolate } from "./chocolate";
+export { boxedChocolate } from "./boxed-chocolate";
+export { chips } from "./chips";
+export { crackers } from "./crackers";
+export { biscuits } from "./biscuits";
+export { muesliBars } from "./muesli-bars";
+export { nutsBulkMix } from "./nuts-bulk-mix";
+export { sweetsLollies } from "./sweets-lollies";
+export { otherSnacks } from "./other-snacks";

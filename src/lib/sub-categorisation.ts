@@ -1,109 +1,129 @@
-import { Product, ProductGridData } from "@/typings";
+import { Product, ProductGridData, SubCategory } from "@/typings";
 import { printProductCountSubTitle, sortProductsByUnitPrice } from "./utils";
 
-export interface SubCategoryRule {
-  titles: string[];
-  match: string | RegExp | ((product: Product) => boolean);
-  matchField?: "name" | "size" | "both";
-  titleAsSearchLink?: boolean;
-  createDeepLink?: string;
-  trimColumns?: boolean;
-  maxProductsToShow?: number;
-}
+/**
+ * SUB-CATEGORISATION MODULE
+ * =========================
+ *
+ * Data Flow:
+ * 1. [category].tsx fetches products from DB
+ * 2. [category].tsx reads category definition from /lib/categories/[group]/[category].ts
+ * 3. [category].tsx passes SubCategory[] directly to buildSubCategoryGrids()
+ * 4. buildSubCategoryGrids() sorts products into buckets based on regex matches
+ * 5. Returns array of ProductGridData for ProductsGrid components
+ *
+ * Example:
+ * - Category: "fruit"
+ * - Subcategories: ["Apples", "Bananas", "Oranges", "Other Fruit"]
+ * - Each product is tested against regex patterns in order
+ * - First match wins (product goes into that bucket)
+ * - Unmatched products go into "Other" bucket (if enabled)
+ */
 
+/**
+ * Options for handling products that don't match any rule
+ */
 export interface CategorizeOptions {
+  /** Include unmatched products in an "Other" bucket */
   useLeftoverProducts?: boolean;
+
+  /** Title for the "Other" bucket (e.g., "Other Fruit") */
   leftoverProductsTitle?: string;
+
+  /** Max products to show in the "Other" bucket */
   leftoverMaxProductsToShow?: number;
-  sort?: boolean;
-  maxProductsToShow?: number;
 }
 
 /**
- * Categorizes a list of products into multiple bucketed grids based on rules.
- * Supports mutual exclusion (first match wins).
+ * Sorts products into subcategory grids based on regex matching rules
+ *
+ * @param products - Array of products from DB
+ * @param subcategories - Subcategory definitions from /lib/categories/[group]/[category].ts
+ * @param options - Options for leftover products
+ * @returns Array of ProductGridData, one per subcategory
  */
-export function buildSubCategoryGrids(
+export function separateProductsIntoSubCategories(
   products: Product[],
-  rules: SubCategoryRule[],
+  subcategories: SubCategory[],
   options: CategorizeOptions = {}
- ): ProductGridData[] {
+): ProductGridData[] {
   const {
     useLeftoverProducts = false,
     leftoverProductsTitle = "Other",
     leftoverMaxProductsToShow = 10,
-    sort = true,
-    maxProductsToShow = 15,
   } = options;
 
-  const results: { rule: SubCategoryRule; products: Product[]; dbCount: number }[] =
-    rules.map((rule) => ({
-      rule,
-      products: [],
-      dbCount: 0,
-    }));
+  // STEP 1: Create a bucket for each subcategory
+  // Each bucket holds products that match that subcategory
+  const buckets = subcategories.map((sub) => ({
+    sub,
+    products: [] as Product[],
+    dbCount: 0, // Total count from DB (before limiting)
+  }));
 
   const leftoverProducts: Product[] = [];
   let leftoverDbCount = 0;
 
+  // STEP 2: Sort each product into the first matching bucket
   products.forEach((product) => {
     const name = product.name.toLowerCase();
     const size = (product.size || "").toLowerCase();
 
     let matched = false;
-    for (const res of results) {
-      const { rule } = res;
+
+    // Test product against each subcategory in order
+    for (const bucket of buckets) {
+      const { sub } = bucket;
+
+      // Test regex against the specified field(s)
       let isMatch = false;
+      const field = sub.matchField || "name";
 
-      if (typeof rule.match === "function") {
-        isMatch = rule.match(product);
-      } else {
-        const regex =
-          typeof rule.match === "string"
-            ? new RegExp(rule.match, "i")
-            : rule.match;
-        const field = rule.matchField || "name";
-
-        if (field === "name") isMatch = !!name.match(regex);
-        else if (field === "size") isMatch = !!size.match(regex);
-        else if (field === "both")
-          isMatch = !!name.match(regex) || !!size.match(regex);
+      if (field === "name") {
+        isMatch = sub.regexMatch.test(name);
+      } else if (field === "size") {
+        isMatch = sub.regexMatch.test(size);
+      } else if (field === "both") {
+        isMatch = sub.regexMatch.test(name) || sub.regexMatch.test(size);
       }
 
       if (isMatch) {
-         res.dbCount++;
-        res.products.push(product);
+        bucket.dbCount++;
+        bucket.products.push(product);
         matched = true;
-        break;
+        break; // First match wins - stop testing
       }
     }
 
+    // If no match and we want leftovers, add to leftover bucket
     if (!matched && useLeftoverProducts) {
       leftoverDbCount++;
       leftoverProducts.push(product);
     }
   });
 
-  const productGrids: ProductGridData[] = results.map((res) => {
-    let gridProducts = res.products;
-    if (sort) gridProducts = sortProductsByUnitPrice(gridProducts);
+  // STEP 3: Convert buckets to ProductGridData
+  const productGrids: ProductGridData[] = buckets.map((bucket) => {
+    // Sort products by unit price (cheapest first)
+    const gridProducts = sortProductsByUnitPrice(bucket.products);
 
-    const limit = res.rule.maxProductsToShow || maxProductsToShow;
+    // Limit to max products to show
+    const limit = bucket.sub.maxProductsToShow || 15;
     const finalProducts = gridProducts.slice(0, limit);
 
     return {
-      titles: res.rule.titles,
-      subTitle: printProductCountSubTitle(finalProducts.length, res.dbCount),
+      titles: bucket.sub.titles,
+      subTitle: printProductCountSubTitle(finalProducts.length, bucket.dbCount),
       products: finalProducts,
-      titleAsSearchLink: res.rule.titleAsSearchLink ?? true,
-      createDeepLink: res.rule.createDeepLink || "",
-      trimColumns: res.rule.trimColumns ?? false,
+      titleAsSearchLink: bucket.sub.titleAsSearchLink ?? true,
+      createDeepLink: bucket.sub.createDeepLink || "",
+      trimColumns: bucket.sub.trimColumns ?? false,
     };
   });
 
+  // STEP 4: Add leftover "Other" bucket if enabled
   if (useLeftoverProducts && leftoverProducts.length > 0) {
-    let gridProducts = leftoverProducts;
-    if (sort) gridProducts = sortProductsByUnitPrice(gridProducts);
+    const gridProducts = sortProductsByUnitPrice(leftoverProducts);
     const finalProducts = gridProducts.slice(0, leftoverMaxProductsToShow);
 
     productGrids.push({

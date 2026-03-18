@@ -2,19 +2,14 @@ import { GetStaticProps } from "next";
 import React, { useContext } from "react";
 import { Product, ProductGridData } from "@/typings";
 import ProductsGrid from "@/components/features/products/ProductGrid";
-import {
-  DBFetchByCategory,
-  DBGetMostRecentDate,
-} from "@/lib/db/cosmos";
+import { DBFetchByCategory, DBGetMostRecentDate } from "@/lib/db/cosmos";
 import {
   LastChecked,
   OrderByMode,
   PriceHistoryLimit,
   Store,
 } from "@/lib/enums";
-import {
-  printProductCountSubTitle,
-} from "@/lib/utils";
+import { printProductCountSubTitle } from "@/lib/utils";
 import StandardPageLayout from "@/components/layout/StandardPageLayout";
 
 interface Props {
@@ -39,7 +34,7 @@ const Category = ({ productGridDataAll, lastChecked }: Props) => {
   );
 };
 
-import { buildSubCategoryGrids } from "@/lib/sub-categorisation";
+import { separateProductsIntoSubCategories } from "@/lib/sub-categorisation";
 
 export const getStaticProps: GetStaticProps = async () => {
   const products = await DBFetchByCategory(
@@ -48,7 +43,7 @@ export const getStaticProps: GetStaticProps = async () => {
     Store.Any,
     PriceHistoryLimit.Any,
     OrderByMode.None,
-    LastChecked.Within7Days
+    LastChecked.Within7Days,
   );
 
   // Try derive per unit price of each product
@@ -90,18 +85,18 @@ export const getStaticProps: GetStaticProps = async () => {
     }
   });
 
-  const productGridDataAll = buildSubCategoryGrids(
+  const productGridDataAll = separateProductsIntoSubCategories(
     products,
     [
       {
         titles: ["Size 7 Eggs"],
-        match: /size 7/i,
+        regexMatch: /size 7/i,
         titleAsSearchLink: false,
         maxProductsToShow: 15,
       },
       {
         titles: ["Size 8+ and Jumbo Eggs"],
-        match: /size 8|size 9|size 10|jumbo/i,
+        regexMatch: /size 8|size 9|size 10|jumbo/i,
         titleAsSearchLink: false,
         maxProductsToShow: 15,
       },
@@ -110,8 +105,7 @@ export const getStaticProps: GetStaticProps = async () => {
       useLeftoverProducts: true,
       leftoverProductsTitle: "Size 5, 6 and Mixed Range Eggs",
       leftoverMaxProductsToShow: 15,
-      sort: true, // will use unitPriceNum we just set
-    }
+    },
   );
 
   const lastChecked = await DBGetMostRecentDate();

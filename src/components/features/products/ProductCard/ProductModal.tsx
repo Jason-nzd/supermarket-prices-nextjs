@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { DatedPrice, Product } from "@/typings";
+import { Product } from "@/typings";
 import {
   daysElapsedSinceDateFormatted,
   getStoreEnum,
@@ -12,6 +12,8 @@ import PriceTag from "@/components/features/products/ProductCard/PriceTag";
 import { DarkModeContext } from "@/pages/_app";
 import dynamic from "next/dynamic";
 import CardFooter from "@/components/features/products/ProductCard/CardFooter";
+import Link from "next/link";
+import { getCategoryTitle } from "@/lib/categories/index";
 
 interface Props {
   product: Product;
@@ -19,10 +21,13 @@ interface Props {
 }
 
 // Lazy/Dynamic load in heavy chart.js from PriceHistoryChart
-const DynamicChart = dynamic(() => import("@/components/features/charts/PriceChart"), {
-  loading: () => <p>Loading...</p>,
-  ssr: false,
-});
+const DynamicChart = dynamic(
+  () => import("@/components/features/charts/PriceChart"),
+  {
+    loading: () => <p>Loading...</p>,
+    ssr: false,
+  },
+);
 interface ChartProps {
   product: Product;
   useLargeVersion: boolean;
@@ -169,6 +174,14 @@ function ProductModal({ product, setIsModalOpen }: Props) {
                 </div>
               </div>
             </div>
+
+            {/* Category Link */}
+            <Link
+              className="hidden md:flex flex-col glass-capsule mt-4"
+              href={"/products/" + product.category}
+            >
+              <div>{getCategoryTitle(product.category)}</div>
+            </Link>
 
             {/* Various advanced stats are hidden on mobile to save screen space */}
             <div className="hidden md:flex flex-col glass-capsule mt-4">

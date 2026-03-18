@@ -6,7 +6,7 @@ export interface Product {
   sourceSite: string;         // countdown.co.nz, paknsave.co.nz, etc.
   category: string;           // a single category that best fits the product
   lastChecked: string;        // "yyyy-mm-dd" for when the product info was last checked
-  unitPrice: any;             // string such as 400/kg
+  unitPrice: string;          // string such as 400/kg
   unitPriceNum?: number;      // optional number for sorting by unit price
 }
 
@@ -32,3 +32,30 @@ export interface User {
   loggedIn: boolean;
   isAdmin: boolean;
 }
+
+export interface CategoryDefinition {
+  title: string;
+  icon?: string;
+  subcategories?: SubCategory[];
+  otherSubcategory?: OtherSubcategory;
+}
+
+export interface SubCategory {
+  titles: string[];
+  regexMatch: RegExp;
+  maxProductsToShow?: number;
+  titleAsSearchLink?: boolean;
+  createDeepLink?: string;
+  matchField?: "name" | "size" | "both";
+  trimColumns?: boolean;
+}
+
+export function createSubCategory(sub: SubCategory): SubCategory;
+
+export interface OtherSubcategory {
+  useOtherSubcategory: boolean;
+  otherTitle: string;
+  otherMaxProductsToShow: number;
+}
+
+export type CategoryDefinitions = Record<string, CategoryDefinition>;

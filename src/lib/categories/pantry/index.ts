@@ -1,0 +1,15 @@
+export { rice } from "./rice";
+export { noodles } from "./noodles";
+export { pasta } from "./pasta";
+export { beansSpaghetti } from "./beans-spaghetti";
+export { cannedFish } from "./canned-fish";
+export { cannedFruit } from "./canned-fruit";
+export { cannedMeat } from "./canned-meat";
+export { soup } from "./soup";
+export { cereal } from "./cereal";
+export { spreads } from "./spreads";
+export { baking } from "./baking";
+export { sauces } from "./sauces";
+export { oilsVinegars } from "./oils-vinegars";
+export { worldFoods } from "./world-foods";
+export { herbsSpices } from "./herbs-spices";

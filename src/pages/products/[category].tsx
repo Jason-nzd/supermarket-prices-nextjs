@@ -13,29 +13,58 @@ import {
   Store,
 } from "@/lib/enums";
 import StandardPageLayout from "@/components/layout/StandardPageLayout";
-import startCase from "lodash/startCase";
+import { allCategoryNames } from "@/lib/categories";
+import { separateProductsIntoSubCategories } from "@/lib/sub-categorisation";
+import { categoryDefinitions, getCategoryTitle } from "@/lib/categories/index";
 
 interface Props {
-  productGridData: ProductGridData;
+  subCategoryProductGrids?: ProductGridData[];
+  productGridData?: ProductGridData;
   lastChecked: string;
 }
 
-const Category = ({ productGridData, lastChecked }: Props) => {
+// Default products per page for pages without sub categories
+const numProductsPerPage = 20;
+
+const Category = ({
+  subCategoryProductGrids,
+  productGridData,
+  lastChecked,
+}: Props) => {
+  // Use subcategory grids if available
+  if (subCategoryProductGrids) {
+    return (
+      <StandardPageLayout lastUpdatedDate={lastChecked}>
+        {/* Map through each sub category and create it's own ProductsGrid */}
+        {subCategoryProductGrids.map((grid, index) => (
+          <ProductsGrid
+            key={index}
+            titles={grid.titles}
+            subTitle={grid.subTitle}
+            products={grid.products}
+            trimColumns={grid.trimColumns}
+            titleAsSearchLink={grid.titleAsSearchLink}
+            createDeepLink={grid.createDeepLink}
+          />
+        ))}
+      </StandardPageLayout>
+    );
+  }
+
+  // Fallback to single grid
   return (
     <StandardPageLayout lastUpdatedDate={lastChecked}>
       <div className="min-h-200">
         <ProductsGrid
-          titles={productGridData.titles}
-          subTitle={productGridData.subTitle}
-          products={productGridData.products}
-          titleAsSearchLink={productGridData.titleAsSearchLink}
+          titles={productGridData!.titles}
+          subTitle={productGridData!.subTitle}
+          products={productGridData!.products}
+          titleAsSearchLink={productGridData!.titleAsSearchLink}
         />
       </div>
     </StandardPageLayout>
   );
 };
-
-import { allCategoryNames, titledCategories } from "@/lib/categories";
 
 // Combine all category groups into one big array.
 // Each category will be built into fully static export pages
@@ -43,19 +72,7 @@ let categoriesToGenerate = allCategoryNames;
 
 // Remove special sub-categories which have custom made pages instead of generated pages
 categoriesToGenerate = categoriesToGenerate.filter((name) => {
-  return ![
-    "eggs",
-    "fruit",
-    "milk",
-    "fresh-vegetables",
-    "spreads",
-    "soft-drinks",
-    "black-tea",
-    "butter",
-    "green-tea",
-    "coffee",
-    "drinking-chocolate",
-  ].includes(name);
+  return !["eggs", "black-tea", "green-tea"].includes(name);
 });
 
 // getAllStaticPaths()
@@ -71,7 +88,7 @@ export function getAllStaticPaths() {
   });
 }
 
-// Build static pages for all paths such /products/cheese
+// Build static pages for all paths such as /products/cheese
 export const getStaticPaths: GetStaticPaths = async () => {
   return {
     paths: getAllStaticPaths(),
@@ -98,14 +115,50 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   // Store total product size
   const foundItemsCount = products.length;
 
-  // Trim array size for first page
-  const numProductsPerPage = 30;
+  // Get display title for main category
+  const categoryTitle = getCategoryTitle(category);
+
+  // Check if we have subcategory definitions for this category
+  const CategoryDefinition = categoryDefinitions[category];
+
+  if (CategoryDefinition?.subcategories) {
+    const subCategoryProductGrids = separateProductsIntoSubCategories(
+      products,
+      CategoryDefinition.subcategories,
+      // Use other (leftover products) if defined
+      CategoryDefinition.otherSubcategory
+        ? {
+            useLeftoverProducts:
+              CategoryDefinition.otherSubcategory.useOtherSubcategory,
+            leftoverProductsTitle:
+              CategoryDefinition.otherSubcategory.otherTitle,
+            leftoverMaxProductsToShow:
+              CategoryDefinition.otherSubcategory.otherMaxProductsToShow,
+          }
+        : {},
+    );
+
+    // Mark "Other" grids to trim columns and disable titleAsSearchLink
+    const otherGrid = subCategoryProductGrids.find(
+      (g) => g.titles[0] === CategoryDefinition.otherSubcategory?.otherTitle,
+    );
+    if (otherGrid) {
+      otherGrid.trimColumns = true;
+      otherGrid.titleAsSearchLink = false;
+    }
+
+    const lastChecked = await DBGetMostRecentDate();
+
+    return {
+      props: {
+        subCategoryProductGrids,
+        lastChecked,
+      },
+    };
+  }
+
+  // Build ProductGridData object for categories without subcategory definitions
   products = products.slice(0, numProductsPerPage);
-
-  // Get nice title for category
-  const categoryTitle = titledCategories[category] || startCase(category);
-
-  // Build ProductGridData object
   const productGridData: ProductGridData = {
     titles: [categoryTitle],
     subTitle: printProductCountSubTitle(products.length, foundItemsCount),

@@ -1,0 +1,10 @@
+export { iceCream } from "./ice-cream";
+export { iceBlocks } from "./ice-blocks";
+export { pastriesCheesecake } from "./pastries-cheesecake";
+export { frozenChips } from "./frozen-chips";
+export { frozenVegetables } from "./frozen-vegetables";
+export { frozenFruit } from "./frozen-fruit";
+export { frozenSeafood } from "./frozen-seafood";
+export { piesSausageRolls } from "./pies-sausage-rolls";
+export { pizza } from "./pizza";
+export { otherSavouries } from "./other-savouries";

@@ -1,0 +1,11 @@
+export { beefLamb } from "./beef-lamb";
+export { chicken } from "./chicken";
+export { ham } from "./ham";
+export { bacon } from "./bacon";
+export { pork } from "./pork";
+export { pattiesMeatballs } from "./patties-meatballs";
+export { sausages } from "./sausages";
+export { deliMeats } from "./deli-meats";
+export { meatAlternatives } from "./meat-alternatives";
+export { seafood } from "./seafood";
+export { salmon } from "./salmon";
