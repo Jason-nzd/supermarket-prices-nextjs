@@ -1,93 +1,88 @@
 # NZ Supermarket Price History Website
-This is a website that pulls data from multiple supermarkets and displays each product with current and historical pricing. 
 
-Built with `React` and `Next.js` using fully static html export.
+> Track and compare prices across multiple New Zealand supermarkets with current and historical pricing charts.
 
-Running Example: <https://kiwiprice.xyz>
+Built with **React** & **Next.js** using static HTML export for easy static hosting.
 
-![alt text](https://github.com/Jason-nzd/supermarket-prices-nextjs/blob/main/public/images/screenshot.png?raw=true "Screenshot of KiwiPrice.xyz")
+🌐 **Live Demo:** <https://kiwiprice.xyz>
 
-## Quick Setup
-With `Node.js` is installed, clone this repo, and then run `pnpm install` or `npm install` to install dependencies.
+![Screenshot](https://github.com/Jason-nzd/supermarket-prices-nextjs/blob/main/public/images/screenshot.webp?raw=true "KiwiPrice.xyz Screenshot")
 
-The website comes with some sample data built-in and can be launched as-is with `npm run dev`.
+## 🛠️ Tech Stack
+- 🗄️ **Database** • Azure CosmosDB
+- 📊 **Charts** • Chart.js
+- 🎨 **Styling** • Tailwind CSS
+- ✅ **Testing** • Vitest (Unit) + Cypress (E2E)
+- 🚢 **CI/CD** • Github Actions - Deployment to AWS
 
-## Tech Stack
-- Data is stored on `Azure CosmosDB`.
-- Price history line charts powered by `Chart.js`.
-- Styling is handled with `Tailwindcss`.
-- Client-side search is powered by a custom API running on Azure.
-- Unit tests powered by `Vitest` and E2E tests powered by `Cypress`.
-- Full CI/CD pipeline available with testing and deployment to `AWS S3` and `CloudFront`.
+## 🚀 Quick Setup
+```bash
+# Clone and install dependencies
+git clone https://github.com/Jason-nzd/supermarket-prices-nextjs
+cd supermarket-prices-nextjs
+pnpm install  # or npm install
 
-## Usage
-- `npm run dev` - for testing as a dynamic website
-- `npm run build` - to build a fully static site into the `/out` directory
-- `npm run start` - to host the built static site from `/out`
-- `npm test` - to run vitest unit tests.
-- `npx cypress run` - run cypress E2E headless testing
-
-## File Folder Structure
+# Launch development server
+npm run dev
 ```
-.github/workflows/          # CI/CD pipeline
+> 💡 Comes with built in sample products for testing without CosmosDB.
+
+## 📦 Available Commands
+`npm run dev` - Development server (dynamic mode)  
+`npm run build` - Build static site to `/out`  
+`npm run start` - Host static site from `/out`  
+`npm test` - Run Vitest unit tests  
+`npx cypress run` - Run Cypress E2E tests (headless)
+
+### 📁 Project Structure
+```
+.github/workflows/          # CI/CD pipeline definitions
 cypress/                    # E2E test specifications
-public/                     # Images
+public/                     # Static assets & images
 src/
 ├── components/             # Reusable UI components (ProductCard, etc.)
 ├── hooks/
-│   └── useMediaQuery.tsx   # Custom hook for responsive windows
+│   └── useMediaQuery.tsx   # Responsive design hook
 ├── lib/
-│   ├── categories/         # Product category and sub-category definitions
-│   ├── db/                 # CosmosDB connection and queries 
+│   ├── categories/         # Product category definitions
+│   ├── db/                 # CosmosDB connection & queries
 │   ├── utils.ts            # Utility functions
-│   ├── utils.test.ts       # Vitest unit tests
+│   ├── utils.test.ts       # Unit tests
 │   └── demo-products.ts    # Sample product data
 ├── pages/
 │   ├── index.tsx           # Home page
 │   ├── products/
-│   │   └── [category].tsx  # Generates pages based on definitions in /lib/categories/
-│   ├── client-search.tsx   # Client-side search page
+│   │   └── [category].tsx  # Dynamic category pages
+│   ├── client-search.tsx   # Client-side search
 │   ├── services/
-│   │   └── api.ts          # API integration for client-side search
+│   │   └── api.ts          # Search API integration
 │   └── styles/
-│       └── globals.css     # Tailwind CSS configuration
+│       └── globals.css     # Tailwind CSS config
 ```
 
-## Database Mode Setup with .env
-For use with Azure CosmosDB, a read-only or read-write connection string must be set as an environment variable `COSMOS_CONSTRING`. Database and container names are also set here.
-
-Create a `.env` file with the following variables set:
-
-```shell
+### ⚙️ Database Configuration
+Create a `.env` file in the root directory with:
+```env
 COSMOS_CONSTRING=<your-cosmosdb-connection-string>
 COSMOS_DBNAME=<your-database-name>
 COSMOS_CONTAINER=<your-container-name>
 ```
+> It will now pull data from the DB instead of sample products.
 
-Example database document that is expected:
-
-```shell
-  {
-    "id": "1234567",
-    "name": "Valley Milk Standard A2",
-    "category": "milk",
-    "size": "Bottle 2L",
-    "sourceSite": "supermarket.co.nz",
-    "lastChecked": "2024-09-14",
-    "priceHistory": [
-      {
-        "date": "2023-03-03",
-        "price": 5.5
-      },
-      {
-        "date": "2023-06-02",
-        "price": 6
-      },
-      {
-        "date": "2024-01-23",
-        "price": 6.5
-      },
-    ],
-    "unitPrice": "3.28/L",
-  },
+### 📄 Sample Document Schema
+```json
+{
+  "id": "1234567",
+  "name": "Valley Milk Standard A2",
+  "category": "milk",
+  "size": "Bottle 2L",
+  "sourceSite": "supermarket.co.nz",
+  "lastChecked": "2024-09-14",
+  "priceHistory": [
+    { "date": "2023-03-03", "price": 5.5 },
+    { "date": "2023-06-02", "price": 6 },
+    { "date": "2024-01-23", "price": 6.5 }
+  ],
+  "unitPrice": "3.28/L"
+}
 ```
