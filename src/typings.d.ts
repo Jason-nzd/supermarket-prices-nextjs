@@ -1,13 +1,12 @@
 export interface Product {
   id: string;                 // id - should be unique
   name: string;               // product name
-  priceHistory: DatedPrice[]; // array of prices + dates 
-  size?: string;              // size - is not always available
+  priceHistory: DatedPrice[]; // array of prices + dates
+  size: string;               // size - empty string if not available
   sourceSite: string;         // countdown.co.nz, paknsave.co.nz, etc.
   category: string;           // a single category that best fits the product
   lastChecked: string;        // "yyyy-mm-dd" for when the product info was last checked
-  unitPrice?: string;         // string such as 400/kg
-  unitPriceNum?: number;      // optional number for sorting by unit price
+  unitPrice: string;          // string such as 400/kg (empty string if not available)
 }
 
 export interface ProductGridData {

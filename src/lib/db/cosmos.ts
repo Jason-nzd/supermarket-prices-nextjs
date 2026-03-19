@@ -9,7 +9,7 @@ import {
 } from '@azure/cosmos';
 import { Product } from "@/typings";
 import {
-  cleanProductFields,
+  dbDocumentToProduct,
   sortProductsByUnitPrice,
 } from "@/lib/utils";
 import { LastChecked, OrderByMode, PriceHistoryLimit, Store } from "@/lib/enums";
@@ -60,11 +60,11 @@ export async function connectToCosmosDB(): Promise<boolean> {
 }
 
 // Takes an SDK querySpec and performs the actual CosmosDB lookup
-async function fetchProductsUsingSDK(
+async function fetchProductsUsingSDK<T = any>(
   querySpec: SqlQuerySpec,
   maxItems: number
-): Promise<Product[]> {
-  const resultingProducts: Product[] = [];
+): Promise<T[]> {
+  const resultingProducts: T[] = [];
 
   // Log query to console
   // console.log('\nSDK: ' + querySpec.query);
@@ -78,18 +78,17 @@ async function fetchProductsUsingSDK(
       };
 
       // Perform DB Fetch
-      const dbResponse: FeedResponse<Product> = await container.items
+      const dbResponse: FeedResponse<any> = await container.items
         .query(querySpec, options)
         .fetchNext();
 
       if (dbResponse.resources !== undefined) {
 
-        // Push products into array and clean specific fields from CosmosDB
-        dbResponse.resources.map((productDocument) => {
-
-          resultingProducts.push(cleanProductFields(productDocument));
-          // console.log(`!!! sdk: ${productDocument.name} - ${productDocument.unitPrice}`)
-          // productDocument.priceHistory.map((pd) => {
+        // Push products into array and transform from CosmosDB document format
+        dbResponse.resources.map((document) => {
+          resultingProducts.push(dbDocumentToProduct(document) as unknown as T);
+          // console.log(`!!! sdk: ${document.name} - ${document.unitPrice}`)
+          // document.priceHistory.map((pd) => {
           //   console.log(pd.date + " - " + pd.price)
           // })
         });
@@ -97,7 +96,7 @@ async function fetchProductsUsingSDK(
     } catch (error) {
       console.log('Error on fetchProductsUsingSDK()\n' + error);
     }
-  } else return demoProducts;
+  } else return demoProducts as unknown as T[];
 
   return resultingProducts;
 }

@@ -3,6 +3,31 @@ import { Store } from "./enums";
 
 export * from "./enums";
 
+// Flexible schema interface for handling both old and new CosmosDB document formats
+export interface ProductDocument {
+  id: string;
+  name: string;
+  sourceSite?: string;
+  category?: string | string[];
+  size?: string;
+  lastChecked?: string | Date;
+  lastUpdated?: string;
+  unitPrice?: string | number;
+  unitName?: string;
+  currentPrice?: number;
+  priceHistory: PriceHistoryItem[];
+  // Allow additional CosmosDB internal fields (_rid, _self, _etag, _ts, etc.)
+  [key: string]: unknown;
+}
+
+// Price history item with flexible field names for old and new schemas
+export interface PriceHistoryItem {
+  date?: string | Date;
+  Date?: string | Date;
+  price?: number;
+  Price?: number;
+}
+
 export function getStoreEnum(product: Product): Store {
   if (product.sourceSite.includes("countdown") || product.sourceSite.includes("woolworths"))
     return Store.Countdown
@@ -12,49 +37,53 @@ export function getStoreEnum(product: Product): Store {
   else return Store.Any;
 }
 
-// cleanProductFields
+// dbDocumentToProduct
 // -------------------
-// Validates data and cleans undesired fields that CosmosDB creates
-export function cleanProductFields(document: Product): Product {
-  const {
-    id,
-    name,
-    sourceSite,
-    priceHistory,
-    category,
-    lastChecked,
-  } = document;
+// Transforms a CosmosDB document into a Product, handling flexible schemas
+// Always derives unitPrice from priceHistory and size to ensure accuracy
+export function dbDocumentToProduct(document: ProductDocument): Product {
+  // Always use id and name as-is
+  const { id, name } = document;
 
-  let {
-    size,
-    unitPrice,
-    unitPriceNum,
-  } = document;
+  console.log(document);
 
-  try {
-    if (id.length < 1) console.log(`Bad Product ID for ${id} - ${name}`)
-    if (name.length < 2) console.log(`Bad name for ${id} - ${name}`)
-    if (!category) console.log(`Missing category for ${id} - ${name}`)
+  // Handle category - if array, take first item
+  const category: string = Array.isArray(document.category) ? document.category[0] : (document.category ?? '');
 
-    if (size == undefined) size = "";
+  // Handle size
+  const size = document.size ?? '';
 
-    // lastChecked should be a date string in the format yyyy-mm-dd
-    if (lastChecked.length != 10) console.log(`${id}\t - ${name}\t - Improper lastChecked: ${lastChecked}`)
+  // Handle priceHistory - normalize date formats to yyyy-mm-dd
+  const priceHistory: DatedPrice[] = document.priceHistory.map((ph: PriceHistoryItem) => {
+    let date = ph.date || ph.Date || '';
+    const price = ph.price ?? ph.Price ?? 0;
 
-    // TODO: move unit price handling to server side only
-    // ensure unitPrice is limited 2 numbers max
-    if (unitPrice && unitPrice.length > 2) {
-      const unitNum = unitPrice.split("/")[0];
-      let unitName = unitPrice.split("/")[1]
-      unitName = unitName.replace("1ea", "ea")
-      unitPrice = parseFloat(unitNum).toFixed(2) + "/" + unitName;
-      unitPriceNum = parseFloat(unitNum)
+    // Convert date to yyyy-mm-dd if needed
+    if (date instanceof Date) {
+      date = date.toISOString().split('T')[0];
+    } else if (typeof date === 'string' && date.length > 10) {
+      date = new Date(date).toISOString().split('T')[0];
     }
-    // try derive a unit price string if missing
-    if (!unitPrice || unitPrice === "") unitPrice = deriveUnitPriceString(document);
-    if (unitPriceNum === undefined) unitPriceNum = 9999
-  } catch (error) {
-    console.log(`Error on cleanProductFields() for ${name}\n` + error);
+
+    return { date, price };
+  });
+
+  // Handle lastChecked - convert to yyyy-mm-dd string format
+  let lastChecked = document.lastChecked || '';
+  if (lastChecked instanceof Date) {
+    lastChecked = lastChecked.toISOString().split('T')[0];
+  } else if (typeof lastChecked === 'string' && lastChecked.length > 10) {
+    // Convert ISO string or other format to yyyy-mm-dd
+    lastChecked = new Date(lastChecked).toISOString().split('T')[0];
+  }
+
+  // Handle unitPrice - always derive from name, size, and the current price
+  const unitPrice = deriveUnitPriceString(name, size, priceHistory[priceHistory.length - 1].price);
+
+  // Handle flexible sourceSite
+  let sourceSite = document.sourceSite || '';
+  if (/countdown|woolworths/i.test(sourceSite)) {
+    sourceSite = 'countdown.co.nz';
   }
 
   const cleanedProduct: Product = {
@@ -62,55 +91,49 @@ export function cleanProductFields(document: Product): Product {
     name,
     size,
     sourceSite,
-    priceHistory: priceHistory?.map((ph: any) => ({
-      date: ph.date || ph.Date,
-      price: ph.price !== undefined ? ph.price : ph.Price
-    })) || [],
+    priceHistory,
     category,
     lastChecked,
-    unitPrice,
-    unitPriceNum
+    unitPrice
   };
+
   return cleanedProduct;
 }
 
 // deriveUnitPriceString
 // ---------------------
-// Try to derive a unit price string such as 500/kg from the product name/size
+// Try to derive a unit price string such as 500/kg from the product name/size/price
 // Return an empty string if unable to derive one
-export function deriveUnitPriceString(product: Product): string {
+export function deriveUnitPriceString(name: string, size: string, price: number): string {
+
   let quantity: number = 0;
   let unit: string = "";
-  let deriveUnitPriceFromName = false;
 
-  // Try regex match any standard units found in size
-  let matchedUnit = product.size
+  // Try regex match any digits combined with standard units found in size
+  let matchedUnit = size
     ?.toLowerCase()
     .match(/\d+(\.\d+)?\s?(g|kg|l|ml)\b/g)
     ?.join('');
 
   if (!matchedUnit) {
     // If none found try match in name
-    matchedUnit = product.name
+    matchedUnit = name
       ?.toLowerCase()
       .match(/\d+(\.\d+)?\s?(g|kg|l|ml)\b/g)
       ?.join('');
-    deriveUnitPriceFromName = true;
   }
 
   if (matchedUnit) {
-    const nameOrSize = deriveUnitPriceFromName ? product.name : product.size || "";
-
     // Regex any digits or decimals
-    const unitNumbers = nameOrSize.match(/\d|\./g)?.join('')
+    const unitDigits = matchedUnit.match(/\d|\./g)?.join('')
     // Then parse to quantity
-    if (unitNumbers) quantity = parseFloat(unitNumbers);
+    if (unitDigits) quantity = parseFloat(unitDigits);
 
     // Regex any words
     unit = matchedUnit.match(/(g|kg|l|ml)\b/g)?.join('') || "";
 
     // Handle edge case where size contains a 'multiplier x sub-unit' - eg. 4 x 107mL
-    const matchMultipliedSizeString = product.size?.match(/\d+\sx\s\d+mL$/g)?.join('');
+    const matchMultipliedSizeString = size?.match(/\d+\sx\s\d+mL$/g)?.join('');
     if (matchMultipliedSizeString) {
       const splitMultipliedSize = matchMultipliedSizeString.split('x');
       const multiplier = parseInt(splitMultipliedSize[0].trim());
@@ -121,7 +144,7 @@ export function deriveUnitPriceString(product: Product): string {
     }
 
     // If size is simply 'kg', process it as 1kg
-    if (product.size === 'kg' || product.size?.includes('per kg')) {
+    if (size === 'kg' || size?.includes('per kg')) {
       quantity = 1;
       unit = 'kg';
     }
@@ -141,15 +164,26 @@ export function deriveUnitPriceString(product: Product): string {
     // Capitalize L for Litres
     unit = unit.replace("l", "L");
 
-    // Parse to int and check is within valid range
+    // Check is within valid range
     if (quantity > 0 && quantity < 9999) {
-      // Set per unit price
-      const currentPrice = product.priceHistory[product.priceHistory.length - 1].price;
-      const dividedUnitPrice = parseFloat((currentPrice / quantity).toPrecision(2));
-      return dividedUnitPrice + '/' + unit;
+
+      // Divide total price by unit quantity
+      const decimalPrice = parseFloat((price / quantity).toPrecision(2));
+      const wholeNumberPrice = parseFloat((price / quantity).toFixed(0));
+
+      // Return as whole number if possible or with 2 decimals.
+      if (decimalPrice == wholeNumberPrice)
+        return wholeNumberPrice + '/' + unit;
+      else
+        return decimalPrice + "/" + unit;
     }
+  } else {
+    // Try find "per each", "per kg" type of sizes or names
+    const nameAndsize = name + " " + size;
+    if (nameAndsize.includes("per kg")) return price + "/kg"
   }
   // Return empty if unable to derive
+  // console.log("Unable to derive unitPrice: " + name + " - " + size)
   return "";
 }
 
@@ -269,16 +303,21 @@ export function productIsCurrent(product: Product, withinDays: number = 5): bool
 
 // sortProductsByUnitPrice()
 // -------------------------
+// Parses unitPrice string and sorts from lowest to highest
+// Products without unitPrice are sorted to the bottom
 export function sortProductsByUnitPrice(products: Product[]): Product[] {
   return products.sort((a, b) => {
-    // If no unit price is available, sort to bottom
-    if (a.unitPriceNum === null) a.unitPriceNum = 9999;
-    if (b.unitPriceNum === null) b.unitPriceNum = 9999;
+    // Parse unit price from string (e.g., "3.3/kg" -> 3.3)
+    const getUnitPriceNum = (unitPrice: string): number => {
+      if (!unitPrice || !unitPrice.includes('/')) return 9999;
+      const num = parseFloat(unitPrice.split('/')[0]);
+      return isNaN(num) ? 9999 : num;
+    };
 
-    // Else sort from lowest to highest unit price
-    if (a.unitPriceNum! < b.unitPriceNum!) return -1;
-    if (a.unitPriceNum! > b.unitPriceNum!) return 1;
-    return 0;
+    const aUnitPrice = getUnitPriceNum(a.unitPrice);
+    const bUnitPrice = getUnitPriceNum(b.unitPrice);
+
+    return aUnitPrice - bUnitPrice;
   });
 }
 
