@@ -14,13 +14,28 @@ export const butter: CategoryDefinitions["butter"] = {
   subcategories: [
     createSubCategory({
       titles: ["Butter"],
-      regexMatch: /butter/i,
-      maxProductsToShow: 15,
+      regexMatch: /^(?!.*(spread)).*butter/i,
     }),
+    createSubCategory({
+      titles: ["Buttery Spreads"],
+      regexMatch: /butter/i,
+      maxProductsToShow: 5,
+    }),
+    createSubCategory({
+      titles: ["Olive Oil Spreads"],
+      regexMatch: /olive|olivani/i,
+      maxProductsToShow: 5,
+    }),
+    createSubCategory({
+      titles: ["Lite Spreads"],
+      regexMatch: /light|lite|reduced/i,
+      maxProductsToShow: 5,
+    }),
+
   ],
   otherSubcategory: {
     useOtherSubcategory: true,
-    otherTitle: "Spreads",
-    otherMaxProductsToShow: 15,
+    otherTitle: "Other Spreads",
+    otherMaxProductsToShow: 10,
   },
 };
