@@ -2,7 +2,7 @@ import { CategoryDefinitions, SubCategory } from "@/typings";
 
 export function createSubCategory(sub: SubCategory): SubCategory {
   return {
-    maxProductsToShow: 10,
+    maxProductsToShow: 5,
     titleAsSearchLink: true,
     ...sub,
   };
@@ -25,8 +25,12 @@ export const fruit: CategoryDefinitions["fruit"] = {
       createDeepLink: "/products/fruit/",
     }),
     createSubCategory({
-      titles: ["Oranges", "Lemons", "Limes", "Tangerines", "Mandarins"],
-      regexMatch: /^(?!.*(?:avocado|juice)).*(?:orange|mandarin|lemon|lime).*/i,
+      titles: ["Oranges", "Tangerines", "Mandarins"],
+      regexMatch: /^(?!.*(?:avocado|juice)).*(?:orange|mandarin|tangerine).*/i,
+    }),
+    createSubCategory({
+      titles: ["Lemons", "Limes"],
+      regexMatch: /^(?!.*(?:avocado|juice)).*(?:lemon|lime).*/i,
     }),
     createSubCategory({
       titles: ["Pears"],
@@ -37,8 +41,8 @@ export const fruit: CategoryDefinitions["fruit"] = {
       regexMatch: /feijoa|kiwifruit/i,
     }),
     createSubCategory({
-      titles: ["Peaches", "Plums", "Nectarines"],
-      regexMatch: /peach|nectarine|plums/i,
+      titles: ["Apricots", "Peaches", "Plums", "Nectarines"],
+      regexMatch: /apricot|peach|nectarine|plums/i,
     }),
     createSubCategory({
       titles: ["Strawberries", "Blueberries", "Raspberries"],
@@ -47,6 +51,10 @@ export const fruit: CategoryDefinitions["fruit"] = {
     createSubCategory({
       titles: ["Pineapple", "Mango", "Melon"],
       regexMatch: /pineapple|mango|melon/i,
+    }),
+    createSubCategory({
+      titles: ["Avocado"],
+      regexMatch: /avocado/i,
     }),
     createSubCategory({
       titles: ["Grapes"],
