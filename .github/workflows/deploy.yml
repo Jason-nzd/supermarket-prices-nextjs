@@ -17,7 +17,19 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 9
+          version: 10
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Run vitest tests
+        run: pnpm test
 
       - name: Create .env File
         run: |
@@ -28,10 +40,12 @@ jobs:
           echo "IMAGES_PATH=${{ secrets.IMAGES_PATH }}" >> .env
           echo "TZ=Pacific/Auckland" >> .env
 
-      - name: NPM Build and Cypress E2E Tests
+      - name: Build
+        run: pnpm run build
+
+      - name: Run Cypress E2E Tests
         uses: cypress-io/github-action@v6
         with:
-          build: pnpm run build
           start: pnpm start
 
       - name: Configure AWS Credentials

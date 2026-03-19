@@ -7,6 +7,8 @@
     "build": "next build",
     "start": "npx serve@latest out --no-request-logging",
     "lint": "eslint .",
+    "test": "vitest run",
+    "test:ui": "vitest --ui",
     "cypress": "cypress open"
   },
   "dependencies": {
@@ -29,16 +31,20 @@
   "devDependencies": {
     "@next/bundle-analyzer": "^16.0.0",
     "@tailwindcss/postcss": "^4.2.0",
+    "@types/jsdom": "^28.0.0",
     "@types/lodash": "^4.17.4",
     "@types/node": "^20.19.37",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
+    "@vitest/ui": "^4.1.0",
     "baseline-browser-mapping": "^2.9.19",
     "cypress": "^15.12.0",
     "eslint": "^9.38.0",
     "eslint-config-next": "^16.0.0",
+    "jsdom": "^29.0.0",
     "postcss": "^8.4.38",
     "tailwindcss": "^4.2.0",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "vitest": "^4.1.0"
   }
 }
