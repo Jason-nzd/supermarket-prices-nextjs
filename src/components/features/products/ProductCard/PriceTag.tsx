@@ -3,7 +3,7 @@ import { getPriceAvgDifference } from "@/lib/utils";
 
 interface Props {
   priceHistory: DatedPrice[];
-  unitPrice: string;
+  unitPrice?: string;
 }
 
 export default function PriceTag({ priceHistory, unitPrice }: Props) {
@@ -72,10 +72,14 @@ export default function PriceTag({ priceHistory, unitPrice }: Props) {
           </div>
 
           {/* Unit Price */}
-          <div className="flex text-md items-center">
-            <div className="text-xs">$</div>
-            <div className="font-semibold text-lg lg:text-md">{unitPrice}</div>
-          </div>
+          {unitPrice && (
+            <div className="flex text-md items-center">
+              <div className="text-xs">$</div>
+              <div className="font-semibold text-lg lg:text-md">
+                {unitPrice}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
