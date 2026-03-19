@@ -70,7 +70,6 @@ export const getStaticProps: GetStaticProps = async () => {
 
       // Divide per egg price
       const perEggPrice = parseFloat((packPrice / eggQuantity).toPrecision(2));
-      product.unitPriceNum = perEggPrice;
 
       // Build unitPrice string
       product.unitPrice = perEggPrice + "/egg";
@@ -80,8 +79,7 @@ export const getStaticProps: GetStaticProps = async () => {
     }
     // If an egg unit price could not be parsed - blank it out
     else {
-      product.unitPrice = "";
-      product.unitPriceNum = 999; // set to 999 so it sorts to the bottom
+      product.unitPrice = ""; // empty string sorts to the bottom
     }
   });
 

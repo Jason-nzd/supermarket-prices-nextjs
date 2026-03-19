@@ -50,19 +50,20 @@ export const getStaticProps: GetStaticProps = async () => {
     // Treat any products with names without bags, pk, pack as loose tea
     if (product.name.toLowerCase().match(teaBagRegex)) {
       // Try parse size to get quantity while excluding grams per teabag, e.g. 100 x 2g
-      let size = product.size?.toLowerCase().split("x")[0];
+      let size = (product.size ?? "").toLowerCase().split("x")[0];
 
       // Get just the quantity number
-      size = size ? size.match(/\d/g)?.join("") : "";
+      size = size ? (size.match(/\d/g)?.join("") ?? "") : "";
 
       // If size could not be derived, try parse name
       if (size === undefined || size === "") {
-        size = product.name
-          .toLowerCase()
-          .match(teaBagRegex)
-          ?.join("")
-          .match(/\d/g)
-          ?.join("");
+        size =
+          product.name
+            .toLowerCase()
+            .match(teaBagRegex)
+            ?.join("")
+            .match(/\d/g)
+            ?.join("") ?? "";
       }
 
       // Parse to int and check is within valid range
@@ -70,18 +71,17 @@ export const getStaticProps: GetStaticProps = async () => {
         const quantity = parseInt(size);
 
         // Set per teabag unit price
-        product.unitPriceNum =
+        const unitPriceNum =
           product.priceHistory[product.priceHistory.length - 1].price /
           quantity;
-        product.unitPrice = product.unitPriceNum.toFixed(2) + "/bag";
+        product.unitPrice = unitPriceNum.toFixed(2) + "/bag";
 
         // Set size
         product.size = quantity + " Pack";
       }
       // If a unit price could not be derived,
-      //  set unitPriceNum to 999 to force ordering to bottom
+      //  set unitPrice to empty to force ordering to bottom
       else {
-        product.unitPriceNum = 999;
         product.unitPrice = "";
       }
     }

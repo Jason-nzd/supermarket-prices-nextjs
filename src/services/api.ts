@@ -1,6 +1,6 @@
 import { Product } from "@/typings";
 import { LastChecked, PriceHistoryLimit, Store } from "@/lib/enums";
-import { cleanProductFields } from "@/lib/utils";
+import { dbDocumentToProduct, ProductDocument } from "@/lib/utils";
 import { queryAddLastChecked, queryAddLimitStore, queryAddPriceHistoryLimit } from "@/lib/db/cosmos";
 
 // Fetch all products, with optional store selection
@@ -49,15 +49,17 @@ async function fetchProductsUsingAPI(queryObject: { query: string }, maxItems: n
       // If successful, set resultingProducts to response json
       if (apiResponse.status === 200) {
         const apiJsonResponse = await apiResponse.json();
-        const apiProducts: Product[] = apiJsonResponse.Documents;
-
-        // Push products into array and clean unwanted fields from CosmosDB
-        const resultingProducts: Product[] = apiProducts.map((productDocument) => {
-          return cleanProductFields(productDocument);
-        });
+        const apiProducts: ProductDocument[] = apiJsonResponse.Documents;
 
         // Log to console for debugging
-        console.log(`Fetched ${resultingProducts.length} products from API.`);
+        console.log(`Fetched ${apiProducts.length} products from API.`);
+
+        // Push products into array and transform from CosmosDB document format
+        const resultingProducts: Product[] = apiProducts.map((document) => {
+          return dbDocumentToProduct(document);
+        });
+
+
         return resultingProducts;
 
       } else {
