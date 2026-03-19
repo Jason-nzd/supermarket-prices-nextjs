@@ -17,6 +17,12 @@ import { allCategoryNames } from "@/lib/categories";
 import { separateProductsIntoSubCategories } from "@/lib/sub-categorisation";
 import { categoryDefinitions, getCategoryTitle } from "@/lib/categories/index";
 
+// [category.tsx]
+// --------------
+// Dynamic route page that renders a page for each category definition found in /lib/categories/
+// Generates static pages when "npm run build".
+// Supports rendering multiple subcategory grids when defined, otherwise shows a single product grid.
+
 interface Props {
   subCategoryProductGrids?: ProductGridData[];
   productGridData?: ProductGridData;
@@ -102,7 +108,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
 
   let products = await DBFetchByCategory(
     category,
-    500,
+    800,
     Store.Any,
     PriceHistoryLimit.Any,
     OrderByMode.None,

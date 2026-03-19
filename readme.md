@@ -1,20 +1,59 @@
 # NZ Supermarket Price History Website
+This is a website that pulls data from multiple supermarkets and displays each product with current and historical pricing. 
 
-This is a static next.js website that pulls product data from Azure CosmosDB and displays them in a responsive grid.
+Built with `React` and `Next.js` using fully static html export.
 
-- Long-term price history for each product is displayed using `chart.js` line charts.
-- Built with `react` and `next.js` using fully static html export.
-- Client-side data fetching from an API is used for search functionality.
-- Styling is handled with `tailwind css`.
+Running Example: <https://kiwiprice.xyz>
+
+![alt text](https://github.com/Jason-nzd/supermarket-prices-nextjs/blob/main/public/images/screenshot.png?raw=true "Screenshot of KiwiPrice.xyz")
 
 ## Quick Setup
-
-With `node.js` is installed, clone this repo, and then run `npm install` to install dependencies.
+With `Node.js` is installed, clone this repo, and then run `pnpm install` or `npm install` to install dependencies.
 
 The website comes with some sample data built-in and can be launched as-is with `npm run dev`.
 
-## Database Mode Setup with .env
+## Tech Stack
+- Data is stored on `Azure CosmosDB`.
+- Price history line charts powered by `Chart.js`.
+- Styling is handled with `Tailwindcss`.
+- Client-side search is powered by a custom API running on Azure.
+- Unit tests powered by `Vitest` and E2E tests powered by `Cypress`.
+- Full CI/CD pipeline available with testing and deployment to `AWS S3` and `CloudFront`.
 
+## Usage
+- `npm run dev` - for testing as a dynamic website
+- `npm run build` - to build a fully static site into the `/out` directory
+- `npm run start` - to host the built static site from `/out`
+- `npm test` - to run vitest unit tests.
+- `npx cypress run` - run cypress E2E headless testing
+
+## File Folder Structure
+```
+.github/workflows/          # CI/CD pipeline
+cypress/                    # E2E test specifications
+public/                     # Images
+src/
+├── components/             # Reusable UI components (ProductCard, etc.)
+├── hooks/
+│   └── useMediaQuery.tsx   # Custom hook for responsive windows
+├── lib/
+│   ├── categories/         # Product category and sub-category definitions
+│   ├── db/                 # CosmosDB connection and queries 
+│   ├── utils.ts            # Utility functions
+│   ├── utils.test.ts       # Vitest unit tests
+│   └── demo-products.ts    # Sample product data
+├── pages/
+│   ├── index.tsx           # Home page
+│   ├── products/
+│   │   └── [category].tsx  # Generates pages based on definitions in /lib/categories/
+│   ├── client-search.tsx   # Client-side search page
+│   ├── services/
+│   │   └── api.ts          # API integration for client-side search
+│   └── styles/
+│       └── globals.css     # Tailwind CSS configuration
+```
+
+## Database Mode Setup with .env
 For use with Azure CosmosDB, a read-only or read-write connection string must be set as an environment variable `COSMOS_CONSTRING`. Database and container names are also set here.
 
 Create a `.env` file with the following variables set:
@@ -25,43 +64,30 @@ COSMOS_DBNAME=<your-database-name>
 COSMOS_CONTAINER=<your-container-name>
 ```
 
-Example database document with dates in UTC format:
+Example database document that is expected:
 
 ```shell
-{
-    id: '12345678',
-    name: "Sample Milk Chocolate Bucket",
-    currentPrice: 15,
-    size: '640g',
-    sourceSite: 'supermarket.co.nz',
-    priceHistory: [
-        { 
-            date: '2023-03-02T00:00:00Z',
-            price: 13 
-        },
-        { 
-            date: '2023-03-13T00:00:00Z', 
-            price: 15 
-        },
+  {
+    "id": "1234567",
+    "name": "Valley Milk Standard A2",
+    "category": "milk",
+    "size": "Bottle 2L",
+    "sourceSite": "supermarket.co.nz",
+    "lastChecked": "2024-09-14",
+    "priceHistory": [
+      {
+        "date": "2023-03-03",
+        "price": 5.5
+      },
+      {
+        "date": "2023-06-02",
+        "price": 6
+      },
+      {
+        "date": "2024-01-23",
+        "price": 6.5
+      },
     ],
-    category: ['chocolate', 'chocolate-packs'],
-    lastUpdated: '2023-03-13T00:00:00Z',
-    lastChecked: '2023-04-22T00:00:00Z',
-    unitPrice: 23.44,
-    unitName: 'kg',
-    originalUnitQuantity: 640,
-}
+    "unitPrice": "3.28/L",
+  },
 ```
-
-## Usage
-
-- `npm run dev` - for testing as a dynamic website
-- `npm run build` - to build a fully static site into the `/out` directory
-- `npm run start` - to host the built static site from `/out`
-- `npx cypress run` - run cypress headless testing
-
-## Static Website Demo
-
-<https://kiwiprice.xyz>
-
-![alt text](https://github.com/Jason-nzd/supermarket-prices-nextjs/blob/main/public/images/screenshot.png?raw=true "Screenshot of KiwiPrice.xyz")

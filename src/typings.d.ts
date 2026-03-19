@@ -6,7 +6,7 @@ export interface Product {
   sourceSite: string;         // countdown.co.nz, paknsave.co.nz, etc.
   category: string;           // a single category that best fits the product
   lastChecked: string;        // "yyyy-mm-dd" for when the product info was last checked
-  unitPrice: string;          // string such as 400/kg
+  unitPrice?: string;         // string such as 400/kg
   unitPriceNum?: number;      // optional number for sorting by unit price
 }
 
