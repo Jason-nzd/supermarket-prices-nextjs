@@ -3,6 +3,7 @@ describe('Home Page', () => {
     beforeEach(() => {
       cy.viewport(1920, 1080);
       cy.visit('/');
+      cy.get('h1').should('be.visible');
     });
 
     it('should display website title, grid header', () => {

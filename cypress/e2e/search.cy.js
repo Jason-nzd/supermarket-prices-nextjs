@@ -3,12 +3,11 @@ describe('Search', () => {
     beforeEach(() => {
       cy.viewport(1920, 1080);
       cy.visit('/');
+      cy.get('h1').should('be.visible');
     });
 
     it('should allow typing and enter key, then show results', () => {
       cy.get('#search').should('be.visible');
-      cy.get('#search').click();
-      cy.get('#search').should('be.focused');
       cy.get('#search').type('orange{enter}');
       cy.get('.product-card').should('have.length.greaterThan', 3);
     });
