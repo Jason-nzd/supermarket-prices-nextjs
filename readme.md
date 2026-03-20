@@ -1,6 +1,11 @@
 # NZ Supermarket Price History Website
 
-> Track and compare prices across multiple New Zealand supermarkets with current and historical pricing charts.
+[![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js&logoColor=white)](https://nextjs.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-38bdf8?logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![Chart.js](https://img.shields.io/badge/Chart.js-grey?logo=chart.js&logoColor=white)](https://www.chartjs.org/)
+[![Cypress](https://img.shields.io/badge/Cypress-grey?logo=cypress&logoColor=white)](https://www.cypress.io/)
+
+Track and compare prices across multiple New Zealand supermarkets with current and historical pricing charts.
 
 Built with **React** & **Next.js** using static HTML export for easy static hosting.
 
