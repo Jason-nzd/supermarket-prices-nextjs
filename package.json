@@ -1,6 +1,6 @@
 {
   "name": "supermarket-prices",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -10,6 +10,10 @@
     "test": "vitest run",
     "test:ui": "vitest --ui",
     "cypress": "cypress open"
+  },
+  "packageManager": "pnpm@10.0.0",
+  "pnpm": {
+    "onlyBuiltDependencies": ["cypress", "sharp", "unrs-resolver"]
   },
   "dependencies": {
     "@azure/cosmos": "^4.9.1",
