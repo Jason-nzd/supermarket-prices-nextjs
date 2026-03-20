@@ -24,5 +24,6 @@ export default defineConfig({
     },
     video: false,
     defaultCommandTimeout: 40000,
+    allowCypressEnv: false
   },
 });
