@@ -324,15 +324,19 @@ export function queryAddLastChecked(lastChecked: LastChecked, useAND: boolean = 
 }
 
 // Fetch products by searching category
+// Supports both old schema (category as array) and new schema (category as string)
 export async function DBFetchByCategory(
   category: string,
   maxItems: number = 20,
   store: Store = Store.Any,
   priceHistoryLimit: PriceHistoryLimit = PriceHistoryLimit.Any,
   orderBy: OrderByMode = OrderByMode.None,
-  lastChecked: LastChecked = LastChecked.Within7Days
+  lastChecked: LastChecked = LastChecked.Within7Days,
+  useOldSchema: boolean = false // Set to true for old schema where category is an array
 ): Promise<Product[]> {
-  const queryBase = 'SELECT * FROM products p WHERE p.category = @name';
+  const queryBase = useOldSchema
+    ? 'SELECT * FROM products p WHERE ARRAY_CONTAINS(p.category, @name)'
+    : 'SELECT * FROM products p WHERE p.category = @name';
   const querySpec: SqlQuerySpec = {
     query:
       queryBase +
@@ -375,7 +379,7 @@ export async function DBFetchByName(
 export async function DBFetchByQuery(
   sqlQuery: string,
   sqlParameters?: SqlParameter[],
-  maxItems: number = 60
+  maxItems: number = 60,
 ): Promise<Product[]> {
   const querySpec: SqlQuerySpec = {
     query: sqlQuery,
