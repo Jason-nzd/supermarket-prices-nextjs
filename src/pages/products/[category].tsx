@@ -106,8 +106,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const category = params?.category as string;
 
-  console.log(`\n=== Building category: ${category} ===`);
-
   let products = await DBFetchByCategory(
     category,
     800,
@@ -116,8 +114,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     OrderByMode.None,
     LastChecked.Within7Days,
   );
-
-  console.log(`Fetched ${products.length} products for ${category}`);
 
   // Sort by unit price
   products = sortProductsByUnitPrice(products);
@@ -131,10 +127,12 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   // Check if we have subcategory definitions for this category
   const CategoryDefinition = categoryDefinitions[category];
 
+  // Log to console
+  console.log(
+    `-- category:  ${category.padEnd(18).slice(0, 18)} - ${products.length} products - ${CategoryDefinition?.subcategories?.length || 0} sub-categories --`,
+  );
+
   if (CategoryDefinition?.subcategories) {
-    console.log(
-      `Category ${category} has ${CategoryDefinition.subcategories.length} subcategories`,
-    );
     const subCategoryProductGrids = separateProductsIntoSubCategories(
       products,
       CategoryDefinition.subcategories,

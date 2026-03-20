@@ -221,55 +221,78 @@ export function getPriceAvgDifference(
 }
 
 
-// utcDateToShortDate()
-// --------------------
-// Will take a UTC Date and return in format Mar 16, or 'Today'
-export function utcDateToShortDate(utcDate: Date | string, returnTodayString: boolean = false): string {
-  const date = new Date(utcDate).toDateString(); // Thu Mar 16 2023
-  const now = new Date().toDateString();
+// toShortDate()
+// -------------
+// Takes any date/string and returns 'Mar 16' or 'Today'
+// Uses manual formatting to avoid locale/timezone hydration mismatches
+export function toShortDate(dateInput: Date | string, returnTodayString: boolean = false): string {
+  const date = new Date(dateInput);
+  const now = new Date();
 
-  if (date === now && returnTodayString) return 'Today';
-  else return date.substring(4, 10); // Mar 16
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+  const month = months[date.getUTCMonth()];
+  const dayNum = date.getUTCDate();
+  const result = `${month} ${dayNum}`;
+
+  const nowMonth = months[now.getUTCMonth()];
+  const nowDayNum = now.getUTCDate();
+  const nowResult = `${nowMonth} ${nowDayNum}`;
+
+  if (result === nowResult && returnTodayString) return 'Today';
+  else return result;
 }
 
-// stringDateToLongDate()
-// -------------------
-// Takes string date and returns 'Friday, 11 August 2023'
-export function stringDateToLongDate(stringDate: string): string {
-  return new Date(stringDate).toLocaleString('en-GB', {
-    weekday: 'long',
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  });
+// toLongDate()
+// ------------
+// Takes any date/string and returns 'Friday, 11 August 2023'
+// Uses manual formatting to avoid locale/timezone hydration mismatches
+export function toLongDate(dateInput: Date | string): string {
+  const date = new Date(dateInput);
+
+  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+  const dayName = days[date.getUTCDay()];
+  const dayNum = date.getUTCDate();
+  const month = months[date.getUTCMonth()];
+  const year = date.getUTCFullYear();
+
+  return `${dayName}, ${dayNum} ${month} ${year}`;
 }
 
-// utcDateToShortDate()
-// --------------------
-// Takes UTC Date and returns 'Friday, 11 Aug'
-export function utcDateToMediumDate(utcDate: Date | string): string {
-  return new Date(utcDate).toLocaleString('en-GB', {
-    weekday: 'long',
-    day: 'numeric',
-    month: 'short',
-  });
+// toMediumDate()
+// --------------
+// Takes any date/string and returns 'Friday, 11 Aug'
+// Uses manual formatting to avoid locale/timezone hydration mismatches
+export function toMediumDate(dateInput: Date | string): string {
+  const date = new Date(dateInput);
+
+  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+  const dayName = days[date.getUTCDay()];
+  const dayNum = date.getUTCDate();
+  const month = months[date.getUTCMonth()];
+
+  return `${dayName}, ${dayNum} ${month}`;
 }
 
-// cleanDate()
-// -----------
+// toDateOnly()
+// ------------
 // Clean any hours, seconds, etc, from date.
 // (converts '2023-06-18T23:46:27.222Z' to '2023-06-18')
-export function cleanDate(utcDate: Date | string): Date {
-  return new Date(new Date(utcDate).toString().split('T')[0]);
+export function toDateOnly(dateInput: Date | string): Date {
+  return new Date(new Date(dateInput).toString().split('T')[0]);
 }
 
-// daysElapsedSinceDateFormatted()
-// -------------------------------
-// Takes string date and returns number of days elapsed since.
+// toDaysElapsed()
+// ---------------
+// Takes any date/string and returns number of days elapsed since.
 // Can also return easier to read strings such as 'today' if 0 days of difference.
-export function daysElapsedSinceDateFormatted(stringDate: string): string {
+export function toDaysElapsed(dateInput: Date | string): string {
   const now = new Date();
-  const then = new Date(stringDate);
+  const then = new Date(dateInput);
   const elapsedDays = Math.floor((now.getTime() - then.getTime()) / (1000 * 3600 * 24));
 
   if (elapsedDays == 0) return 'Today';
@@ -278,14 +301,19 @@ export function daysElapsedSinceDateFormatted(stringDate: string): string {
   else return Math.floor(elapsedDays / 7).toString() + ' weeks ago';
 }
 
-// stringDateToMonthYear
-// ------------------
-// Takes a string date and returns 'April 2023'
-export function stringDateToMonthYear(stringDate: string): string {
-  return new Date(stringDate).toLocaleString('en-GB', {
-    month: 'long',
-    year: 'numeric',
-  });
+// toMonthYear()
+// -------------
+// Takes any date/string and returns 'April 2023'
+// Uses manual formatting to avoid locale/timezone hydration mismatches
+export function toMonthYear(dateInput: Date | string): string {
+  const date = new Date(dateInput);
+
+  const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+  const month = months[date.getUTCMonth()];
+  const year = date.getUTCFullYear();
+
+  return `${month} ${year}`;
 }
 
 // productIsCurrent()

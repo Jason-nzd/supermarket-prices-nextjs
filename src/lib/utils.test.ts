@@ -3,12 +3,12 @@ import {
   deriveUnitPriceString,
   getStoreEnum,
   getPriceAvgDifference,
-  utcDateToShortDate,
-  stringDateToLongDate,
-  utcDateToMediumDate,
-  cleanDate,
-  daysElapsedSinceDateFormatted,
-  stringDateToMonthYear,
+  toShortDate,
+  toLongDate,
+  toMediumDate,
+  toDateOnly,
+  toDaysElapsed,
+  toMonthYear,
   productIsCurrent,
   sortProductsByUnitPrice,
   printPrice,
@@ -269,72 +269,72 @@ describe('getPriceAvgDifference', () => {
 });
 
 describe('date formatting functions', () => {
-  describe('utcDateToShortDate', () => {
+  describe('toShortDate', () => {
     it('should format date as "Mar 16"', () => {
-      const result = utcDateToShortDate('2024-03-16');
+      const result = toShortDate('2024-03-16');
       expect(result).toBe('Mar 16');
     });
 
     it('should return "Today" for current date when returnTodayString is true', () => {
       const today = new Date().toISOString();
-      const result = utcDateToShortDate(today, true);
+      const result = toShortDate(today, true);
       expect(result).toBe('Today');
     });
   });
 
-  describe('stringDateToLongDate', () => {
+  describe('toLongDate', () => {
     it('should format date as "Friday, 11 August 2023"', () => {
-      const result = stringDateToLongDate('2023-08-11');
+      const result = toLongDate('2023-08-11');
       expect(result).toBe('Friday, 11 August 2023');
     });
   });
 
-  describe('utcDateToMediumDate', () => {
+  describe('toMediumDate', () => {
     it('should format date as "Friday 11 Aug"', () => {
-      const result = utcDateToMediumDate('2023-08-11');
+      const result = toMediumDate('2023-08-11');
       expect(result).toBe('Friday 11 Aug');
     });
   });
 
-  describe('cleanDate', () => {
+  describe('toDateOnly', () => {
     it('should return a Date instance', () => {
-      const result = cleanDate('2023-06-18T23:46:27.222Z');
+      const result = toDateOnly('2023-06-18T23:46:27.222Z');
       expect(result).toBeInstanceOf(Date);
     });
   });
 
-  describe('daysElapsedSinceDateFormatted', () => {
+  describe('toDaysElapsed', () => {
     it('should return "Today" for today', () => {
       const today = new Date().toISOString().split('T')[0];
-      const result = daysElapsedSinceDateFormatted(today);
+      const result = toDaysElapsed(today);
       expect(result).toBe('Today');
     });
 
     it('should return "Yesterday" for yesterday', () => {
       const yesterday = new Date();
       yesterday.setDate(yesterday.getDate() - 1);
-      const result = daysElapsedSinceDateFormatted(yesterday.toISOString().split('T')[0]);
+      const result = toDaysElapsed(yesterday.toISOString().split('T')[0]);
       expect(result).toBe('Yesterday');
     });
 
     it('should return "X days ago" for recent dates', () => {
       const threeDaysAgo = new Date();
       threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
-      const result = daysElapsedSinceDateFormatted(threeDaysAgo.toISOString().split('T')[0]);
+      const result = toDaysElapsed(threeDaysAgo.toISOString().split('T')[0]);
       expect(result).toBe('3 days ago');
     });
 
     it('should return "X weeks ago" for older dates', () => {
       const twoWeeksAgo = new Date();
       twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
-      const result = daysElapsedSinceDateFormatted(twoWeeksAgo.toISOString().split('T')[0]);
+      const result = toDaysElapsed(twoWeeksAgo.toISOString().split('T')[0]);
       expect(result).toBe('2 weeks ago');
     });
   });
 
-  describe('stringDateToMonthYear', () => {
+  describe('toMonthYear', () => {
     it('should format date as "April 2023"', () => {
-      const result = stringDateToMonthYear('2023-04-15');
+      const result = toMonthYear('2023-04-15');
       expect(result).toBe('April 2023');
     });
   });

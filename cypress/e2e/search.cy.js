@@ -7,21 +7,35 @@ describe('Search', () => {
     });
 
     it('should allow typing and enter key, then show results', () => {
-      cy.get('#search').should('be.visible');
-      cy.get('#search').type('orange{enter}');
-      cy.get('.product-card').should('have.length.greaterThan', 3);
-    });
-
-    it('should allow re-searching, this time clicking the search button', () => {
-      cy.get('#search').should('be.visible');
-      cy.get('#search').click();
-      cy.get('#search').type('apple');
-      cy.get('#search-button').click({ force: true });
+      cy.get('.search-bar input[name="search"]').should('be.visible');
+      cy.get('.search-bar input[name="search"]').type('orange{enter}');
+      cy.url().should('include', '/client-search');
       cy.get('.product-card').should('have.length.greaterThan', 3);
     });
 
     it('should have no mobile search button on nav bar', () => {
       cy.get('#mobile-search-button').should('be.hidden');
+    });
+  });
+
+  context('Client Search Page', () => {
+    beforeEach(() => {
+      cy.viewport(1920, 1080);
+      cy.visit('/client-search?query=orange');
+      cy.get('h1').should('be.visible');
+    });
+
+    it('should allow re-searching by typing and clicking search button', () => {
+      cy.get('.search-bar input[name="search"]')
+        .should('be.visible')
+        .and('not.be.disabled');
+      cy.get('.search-bar input[name="search"]').clear().type('apple');
+      cy.get('.search-bar button[type="submit"]').click({ force: true });
+      cy.get('.product-card').should('have.length.greaterThan', 3);
+    });
+
+    it('should display search results from URL query param', () => {
+      cy.get('.product-card').should('have.length.greaterThan', 3);
     });
   });
 
@@ -40,6 +54,5 @@ describe('Search', () => {
     it('should have mobile search button on nav bar', () => {
       cy.get('#mobile-search-button').should('be.visible');
     });
-
   });
 });

@@ -1,6 +1,6 @@
 import React from "react";
 import { Product } from "@/typings";
-import { cleanDate } from "@/lib/utils";
+import { toDateOnly } from "@/lib/utils";
 import {
   CategoryScale,
   Chart,
@@ -68,7 +68,7 @@ function PriceChartMulti({
   ]!.forEach((product) => {
     product?.priceHistory.forEach((datedPrice) => {
       // Clean any hours, seconds from store dates (converts '2023-06-18T23:46:27.222Z' to '2023-06-18')
-      const cleanedStoreDate = cleanDate(datedPrice.date as string | Date);
+      const cleanedStoreDate = toDateOnly(datedPrice.date as string | Date);
 
       // Check if store date has already been pushed into the shared date array
       // Use string comparison for better reliability
@@ -96,10 +96,8 @@ function PriceChartMulti({
 
   // 2nd pass - loop through countdown price history and populate full length dataset
   countdownProduct?.priceHistory.forEach((datedPrice) => {
-    const cleanedDate = cleanDate(datedPrice.date as string | Date);
-
     const matchedStoreToSharedIndex = sharedDates.findIndex((sharedDate) => {
-      return sharedDate.toString() == cleanedDate.toString();
+      return sharedDate.toString() == datedPrice.date;
     });
 
     if (matchedStoreToSharedIndex >= 0) {
@@ -109,10 +107,8 @@ function PriceChartMulti({
 
   // 2nd pass - loop through paknsave price history and populate full length dataset
   paknsaveProduct?.priceHistory.forEach((datedPrice) => {
-    const cleanedDate = cleanDate(datedPrice.date as string | Date);
-
     const matchedStoreToSharedIndex = sharedDates.findIndex((sharedDate) => {
-      return sharedDate.toString() == cleanedDate.toString();
+      return sharedDate.toString() == datedPrice.date;
     });
 
     if (matchedStoreToSharedIndex >= 0) {
@@ -122,10 +118,8 @@ function PriceChartMulti({
 
   // 2nd pass - loop through warehouse price history and populate full length dataset
   warehouseProduct?.priceHistory.forEach((datedPrice) => {
-    const cleanedDate = cleanDate(datedPrice.date as string | Date);
-
     const matchedStoreToSharedIndex = sharedDates.findIndex((sharedDate) => {
-      return sharedDate.toString() == cleanedDate.toString();
+      return sharedDate.toString() == datedPrice.date;
     });
 
     if (matchedStoreToSharedIndex >= 0) {
@@ -135,10 +129,8 @@ function PriceChartMulti({
 
   // 2nd pass - loop through newworld price history and populate full length dataset
   newworldProduct?.priceHistory.forEach((datedPrice) => {
-    const cleanedDate = cleanDate(datedPrice.date as string | Date);
-
     const matchedStoreToSharedIndex = sharedDates.findIndex((sharedDate) => {
-      return sharedDate.toString() == cleanedDate.toString();
+      return sharedDate.toString() == datedPrice.date;
     });
 
     if (matchedStoreToSharedIndex >= 0) {

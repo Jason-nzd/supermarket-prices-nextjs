@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Product } from "@/typings";
 import DatedPriceTag from "@/components/features/admin/PriceHistoryTag";
 import StoreIcon from "@/components/common/StoreIcon";
-import { getStoreEnum, utcDateToShortDate } from "@/lib/utils";
+import { getStoreEnum, toShortDate } from "@/lib/utils";
 
 interface Props {
   product: Product;
@@ -99,7 +99,7 @@ function AdminProductRow({ product }: Props) {
 
       {/* Last Checked */}
       <td className="px-6 py-1">
-        <div className="text-xs">{utcDateToShortDate(product.lastChecked)}</div>
+        <div className="text-xs">{toShortDate(product.lastChecked)}</div>
       </td>
 
       {/* Price History */}

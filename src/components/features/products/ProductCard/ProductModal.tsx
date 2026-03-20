@@ -1,11 +1,11 @@
 import { useContext } from "react";
 import { Product } from "@/typings";
 import {
-  daysElapsedSinceDateFormatted,
+  toDaysElapsed,
   getStoreEnum,
   Store,
-  stringDateToLongDate,
-  stringDateToMonthYear,
+  toLongDate,
+  toMonthYear,
 } from "@/lib/utils";
 import ImageWithFallback from "@/components/common/ImageWithFallback";
 import PriceTag from "@/components/features/products/ProductCard/PriceTag";
@@ -82,10 +82,8 @@ function ProductModal({ product, setIsModalOpen }: Props) {
   }
 
   // Get the number of days since the last checked and last updated
-  const daysSinceLastChecked = daysElapsedSinceDateFormatted(
-    product.lastChecked,
-  );
-  const daysSinceLastUpdated = daysElapsedSinceDateFormatted(
+  const daysSinceLastChecked = toDaysElapsed(product.lastChecked);
+  const daysSinceLastUpdated = toDaysElapsed(
     product.priceHistory[product.priceHistory.length - 1].date,
   );
 
@@ -199,7 +197,7 @@ function ProductModal({ product, setIsModalOpen }: Props) {
               <div className=" text-sm mb-2 mx-auto flex">
                 <div>on</div>
                 <div className="pl-1 font-semibold">
-                  {stringDateToLongDate(
+                  {toLongDate(
                     product.priceHistory[product.priceHistory.length - 1].date,
                   )}
                 </div>
@@ -250,7 +248,7 @@ function ProductModal({ product, setIsModalOpen }: Props) {
             {/* First Added  - hidden on mobile*/}
             <div className="glass-capsule text-sm my-1 hidden md:flex">
               <div className="p-1">First added to KiwiPrice on</div>
-              <div>{stringDateToMonthYear(product.priceHistory[0].date)}</div>
+              <div>{toMonthYear(product.priceHistory[0].date)}</div>
             </div>
           </div>
         </div>
