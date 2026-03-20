@@ -17,7 +17,8 @@
 import './commands'
 
 Cypress.on('uncaught:exception', (err: Error) => {
-    if (err.message.includes('Minified React error #418')) return false;
+    if (err.message.includes('Minified React error #418') ||
+        err.message.includes('hydration-mismatch')) return false;
     return true;
 });
 

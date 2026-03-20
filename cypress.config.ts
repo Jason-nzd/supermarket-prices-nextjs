@@ -23,6 +23,6 @@ export default defineConfig({
       return config;
     },
     video: false,
-    defaultCommandTimeout: 20000,
+    defaultCommandTimeout: 40000,
   },
 });

@@ -1,11 +1,11 @@
 describe('Search', () => {
-  context('1080p desktop resolution', () => {
+  context('Desktop Resolution', () => {
     beforeEach(() => {
       cy.viewport(1920, 1080);
       cy.visit('/');
     });
 
-    it('search should allow typing and enter key, then show results', () => {
+    it('should allow typing and enter key, then show results', () => {
       cy.get('#search').should('be.visible');
       cy.get('#search').click();
       cy.get('#search').should('be.focused');
@@ -13,10 +13,10 @@ describe('Search', () => {
       cy.get('.product-card').should('have.length.greaterThan', 3);
     });
 
-    it('search should allow typing and button click, then show results', () => {
+    it('should allow re-searching, this time clicking the search button', () => {
       cy.get('#search').should('be.visible');
       cy.get('#search').click();
-      cy.get('#search').type('orange');
+      cy.get('#search').type('apple');
       cy.get('#search-button').click({ force: true });
       cy.get('.product-card').should('have.length.greaterThan', 3);
     });
@@ -26,7 +26,7 @@ describe('Search', () => {
     });
   });
 
-  context('400p small mobile resolution', () => {
+  context('iPhone Resolution', () => {
     beforeEach(() => {
       cy.viewport('iphone-8');
       cy.visit('/');
@@ -38,8 +38,9 @@ describe('Search', () => {
       cy.get('.product-card').should('have.length.greaterThan', 3);
     });
 
-    // it('should have no mobile search button on nav bar', () => {
-    //   cy.get('#mobile-search-button').should('be.hidden');
-    // });
+    it('should have mobile search button on nav bar', () => {
+      cy.get('#mobile-search-button').should('be.visible');
+    });
+
   });
 });

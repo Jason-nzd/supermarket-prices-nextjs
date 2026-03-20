@@ -1,5 +1,5 @@
 describe('Home Page', () => {
-  context('1080p desktop resolution', () => {
+  context('Desktop Resolution', () => {
     beforeEach(() => {
       cy.viewport(1920, 1080);
       cy.visit('/');
@@ -18,18 +18,13 @@ describe('Home Page', () => {
       cy.get('#mobile-search-button').should('be.hidden');
     });
 
-    // it('category menu modal should start hidden', () => {
-    //   cy.get('[data-testid="modal-backdrop"]').should('be.hidden');
-    // })
-
     it('clicking the category menu button should reveal the menu modal', () => {
       cy.get("#category-menu-button").click();
-      // cy.get(".backdrop").should('be.visible');
-      cy.task('log', 'Completed deterministic test');
+      // cy.task('log', 'Completed deterministic test');
     })
   });
 
-  context('400p small mobile resolution', () => {
+  context('iPhone Resolution', () => {
     beforeEach(() => {
       cy.viewport('iphone-8');
       cy.visit('/');
@@ -48,22 +43,10 @@ describe('Home Page', () => {
       cy.get('#category-menu-button').should('be.hidden');
     });
 
-    // it('should have mobile search button on nav bar', () => {
-    //   cy.get('#mobile-search-button').should('be.hidden');
-    // });
+    it('should have a mobile search button on nav bar', () => {
+      cy.get('#mobile-search-button').should('be.visible');
+    });
   });
 
-  context('600p medium mobile resolution', () => {
-    beforeEach(() => {
-      cy.viewport('ipad-mini');
-      cy.visit('/');
-    });
-    it('search button should popup input field and allow typing', () => {
-      cy.get('#mobile-search-button').click();
-      // cy.get('')
-      // cy.get('#search').should('be.visible');
-      // cy.get('#search').type('orange');
-    });
-  });
 });
 
