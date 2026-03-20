@@ -11,6 +11,7 @@ import { Product } from "@/typings";
 import {
   dbDocumentToProduct,
   sortProductsByUnitPrice,
+  ProductDocument,
 } from "@/lib/utils";
 import { LastChecked, OrderByMode, PriceHistoryLimit, Store } from "@/lib/enums";
 import { demoProducts } from '../demo-products';
@@ -60,7 +61,7 @@ export async function connectToCosmosDB(): Promise<boolean> {
 }
 
 // Takes an SDK querySpec and performs the actual CosmosDB lookup
-async function fetchProductsUsingSDK<T = any>(
+async function fetchProductsUsingSDK<T extends Product | ProductDocument = Product>(
   querySpec: SqlQuerySpec,
   maxItems: number
 ): Promise<T[]> {
@@ -78,7 +79,7 @@ async function fetchProductsUsingSDK<T = any>(
       };
 
       // Perform DB Fetch
-      const dbResponse: FeedResponse<any> = await container.items
+      const dbResponse: FeedResponse<ProductDocument> = await container.items
         .query(querySpec, options)
         .fetchNext();
 
@@ -337,8 +338,8 @@ export async function DBFetchByCategory(
       queryBase +
       queryAddLimitStore(store, false) +
       queryAddLastChecked(lastChecked) +
-      queryAddPriceHistoryLimit(priceHistoryLimit),
-    // queryAddOrderBy(orderBy),
+      queryAddPriceHistoryLimit(priceHistoryLimit) +
+      queryAddOrderBy(orderBy),
     parameters: [{ name: '@name', value: category }],
   };
   return await fetchProductsUsingSDK(querySpec, maxItems);

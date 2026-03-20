@@ -45,8 +45,6 @@ export function dbDocumentToProduct(document: ProductDocument): Product {
   // Always use id and name as-is
   const { id, name } = document;
 
-  console.log(document);
-
   // Handle category - if array, take first item
   const category: string = Array.isArray(document.category) ? document.category[0] : (document.category ?? '');
 
@@ -78,7 +76,8 @@ export function dbDocumentToProduct(document: ProductDocument): Product {
   }
 
   // Handle unitPrice - always derive from name, size, and the current price
-  const unitPrice = deriveUnitPriceString(name, size, priceHistory[priceHistory.length - 1].price);
+  const currentPrice = priceHistory.length > 0 ? priceHistory[priceHistory.length - 1].price : 0;
+  const unitPrice = deriveUnitPriceString(name, size, currentPrice);
 
   // Handle flexible sourceSite
   let sourceSite = document.sourceSite || '';

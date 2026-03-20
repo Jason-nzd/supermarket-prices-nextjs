@@ -1,7 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import {
   deriveUnitPriceString,
-  cleanProductFields,
   getStoreEnum,
   getPriceAvgDifference,
   utcDateToShortDate,
@@ -21,137 +20,47 @@ import type { Product } from '@/typings';
 
 describe('deriveUnitPriceString', () => {
   it('should derive unit price from size in kg', () => {
-    const product: Product = {
-      id: '1',
-      name: 'Test Product',
-      size: '500g',
-      sourceSite: 'countdown.co.nz',
-      priceHistory: [{ date: '2024-01-01', price: 10 }],
-      category: 'test',
-      lastChecked: '2024-01-01',
-      unitPrice: '',
-    };
-    const result = deriveUnitPriceString(product);
+    const result = deriveUnitPriceString('Test Product', '500g', 10);
     expect(result).toBe('20/kg');
   });
 
   it('should derive unit price from size in litres', () => {
-    const product: Product = {
-      id: '2',
-      name: 'Test Milk',
-      size: '2L',
-      sourceSite: 'countdown.co.nz',
-      priceHistory: [{ date: '2024-01-01', price: 6 }],
-      category: 'milk',
-      lastChecked: '2024-01-01',
-      unitPrice: '',
-    };
-    const result = deriveUnitPriceString(product);
+    const result = deriveUnitPriceString('Test Milk', '2L', 6);
     expect(result).toBe('3/L');
   });
 
   it('should derive unit price from size in mL', () => {
-    const product: Product = {
-      id: '3',
-      name: 'Test Juice',
-      size: '500mL',
-      sourceSite: 'countdown.co.nz',
-      priceHistory: [{ date: '2024-01-01', price: 5 }],
-      category: 'beverage',
-      lastChecked: '2024-01-01',
-      unitPrice: '',
-    };
-    const result = deriveUnitPriceString(product);
+    const result = deriveUnitPriceString('Test Juice', '500mL', 5);
     expect(result).toBe('10/L');
   });
 
   it('should derive unit price from name when size is missing unit', () => {
-    const product: Product = {
-      id: '4',
-      name: 'Apples 2kg',
-      size: 'per kg',
-      sourceSite: 'paknsave.co.nz',
-      priceHistory: [{ date: '2024-01-01', price: 8 }],
-      category: 'fruit',
-      lastChecked: '2024-01-01',
-      unitPrice: '',
-    };
-    const result = deriveUnitPriceString(product);
+    const result = deriveUnitPriceString('Apples 2kg', 'per kg', 8);
     expect(result).toBe('8/kg');
   });
 
   it('should handle multiplied size (e.g., 4 x 107mL)', () => {
-    const product: Product = {
-      id: '5',
-      name: 'Test Multi Pack',
-      size: '4 x 107mL',
-      sourceSite: 'countdown.co.nz',
-      priceHistory: [{ date: '2024-01-01', price: 10 }],
-      category: 'beverage',
-      lastChecked: '2024-01-01',
-      unitPrice: '',
-    };
-    const result = deriveUnitPriceString(product);
+    const result = deriveUnitPriceString('Test Multi Pack', '4 x 107mL', 10);
     expect(result).toBe('23/L');
   });
 
   it('should handle "per kg" size as 1kg', () => {
-    const product: Product = {
-      id: '6',
-      name: 'Test Product',
-      size: '1kg',
-      sourceSite: 'countdown.co.nz',
-      priceHistory: [{ date: '2024-01-01', price: 15 }],
-      category: 'test',
-      lastChecked: '2024-01-01',
-      unitPrice: '',
-    };
-    const result = deriveUnitPriceString(product);
+    const result = deriveUnitPriceString('Test Product', '1kg', 15);
     expect(result).toBe('15/kg');
   });
 
   it('should return empty string when unable to derive unit price', () => {
-    const product: Product = {
-      id: '7',
-      name: 'Test Product',
-      size: '10pk',
-      sourceSite: 'countdown.co.nz',
-      priceHistory: [{ date: '2024-01-01', price: 10 }],
-      category: 'test',
-      lastChecked: '2024-01-01',
-      unitPrice: '',
-    };
-    const result = deriveUnitPriceString(product);
+    const result = deriveUnitPriceString('Test Product', '10pk', 10);
     expect(result).toBe('');
   });
 
   it('should handle products with no size', () => {
-    const product: Product = {
-      id: '8',
-      name: 'Test Product',
-      size: undefined,
-      sourceSite: 'countdown.co.nz',
-      priceHistory: [{ date: '2024-01-01', price: 10 }],
-      category: 'test',
-      lastChecked: '2024-01-01',
-      unitPrice: '',
-    };
-    const result = deriveUnitPriceString(product);
+    const result = deriveUnitPriceString('Test Product', '', 10);
     expect(result).toBe('');
   });
 
   it('should capitalize L for litres', () => {
-    const product: Product = {
-      id: '9',
-      name: 'Test Product',
-      size: '1l',
-      sourceSite: 'countdown.co.nz',
-      priceHistory: [{ date: '2024-01-01', price: 5 }],
-      category: 'test',
-      lastChecked: '2024-01-01',
-      unitPrice: '',
-    };
-    const result = deriveUnitPriceString(product);
+    const result = deriveUnitPriceString('Test Product', '1l', 5);
     expect(result).toBe('5/L');
   });
 });
@@ -161,7 +70,7 @@ describe('deriveUnitPriceString with demoProducts', () => {
     const product = demoProducts.find(p => p.id === '282801');
     expect(product).toBeDefined();
     if (product) {
-      const result = deriveUnitPriceString(product);
+      const result = deriveUnitPriceString(product.name, product.size, product.priceHistory[product.priceHistory.length - 1].price);
       expect(result).toBe('3.3/L');
     }
   });
@@ -170,7 +79,7 @@ describe('deriveUnitPriceString with demoProducts', () => {
     const product = demoProducts.find(p => p.id === '98508');
     expect(product).toBeDefined();
     if (product) {
-      const result = deriveUnitPriceString(product);
+      const result = deriveUnitPriceString(product.name, product.size, product.priceHistory[product.priceHistory.length - 1].price);
       expect(result).toBe('22/kg');
     }
   });
@@ -179,10 +88,9 @@ describe('deriveUnitPriceString with demoProducts', () => {
     const product = demoProducts.find(p => p.id === 'P5046462');
     expect(product).toBeDefined();
     if (product) {
-      // Note: "per kg" size doesn't have a numeric value, so function can't derive
-      // This test shows the limitation - it returns empty string
-      const result = deriveUnitPriceString(product);
-      expect(result).toBe('');
+      // The function handles "per kg" size correctly by using the price directly
+      const result = deriveUnitPriceString(product.name, product.size, product.priceHistory[product.priceHistory.length - 1].price);
+      expect(result).toBe('5.99/kg');
     }
   });
 
@@ -190,7 +98,7 @@ describe('deriveUnitPriceString with demoProducts', () => {
     const product = demoProducts.find(p => p.id === 'P5264178');
     expect(product).toBeDefined();
     if (product) {
-      const result = deriveUnitPriceString(product);
+      const result = deriveUnitPriceString(product.name, product.size, product.priceHistory[product.priceHistory.length - 1].price);
       expect(result).toBe('3/kg');
     }
   });
@@ -199,7 +107,7 @@ describe('deriveUnitPriceString with demoProducts', () => {
     const product = demoProducts.find(p => p.id === 'N5040515');
     expect(product).toBeDefined();
     if (product) {
-      const result = deriveUnitPriceString(product);
+      const result = deriveUnitPriceString(product.name, product.size, product.priceHistory[product.priceHistory.length - 1].price);
       expect(result).toBe('27/kg');
     }
   });
@@ -208,7 +116,7 @@ describe('deriveUnitPriceString with demoProducts', () => {
     const product = demoProducts.find(p => p.id === 'R374908');
     expect(product).toBeDefined();
     if (product) {
-      const result = deriveUnitPriceString(product);
+      const result = deriveUnitPriceString(product.name, product.size, product.priceHistory[product.priceHistory.length - 1].price);
       expect(result).toBe('9.2/kg');
     }
   });
@@ -218,63 +126,9 @@ describe('deriveUnitPriceString with demoProducts', () => {
     expect(product).toBeDefined();
     if (product) {
       // The function can derive from "300g" size
-      const result = deriveUnitPriceString(product);
+      const result = deriveUnitPriceString(product.name, product.size, product.priceHistory[product.priceHistory.length - 1].price);
       expect(result).toBe('12/kg');
     }
-  });
-});
-
-describe('cleanProductFields', () => {
-  it('should clean product fields correctly', () => {
-    const input = {
-      _rid: 'abc123',
-      _self: 'self-link',
-      id: '123',
-      name: 'Test Product',
-      size: '500g',
-      sourceSite: 'countdown.co.nz',
-      priceHistory: [{ Date: '2024-01-01', Price: 10 }],
-      category: 'test',
-      lastChecked: '2024-01-01',
-      unitPrice: '',
-    } as unknown as Product;
-
-    const result = cleanProductFields(input);
-
-    expect(result.id).toBe('123');
-    expect(result.name).toBe('Test Product');
-    expect(result.size).toBe('500g');
-    expect(result.priceHistory).toEqual([{ date: '2024-01-01', price: 10 }]);
-  });
-
-  it('should set empty string for undefined size', () => {
-    const input = {
-      id: '123',
-      name: 'Test',
-      sourceSite: 'countdown.co.nz',
-      priceHistory: [],
-      category: 'test',
-      lastChecked: '2024-01-01',
-    } as Product;
-
-    const result = cleanProductFields(input);
-    expect(result.size).toBe('');
-  });
-
-  it('should derive unitPrice if missing', () => {
-    const input: Product = {
-      id: '123',
-      name: 'Test Milk',
-      size: '2L',
-      sourceSite: 'countdown.co.nz',
-      priceHistory: [{ date: '2024-01-01', price: 6 }],
-      category: 'milk',
-      lastChecked: '2024-01-01',
-      unitPrice: '',
-    };
-
-    const result = cleanProductFields(input);
-    expect(result.unitPrice).toBe('3/L');
   });
 });
 
@@ -283,6 +137,7 @@ describe('getStoreEnum', () => {
     const product: Product = {
       id: '1',
       name: 'Test',
+      size: '',
       sourceSite: 'countdown.co.nz',
       priceHistory: [],
       category: 'test',
@@ -296,6 +151,7 @@ describe('getStoreEnum', () => {
     const product: Product = {
       id: '1',
       name: 'Test',
+      size: '',
       sourceSite: 'woolworths.co.nz',
       priceHistory: [],
       category: 'test',
@@ -309,6 +165,7 @@ describe('getStoreEnum', () => {
     const product: Product = {
       id: '1',
       name: 'Test',
+      size: '',
       sourceSite: 'thewarehouse.co.nz',
       priceHistory: [],
       category: 'test',
@@ -322,6 +179,7 @@ describe('getStoreEnum', () => {
     const product: Product = {
       id: '1',
       name: 'Test',
+      size: '',
       sourceSite: 'paknsave.co.nz',
       priceHistory: [],
       category: 'test',
@@ -335,6 +193,7 @@ describe('getStoreEnum', () => {
     const product: Product = {
       id: '1',
       name: 'Test',
+      size: '',
       sourceSite: 'newworld.co.nz',
       priceHistory: [],
       category: 'test',
@@ -348,6 +207,7 @@ describe('getStoreEnum', () => {
     const product: Product = {
       id: '1',
       name: 'Test',
+      size: '',
       sourceSite: 'unknown.co.nz',
       priceHistory: [],
       category: 'test',
@@ -486,6 +346,7 @@ describe('productIsCurrent', () => {
     const product: Product = {
       id: '1',
       name: 'Test',
+      size: '',
       sourceSite: 'countdown.co.nz',
       priceHistory: [],
       category: 'test',
@@ -499,6 +360,7 @@ describe('productIsCurrent', () => {
     const product: Product = {
       id: '1',
       name: 'Test',
+      size: '',
       sourceSite: 'countdown.co.nz',
       priceHistory: [],
       category: 'test',
@@ -515,32 +377,32 @@ describe('sortProductsByUnitPrice', () => {
       {
         id: '1',
         name: 'Expensive',
+        size: '',
         sourceSite: 'countdown.co.nz',
         priceHistory: [],
         category: 'test',
         lastChecked: '2024-01-01',
         unitPrice: '10/kg',
-        unitPriceNum: 10,
       },
       {
         id: '2',
         name: 'Cheap',
+        size: '',
         sourceSite: 'countdown.co.nz',
         priceHistory: [],
         category: 'test',
         lastChecked: '2024-01-01',
         unitPrice: '5/kg',
-        unitPriceNum: 5,
       },
       {
         id: '3',
         name: 'Medium',
+        size: '',
         sourceSite: 'countdown.co.nz',
         priceHistory: [],
         category: 'test',
         lastChecked: '2024-01-01',
         unitPrice: '7/kg',
-        unitPriceNum: 7,
       },
     ];
 
@@ -550,21 +412,22 @@ describe('sortProductsByUnitPrice', () => {
     expect(result[2].name).toBe('Expensive');
   });
 
-  it('should sort products without unitPriceNum to bottom', () => {
+  it('should sort products without unitPrice to bottom', () => {
     const products: Product[] = [
       {
         id: '1',
         name: 'WithUnit',
+        size: '',
         sourceSite: 'countdown.co.nz',
         priceHistory: [],
         category: 'test',
         lastChecked: '2024-01-01',
         unitPrice: '5/kg',
-        unitPriceNum: 5,
       },
       {
         id: '2',
         name: 'NoUnit',
+        size: '',
         sourceSite: 'countdown.co.nz',
         priceHistory: [],
         category: 'test',
