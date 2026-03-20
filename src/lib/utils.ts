@@ -263,7 +263,7 @@ export function toLongDate(dateInput: Date | string): string {
 
 // toMediumDate()
 // --------------
-// Takes any date/string and returns 'Friday, 11 Aug'
+// Takes any date/string and returns 'Friday 11 Aug'
 // Uses manual formatting to avoid locale/timezone hydration mismatches
 export function toMediumDate(dateInput: Date | string): string {
   const date = new Date(dateInput);
@@ -275,7 +275,7 @@ export function toMediumDate(dateInput: Date | string): string {
   const dayNum = date.getUTCDate();
   const month = months[date.getUTCMonth()];
 
-  return `${dayName}, ${dayNum} ${month}`;
+  return `${dayName} ${dayNum} ${month}`;
 }
 
 // toDateOnly()
