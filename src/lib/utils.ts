@@ -132,7 +132,8 @@ export function deriveUnitPriceString(name: string, size: string, price: number)
     unit = matchedUnit.match(/(g|kg|l|ml)\b/g)?.join('') || "";
 
     // Handle edge case where size contains a 'multiplier x sub-unit' - eg. 4 x 107mL
-    const matchMultipliedSizeString = size?.match(/\d+\sx\s\d+mL$/g)?.join('');
+    const matchMultipliedSizeString = size?.toLowerCase().match(/\d+\sx\s\d+(ml|g)$/g)?.join('');
+
     if (matchMultipliedSizeString) {
       const splitMultipliedSize = matchMultipliedSizeString.split('x');
       const multiplier = parseInt(splitMultipliedSize[0].trim());
