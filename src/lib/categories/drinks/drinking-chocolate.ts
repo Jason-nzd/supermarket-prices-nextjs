@@ -13,15 +13,16 @@ export const drinkingChocolate: CategoryDefinitions["drinking-chocolate"] = {
   icon: "🍫",
   subcategories: [
     createSubCategory({
-      titles: ["Drinking Chocolate"],
-      regexMatch: /^(?!.*(?:sticks|sachet|bag|pack|each|\wx\w)).*/i,
-      maxProductsToShow: 20,
-    }),
-    createSubCategory({
       titles: ["Sachets"],
-      regexMatch: /sticks|sachet|bag|pack|each|\wx\w/i,
+      regexMatch: /sticks|sachet|pack|each|\bx\b/i,
+      matchField: "both",
       titleAsSearchLink: false,
       maxProductsToShow: 10,
     }),
   ],
+  otherSubcategory: {
+    useOtherSubcategory: true,
+    otherTitle: "Powder",
+    otherMaxProductsToShow: 15,
+  },
 };

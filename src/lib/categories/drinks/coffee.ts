@@ -2,7 +2,7 @@ import { CategoryDefinitions, SubCategory } from "@/typings";
 
 export function createSubCategory(sub: SubCategory): SubCategory {
   return {
-    maxProductsToShow: 10,
+    maxProductsToShow: 5,
     titleAsSearchLink: true,
     ...sub,
   };
@@ -16,11 +16,11 @@ export const coffee: CategoryDefinitions["coffee"] = {
     createSubCategory({
       titles: ["Instant Coffee"],
       regexMatch: /^(?!.*(iced|capsule|pod|sachet)).*(instant|jarrah|freeze|decaf)/i,
+      maxProductsToShow: 10,
     }),
     createSubCategory({
       titles: ["Sachet Coffee"],
       regexMatch: /sachet|sticks|pack|avalanche.coffee.mix|sugar.free.coffee.mix/i,
-      maxProductsToShow: 5,
     }),
     createSubCategory({
       titles: ["Grind Coffee", "Plunger Coffee", "Filter Coffee"],
@@ -29,11 +29,11 @@ export const coffee: CategoryDefinitions["coffee"] = {
     createSubCategory({
       titles: ["Coffee Beans"],
       regexMatch: /beans/i,
-      maxProductsToShow: 5,
     }),
     createSubCategory({
       titles: ["Coffee Capsules", "Coffee Pods", "Dolce Gusto", "Nespresso"],
       regexMatch: /capsule|pods|gusto|nespresso/i,
+      maxProductsToShow: 5,
     }),
 
   ],
