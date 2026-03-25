@@ -67,6 +67,7 @@ import { biscuits } from "./snacks";
 import { muesliBars } from "./snacks";
 import { nutsBulkMix } from "./snacks";
 import { sweetsLollies } from "./snacks";
+import { popcorn } from "./snacks";
 import { otherSnacks } from "./snacks";
 
 import { longLifeMilk } from "./drinks";
@@ -152,6 +153,7 @@ export const categoryDefinitions: CategoryDefinitions = {
   "muesli-bars": muesliBars,
   "nuts-bulk-mix": nutsBulkMix,
   "sweets-lollies": sweetsLollies,
+  popcorn,
   "other-snacks": otherSnacks,
   "long-life-milk": longLifeMilk,
   "black-tea": blackTea,
@@ -253,6 +255,7 @@ export const snacksCategoryGroup = [
   "muesli-bars",
   "nuts-bulk-mix",
   "sweets-lollies",
+  "popcorn",
   "other-snacks",
 ];
 

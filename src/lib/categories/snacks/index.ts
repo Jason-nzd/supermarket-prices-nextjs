@@ -6,4 +6,5 @@ export { biscuits } from "./biscuits";
 export { muesliBars } from "./muesli-bars";
 export { nutsBulkMix } from "./nuts-bulk-mix";
 export { sweetsLollies } from "./sweets-lollies";
+export { popcorn } from "./popcorn";
 export { otherSnacks } from "./other-snacks";
