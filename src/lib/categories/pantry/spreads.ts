@@ -22,7 +22,7 @@ export const spreads: CategoryDefinitions["spreads"] = {
       titles: ["Value Nut Butters"],
       regexMatch: /butter/i,
       titleAsSearchLink: false,
-      maxProductsToShow: 10,
+      maxProductsToShow: 5,
     }),
     createSubCategory({
       titles: ["Strawberry Jam", "Raspberry Jam", "Plum Jam", "Apricot Jam"],
@@ -40,7 +40,7 @@ export const spreads: CategoryDefinitions["spreads"] = {
       titles: ["Vegemite", "Marmite"],
       regexMatch: /vegemite|marmite|yeast/i,
       titleAsSearchLink: false,
-      maxProductsToShow: 10,
+      maxProductsToShow: 5,
     }),
     createSubCategory({
       titles: ["Hazelnut", "Nutella"],
@@ -52,7 +52,7 @@ export const spreads: CategoryDefinitions["spreads"] = {
       titles: ["Marmalade"],
       regexMatch: /marmalade|lemon/i,
       titleAsSearchLink: false,
-      maxProductsToShow: 10,
+      maxProductsToShow: 5,
     }),
   ],
   otherSubcategory: {
