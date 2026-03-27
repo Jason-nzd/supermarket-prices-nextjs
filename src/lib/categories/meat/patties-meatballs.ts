@@ -14,15 +14,18 @@ export const pattiesMeatballs: CategoryDefinitions["patties-meatballs"] = {
   subcategories: [
     createSubCategory({
       titles: ["Beef Patties"],
-      regexMatch: /(?=.*\b(beef|meat|bbq|quarter)\b)(?=.*(patties|burger|grillers))/,
-      titleAsSearchLink: false,
+      regexMatch: /(?=.*\b(beef|meat|bbq|quarter)\b)(?=.*(patties|burger|griller|slider|smash))/,
       maxProductsToShow: 10,
     }),
     createSubCategory({
       titles: ["Chicken Patties"],
-      regexMatch: /(?=.*\bchicken\b)(?=.*(patties|burger|grillers))/i,
-      titleAsSearchLink: false,
+      regexMatch: /(?=.*?chicken).*?(patties|burger|griller|slider)/i,
       maxProductsToShow: 10,
+    }),
+    createSubCategory({
+      titles: ["Pork Patties", "Lamb Patties"],
+      regexMatch: /(?=.*?(pork|lamb)).*?(patties|burger|griller|slider)/i,
+      maxProductsToShow: 5,
     }),
     createSubCategory({
       titles: ["Meatballs & Rissoles"],
