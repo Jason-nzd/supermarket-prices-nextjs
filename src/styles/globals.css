@@ -3,8 +3,8 @@
 :root {
   --color-gradient-top: #d3dbbc;
   --color-gradient-bottom: #b7c4a3;
-  --color-dark-gradient-top: rgb(22, 21, 22);
-  --color-dark-gradient-bottom: rgb(22, 11, 22);
+  --color-dark-gradient-top: rgb(1, 21, 22);
+  --color-dark-gradient-bottom: rgb(1, 11, 22);
 }
 @theme {
   --breakpoint-sm: 400px;
@@ -12,7 +12,7 @@
   --breakpoint-lg: 1030px;
   --breakpoint-xl: 1340px;
   --breakpoint-2xl: 1700px;
-  --breakpoint-3xl: 2100px;
+  --breakpoint-3xl: 1900px;
 }
 @variant dark (&:where(.dark, .dark *));
 
@@ -114,7 +114,7 @@
   }
 
   .central-responsive-div {
-    @apply px-2 mx-auto w-full 2xl:w-360 3xl:w-440 transition-all duration-400;
+    @apply px-2 mx-auto w-full 2xl:w-420 transition-all duration-400;
   }
 
   Footer {
@@ -138,8 +138,8 @@
     @variant dark {
       /* background: linear-gradient(to bottom, #222 0%, #333 100%);
       background-size: 100% 100%; */
-      @apply text-zinc-100 ring-zinc-600 ring-2 shadow-black bg-transparent backdrop-blur-xl
-       hover:bg-green-400/10 hover:ring-green-800;
+      @apply text-zinc-100 ring-zinc-500 ring-2 shadow-zinc-900 bg-white/5 backdrop-blur-xl
+       hover:bg-green-300/10 hover:ring-green-700;
     }
   }
   .grid-title {

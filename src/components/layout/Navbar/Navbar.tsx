@@ -35,7 +35,7 @@ const NavBar = ({ lastUpdatedDate }: Props) => {
     <nav className="w-full overflow-hidden sticky top-0 z-50">
       {/* Desktop Navbar - hidden on mobile - limited width */}
       <div
-        className="hidden lg:flex mx-auto w-full 2xl:w-360 3xl:w-440 
+        className="hidden lg:flex mx-auto w-full 2xl:w-420  
         transition-all duration-500 flex-nowrap items-center"
       >
         {/* Website Logo */}

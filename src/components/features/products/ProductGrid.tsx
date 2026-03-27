@@ -8,7 +8,6 @@ interface Props {
   titles?: string[];
   subTitle?: string;
   products: Product[];
-  trimColumns?: boolean;
   titleAsSearchLink?: boolean;
   createDeepLink?: string;
 }
@@ -17,49 +16,43 @@ function ProductGrid({
   titles = [],
   subTitle = "",
   products,
-  trimColumns = false,
   titleAsSearchLink = true,
   createDeepLink = "",
 }: Props) {
   let trimmedProducts: Product[] = [];
 
   // Call hooks unconditionally so their order is stable across renders
-  const isMobile = useMediaQuery("600px");
   const isSmall = useMediaQuery("980px");
   const isMedium = useMediaQuery("1340px");
-  const isLarge = useMediaQuery("2100px");
+  const isLarge = useMediaQuery("1700px");
 
-  if (trimColumns) {
-    trimmedProducts = products;
-
-    // For mobile viewports, trim products to 2 columns
-    if (isMobile) {
-      trimmedProducts = products.slice(
-        0,
-        getLargestMultiplication(products.length, 2),
-      );
-    }
-    // For small viewports, trim products to 3 columns
-    if (isSmall) {
-      trimmedProducts = products.slice(
-        0,
-        getLargestMultiplication(products.length, 3),
-      );
-    }
-    // For medium viewports, trim products to 4 columns
-    if (isMedium) {
-      trimmedProducts = products.slice(
-        0,
-        getLargestMultiplication(products.length, 4),
-      );
-    }
-    // For large viewports, trim products to 5 columns
-    if (isLarge) {
-      trimmedProducts = products.slice(
-        0,
-        getLargestMultiplication(products.length, 5),
-      );
-    }
+  // For large viewports, trim products to 5 columns
+  if (isLarge) {
+    trimmedProducts = products.slice(
+      0,
+      getLargestMultiplication(products.length, 5),
+    );
+  }
+  // For medium viewports, trim products to 4 columns
+  else if (isMedium) {
+    trimmedProducts = products.slice(
+      0,
+      getLargestMultiplication(products.length, 4),
+    );
+  }
+  // For small viewports, trim products to 3 columns
+  else if (isSmall) {
+    trimmedProducts = products.slice(
+      0,
+      getLargestMultiplication(products.length, 3),
+    );
+  }
+  // For mobile viewports, trim products to 2 columns
+  else {
+    trimmedProducts = products.slice(
+      0,
+      getLargestMultiplication(products.length, 2),
+    );
   }
 
   if (products.length > 0)
@@ -125,17 +118,12 @@ function ProductGrid({
             md:grid-cols-2
             lg:grid-cols-3
             xl:grid-cols-4
-            2xl:grid-cols-4
+            2xl:grid-cols-5
             3xl:grid-cols-5"
           >
-            {!trimColumns &&
-              products.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            {trimColumns &&
-              trimmedProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
+            {trimmedProducts.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
           </div>
         </div>
       </div>
@@ -145,7 +133,10 @@ function ProductGrid({
 
 export default ProductGrid;
 
-function getLargestMultiplication(inputNum: number, multiplier: number): number {
+function getLargestMultiplication(
+  inputNum: number,
+  multiplier: number,
+): number {
   let currentMultiple = multiplier;
   let largestMultiplication = multiplier;
   while (true) {

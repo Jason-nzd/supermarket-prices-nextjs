@@ -48,7 +48,6 @@ const Category = ({
             titles={grid.titles}
             subTitle={grid.subTitle}
             products={grid.products}
-            trimColumns={grid.trimColumns}
             titleAsSearchLink={grid.titleAsSearchLink}
             createDeepLink={grid.createDeepLink}
           />
@@ -154,7 +153,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       (g) => g.titles[0] === CategoryDefinition.otherSubcategory?.otherTitle,
     );
     if (otherGrid) {
-      otherGrid.trimColumns = true;
       otherGrid.titleAsSearchLink = false;
     }
 

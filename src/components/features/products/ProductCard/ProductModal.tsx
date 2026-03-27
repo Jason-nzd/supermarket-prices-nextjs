@@ -99,7 +99,7 @@ function ProductModal({ product, setIsModalOpen }: Props) {
     <div
       className={
         (theme === "dark"
-          ? "bg-zinc-900/50 text-zinc-100 backdrop-blur-3xl"
+          ? "bg-black/30 text-zinc-100 backdrop-blur-3xl"
           : "bg-white/60 text-green-800 backdrop-blur-lg") +
         " flex flex-col relative mx-auto rounded-3xl shadow-2xl" +
         " overflow-y-scroll overflow-x-hidden no-scrollbar"
