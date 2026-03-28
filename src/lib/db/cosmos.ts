@@ -184,6 +184,7 @@ export async function DBFetchAll(
   maxItems: number = 20,
   store: Store = Store.Any,
   priceHistoryLimit: PriceHistoryLimit = PriceHistoryLimit.Any,
+  lastChecked: LastChecked = LastChecked.Within7Days,
   orderBy: OrderByMode = OrderByMode.None
 ): Promise<Product[]> {
   // SQL query is built using a base plus conditional WHERE clauses
@@ -192,7 +193,7 @@ export async function DBFetchAll(
       'SELECT * FROM products p' +
       queryAddLimitStore(store, false) +
       queryAddPriceHistoryLimit(priceHistoryLimit) +
-      queryAddLastChecked(LastChecked.Within7Days) +
+      queryAddLastChecked(lastChecked) +
       queryAddOrderBy(orderBy),
   };
 
@@ -209,24 +210,24 @@ export function queryAddOrderBy(orderBy: OrderByMode): string {
     case OrderByMode.Oldest:
       sqlQueryAddon = ' ORDER BY p.lastChecked';
       break;
-    case OrderByMode.LatestPriceChange:
-      sqlQueryAddon = ' ORDER BY p.lastUpdated DESC';
-      break;
-    case OrderByMode.OldestPriceChange:
-      sqlQueryAddon = ' ORDER BY p.lastUpdated';
-      break;
-    case OrderByMode.PriceLowest:
-      sqlQueryAddon = ' ORDER BY p.currentPrice';
-      break;
-    case OrderByMode.PriceHighest:
-      sqlQueryAddon = ' ORDER BY p.currentPrice DESC';
-      break;
-    case OrderByMode.UnitPriceLowest:
-      sqlQueryAddon = ' ORDER BY p.unitPrice';
-      break;
-    case OrderByMode.UnitPriceHighest:
-      sqlQueryAddon = ' ORDER BY p.unitPrice DESC';
-      break;
+    // case OrderByMode.LatestPriceChange:
+    //   sqlQueryAddon = ' ORDER BY p.priceHistory[ARRAY_LENGTH(p.priceHistory) - 1].date DESC';
+    //   break;
+    // case OrderByMode.OldestPriceChange:
+    //   sqlQueryAddon = ' ORDER BY p.priceHistory[ARRAY_LENGTH(p.priceHistory) - 1].date';
+    //   break;
+    // case OrderByMode.PriceLowest:
+    //   sqlQueryAddon = ' ORDER BY p.priceHistory[ARRAY_LENGTH(p.priceHistory) - 1].price';
+    //   break;
+    // case OrderByMode.PriceHighest:
+    //   sqlQueryAddon = ' ORDER BY p.priceHistory[ARRAY_LENGTH(p.priceHistory) - 1].price DESC';
+    //   break;
+    // case OrderByMode.UnitPriceLowest:
+    //   sqlQueryAddon = ' ORDER BY p.unitPrice';
+    //   break;
+    // case OrderByMode.UnitPriceHighest:
+    //   sqlQueryAddon = ' ORDER BY p.unitPrice DESC';
+    //   break;
     case OrderByMode.Name:
       sqlQueryAddon = ' ORDER BY p.name';
       break;
