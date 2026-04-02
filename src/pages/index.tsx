@@ -116,15 +116,17 @@ const categoryHotScoreMultipliers: Record<string, number> = {
   "dog-treats": 0.5,
   "cat-treats": 0.5,
   salmon: 0.5,
-  "beef-lamb": 0.7,
+  "beef-lamb": 0.8,
   pork: 0.7,
   chicken: 0.7,
   "dog-food": 0.7,
   "cat-food": 0.7,
   sausages: 0.7,
   "patties-meatballs": 0.7,
+  "ice-blocks": 0.7,
   milk: 1.4,
-  chocolate: 1.2,
+  chocolate: 1,
+  fruit: 1.2,
 };
 
 /**
@@ -135,10 +137,10 @@ const categoryHotScoreMultipliers: Record<string, number> = {
  * @returns Limited array of products sorted by hot score (descending)
  */
 function sortByHotProducts(products: Product[], limit: number): Product[] {
-  const priceChangeFactor = 1;
-  const recentChangeFactor = 5;
+  const priceChangeFactor = 0.5;
+  const recentChangeFactor = 6;
   const categoryInfluenceFactor = 0.8;
-  const priceReductionBonusFactor = 1.8;
+  const priceReductionBonusFactor = 0.7;
   const maxDaysSinceChange = 7;
 
   const productsWithScore = products
