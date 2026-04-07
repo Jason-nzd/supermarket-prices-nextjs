@@ -22,7 +22,7 @@ function ProductGrid({
   let trimmedProducts: Product[] = [];
 
   // Call hooks unconditionally so their order is stable across renders
-  const isSmall = useMediaQuery("980px");
+  const isSmall = useMediaQuery("1030px");
   const isMedium = useMediaQuery("1340px");
   const isLarge = useMediaQuery("1700px");
 
