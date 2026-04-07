@@ -318,10 +318,18 @@ describe('date formatting functions', () => {
     });
 
     it('should return "X days ago" for recent dates', () => {
-      const threeDaysAgo = new Date();
-      threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
-      const result = toDaysElapsed(threeDaysAgo.toISOString().split('T')[0]);
-      expect(result).toBe('3 days ago');
+      const today = new Date();
+      const daysAgo = 3;
+      const threeDaysAgo = new Date(
+        Date.UTC(
+          today.getUTCFullYear(),
+          today.getUTCMonth(),
+          today.getUTCDate() - daysAgo,
+        ),
+      );
+      const dateStr = threeDaysAgo.toISOString().split('T')[0];
+      const result = toDaysElapsed(dateStr);
+      expect(result).toBe(`${daysAgo} days ago`);
     });
 
     it('should return "X weeks ago" for older dates', () => {
