@@ -52,7 +52,7 @@ export async function getStaticProps() {
       200,
       Store.Countdown,
       PriceHistoryLimit.TwoOrMore,
-      LastChecked.Within3Days,
+      LastChecked.Within7Days,
       OrderByMode.Latest,
     ),
     10,
@@ -63,7 +63,7 @@ export async function getStaticProps() {
       200,
       Store.Paknsave,
       PriceHistoryLimit.TwoOrMore,
-      LastChecked.Within3Days,
+      LastChecked.Within7Days,
       OrderByMode.Latest,
     ),
     10,
@@ -74,7 +74,7 @@ export async function getStaticProps() {
       200,
       Store.Warehouse,
       PriceHistoryLimit.TwoOrMore,
-      LastChecked.Within3Days,
+      LastChecked.Within7Days,
       OrderByMode.Latest,
     ),
     5,
@@ -85,7 +85,7 @@ export async function getStaticProps() {
       200,
       Store.NewWorld,
       PriceHistoryLimit.TwoOrMore,
-      LastChecked.Within3Days,
+      LastChecked.Within7Days,
       OrderByMode.Latest,
     ),
     5,
@@ -109,24 +109,26 @@ export async function getStaticProps() {
  * Categories not listed here use a default multiplier of 1.
  */
 const categoryHotScoreMultipliers: Record<string, number> = {
-  beer: 0.3,
-  wine: 0.3,
-  "craft-beer": 0.3,
-  seafood: 0.3,
-  "dog-treats": 0.5,
-  "cat-treats": 0.5,
+  beer: 0.5,
+  wine: 0.5,
+  "craft-beer": 0.5,
+  seafood: 0.5,
+  "dog-treats": 0.7,
+  "cat-treats": 0.7,
   salmon: 0.5,
   "beef-lamb": 0.8,
-  pork: 0.7,
-  chicken: 0.7,
-  "dog-food": 0.7,
-  "cat-food": 0.7,
-  sausages: 0.7,
+  pork: 0.8,
+  chicken: 0.8,
+  ham: 0.8,
+  "dog-food": 0.8,
+  "cat-food": 0.8,
+  sausages: 0.8,
   "patties-meatballs": 0.7,
   "ice-blocks": 0.7,
   milk: 1.4,
-  chocolate: 1,
+  chocolate: 0.8,
   fruit: 1.2,
+  "fresh-vegetables": 1.1,
 };
 
 /**
@@ -137,71 +139,76 @@ const categoryHotScoreMultipliers: Record<string, number> = {
  * @returns Limited array of products sorted by hot score (descending)
  */
 function sortByHotProducts(products: Product[], limit: number): Product[] {
-  const priceChangeFactor = 0.5;
-  const recentChangeFactor = 6;
-  const categoryInfluenceFactor = 0.8;
-  const priceReductionBonusFactor = 0.7;
-  const maxDaysSinceChange = 7;
+  const priceChangeFactor = 5;
+  const recentChangeFactor = 3;
+  const categoryInfluenceFactor = 1;
+  const priceReductionBonusFactor = 2;
 
-  const productsWithScore = products
-    .filter((product) => {
-      const mostRecent = product.priceHistory[product.priceHistory.length - 1];
-      if (!mostRecent?.date) return false;
-      const daysSinceChange =
+  const productsWithScore = products.filter((product) => {
+    const mostRecent = product.priceHistory[product.priceHistory.length - 1];
+    if (!mostRecent?.date) {
+      console.log("filtered out product without recent date: " + product.name);
+      return false;
+    }
+    return true;
+  });
+
+  // console.log(
+  //   `sortByHotProducts: ${products.length} in, ${productsWithScore.length} after filter, limit=${limit}`,
+  // );
+
+  const scored = productsWithScore.map((product) => {
+    const priceHistory = product.priceHistory;
+    const mostRecent = priceHistory[priceHistory.length - 1];
+    const secondMostRecent = priceHistory[priceHistory.length - 2];
+
+    let hotScore = 0;
+    let priceChangeScore = 0;
+    let recencyScore = 0;
+    let priceChange = 0;
+
+    if (mostRecent && secondMostRecent) {
+      priceChange =
+        (mostRecent.price - secondMostRecent.price) / secondMostRecent.price;
+      const absPriceChange = Math.abs(priceChange) * priceChangeFactor;
+
+      // Price reductions get a bonus multiplier
+      if (priceChange < 0) {
+        priceChangeScore = absPriceChange * priceReductionBonusFactor;
+      } else {
+        priceChangeScore = absPriceChange;
+      }
+      hotScore += priceChangeScore;
+    }
+
+    if (mostRecent?.date) {
+      const daysSinceChange = Math.round(
         (Date.now() - new Date(mostRecent.date).getTime()) /
-        (1000 * 60 * 60 * 24);
-      return daysSinceChange <= maxDaysSinceChange;
-    })
-    .map((product) => {
-      const priceHistory = product.priceHistory;
-      const mostRecent = priceHistory[priceHistory.length - 1];
-      const secondMostRecent = priceHistory[priceHistory.length - 2];
-
-      let hotScore = 0;
-      let priceChangeScore = 0;
-      let recencyScore = 0;
-      let priceChange = 0;
-
-      if (mostRecent && secondMostRecent) {
-        priceChange = mostRecent.price - secondMostRecent.price;
-        const absPriceChange = Math.abs(priceChange) * priceChangeFactor;
-
-        // Price reductions get a bonus multiplier
-        if (priceChange < 0) {
-          priceChangeScore = absPriceChange * priceReductionBonusFactor;
-        } else {
-          priceChangeScore = absPriceChange;
-        }
-        hotScore += priceChangeScore;
-      }
-
-      if (mostRecent?.date) {
-        const daysSinceChange =
-          (Date.now() - new Date(mostRecent.date).getTime()) /
-          (1000 * 60 * 60 * 24);
-        recencyScore = (1 / (daysSinceChange + 1)) * recentChangeFactor;
-        hotScore += recencyScore;
-      }
-
-      const categoryMultiplier =
-        categoryHotScoreMultipliers[product.category] ?? 1;
-      // Use exponent to amplify deviation from 1:
-      // <1 becomes smaller, >1 becomes larger
-      const adjustedCategoryMultiplier = Math.pow(
-        categoryMultiplier,
-        categoryInfluenceFactor + 1,
+          (1000 * 60 * 60 * 24),
       );
-      const finalScore = hotScore * adjustedCategoryMultiplier;
+      recencyScore = (1 / (daysSinceChange + 1)) * recentChangeFactor;
+      hotScore += recencyScore;
+    }
 
-      // const paddedName = product.name.padEnd(20).slice(0, 20);
-      // console.log(
-      //   `${paddedName} | price: ${priceChangeScore.toFixed(2)} | recency: ${recencyScore.toFixed(2)} | category: ${adjustedCategoryMultiplier.toFixed(2)} | bonus: ${priceChange < 0 ? priceReductionBonusFactor : 1} | final: ${finalScore.toFixed(2)}`,
-      // );
+    const categoryMultiplier =
+      categoryHotScoreMultipliers[product.category] ?? 1;
+    // Use exponent to amplify deviation from 1:
+    // <1 becomes smaller, >1 becomes larger
+    const adjustedCategoryMultiplier = Math.pow(
+      categoryMultiplier,
+      categoryInfluenceFactor + 1,
+    );
+    const finalScore = hotScore * adjustedCategoryMultiplier;
 
-      return { product, hotScore: finalScore };
-    });
+    // const paddedName = product.name.padEnd(30).slice(0, 30);
+    // console.log(
+    //   `${paddedName} | price: ${priceChange.toFixed(1).padStart(4).padEnd(4)} % score: ${priceChangeScore.toFixed(1).padEnd(3)} | recency: ${recencyScore.toFixed(1)} | category: ${adjustedCategoryMultiplier.toFixed(1)} | bonus: ${priceChange < 0 ? priceReductionBonusFactor : 1} | final: ${finalScore.toFixed(2)}`,
+    // );
 
-  return productsWithScore
+    return { product, hotScore: finalScore };
+  });
+
+  return scored
     .sort((a, b) => b.hotScore - a.hotScore)
     .map(({ product }) => product)
     .slice(0, limit);
