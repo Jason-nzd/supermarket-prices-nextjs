@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import ProductsGrid from "@/components/features/products/ProductGrid";
 import { Product } from "@/typings";
 import { LastChecked, PriceHistoryLimit, Store } from "@/lib/enums";
@@ -15,21 +15,63 @@ interface Props {
 
 const maxProductsToSearch = 40;
 
+const loadingMessages = [
+  "Waking up our price-hunting kiwis...",
+  "Digging through the aisles...",
+  "Comparing prices so you don't have to...",
+  "Asking the deli counter for the freshest deals...",
+  "Crunching the numbers on every last bargain...",
+  "Polishing up those savings just for you...",
+];
+const messageIntervalMs = 2000;
+
 const ClientSearch = ({ lastChecked }: Props) => {
   const router = useRouter();
   const [products, setProducts] = useState<Product[]>([]);
   const [outOfStockProducts, setOutOfStockProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [searchTerm, setSearchTerm] = useState<string>();
+  const [loadingMsgIndex, setLoadingMsgIndex] = useState(0);
+  const [showMessages, setShowMessages] = useState(false);
+  const timersRef = useRef<{
+    delay: ReturnType<typeof setTimeout> | null;
+    interval: ReturnType<typeof setInterval> | null;
+  }>({ delay: null, interval: null });
 
   if (router.query.query !== searchTerm)
     setSearchTerm(router.query.query as string);
+
+  const clearLoadingTimers = () => {
+    if (timersRef.current.delay) clearTimeout(timersRef.current.delay);
+    if (timersRef.current.interval) clearInterval(timersRef.current.interval);
+  };
+
+  const startLoadingMessages = () => {
+    setLoadingMsgIndex(0);
+    setShowMessages(false);
+    clearLoadingTimers();
+    timersRef.current.delay = setTimeout(() => {
+      setShowMessages(true);
+    }, messageIntervalMs);
+    timersRef.current.interval = setInterval(() => {
+      setLoadingMsgIndex((prev) =>
+        prev < loadingMessages.length - 1 ? prev + 1 : prev,
+      );
+    }, messageIntervalMs);
+  };
+
+  const stopLoadingMessages = () => {
+    clearLoadingTimers();
+    setShowMessages(false);
+    setLoadingMsgIndex(0);
+  };
 
   useEffect(() => {
     (async () => {
       if (searchTerm) {
         // setIsLoading(true) will show loading spinner
         setIsLoading(true);
+        startLoadingMessages();
 
         try {
           // Fetch all products matching search that have been checked within 7 days
@@ -79,15 +121,19 @@ const ClientSearch = ({ lastChecked }: Props) => {
 
           // Disable loading spinner animation and reveal search results
           setIsLoading(false);
+          stopLoadingMessages();
         } catch (error) {
           // Todo: add more error handling
           console.error(error);
           setIsLoading(false);
+          stopLoadingMessages();
         }
       }
     })();
 
-    return () => {};
+    return () => {
+      stopLoadingMessages();
+    };
   }, [searchTerm]);
 
   return (
@@ -112,7 +158,12 @@ const ClientSearch = ({ lastChecked }: Props) => {
           )}
           {isLoading && (
             <>
-              <div className="">Searching for {startCase(searchTerm)}..</div>
+              <div className="grid-title">
+                Searching for {startCase(searchTerm)}...
+              </div>
+              <div className="mt-3 text-center text-gray-500 min-h-[1.5em] transition-opacity duration-300">
+                {showMessages && loadingMessages[loadingMsgIndex]}
+              </div>
 
               {/* Loading Spinner Icon */}
               <div className="w-fit mx-auto p-8">
