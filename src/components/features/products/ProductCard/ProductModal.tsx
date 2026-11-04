@@ -66,7 +66,7 @@ function ProductModal({ product, setIsModalOpen }: Props) {
   switch (getStoreEnum(product)) {
     case Store.Countdown:
       originalProductURLBase =
-        "https://www.woolworths.co.nz/shop/searchproducts?search=";
+        "https://www.woolworths.co.nz/shop/search/products?search=";
       break;
     case Store.Paknsave:
       originalProductURLBase = "https://www.paknsave.co.nz/shop/Search?q=";
