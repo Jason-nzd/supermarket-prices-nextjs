@@ -1,6 +1,6 @@
 {
   "name": "supermarket-prices",
-  "version": "0.2.4",
+  "version": "0.2.6",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -11,44 +11,48 @@
     "test:ui": "vitest --ui",
     "cypress": "cypress open"
   },
-  "packageManager": "pnpm@10.0.0",
+  "packageManager": "pnpm@12.21.0",
   "pnpm": {
-    "onlyBuiltDependencies": ["cypress", "sharp", "unrs-resolver"]
+    "onlyBuiltDependencies": [
+      "cypress",
+      "sharp",
+      "unrs-resolver"
+    ]
   },
   "dependencies": {
-    "@azure/cosmos": "^4.9.1",
-    "@headlessui/react": "^2.2.9",
-    "autoprefixer": "^10.4.27",
-    "chart.js": "^4.4.3",
+    "@azure/cosmos": "^4.10.2",
+    "@headlessui/react": "^2.2.10",
+    "autoprefixer": "^10.6.2",
+    "chart.js": "^4.6.1",
     "chartjs-adapter-date-fns": "^3.0.0",
     "cookies-next": "^4.3.0",
     "date-fns": "^3.6.0",
-    "dotenv": "^16.4.5",
-    "isomorphic-dompurify": "^2.16.0",
-    "lodash": "^4.17.21",
-    "next": "^16.1.7",
+    "dotenv": "^16.6.1",
+    "isomorphic-dompurify": "^2.36.0",
+    "lodash": "^4.18.1",
+    "next": "^16.4.6",
     "react": "19.2.0",
     "react-chartjs-2": "^5.3.1",
     "react-dom": "19.2.0",
-    "sharp": "^0.33.4"
+    "sharp": "^0.33.5"
   },
   "devDependencies": {
-    "@next/bundle-analyzer": "^16.0.0",
-    "@tailwindcss/postcss": "^4.2.0",
-    "@types/jsdom": "^28.0.0",
-    "@types/lodash": "^4.17.4",
-    "@types/node": "^24.0.0",
-    "@types/react": "^19.2.2",
-    "@types/react-dom": "^19.2.2",
-    "@vitest/ui": "^4.1.0",
-    "baseline-browser-mapping": "^2.9.19",
-    "cypress": "^15.12.0",
-    "eslint": "^9.38.0",
-    "eslint-config-next": "^16.0.0",
-    "jsdom": "^29.0.0",
-    "postcss": "^8.4.38",
-    "tailwindcss": "^4.2.0",
-    "typescript": "^5.4.5",
-    "vitest": "^4.1.0"
+    "@next/bundle-analyzer": "^16.4.6",
+    "@tailwindcss/postcss": "^4.3.5",
+    "@types/jsdom": "^28.0.3",
+    "@types/lodash": "^4.17.27",
+    "@types/node": "^24.19.2",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitest/ui": "^4.1.12",
+    "baseline-browser-mapping": "^2.11.38",
+    "cypress": "^15.21.2",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.4.6",
+    "jsdom": "^29.1.1",
+    "postcss": "^8.5.33",
+    "tailwindcss": "^4.3.5",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.12"
   }
 }

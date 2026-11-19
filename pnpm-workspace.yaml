@@ -1,0 +1,4 @@
+allowBuilds:
+  cypress: false
+  sharp: false
+  unrs-resolver: false
